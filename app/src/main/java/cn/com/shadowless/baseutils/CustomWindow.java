@@ -66,9 +66,10 @@ public class CustomWindow {
         /**
          * Gets dialog view.
          *
-         * @param view the view
+         * @param view          the view
+         * @param windowManager the window manager
          */
-        void getWindowView(View view);
+        void getWindowView(View view, WindowManager windowManager);
     }
 
     /**
@@ -107,7 +108,7 @@ public class CustomWindow {
         windowManager.addView(view, layoutParams);
 
         if (null != initWindowListener) {
-            initWindowListener.getWindowView(view);
+            initWindowListener.getWindowView(view, windowManager);
         }
     }
 }

@@ -10,10 +10,11 @@
 Step 1. 添加maven仓库地址
 
 ```
-        allprojects {
+    allprojects {
 		repositories {
 			...
-			maven { url 'https://jitpack.io' }
+			  maven { url 'https://www.jitpack.io' }
+              maven { url 'https://jitpack.io' }
 		}
 	}
 ```
@@ -21,7 +22,7 @@ Step 1. 添加maven仓库地址
 Step 2. 添加依赖
 
 ```
-        dependencies {
+    dependencies {
 	        implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
 	}
 ```	

@@ -22,10 +22,6 @@ public class CustomWindow {
      */
     private Context context;
     /**
-     * The Window manager.
-     */
-    private WindowManager windowManager;
-    /**
      * The Is system.
      */
     private boolean isSystem;
@@ -70,10 +66,9 @@ public class CustomWindow {
         /**
          * Gets dialog view.
          *
-         * @param view          the view
-         * @param windowManager the window manager
+         * @param view the view
          */
-        void getWindowView(View view, WindowManager windowManager);
+        void getWindowView(View view);
     }
 
     /**
@@ -82,9 +77,8 @@ public class CustomWindow {
      * @param initWindowListener the init window listener
      */
     public void show(InitWindowListener initWindowListener) {
-        if (null == windowManager) {
-            windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        }
+
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
 
@@ -113,7 +107,7 @@ public class CustomWindow {
         windowManager.addView(view, layoutParams);
 
         if (null != initWindowListener) {
-            initWindowListener.getWindowView(view, windowManager);
+            initWindowListener.getWindowView(view);
         }
     }
 }

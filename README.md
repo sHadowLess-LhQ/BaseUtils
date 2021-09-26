@@ -9,18 +9,22 @@
 
 Step 1. 添加maven仓库地址
 
-	allprojects {
+```
+        allprojects {
 		repositories {
 			...
 			maven { url 'https://jitpack.io' }
 		}
 	}
+```
 
 Step 2. 添加依赖
 
-	dependencies {
+```
+        dependencies {
 	        implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
 	}
+```	
 
 [![](https://jitpack.io/v/com.gitee.shadowless_lhq/base-utils.svg)](https://jitpack.io/#com.gitee.shadowless_lhq/base-utils)
 
@@ -31,6 +35,8 @@ Step 2. 添加依赖
 2.  BaseFragment：直接继承
 
 3.  CustomDialog：调用示例
+
+```
     CustomDialog
                 .builder()
                 .context() //传入上下文
@@ -53,8 +59,11 @@ Step 2. 添加依赖
                            //回调自定义View和提示框对象
                     }
                 });
+```
 
 4.   CustomWindow：调用示例
+
+```
      CustomWindow
                 .builder()
                 .context()  //传入上下文
@@ -74,10 +83,13 @@ Step 2. 添加依赖
                         //回调自定义View对象
                     }
                 });
+```
 
 5.   PreferencesUtils：SharedPreferences所支持的所有数据类型进行操作，对于StringSet类型，调用addStringSet()方法，可进行数据累加；调用removeStringSet()方法，可进行定向元素删除
 
 6.   RxUtils：调用示例
+
+```
      RxUtils
                 .builder()
                 .build()
@@ -105,6 +117,7 @@ Step 2. 添加依赖
 
                     }
                 });
+```
 
 #### 参与贡献
 

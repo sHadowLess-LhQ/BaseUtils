@@ -24,7 +24,7 @@ public class NetUtils {
     /**
      * 根地址
      */
-    private String baseUrl = null;
+    private String baseUrl;
 
     /**
      * The Default timeout.
@@ -34,19 +34,12 @@ public class NetUtils {
     /**
      * The Time out unit.
      */
-    private TimeUnit timeOutUnit;
+    private TimeUnit timeOutUnit = TimeUnit.SECONDS;
 
     /**
      * The Ok http client.
      */
-    private OkHttpClient okHttpClient = null;
-
-    /**
-     * Instantiates a new Net utils.
-     */
-    private NetUtils() {
-
-    }
+    private OkHttpClient okHttpClient;
 
     /**
      * The interface Init interface.

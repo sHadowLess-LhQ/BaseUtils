@@ -120,6 +120,24 @@ Step 2. 添加依赖
                 });
 ```
 
+7.   NetUtils：调用示例
+
+```
+      NetUtils
+                .builder()
+                .baseUrl()  //设置根地址
+                .okHttpClient()  //设置自定义okhttp，不设置有默认
+                .timeOut()  //设置超时时间
+                .timeOutUnit()  //设置超时时间单位
+                .build()
+                .initRetrofit(new NetUtils.InitInterface() {
+                    @Override
+                    public void createInterface(Retrofit retrofit) {
+                        //可在回调内实例化接口
+                    }
+                });
+```
+
 #### 参与贡献
 
 1.  Fork 本仓库

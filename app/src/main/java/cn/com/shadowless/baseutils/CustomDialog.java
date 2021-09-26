@@ -20,20 +20,59 @@ import lombok.NonNull;
  * @author sHadowLess
  */
 @Builder
-public class MyDialog {
+public class CustomDialog {
 
+    /**
+     * The Dialog view.
+     */
     private View dialogView;
+    /**
+     * The Context.
+     */
     private Context context;
+    /**
+     * The Layout.
+     */
     private int layout;
+    /**
+     * The Window width.
+     */
     private int windowWidth;
+    /**
+     * The Window height.
+     */
     private int windowHeight;
+    /**
+     * The Anim.
+     */
     private int anim;
+    /**
+     * The Cancel.
+     */
     private boolean cancel;
+    /**
+     * The Is set anim.
+     */
     private boolean isSetAnim;
+    /**
+     * The Is system dialog.
+     */
     private boolean isSystemDialog;
+    /**
+     * The Is clear layer.
+     */
     private boolean isClearLayer;
+    /**
+     * The Is title.
+     */
     private boolean isTitle;
+    /**
+     * The Is window size.
+     */
     private boolean isWindowSize;
+    /**
+     * The Location.
+     */
     private location location;
 
     /**

@@ -15,18 +15,51 @@ import lombok.Builder;
  * @author sHadowLess
  */
 @Builder
-public class MyWindow {
+public class CustomWindow {
 
+    /**
+     * The Context.
+     */
     private Context context;
+    /**
+     * The Window manager.
+     */
     private WindowManager windowManager;
+    /**
+     * The Is system.
+     */
     private boolean isSystem;
+    /**
+     * The Is animation.
+     */
     private boolean isAnimation;
+    /**
+     * The Anim.
+     */
     private int anim;
+    /**
+     * The Window flag.
+     */
     private int windowFlag;
+    /**
+     * The Location.
+     */
     private int location;
+    /**
+     * The Width.
+     */
     private int width;
+    /**
+     * The Height.
+     */
     private int height;
+    /**
+     * The Layout.
+     */
     private int layout;
+    /**
+     * The View.
+     */
     private View view;
 
     /**

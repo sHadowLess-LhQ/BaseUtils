@@ -4,13 +4,11 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import lombok.Builder;
 
@@ -163,45 +161,7 @@ public class RxUtils {
      */
     public <T> void rxCreate(ThreadSign threadSign, ObserverCallBack.EmitterCallBack<T> emitterCallBack, ObserverCallBack<T> observerCallBack) {
         Observable
-                .create((ObservableOnSubscribe<T>) emitterCallBack::onEmitter)
-                .compose(dealThread(threadSign))
-                .subscribe(new Observer<T>() {
-                    Disposable disposable;
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        disposable = d;
-                    }
-
-                    @Override
-                    public void onNext(T t) {
-                        observerCallBack.onSuccess(t);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        observerCallBack.onFail(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        observerCallBack.onEnd();
-                        disposable.dispose();
-                    }
-                });
-    }
-
-    /**
-     * Rx just.
-     *
-     * @param <T>              the type parameter
-     * @param t                the t
-     * @param threadSign       the thread sign
-     * @param observerCallBack the observer call back
-     */
-    public <T> void rxJust(T t, ThreadSign threadSign, ObserverCallBack<T> observerCallBack) {
-        Observable
-                .just(t)
+                .create(emitterCallBack::onEmitter)
                 .compose(dealThread(threadSign))
                 .subscribe(new Observer<T>() {
                     Disposable disposable;
@@ -232,7 +192,6 @@ public class RxUtils {
     /**
      * Rx timer.
      *
-     * @param <T>              the type parameter
      * @param time             the time
      * @param timeUnit         the time unit
      * @param threadSign       the thread sign
@@ -291,85 +250,6 @@ public class RxUtils {
                     @Override
                     public void onNext(Long aLong) {
                         observerCallBack.onSuccess(aLong);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        observerCallBack.onFail(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        observerCallBack.onEnd();
-                        disposable.dispose();
-                    }
-                });
-    }
-
-    /**
-     * Rx distinct.
-     *
-     * @param <T>              the type parameter
-     * @param t                the t
-     * @param threadSign       the thread sign
-     * @param observerCallBack the observer call back
-     */
-    public <T> void rxDistinct(T t, ThreadSign threadSign, ObserverCallBack<T> observerCallBack) {
-        Observable
-                .just(t)
-                .distinct()
-                .compose(dealThread(threadSign))
-                .subscribe(new Observer<T>() {
-                    Disposable disposable;
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        disposable = d;
-                    }
-
-                    @Override
-                    public void onNext(T t) {
-                        observerCallBack.onSuccess(t);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        observerCallBack.onFail(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        observerCallBack.onEnd();
-                        disposable.dispose();
-                    }
-                });
-    }
-
-    /**
-     * Rx filter.
-     *
-     * @param <T>              the type parameter
-     * @param t                the t
-     * @param threadSign       the thread sign
-     * @param predicate        the predicate
-     * @param observerCallBack the observer call back
-     */
-    public <T> void rxFilter(T t, ThreadSign threadSign, Predicate<T> predicate, ObserverCallBack<T> observerCallBack) {
-        Observable
-                .just(t)
-                .compose(dealThread(threadSign))
-                .filter(predicate)
-                .subscribe(new Observer<T>() {
-                    Disposable disposable;
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        disposable = d;
-                    }
-
-                    @Override
-                    public void onNext(T t) {
-                        observerCallBack.onSuccess(t);
                     }
 
                     @Override

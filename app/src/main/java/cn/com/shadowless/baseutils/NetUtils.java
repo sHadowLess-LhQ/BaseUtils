@@ -34,12 +34,12 @@ public class NetUtils {
     /**
      * The Default timeout.
      */
-    private int timeOut = 10;
+    private int timeOut;
 
     /**
      * The Time out unit.
      */
-    private TimeUnit timeOutUnit = TimeUnit.SECONDS;
+    private TimeUnit timeOutUnit;
 
     /**
      * The Ok http client.
@@ -120,6 +120,11 @@ public class NetUtils {
      * @return the ok http client
      */
     private OkHttpClient getOkHttpClient() {
+        if (timeOutUnit == null) {
+            timeOutUnit = TimeUnit.SECONDS;
+        } else if (timeOut == 0) {
+            timeOut = 10;
+        }
         return new OkHttpClient.Builder()
                 .connectTimeout(timeOut, timeOutUnit)
                 .readTimeout(timeOut, timeOutUnit)

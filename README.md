@@ -12,7 +12,6 @@ Step 1. 添加maven仓库地址
     allprojects {
 		repositories {
 			...
-			  maven { url 'https://www.jitpack.io' }
               maven { url 'https://jitpack.io' }
 		}
 	}

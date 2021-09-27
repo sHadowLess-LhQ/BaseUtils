@@ -1,4 +1,4 @@
-package cn.com.shadowless.baseutils;
+package cn.com.shadowless.baseutils.utils;
 
 import android.Manifest;
 import android.content.Context;

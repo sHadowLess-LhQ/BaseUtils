@@ -1,4 +1,4 @@
-package cn.com.shadowless.baseutils;
+package cn.com.shadowless.baseutils.view;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -6,8 +6,16 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.com.shadowless.baseutils.R;
+import cn.com.shadowless.baseutils.adpater.BaseCustomAdapter;
+import cn.com.shadowless.baseutils.utils.RxUtils;
 import io.reactivex.ObservableEmitter;
 
 /**
@@ -71,6 +79,12 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     @Override
     public void onEnd() {
         Log.e(TAG, "onEnd: " + "初始化数据成功");
+        BaseCustomAdapter<List<String>, BaseViewHolder> baseCustomAdapter = new BaseCustomAdapter<>(
+                R.layout._xpopup_adapter_text,
+                new ArrayList<>(),
+                (viewHolder, strings) -> {
+
+                });
     }
 
     @Override

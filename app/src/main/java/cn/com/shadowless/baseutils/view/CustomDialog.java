@@ -1,4 +1,4 @@
-package cn.com.shadowless.baseutils;
+package cn.com.shadowless.baseutils.view;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

@@ -1,4 +1,4 @@
-package cn.com.shadowless.baseutils;
+package cn.com.shadowless.baseutils.view;
 
 import android.content.Context;
 import android.graphics.PixelFormat;

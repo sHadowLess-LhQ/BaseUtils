@@ -1,4 +1,4 @@
-package cn.com.shadowless.baseutils;
+package cn.com.shadowless.baseutils.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.com.shadowless.baseutils.utils.RxUtils;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.disposables.CompositeDisposable;
 

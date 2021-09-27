@@ -1,4 +1,4 @@
-package cn.com.shadowless.baseutils;
+package cn.com.shadowless.baseutils.utils;
 
 import java.util.concurrent.TimeUnit;
 

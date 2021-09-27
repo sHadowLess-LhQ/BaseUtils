@@ -4,7 +4,7 @@
 
 个人自用项目快速搭建框架
 
-项目已引入lombok、butterknife、rxjava2、XPopup、retrofit、okhttp，向上层暴露，可直接使用
+项目已引入lombok、butterknife、rxjava2、XPopup、retrofit、okhttp、Gson，向上层暴露，可直接使用
 
 #### 安装教程
 

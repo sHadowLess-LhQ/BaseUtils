@@ -99,6 +99,11 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     }
 
     @Override
+    public void onEnd() {
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
     }

@@ -69,6 +69,11 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     }
 
     @Override
+    public void onEnd() {
+
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         Log.e(TAG, "onStart: ");

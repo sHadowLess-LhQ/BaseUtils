@@ -70,7 +70,7 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
 
     @Override
     public void onEnd() {
-
+        Log.e(TAG, "onEnd: " + "初始化数据成功");
     }
 
     @Override

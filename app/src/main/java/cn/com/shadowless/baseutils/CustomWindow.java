@@ -61,7 +61,7 @@ public class CustomWindow {
     /**
      * The interface Init view.
      */
-    interface InitWindowListener {
+    public interface InitWindowListener {
 
         /**
          * Gets dialog view.

@@ -128,7 +128,7 @@ public class CustomDialog {
     /**
      * The interface Init view.
      */
-    interface InitViewListener {
+    public interface InitViewListener {
 
         /**
          * Gets dialog view.

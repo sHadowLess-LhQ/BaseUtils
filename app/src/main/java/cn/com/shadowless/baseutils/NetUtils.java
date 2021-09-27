@@ -105,7 +105,7 @@ public class NetUtils {
     /**
      * The interface Init interface.
      */
-    interface InitInterface {
+    public interface InitInterface {
         /**
          * Create interface.
          *

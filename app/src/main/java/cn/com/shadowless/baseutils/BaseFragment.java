@@ -100,7 +100,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
 
     @Override
     public void onEnd() {
-
+        Log.e(TAG, "onEnd: " + "初始化数据成功");
     }
 
     @Override

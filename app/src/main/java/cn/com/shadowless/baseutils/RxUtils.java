@@ -117,7 +117,7 @@ public class RxUtils {
      *
      * @param <T> the type parameter
      */
-    interface ObserverCallBack<T> {
+    public interface ObserverCallBack<T> {
 
         /**
          * The interface Emitter call back.
@@ -238,7 +238,7 @@ public class RxUtils {
      * @param threadSign       the thread sign
      * @param observerCallBack the observer call back
      */
-    public <T> void rxTimer(long time, TimeUnit timeUnit, ThreadSign threadSign, ObserverCallBack<Long> observerCallBack) {
+    public void rxTimer(long time, TimeUnit timeUnit, ThreadSign threadSign, ObserverCallBack<Long> observerCallBack) {
         Observable
                 .timer(time, timeUnit)
                 .compose(dealThread(threadSign))

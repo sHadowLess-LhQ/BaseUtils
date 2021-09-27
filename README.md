@@ -80,8 +80,8 @@ Step 2. 添加依赖
                 .build()
                 .show(new CustomWindow.InitWindowListener() {
                     @Override
-                    public void getWindowView(View view) {
-                        //回调自定义View对象
+                    public void getWindowView(View view, WindowManager windowManager) {
+                        //回调自定义View对象和WindowManager，用于移除自定义View
                     }
                 });
 ```
@@ -138,13 +138,27 @@ Step 2. 添加依赖
                 });
 ```
 
-#### 参与贡献
+8.    LocationUtils：调用示例
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+```
+       //参数1：上下文
+       //参数2：结果回调
+       LocationUtils.getInstance(this).setAddressCallback(new LocationUtils.AddressCallback() {
+            @Override
+            public void onGetAddress(Address address) {
+                String countryName = address.getCountryName();//国家
+                String adminArea = address.getAdminArea();//省
+                String locality = address.getLocality();//市
+                String subLocality = address.getSubLocality();//区
+                String featureName = address.getFeatureName();//街道
+            }
 
+            @Override
+            public void onGetLocation(double lat, double lng) {
+                AppLogger.i(DateUtils.getCurrentDateString() + " 经纬度：" + lng + "," + lat);
+            }
+        });
+```
 
 #### 特技
 

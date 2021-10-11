@@ -158,6 +158,88 @@ Step 2. 添加依赖
         });
 ```
 
+9.     BaseModelUtils：调用示例
+
+```     
+        参数1：状态码 - int
+        参数2：状态消息 - String 
+        参数3：数据 - T
+        BaseModelUtils
+                       .getMod(参数1，参数二，参数三);
+```
+
+10.     ApplicationUtils：方法说明
+        
+```
+        //通过包名打开应用
+        - startActivityForPackage(Context context, String packName)
+        //通过包名卸载应用
+        - startUnInstall(Context context, String packageName)
+        //通过路径安装应用
+        - startInstallApk(Context context, String apkPath)
+        //通过包名查看应用详情
+        - startApplicationInfo(Context context)
+        - startApplicationInfo(Context context, String packageName)
+        //打开日历
+        - startCalendar(Context context)
+        //打开相机
+        - startCamera(Context context)
+        //打开浏览器访问
+        - startBrowser(Context context, String url)
+        //清除本应用数据
+        - clearAppData(Context context)
+        //获取设备唯一码
+        - getUUID()
+```
+
+11.     DeviceUtils：方法说明
+  
+```
+        //获取DeviceAdmin权限
+        //在onActivityResult()回调中，判断DeviceUtils.REQUEST_CODE_CHECK_ACTIVE的请求值，是否获取成功
+        - initDeviceAdmin(Activity context)
+        //创建企业空间
+        //在onActivityResult()回调中，判断DeviceUtils.REQUEST_CODE_CHECK_PROFILE的请求值，是否创建成功
+        - initProfile(Activity context)
+        //清除DeviceOwner权限(需拥有DeviceOwner级权限)
+        - clearDeviceOwner(Context context)
+        //获取拥有界面的应用列表
+        - getApp(Context context)
+        //判断应用是否拥有DeviceAdmin权限
+        - isAdminDeviceApp(Context context)
+        //判断应用是否拥有ProfileOwner权限
+        - isProfileOwnerDeviceApp(Context context)
+        //判断应用是否拥有DeviceOwner权限
+        - isDeviceOwnerDeviceApp(Context context)
+        //全局禁用企业空间应用截屏
+        - banCompanyScreenShoot(Context context, boolean disable)
+        //全局禁用设备应用截屏
+        - banDeviceScreenShoot(Context context, boolean disable)
+        //全局禁用企业空间应用打开摄像头
+        - banCompanyCamera(Context context, boolean disable)
+        //全局禁用设备应用打开摄像头
+        - banDeviceCamera(Context context, boolean disable)
+        //删除企业空间
+        - wipeCompanyData(Context context)
+        //设备恢复出厂设置
+        - wipeDeviceData(Context context)
+        //设置企业空间应用密码(API 23以上仅无密码时生效)
+        - setCompanyPassword(Context context, String password)
+        //设置设备锁屏密码(API 23以上仅无密码时生效)
+        - setDevicePassword(Context context, String password)
+        //设置用户限制
+        - setUserRestriction(Context context, String key)
+        //清除指定用户限制
+        - clearUserRestriction(Context context, String key)
+        //遍历清除所有用户限制(仅API 24及以上有效)
+        - clearAllUserRestriction(Context context)
+        //获取所有用户限制(仅API 24及以上有效)
+        - clearAllUserRestriction(Context context)
+        //通过包名清除指定应用数据(仅API 28及以上有效)
+        - clearApplicationUserData(Context context, String packageName)
+        
+```
+
 #### 特技
 
 1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md

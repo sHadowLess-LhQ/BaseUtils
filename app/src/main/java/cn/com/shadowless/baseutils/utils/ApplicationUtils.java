@@ -82,6 +82,16 @@ public class ApplicationUtils {
     }
 
     /**
+     * Start application info.
+     *
+     * @param context     the context
+     * @param packageName the package name
+     */
+    public static void startApplicationInfo(Context context, String packageName) {
+        context.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(Uri.parse("package:" + packageName)));
+    }
+
+    /**
      * Start home setting.
      *
      * @param context the context
@@ -113,8 +123,8 @@ public class ApplicationUtils {
      *
      * @param context the context
      */
-    public static void startBrowser(Context context) {
-        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("")));
+    public static void startBrowser(Context context, String url) {
+        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 
     /**

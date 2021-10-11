@@ -164,9 +164,7 @@ Step 2. 添加依赖
         参数1：状态码 - int
         参数2：状态消息 - String 
         参数3：数据 - T
-        BaseModelUtils
-                       .getMod(参数1，参数二，参数三);
-
+        BaseModelUtils.getMod(参数1，参数二，参数三);
 ```
 
 10.     ApplicationUtils：方法说明
@@ -193,8 +191,26 @@ Step 2. 添加依赖
         - getUUID()
 ```
 
-11.     DeviceUtils：方法说明
-
+11.     DeviceUtils
+       【注】：使用前，请在AM清单文件中，给BasicDeviceAdminReceiver注册广播，并在res/xml资源中新建声明文件
+```
+          <receiver
+                     android:name="cn.com.shadowless.baseutils.BasicDeviceAdminReceiver"
+                     android:description="描述"
+                     android:label="名称"
+                     android:permission="android.permission.BIND_DEVICE_ADMIN">
+                     <meta-data
+                         android:name="android.app.device_admin"
+                         android:resource="@xml/basic_device_admin_receiver" />
+         
+                     <intent-filter>
+                         <action android:name="android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED" />
+                         <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
+                         <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                     </intent-filter>
+                 </receiver>
+```
+        方法说明：
 ```
         //获取DeviceAdmin权限
         //在onActivityResult()回调中，判断DeviceUtils.REQUEST_CODE_CHECK_ACTIVE的请求值，是否获取成功

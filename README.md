@@ -160,7 +160,7 @@ Step 2. 添加依赖
 
 9.     BaseModelUtils：调用示例
 
-```     
+```
         参数1：状态码 - int
         参数2：状态消息 - String 
         参数3：数据 - T

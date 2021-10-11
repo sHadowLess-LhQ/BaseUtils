@@ -166,7 +166,7 @@ Step 2. 添加依赖
         参数3：数据 - T
         BaseModelUtils
                        .getMod(参数1，参数二，参数三);
-```
+
 
 10.     ApplicationUtils：方法说明
         

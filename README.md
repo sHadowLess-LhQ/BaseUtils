@@ -167,9 +167,10 @@ Step 2. 添加依赖
         BaseModelUtils
                        .getMod(参数1，参数二，参数三);
 
+```
 
 10.     ApplicationUtils：方法说明
-        
+
 ```
         //通过包名打开应用
         - startActivityForPackage(Context context, String packName)
@@ -193,7 +194,7 @@ Step 2. 添加依赖
 ```
 
 11.     DeviceUtils：方法说明
-  
+
 ```
         //获取DeviceAdmin权限
         //在onActivityResult()回调中，判断DeviceUtils.REQUEST_CODE_CHECK_ACTIVE的请求值，是否获取成功
@@ -237,7 +238,7 @@ Step 2. 添加依赖
         - clearAllUserRestriction(Context context)
         //通过包名清除指定应用数据(仅API 28及以上有效)
         - clearApplicationUserData(Context context, String packageName)
-        
+
 ```
 
 #### 特技

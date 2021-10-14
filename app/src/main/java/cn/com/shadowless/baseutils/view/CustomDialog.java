@@ -15,7 +15,7 @@ import lombok.NonNull;
 
 
 /**
- * The type My dialog.
+ * 自定义提示框工具类
  *
  * @author sHadowLess
  */
@@ -23,124 +23,124 @@ import lombok.NonNull;
 public class CustomDialog {
 
     /**
-     * The Dialog view.
+     * 自定义视图
      */
     private View dialogView;
     /**
-     * The Context.
+     * 上下文
      */
     private Context context;
     /**
-     * The Layout.
+     * 自定义布局文件
      */
     private int layout;
     /**
-     * The Window width.
+     * 提示框宽度
      */
     private int windowWidth;
     /**
-     * The Window height.
+     * 提示框高度
      */
     private int windowHeight;
     /**
-     * The Anim.
+     * 动画值
      */
     private int anim;
     /**
-     * The Cancel.
+     * 是否允许外部取消显示
      */
     private boolean cancel;
     /**
-     * The Is set anim.
+     * 是否设置动画
      */
     private boolean isSetAnim;
     /**
-     * The Is system dialog.
+     * 是否设置全局提示框
      */
     private boolean isSystemDialog;
     /**
-     * The Is clear layer.
+     * 是否去除蒙层效果
      */
     private boolean isClearLayer;
     /**
-     * The Is title.
+     * 是否设置标题
      */
     private boolean isTitle;
     /**
-     * The Is window size.
+     * 是否自定义大小
      */
     private boolean isWindowSize;
     /**
-     * The Location.
+     * 显示位置
      */
     private location location;
 
     /**
-     * The enum Location.
+     * 位置枚举
      */
     public enum location {
         /**
-         * Top location.
+         * 上
          */
         TOP,
         /**
-         * Right location.
+         * 右
          */
         RIGHT,
         /**
-         * Left location.
+         * 左
          */
         LEFT,
         /**
-         * Bottom location.
+         * 下
          */
         BOTTOM,
         /**
-         * Center location.
+         * 居中
          */
         CENTER,
         /**
-         * Upper left location.
+         * 左上
          */
         UPPER_LEFT,
         /**
-         * Upper right location.
+         * 右上
          */
         UPPER_RIGHT,
         /**
-         * Lower left location.
+         * 左下
          */
         LOWER_LEFT,
         /**
-         * Lower right location.
+         * 右下
          */
         LOWER_RIGHT,
         /**
-         * Center left location.
+         * 居左
          */
         CENTER_LEFT,
         /**
-         * Center right location.
+         * 居右
          */
         CENTER_RIGHT
     }
 
     /**
-     * The interface Init view.
+     * 自定义视图回调
      */
     public interface InitViewListener {
 
         /**
          * Gets dialog view.
          *
-         * @param view   the view
-         * @param dialog the dialog
+         * @param view   the 自定义视图
+         * @param dialog the 提示框
          */
         void getDialogView(View view, Dialog dialog);
     }
 
     /**
-     * Init.
+     * 显示初始化
      *
      * @param initViewListener the init view listener
      * @throws Exception the exception

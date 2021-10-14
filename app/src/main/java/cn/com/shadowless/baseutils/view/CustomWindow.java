@@ -10,7 +10,7 @@ import android.view.WindowManager;
 import lombok.Builder;
 
 /**
- * The type My window.
+ * 自定义窗口工具类
  *
  * @author sHadowLess
  */
@@ -18,62 +18,62 @@ import lombok.Builder;
 public class CustomWindow {
 
     /**
-     * The Context.
+     * 上下文
      */
     private Context context;
     /**
-     * The Is system.
+     * 是否全局显示
      */
     private boolean isSystem;
     /**
-     * The Is animation.
+     * 是否设置动画
      */
     private boolean isAnimation;
     /**
-     * The Anim.
+     * 动画值
      */
     private int anim;
     /**
-     * The Window flag.
+     * 窗口标志
      */
     private int windowFlag;
     /**
-     * The Location.
+     * 显示位置
      */
     private int location;
     /**
-     * The Width.
+     * 窗口宽度
      */
     private int width;
     /**
-     * The Height.
+     * 窗口高度
      */
     private int height;
     /**
-     * The Layout.
+     * 自定义布局文件
      */
     private int layout;
     /**
-     * The View.
+     * 自定义视图
      */
     private View view;
 
     /**
-     * The interface Init view.
+     * 自定义视图回调
      */
     public interface InitWindowListener {
 
         /**
          * Gets dialog view.
          *
-         * @param view          the view
-         * @param windowManager the window manager
+         * @param view          the 视图
+         * @param windowManager the 视窗管理器
          */
         void getWindowView(View view, WindowManager windowManager);
     }
 
     /**
-     * Show.
+     * 显示
      *
      * @param initWindowListener the init window listener
      */

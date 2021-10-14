@@ -37,42 +37,69 @@ import static android.app.admin.DevicePolicyManager.ACTION_PROVISION_MANAGED_PRO
  */
 public class DeviceUtils {
 
+    /**
+     * 应用信息类
+     */
     @Builder
     @Data
     public static class AppInfo {
+        /**
+         * 应用包名
+         */
         private String packageName;
+        /**
+         * 应用图标
+         */
         private Drawable ico;
+        /**
+         * 应用名称
+         */
         private CharSequence name;
+        /**
+         * 是否启用
+         */
         private boolean mIsEnable;
     }
 
+    /**
+     * The Tag.
+     */
     private final String TAG = DeviceUtils.class.getSimpleName();
+    /**
+     * 密码令牌
+     */
     private final String token = UUID.randomUUID().toString().replace("-", "");
     /**
-     * The constant REQUEST_CODE_CHECK_ACTIVE.
+     * DeviceAdmin请求码
      */
     public static final int REQUEST_CODE_CHECK_ACTIVE = 1;
     /**
-     * The constant REQUEST_CODE_CHECK_PROFILE.
+     * ProfileOwner请求码
      */
     public static final int REQUEST_CODE_CHECK_PROFILE = 2;
     /**
-     * The constant mInstance.
+     * 设备工具类实例
      */
     public static DeviceUtils mInstance = null;
     /**
-     * The constant devicePolicyManager.
+     * 设备策略管理器实例
      */
     private DevicePolicyManager devicePolicyManager = null;
 
+    /**
+     * 应用列表
+     */
     private List<AppInfo> mApplicationInfoList = new ArrayList<>();
 
+    /**
+     * 构造
+     */
     private DeviceUtils() {
 
     }
 
     /**
-     * The interface On dialog click.
+     * 提示框回调接口
      */
     public interface OnDialogClick {
         /**
@@ -87,7 +114,7 @@ public class DeviceUtils {
     }
 
     /**
-     * Gets instance.
+     * 获取设备工具类实例
      *
      * @return the instance
      */
@@ -103,9 +130,9 @@ public class DeviceUtils {
     }
 
     /**
-     * Gets device policy manager.
+     * 获取设备策略管理器实例
      *
-     * @param context the context
+     * @param context the 上下文
      * @return the device policy manager
      */
     public DevicePolicyManager getDevicePolicyManager(Context context) {
@@ -116,9 +143,9 @@ public class DeviceUtils {
     }
 
     /**
-     * Init device admin.
+     * 获取DeviceAdmin权限
      *
-     * @param context the context
+     * @param context the 上下文
      * @return the boolean
      */
     public boolean initDeviceAdmin(Activity context) {
@@ -137,9 +164,9 @@ public class DeviceUtils {
     }
 
     /**
-     * Clear device owner.
+     * 清除DeviceOwner权限
      *
-     * @param context the context
+     * @param context the 上下文
      */
     public void clearDeviceOwner(Context context) {
         ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
@@ -151,9 +178,9 @@ public class DeviceUtils {
     }
 
     /**
-     * Gets app.
+     * 获取应用列表
      *
-     * @param context the context
+     * @param context the 上下文
      * @return the app
      */
     public List<AppInfo> getApp(Context context) {
@@ -185,6 +212,13 @@ public class DeviceUtils {
         }
     }
 
+    /**
+     * 判断应用是否启用
+     *
+     * @param context     the 上下文
+     * @param packageName the 应用包名
+     * @return the boolean
+     */
     private boolean isApplicationEnabled(Context context, String packageName) {
         PackageManager packageManager = context.getPackageManager();
         DevicePolicyManager manager = getDevicePolicyManager(context);
@@ -200,9 +234,9 @@ public class DeviceUtils {
     }
 
     /**
-     * Is admin device app boolean.
+     * 是否拥有DeviceAdmin权限
      *
-     * @param context the context
+     * @param context the 上下文
      * @return the boolean
      */
     public boolean isAdminDeviceApp(Context context) {
@@ -210,9 +244,9 @@ public class DeviceUtils {
     }
 
     /**
-     * Is profile owner device app boolean.
+     * 是否拥有ProfileOwner权限
      *
-     * @param context the context
+     * @param context the 上下文
      * @return the boolean
      */
     public boolean isProfileOwnerDeviceApp(Context context) {
@@ -220,9 +254,9 @@ public class DeviceUtils {
     }
 
     /**
-     * Is device owner device app boolean.
+     * 是否拥有DeviceOwner权限
      *
-     * @param context the context
+     * @param context the 上下文
      * @return the boolean
      */
     public boolean isDeviceOwnerDeviceApp(Context context) {
@@ -230,10 +264,10 @@ public class DeviceUtils {
     }
 
     /**
-     * Ban company screen shoot.
+     * 禁用企业空间应用截屏
      *
-     * @param context the context
-     * @param disable the disable
+     * @param context the 上下文
+     * @param disable the 是否禁用
      */
     public void banCompanyScreenShoot(Context context, boolean disable) {
         if (isProfileOwnerDeviceApp(context)) {
@@ -244,10 +278,10 @@ public class DeviceUtils {
     }
 
     /**
-     * Ban device screen shoot.
+     * 禁用全局应用截屏
      *
-     * @param context the context
-     * @param disable the disable
+     * @param context the 上下文
+     * @param disable the 是否禁用
      */
     public void banDeviceScreenShoot(Context context, boolean disable) {
         if (isDeviceOwnerDeviceApp(context)) {
@@ -258,10 +292,10 @@ public class DeviceUtils {
     }
 
     /**
-     * Ban company camera.
+     * 禁用企业空间应用拍照
      *
-     * @param context the context
-     * @param disable the disable
+     * @param context the 上下文
+     * @param disable the 是否禁用
      */
     public void banCompanyCamera(Context context, boolean disable) {
         if (isProfileOwnerDeviceApp(context)) {
@@ -272,10 +306,10 @@ public class DeviceUtils {
     }
 
     /**
-     * Ban device camera.
+     * 禁用全局应用拍照
      *
-     * @param context the context
-     * @param disable the disable
+     * @param context the 上下文
+     * @param disable the 是否禁用
      */
     public void banDeviceCamera(Context context, boolean disable) {
         if (isDeviceOwnerDeviceApp(context)) {
@@ -286,9 +320,9 @@ public class DeviceUtils {
     }
 
     /**
-     * Wipe company data.
+     * 擦除企业空间
      *
-     * @param context the context
+     * @param context the 上下文
      */
     public void wipeCompanyData(Context context) {
         if (isProfileOwnerDeviceApp(context)) {
@@ -299,9 +333,9 @@ public class DeviceUtils {
     }
 
     /**
-     * Wipe device data.
+     * 恢复出厂设置
      *
-     * @param context the context
+     * @param context the 上下文
      */
     public void wipeDeviceData(Context context) {
         if (isDeviceOwnerDeviceApp(context)) {
@@ -312,10 +346,10 @@ public class DeviceUtils {
     }
 
     /**
-     * Sets company password.
+     * 设置企业空间应用密码
      *
-     * @param context  the context
-     * @param password the password
+     * @param context  the 上下文
+     * @param password the 密码
      */
     public void setCompanyPassword(Context context, String password) {
         DevicePolicyManager manager = getDevicePolicyManager(context);
@@ -338,10 +372,10 @@ public class DeviceUtils {
     }
 
     /**
-     * Sets device password.
+     * 设置设备锁屏密码
      *
-     * @param context  the context
-     * @param password the password
+     * @param context  the 上下文
+     * @param password the 密码
      */
     public void setDevicePassword(Context context, String password) {
         DevicePolicyManager manager = getDevicePolicyManager(context);
@@ -364,10 +398,10 @@ public class DeviceUtils {
     }
 
     /**
-     * Sets user restriction.
+     * 设置用户限制
      *
-     * @param context the context
-     * @param key     the key
+     * @param context the 上下文
+     * @param key     the 限制名
      */
     public void setUserRestriction(Context context, String key) {
         DevicePolicyManager manager = getDevicePolicyManager(context);
@@ -376,10 +410,10 @@ public class DeviceUtils {
     }
 
     /**
-     * Clear user restriction.
+     * 清除指定用户限制
      *
-     * @param context the context
-     * @param key     the key
+     * @param context the 上下文
+     * @param key     the 限制名
      */
     public void clearUserRestriction(Context context, String key) {
         DevicePolicyManager manager = getDevicePolicyManager(context);
@@ -388,9 +422,9 @@ public class DeviceUtils {
     }
 
     /**
-     * Clear all user restriction.
+     * 清除所有用户限制
      *
-     * @param context the context
+     * @param context the 上下文
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void clearAllUserRestriction(Context context) {
@@ -403,9 +437,9 @@ public class DeviceUtils {
     }
 
     /**
-     * Gets user restriction.
+     * 获取所有用户限制
      *
-     * @param context the context
+     * @param context the 上下文
      * @return the user restriction
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -416,10 +450,10 @@ public class DeviceUtils {
     }
 
     /**
-     * Clear application user data.
+     * 通过包名清除指定应用数据
      *
-     * @param context     the context
-     * @param packageName the package name
+     * @param context     the 上下文
+     * @param packageName the 包名
      */
     @RequiresApi(api = Build.VERSION_CODES.P)
     public void clearApplicationUserData(Context context, String packageName) {
@@ -431,10 +465,10 @@ public class DeviceUtils {
     }
 
     /**
-     * Show dialog.
+     * 显示提示框
      *
-     * @param context       the context
-     * @param message       the message
+     * @param context       the 上下文
+     * @param message       the 提示信息
      * @param onDialogClick the on dialog click
      */
     public void showDialog(Context context, String message, final OnDialogClick onDialogClick) {
@@ -453,6 +487,13 @@ public class DeviceUtils {
         });
     }
 
+    /**
+     * Show dialog.
+     *
+     * @param context         the 上下文
+     * @param text            the 提示信息
+     * @param onClickListener the on click listener
+     */
     private void showDialog(Context context, String text, DialogInterface.OnClickListener onClickListener) {
         AlertDialog alertDialog = new AlertDialog
                 .Builder(context)
@@ -464,6 +505,12 @@ public class DeviceUtils {
         alertDialog.show();
     }
 
+    /**
+     * 显示图示
+     *
+     * @param level the 提示等级
+     * @param text  the 提示信息
+     */
     private void showToast(int level, String text) {
         switch (level) {
             case 1:
@@ -481,9 +528,9 @@ public class DeviceUtils {
     }
 
     /**
-     * Init profile.
+     * 创建企业空间
      *
-     * @param context the context
+     * @param context the 上下文
      */
     public void initProfile(Activity context) {
         Intent intent = new Intent(ACTION_PROVISION_MANAGED_PROFILE);

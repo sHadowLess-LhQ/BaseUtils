@@ -19,7 +19,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * The type Net utils.
+ * 网络工具类
  *
  * @author sHadowLess
  */
@@ -32,90 +32,94 @@ public class NetUtils {
     private String baseUrl;
 
     /**
-     * The Default timeout.
+     * 超时时间
      */
     private int timeOut;
 
     /**
-     * The Time out unit.
+     * 时间单位
      */
     private TimeUnit timeOutUnit;
 
     /**
-     * The Ok http client.
+     * okHttp实例
      */
     private OkHttpClient okHttpClient;
 
     /**
-     * The constant ERROR_TIME_OUT_MESSAGE.
+     * 超时错误信息
      */
     private static final String ERROR_TIME_OUT_MESSAGE = "请求数据超时，请重试";
 
     /**
-     * The constant ERROR_CONNECT_REFUSED_MESSAGE.
+     * 连接错误信息
      */
     private static final String ERROR_CONNECT_REFUSED_MESSAGE = "无法连接服务器，请检测网络或联系管理员";
+
     /**
-     * The constant ERROR_SOCKET_CLOSED_MESSAGE.
+     * 故障错误信息
      */
     private static final String ERROR_SOCKET_CLOSED_MESSAGE = "网络故障，无法与服务器通讯";
+
     /**
-     * The constant ERROR_WAVE_MESSAGE.
+     * 波动错误信息
      */
     private static final String ERROR_WAVE_MESSAGE = "网络波动，清重试";
+
     /**
-     * The constant ERROR_UN_KNOW_HOST_MESSAGE.
+     * 域名错误信息
      */
     private static final String ERROR_UN_KNOW_HOST_MESSAGE = "无法解析域名，请检查网络或联系管理员";
+
     /**
-     * The constant ERROR_DEFAULT.
+     * 错误默认信息
      */
     private static final String ERROR_DEFAULT = "请求失败，请重试";
 
     /**
-     * The enum Error.
+     * 错误枚举
      */
     private enum ERROR {
         /**
-         * Timeout error.
+         * 超时
          */
         TIMEOUT,
         /**
-         * Connect refused error.
+         * 连接错误
          */
         CONNECT_REFUSED,
         /**
-         * Socket closed error.
+         * 套接字关闭
          */
         SOCKET_CLOSED,
         /**
-         * Wave error.
+         * 波动
          */
         WAVE,
         /**
-         * Un know host error.
+         * 域名
          */
         UN_KNOW_HOST,
         /**
-         * Default error.
+         * 默认
          */
         DEFAULT
     }
 
     /**
-     * The interface Init interface.
+     * 初始化接口回调
      */
     public interface InitInterface {
         /**
-         * Create interface.
+         * 初始化接口
          *
-         * @param retrofit the retrofit
+         * @param retrofit the retrofit实例
          */
         void createInterface(Retrofit retrofit);
     }
 
     /**
-     * Gets ok http client.
+     * 获取ohkHttp实例
      *
      * @return the ok http client
      */
@@ -133,7 +137,7 @@ public class NetUtils {
     }
 
     /**
-     * Init retrofit.
+     * c初始化retrofit
      *
      * @param initInterface the init interface
      */
@@ -152,7 +156,7 @@ public class NetUtils {
     }
 
     /**
-     * Obs io main observable transformer.
+     * RxJava订阅所处线程
      *
      * @param <T> the type parameter
      * @return the observable transformer
@@ -164,9 +168,9 @@ public class NetUtils {
     }
 
     /**
-     * Gets exception message.
+     * 获取错误信息
      *
-     * @param throwable the throwable
+     * @param throwable the 异常
      * @return the exception message
      */
     public static String getExceptionMessage(Throwable throwable) {
@@ -174,9 +178,9 @@ public class NetUtils {
     }
 
     /**
-     * Check exception constants . error.
+     * 确定异常信息类型
      *
-     * @param e the e
+     * @param e the 异常
      * @return the constants . error
      */
     private static ERROR checkException(Throwable e) {
@@ -196,9 +200,9 @@ public class NetUtils {
     }
 
     /**
-     * Exception message string.
+     * 确定异常详细信息
      *
-     * @param error the error
+     * @param error the 错误枚举
      * @return the string
      */
     private static String exceptionMessage(ERROR error) {

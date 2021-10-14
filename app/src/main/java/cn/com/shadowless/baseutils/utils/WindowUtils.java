@@ -42,7 +42,7 @@ public class WindowUtils {
     }
 
     /**
-     * Sets half transparent.
+     * 设置状态栏半透明
      *
      * @param activity the activity
      */
@@ -59,14 +59,26 @@ public class WindowUtils {
     }
 
     /**
-     * Gets width.
+     * 获取屏幕宽度
      *
-     * @param context the context
+     * @param context the 上下文
      * @return the width
      */
     public static int getWidth(Activity context) {
         DisplayMetrics dm = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getMetrics(dm);
         return dm.widthPixels;
+    }
+
+    /**
+     * 获取屏幕高度的
+     *
+     * @param context the 上下文
+     * @return the height
+     */
+    public static int getHeight(Activity context) {
+        DisplayMetrics dm = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        return dm.heightPixels;
     }
 }

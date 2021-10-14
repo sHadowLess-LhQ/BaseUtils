@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers;
 import lombok.Builder;
 
 /**
- * The type Rx utils.
+ * RxJava2工具类
  *
  * @author sHadowLess
  */
@@ -21,110 +21,110 @@ import lombok.Builder;
 public class RxUtils {
 
     /**
-     * The enum Thread sign.
+     * 线程枚举
      */
     public enum ThreadSign {
         /**
-         * Default thread sign.
+         * 默认
          */
         DEFAULT,
         /**
-         * Io to main thread sign.
+         * 非密集计算线程到主线程
          */
         IO_TO_MAIN,
         /**
-         * Io to io thread sign.
+         * 非密集计算线程到非密集计算线程
          */
         IO_TO_IO,
         /**
-         * Io to new thread thread sign.
+         * 非密集计算线程到新线程
          */
         IO_TO_NEW_THREAD,
         /**
-         * Io to computation thread sign.
+         * 非密集计算线程到密集计算线程
          */
         IO_TO_COMPUTATION,
         /**
-         * Io to single thread sign.
+         * 非密集计算线程到有序单线程
          */
         IO_TO_SINGLE,
         /**
-         * New thread to main thread sign.
+         * 新线程到主线程
          */
         NEW_THREAD_TO_MAIN,
         /**
-         * New thread to io thread sign.
+         * 新线程到非密集计算线程
          */
         NEW_THREAD_TO_IO,
         /**
-         * New thread to new thread thread sign.
+         * 新线程到新线程
          */
         NEW_THREAD_TO_NEW_THREAD,
         /**
-         * New thread to computation thread sign.
+         * 新线程到密集计算线程
          */
         NEW_THREAD_TO_COMPUTATION,
         /**
-         * New thread to single thread sign.
+         * 新线程到有序单线程
          */
         NEW_THREAD_TO_SINGLE,
         /**
-         * Computation to main thread sign.
+         * 密集计算线程到主线程
          */
         COMPUTATION_TO_MAIN,
         /**
-         * Computation to io thread sign.
+         * 密集计算线程到非密集计算线程到
          */
         COMPUTATION_TO_IO,
         /**
-         * Computation to new thread thread sign.
+         * 密集计算线程到新线程
          */
         COMPUTATION_TO_NEW_THREAD,
         /**
-         * Computation to computation thread sign.
+         * 密集计算线程到密集计算线程到
          */
         COMPUTATION_TO_COMPUTATION,
         /**
-         * Computation to single thread sign.
+         * 密集计算线程到有序单线程
          */
         COMPUTATION_TO_SINGLE,
         /**
-         * Single to main thread sign.
+         * 有序单线程到主线程
          */
         SINGLE_TO_MAIN,
         /**
-         * Single to io thread sign.
+         * 有序单线程到非密集计算线程
          */
         SINGLE_TO_IO,
         /**
-         * Single to new thread thread sign.
+         * 有序单线程到新线程
          */
         SINGLE_TO_NEW_THREAD,
         /**
-         * Single to computation thread sign.
+         * 有序单线程到密集计算线程
          */
         SINGLE_TO_COMPUTATION,
         /**
-         * Single to single thread sign.
+         * 有序单线程到有序单线程到
          */
         SINGLE_TO_SINGLE
     }
 
     /**
-     * The interface Observer call back.
+     * 观察者回调
      *
      * @param <T> the type parameter
      */
     public interface ObserverCallBack<T> {
 
         /**
-         * The interface Emitter call back.
+         * 发射器回调
          *
          * @param <T> the type parameter
          */
         interface EmitterCallBack<T> {
             /**
-             * On emitter.
+             * On 发射器.
              *
              * @param emitter the emitter
              */
@@ -132,32 +132,32 @@ public class RxUtils {
         }
 
         /**
-         * On success.
+         * 成功
          *
-         * @param t the t
+         * @param t the 泛型数据
          */
         void onSuccess(T t);
 
         /**
-         * On fail.
+         * 失败
          *
-         * @param throwable the throwable
+         * @param throwable the 异常
          */
         void onFail(Throwable throwable);
 
         /**
-         * On end.
+         * 结束
          */
         void onEnd();
     }
 
     /**
-     * Rx create.
+     * Create操作符
      *
      * @param <T>              the type parameter
-     * @param threadSign       the thread sign
-     * @param emitterCallBack  the emitter call back
-     * @param observerCallBack the observer call back
+     * @param threadSign       the 线程枚举
+     * @param emitterCallBack  the 发射器回调
+     * @param observerCallBack the 观察者回调
      */
     public <T> void rxCreate(ThreadSign threadSign, ObserverCallBack.EmitterCallBack<T> emitterCallBack, ObserverCallBack<T> observerCallBack) {
         Observable
@@ -190,12 +190,12 @@ public class RxUtils {
     }
 
     /**
-     * Rx timer.
+     * timer操作符
      *
-     * @param time             the time
-     * @param timeUnit         the time unit
-     * @param threadSign       the thread sign
-     * @param observerCallBack the observer call back
+     * @param time             the 计时时间
+     * @param timeUnit         the 时间单位
+     * @param threadSign       the 线程枚举
+     * @param observerCallBack the 观察者回调
      */
     public void rxTimer(long time, TimeUnit timeUnit, ThreadSign threadSign, ObserverCallBack<Long> observerCallBack) {
         Observable
@@ -228,12 +228,12 @@ public class RxUtils {
     }
 
     /**
-     * Rx interval.
+     * interval操作符
      *
-     * @param time             the time
-     * @param timeUnit         the time unit
-     * @param threadSign       the thread sign
-     * @param observerCallBack the observer call back
+     * @param time             the 循环时间
+     * @param timeUnit         the 时间单位
+     * @param threadSign       the 线程枚举
+     * @param observerCallBack the 观察者回调
      */
     public void rxInterval(long time, TimeUnit timeUnit, ThreadSign threadSign, ObserverCallBack<Long> observerCallBack) {
         Observable
@@ -266,10 +266,10 @@ public class RxUtils {
     }
 
     /**
-     * Io to main observable transformer.
+     * 线程转换器
      *
      * @param <T>        the type parameter
-     * @param threadSign the thread sign
+     * @param threadSign the 线程枚举
      * @return the observable transformer
      */
     private <T> ObservableTransformer<T, T> dealThread(ThreadSign threadSign) {
@@ -320,7 +320,7 @@ public class RxUtils {
     }
 
     /**
-     * Sets stream.
+     * 设置转换流
      *
      * @param <T>         the type parameter
      * @param subscribeOn the subscribe on

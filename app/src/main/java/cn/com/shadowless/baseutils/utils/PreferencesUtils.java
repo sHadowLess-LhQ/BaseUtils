@@ -10,26 +10,29 @@ import java.util.Set;
 
 
 /**
- * The type Preferences utils.
+ * 沙盒工具类
  *
  * @author sHadowLess
  */
 public class PreferencesUtils {
 
     /**
-     * The constant PREFERENCE_NAME.
+     * SP文件名
      */
     public static String PREFERENCE_NAME = "APP_INFO";
 
+    /**
+     * Instantiates a new Preferences utils.
+     */
     private PreferencesUtils() {
     }
 
     /**
-     * put string preferences
+     * 存入字符串数据
      *
-     * @param context the context
-     * @param key     The name of the preference to modify
-     * @param value   The new value for the preference
+     * @param context the 上下文
+     * @param key     The 索引
+     * @param value   The 存入值
      * @return True if the new values were successfully written to persistent storage.
      */
     public static boolean putString(Context context, String key, String value) {
@@ -40,11 +43,11 @@ public class PreferencesUtils {
     }
 
     /**
-     * Put string set boolean.
+     * 存入字符串集合数据
      *
-     * @param context the context
-     * @param key     the key
-     * @param value   the value
+     * @param context the 上下文
+     * @param key     the 索引
+     * @param value   the 存入值
      * @return the boolean
      */
     public static boolean putStringSet(Context context, String key, Set<String> value) {
@@ -55,11 +58,11 @@ public class PreferencesUtils {
     }
 
     /**
-     * Add string set boolean.
+     * 追加字符串集合数据
      *
-     * @param context the context
-     * @param key     the key
-     * @param value   the value
+     * @param context the 上下文
+     * @param key     the 索引
+     * @param value   the 存入值
      * @return the boolean
      */
     public static boolean addStringSet(Context context, String key, String value) {
@@ -75,11 +78,11 @@ public class PreferencesUtils {
     }
 
     /**
-     * Remove string set boolean.
+     * 删除指定字符串集合数据
      *
-     * @param context the context
-     * @param key     the key
-     * @param value   the value
+     * @param context the 上下文
+     * @param key     the 索引
+     * @param value   the 删除值
      * @return the boolean
      */
     public static boolean removeStringSet(Context context, String key, String value) {
@@ -98,22 +101,22 @@ public class PreferencesUtils {
     }
 
     /**
-     * get string preferences
+     * 获取字符串数据
      *
-     * @param context the context
-     * @param key     The name of the preference to retrieve
+     * @param context the 上下文
+     * @param key     The 索引
      * @return The preference value if it exists, or null. Throws ClassCastException if there is a preference with this name that is not a string
-     * @see #getString(Context, String, String) #getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)
+     * @see #getString(Context, String, String) #getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)
      */
     public static String getString(Context context, String key) {
         return getString(context, key, null);
     }
 
     /**
-     * Gets string set.
+     * 获取字符串集合
      *
-     * @param context the context
-     * @param key     the key
+     * @param context the 上下文
+     * @param key     the 索引
      * @return the string set
      */
     public static Set<String> getStringSet(Context context, String key) {
@@ -121,11 +124,11 @@ public class PreferencesUtils {
     }
 
     /**
-     * get string preferences
+     * 获取字符串数据
      *
-     * @param context      the context
-     * @param key          The name of the preference to retrieve
-     * @param defaultValue Value to return if this preference does not exist
+     * @param context      the 上下文
+     * @param key          the 索引
+     * @param defaultValue the 默认值
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a string
      */
     public static String getString(Context context, String key, String defaultValue) {
@@ -134,11 +137,11 @@ public class PreferencesUtils {
     }
 
     /**
-     * Gets string set.
+     * 获取字符串集合
      *
-     * @param context      the context
-     * @param key          the key
-     * @param defaultValue the default value
+     * @param context      the 上下文
+     * @param key          the 索引
+     * @param defaultValue the 默认值
      * @return the string set
      */
     public static Set<String> getStringSet(Context context, String key, Set<String> defaultValue) {
@@ -147,11 +150,11 @@ public class PreferencesUtils {
     }
 
     /**
-     * put int preferences
+     * 存入整型数据
      *
-     * @param context the context
-     * @param key     The name of the preference to modify
-     * @param value   The new value for the preference
+     * @param context the 上下文
+     * @param key     The 索引
+     * @param value   The 存入值
      * @return True if the new values were successfully written to persistent storage.
      */
     public static boolean putInt(Context context, String key, int value) {
@@ -162,23 +165,23 @@ public class PreferencesUtils {
     }
 
     /**
-     * get int preferences
+     * 获取整型数据
      *
-     * @param context the context
-     * @param key     The name of the preference to retrieve
+     * @param context the 上下文
+     * @param key     The 索引
      * @return The preference value if it exists, or -1. Throws ClassCastException if there is a preference with this name that is not a int
-     * @see #getInt(Context, String, int) #getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)
+     * @see #getInt(Context, String, int) #getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)
      */
     public static int getInt(Context context, String key) {
         return getInt(context, key, -1);
     }
 
     /**
-     * get int preferences
+     * 获取整形数据
      *
-     * @param context      the context
-     * @param key          The name of the preference to retrieve
-     * @param defaultValue Value to return if this preference does not exist
+     * @param context      the 上下文
+     * @param key          The 索引
+     * @param defaultValue The 默认值
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a int
      */
     public static int getInt(Context context, String key, int defaultValue) {
@@ -187,11 +190,11 @@ public class PreferencesUtils {
     }
 
     /**
-     * put long preferences
+     * 存入长整型数据
      *
-     * @param context the context
-     * @param key     The name of the preference to modify
-     * @param value   The new value for the preference
+     * @param context the 上下文
+     * @param key     The 索引
+     * @param value   The 存入值
      * @return True if the new values were successfully written to persistent storage.
      */
     public static boolean putLong(Context context, String key, long value) {
@@ -202,23 +205,23 @@ public class PreferencesUtils {
     }
 
     /**
-     * get long preferences
+     * 获取长整型数据
      *
-     * @param context the context
-     * @param key     The name of the preference to retrieve
+     * @param context the 上下文
+     * @param key     The 索引
      * @return The preference value if it exists, or -1. Throws ClassCastException if there is a preference with this name that is not a long
-     * @see #getLong(Context, String, long) #getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)
+     * @see #getLong(Context, String, long) #getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)
      */
     public static long getLong(Context context, String key) {
         return getLong(context, key, -1);
     }
 
     /**
-     * get long preferences
+     * 获取长整型数据
      *
-     * @param context      the context
-     * @param key          The name of the preference to retrieve
-     * @param defaultValue Value to return if this preference does not exist
+     * @param context      the 上下文
+     * @param key          The 索引
+     * @param defaultValue The 默认值
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a long
      */
     public static long getLong(Context context, String key, long defaultValue) {
@@ -227,11 +230,11 @@ public class PreferencesUtils {
     }
 
     /**
-     * put float preferences
+     * 存入单精度浮点数据
      *
-     * @param context the context
-     * @param key     The name of the preference to modify
-     * @param value   The new value for the preference
+     * @param context the 上下文
+     * @param key     The 索引
+     * @param value   The 存入值
      * @return True if the new values were successfully written to persistent storage.
      */
     public static boolean putFloat(Context context, String key, float value) {
@@ -242,23 +245,23 @@ public class PreferencesUtils {
     }
 
     /**
-     * get float preferences
+     * 获取单精度浮点数据
      *
-     * @param context the context
-     * @param key     The name of the preference to retrieve
+     * @param context the 上下文
+     * @param key     The 索引
      * @return The preference value if it exists, or -1. Throws ClassCastException if there is a preference with this name that is not a float
-     * @see #getFloat(Context, String, float) #getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)
+     * @see #getFloat(Context, String, float) #getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)
      */
     public static float getFloat(Context context, String key) {
         return getFloat(context, key, -1);
     }
 
     /**
-     * get float preferences
+     * 获取单精度浮点数据
      *
-     * @param context      the context
-     * @param key          The name of the preference to retrieve
-     * @param defaultValue Value to return if this preference does not exist
+     * @param context      the 上下文
+     * @param key          The 索引
+     * @param defaultValue The 默认值
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a float
      */
     public static float getFloat(Context context, String key, float defaultValue) {
@@ -267,11 +270,11 @@ public class PreferencesUtils {
     }
 
     /**
-     * put boolean preferences
+     * 存入布尔类型数据
      *
-     * @param context the context
-     * @param key     The name of the preference to modify
-     * @param value   The new value for the preference
+     * @param context the 上下文
+     * @param key     The 索引
+     * @param value   The 存入值
      * @return True if the new values were successfully written to persistent storage.
      */
     public static boolean putBoolean(Context context, String key, boolean value) {
@@ -282,23 +285,23 @@ public class PreferencesUtils {
     }
 
     /**
-     * get boolean preferences, default is false
+     * 获取布尔类型数据
      *
-     * @param context the context
-     * @param key     The name of the preference to retrieve
+     * @param context the 上下文
+     * @param key     The 索引
      * @return The preference value if it exists, or false. Throws ClassCastException if there is a preference with this name that is not a boolean
-     * @see #getBoolean(Context, String, boolean) #getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)
+     * @see #getBoolean(Context, String, boolean) #getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)
      */
     public static boolean getBoolean(Context context, String key) {
         return getBoolean(context, key, false);
     }
 
     /**
-     * get boolean preferences
+     * 获取布尔类型数据
      *
-     * @param context      the context
-     * @param key          The name of the preference to retrieve
-     * @param defaultValue Value to return if this preference does not exist
+     * @param context      the 上下文
+     * @param key          The 索引
+     * @param defaultValue The 默认值
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a boolean
      */
     public static boolean getBoolean(Context context, String key, boolean defaultValue) {
@@ -307,9 +310,9 @@ public class PreferencesUtils {
     }
 
     /**
-     * Clear.
+     * 清空SP
      *
-     * @param context the context
+     * @param context the 上下文
      * @return the boolean
      */
     public static boolean clear(Context context) {

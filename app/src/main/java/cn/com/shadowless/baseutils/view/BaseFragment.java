@@ -81,16 +81,18 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     public void onEmitter(ObservableEmitter<Boolean> emitter) {
         if (initData()) {
             emitter.onNext(true);
-            emitter.onComplete();
         } else {
-            emitter.onError(new Throwable("初始化数据错误"));
+            emitter.onNext(false);
         }
+        emitter.onComplete();
     }
 
     @Override
     public void onSuccess(Boolean aBoolean) {
         if (aBoolean) {
             initView();
+        } else {
+            errorView();
         }
     }
 
@@ -137,4 +139,9 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      * Init view.
      */
     protected abstract void initView();
+
+    /**
+     * Error view.
+     */
+    protected abstract void errorView();
 }

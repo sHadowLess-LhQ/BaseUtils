@@ -16,17 +16,17 @@ import java.io.File;
 import java.util.UUID;
 
 /**
- * The type Application utils.
+ * 应用工具类
  *
  * @author sHadowLess
  */
 public class ApplicationUtils {
 
     /**
-     * Start activity for package.
+     * 通过包名打开应用
      *
-     * @param context  the context
-     * @param packName the pack name
+     * @param context  the 上下文
+     * @param packName the 包名
      */
     public static void startActivityForPackage(Context context, String packName) {
         Intent intent = context.getPackageManager().getLaunchIntentForPackage(packName);
@@ -38,10 +38,10 @@ public class ApplicationUtils {
     }
 
     /**
-     * Start un install.
+     * 通过包名卸载应用
      *
-     * @param context     the context
-     * @param packageName the package name
+     * @param context     the 上下文
+     * @param packageName the 包名
      */
     public static void startUnInstall(Context context, String packageName) {
         Uri packageUri = Uri.parse("package:" + packageName);
@@ -52,10 +52,10 @@ public class ApplicationUtils {
     }
 
     /**
-     * Start install apk.
+     * 通过文件路径安装应用
      *
-     * @param context the context
-     * @param apkPath the apk path
+     * @param context the 上下文
+     * @param apkPath the apk文件路径
      */
     public static void startInstallApk(Context context, String apkPath) {
         try {
@@ -63,7 +63,7 @@ public class ApplicationUtils {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".fileProvider", file);
+            Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileProvider", file);
             intent.setFlags(flags);
             intent.setDataAndType(uri, "application/vnd.android.package-archive");
             context.startActivity(intent);
@@ -73,64 +73,64 @@ public class ApplicationUtils {
     }
 
     /**
-     * Start application info.
+     * 跳转到本应用详情信息
      *
-     * @param context the context
+     * @param context the 上下文
      */
     public static void startApplicationInfo(Context context) {
         context.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(Uri.parse("package:" + context.getPackageName())));
     }
 
     /**
-     * Start application info.
+     * 通过包名跳转到指定应用详情信息
      *
-     * @param context     the context
-     * @param packageName the package name
+     * @param context     the 上下文
+     * @param packageName the 包名
      */
     public static void startApplicationInfo(Context context, String packageName) {
         context.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(Uri.parse("package:" + packageName)));
     }
 
     /**
-     * Start home setting.
+     * 跳转到设置
      *
-     * @param context the context
+     * @param context the 上下文
      */
     public static void startHomeSetting(Context context) {
         context.startActivity(new Intent(Settings.ACTION_HOME_SETTINGS));
     }
 
     /**
-     * Start calendar.
+     * 跳转到系统日历
      *
-     * @param context the context
+     * @param context the 上下文
      */
     public static void startCalendar(Context context) {
         context.startActivity(new Intent().setComponent(new ComponentName("com.android.calendar", "com.android.calendar.LaunchActivity")));
     }
 
     /**
-     * Start camera.
+     * 跳转到系统相册
      *
-     * @param context the context
+     * @param context the 上下文
      */
     public static void startCamera(Context context) {
         context.startActivity(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
     }
 
     /**
-     * Start browser.
+     * 通过地址访问
      *
-     * @param context the context
+     * @param context the 上下文
      */
     public static void startBrowser(Context context, String url) {
         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 
     /**
-     * Clear app data.
+     * 清除本应用数据
      *
-     * @param context the context
+     * @param context the 上下文
      */
     public static void clearAppData(Context context) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -138,7 +138,7 @@ public class ApplicationUtils {
     }
 
     /**
-     * Gets uuid.
+     * 获取设备唯一码
      *
      * @return the uuid
      */

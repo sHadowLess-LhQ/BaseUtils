@@ -81,24 +81,22 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     public void onEmitter(ObservableEmitter<Boolean> emitter) {
         if (initData()) {
             emitter.onNext(true);
+            emitter.onComplete();
         } else {
-            emitter.onNext(false);
+            emitter.onError(new Throwable("初始化数据错误"));
         }
-        emitter.onComplete();
     }
 
     @Override
     public void onSuccess(Boolean aBoolean) {
-        if (aBoolean) {
-            initView();
-        } else {
-            errorView();
-        }
+        Log.e(TAG, "onSuccess: " + aBoolean);
+        initView();
     }
 
     @Override
     public void onFail(Throwable throwable) {
         Log.e(TAG, "onFail: " + throwable);
+        errorView();
     }
 
     @Override

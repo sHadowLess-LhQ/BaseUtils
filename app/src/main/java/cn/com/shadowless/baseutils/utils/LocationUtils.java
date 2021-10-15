@@ -21,35 +21,35 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * The type Location utils.
+ * 定位工具类
  *
  * @author sHadowLess
  */
 public class LocationUtils {
 
     /**
-     * The constant uniqueInstance.
+     * 定位工具类实例
      */
     private volatile static LocationUtils uniqueInstance;
     /**
-     * The Location manager.
+     * 位置管理器实例
      */
     private LocationManager locationManager;
     /**
-     * The M context.
+     * 上下文
      */
     private Context mContext;
     /**
-     * The constant addressCallbacks.
+     * 获取地址信息回调
      */
     private static ArrayList<AddressCallback> addressCallbacks = new ArrayList<>();
     /**
-     * The Address callback.
+     * 地址信息接口
      */
     private AddressCallback addressCallback;
 
     /**
-     * Gets address callback.
+     * 获取地址信息回调
      *
      * @return the address callback
      */
@@ -58,7 +58,7 @@ public class LocationUtils {
     }
 
     /**
-     * Sets address callback.
+     * 设置地址信息接口
      *
      * @param addressCallback the address callback
      */
@@ -72,16 +72,16 @@ public class LocationUtils {
     }
 
     /**
-     * The constant location.
+     * 位置实体类
      */
     private static Location location;
     /**
-     * The Is init.
+     * 是否初始化标识符
      */
     private boolean isInit = false;
 
     /**
-     * Instantiates a new Location utils.
+     * 构造
      *
      * @param context the context
      */
@@ -91,7 +91,7 @@ public class LocationUtils {
     }
 
     /**
-     * Gets instance.
+     * 获取定位工具类单例
      *
      * @param context the context
      * @return the instance
@@ -139,7 +139,7 @@ public class LocationUtils {
     }
 
     /**
-     * Gets location.
+     * 获取位置
      */
     public void getLocation() {
         //1.获取位置管理器
@@ -188,7 +188,7 @@ public class LocationUtils {
 
 
     /**
-     * Show location.
+     * 显示位置
      */
     public void showLocation() {
         if (location == null) {
@@ -206,7 +206,7 @@ public class LocationUtils {
     }
 
     /**
-     * Gets address.
+     * 通过经纬度获取详细地址
      *
      * @param latitude  the latitude
      * @param longitude the longitude
@@ -233,7 +233,7 @@ public class LocationUtils {
     }
 
     /**
-     * Remove location updates listener.
+     * 移除定位更新监听
      */
     private void removeLocationUpdatesListener() {
         if (locationManager != null) {
@@ -244,7 +244,7 @@ public class LocationUtils {
 
 
     /**
-     * The Location listener.
+     * 位置监听
      */
     private LocationListener locationListener = new LocationListener() {
         // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
@@ -272,9 +272,8 @@ public class LocationUtils {
     };
 
     /**
-     * Gets lng and lat with network.
+     * 通过网络获取位置信息
      */
-//从网络获取经纬度
     private void getLngAndLatWithNetwork() {
         //添加用户权限申请判断
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -288,21 +287,21 @@ public class LocationUtils {
     }
 
     /**
-     * The interface Address callback.
+     * 位置信息接口
      */
     public interface AddressCallback {
         /**
-         * On get address.
+         * 获取地址
          *
          * @param address the address
          */
         void onGetAddress(Address address);
 
         /**
-         * On get location.
+         * 获取详细地址
          *
-         * @param lat the lat
-         * @param lng the lng
+         * @param lat the 经度
+         * @param lng the 纬度
          */
         void onGetLocation(double lat, double lng);
     }

@@ -48,19 +48,54 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("TAG", "onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("TAG", "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbinder.unbind();
+        Log.d("TAG", "onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
     public void onEmitter(ObservableEmitter<Boolean> emitter) {
         if (initData()) {
             emitter.onNext(true);
-            emitter.onComplete();
         } else {
-            emitter.onError(new Throwable("初始化数据错误"));
+            emitter.onNext(false);
         }
+        emitter.onComplete();
     }
 
     @Override
     public void onSuccess(Boolean aBoolean) {
-        Log.e(TAG, "onSuccess: " + aBoolean);
-        initView();
+        Log.i(TAG, "onSuccess: " + aBoolean);
+        if (aBoolean) {
+            initView();
+        } else {
+            errorView();
+        }
     }
 
     @Override
@@ -71,40 +106,8 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
 
     @Override
     public void onEnd() {
-        Log.e(TAG, "onEnd: " + "初始化数据成功");
+        Log.i(TAG, "onEnd: " + "初始化数据成功");
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.e(TAG, "onStart: ");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e(TAG, "onResume: ");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e("TAG", "onPause: ");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.e("TAG", "onStop: ");
-    }
-
-    @Override
-    protected void onDestroy() {
-        unbinder.unbind();
-        Log.e("TAG", "onDestroy: ");
-        super.onDestroy();
-    }
-
 
     /**
      * Sets layout.

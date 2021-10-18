@@ -56,7 +56,14 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        Log.d(TAG, "onAttach");
         this.mActivity = (Activity) context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
     }
 
     @Nullable
@@ -78,19 +85,70 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (!compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
+        }
+        unbinder.unbind();
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+    }
+
+    @Override
+    public void onDetach() {
+        mActivity = null;
+        super.onDetach();
+        Log.d(TAG, "onDetach");
+    }
+
+    @Override
     public void onEmitter(ObservableEmitter<Boolean> emitter) {
         if (initData()) {
             emitter.onNext(true);
-            emitter.onComplete();
         } else {
-            emitter.onError(new Throwable("初始化数据错误"));
+            emitter.onNext(false);
         }
+        emitter.onComplete();
     }
 
     @Override
     public void onSuccess(Boolean aBoolean) {
-        Log.e(TAG, "onSuccess: " + aBoolean);
-        initView();
+        Log.i(TAG, "onSuccess: " + aBoolean);
+        if (aBoolean) {
+            initView();
+        } else {
+            errorView();
+        }
     }
 
     @Override
@@ -101,22 +159,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
 
     @Override
     public void onEnd() {
-        Log.e(TAG, "onEnd: " + "初始化数据成功");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onDestroyView() {
-        if (!compositeDisposable.isDisposed()) {
-            compositeDisposable.dispose();
-        }
-        unbinder.unbind();
-        Log.e(TAG, "onDestroyView: " + "已销毁");
-        super.onDestroyView();
+        Log.i(TAG, "onEnd: " + "初始化数据成功");
     }
 
     /**

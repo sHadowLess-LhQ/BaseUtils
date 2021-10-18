@@ -13,11 +13,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.mengpeng.mphelper.ToastUtils;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.com.shadowless.baseutils.utils.ApplicationUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
 import io.reactivex.ObservableEmitter;
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 
 /**
@@ -44,9 +48,9 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      */
     protected Activity mActivity;
     /**
-     * The Composite disposable.
+     * The Disposable.
      */
-    protected CompositeDisposable compositeDisposable;
+    private Disposable disposable;
 
     /**
      * The interface Init data call back.
@@ -91,11 +95,20 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
         }
         View view = LayoutInflater.from(mActivity).inflate(getLayoutId(), container, false);
         unbinder = ButterKnife.bind(this, view);
-        compositeDisposable = new CompositeDisposable();
-        RxUtils
-                .builder()
-                .build()
-                .rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+        disposable = new RxPermissions(mActivity).requestEachCombined(permissionName())
+                .subscribe(permission -> {
+                            if (permission.granted) {
+                                RxUtils
+                                        .builder()
+                                        .build()
+                                        .rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+                            } else if (permission.shouldShowRequestPermissionRationale) {
+                                showToast(permission.name);
+                            } else {
+                                showToast(permission.name);
+                            }
+                        }
+                );
         return view;
     }
 
@@ -125,16 +138,16 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
 
     @Override
     public void onDestroyView() {
-        if (!compositeDisposable.isDisposed()) {
-            compositeDisposable.dispose();
-        }
         unbinder.unbind();
-        super.onDestroyView();
         Log.d(TAG, "onDestroyView");
+        super.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
+        if (!disposable.isDisposed()) {
+            disposable.dispose();
+        }
         super.onDestroy();
         Log.d(TAG, "onDestroy");
     }
@@ -183,6 +196,24 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     public void onEnd() {
         Log.i(TAG, "onEnd: " + "初始化数据成功");
     }
+
+    /**
+     * Show toast.
+     *
+     * @param name the name
+     */
+    private void showToast(String name) {
+        String tip = "应用无法使用，请开启%s权限";
+        ToastUtils.onWarnShowToast(String.format(tip, name));
+        ApplicationUtils.startApplicationInfo(mActivity);
+    }
+
+    /**
+     * Permission name string [ ].
+     *
+     * @return the string [ ]
+     */
+    protected abstract String[] permissionName();
 
     /**
      * 该抽象方法就是 onCreateView中需要的layoutID

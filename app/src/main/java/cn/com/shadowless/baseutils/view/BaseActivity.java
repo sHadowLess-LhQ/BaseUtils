@@ -6,10 +6,15 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mengpeng.mphelper.ToastUtils;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.com.shadowless.baseutils.utils.ApplicationUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
 import io.reactivex.ObservableEmitter;
+import io.reactivex.disposables.Disposable;
 
 /**
  * The type Base activity.
@@ -30,6 +35,11 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      * The Is orientation.
      */
     protected boolean isOrientation = false;
+    /**
+     * The Disposable.
+     */
+    private Disposable disposable;
+
     /**
      * The interface Init data call back.
      */
@@ -55,10 +65,20 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
         }
         setContentView(setLayout());
         unbinder = ButterKnife.bind(this);
-        RxUtils
-                .builder()
-                .build()
-                .rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+        disposable = new RxPermissions(this).requestEachCombined(permissionName())
+                .subscribe(permission -> {
+                            if (permission.granted) {
+                                RxUtils
+                                        .builder()
+                                        .build()
+                                        .rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+                            } else if (permission.shouldShowRequestPermissionRationale) {
+                                showToast(permission.name);
+                            } else {
+                                showToast(permission.name);
+                            }
+                        }
+                );
     }
 
     @Override
@@ -88,6 +108,9 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     @Override
     protected void onDestroy() {
         unbinder.unbind();
+        if (!disposable.isDisposed()) {
+            disposable.dispose();
+        }
         Log.d("TAG", "onDestroy");
         super.onDestroy();
     }
@@ -129,6 +152,24 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     public void onEnd() {
         Log.i(TAG, "onEnd: " + "初始化数据成功");
     }
+
+    /**
+     * Show toast.
+     *
+     * @param name the name
+     */
+    private void showToast(String name) {
+        String tip = "应用无法使用，请开启%s权限";
+        ToastUtils.onWarnShowToast(String.format(tip, name));
+        ApplicationUtils.startApplicationInfo(this);
+    }
+
+    /**
+     * Permission name string [ ].
+     *
+     * @return the string [ ]
+     */
+    protected abstract String[] permissionName();
 
     /**
      * Sets layout.

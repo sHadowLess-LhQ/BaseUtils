@@ -30,6 +30,20 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      * The Is orientation.
      */
     protected boolean isOrientation = false;
+    /**
+     * The interface Init data call back.
+     */
+    protected interface InitDataCallBack {
+        /**
+         * Success.
+         */
+        void success();
+
+        /**
+         * Fail.
+         */
+        void fail();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +94,19 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
 
     @Override
     public void onEmitter(ObservableEmitter<Boolean> emitter) {
-        if (initData()) {
-            emitter.onNext(true);
-        } else {
-            emitter.onNext(false);
-        }
-        emitter.onComplete();
+        initData(new InitDataCallBack() {
+            @Override
+            public void success() {
+                emitter.onNext(true);
+                emitter.onComplete();
+            }
+
+            @Override
+            public void fail() {
+                emitter.onNext(false);
+                emitter.onComplete();
+            }
+        });
     }
 
     @Override
@@ -119,9 +140,9 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     /**
      * Sets data.
      *
-     * @return the data
+     * @param initDataCallBack the init data call back
      */
-    protected abstract boolean initData();
+    protected abstract void initData(InitDataCallBack initDataCallBack);
 
     /**
      * Init view.

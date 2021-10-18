@@ -49,6 +49,21 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     protected CompositeDisposable compositeDisposable;
 
     /**
+     * The interface Init data call back.
+     */
+    protected interface InitDataCallBack {
+        /**
+         * Success.
+         */
+        void success();
+
+        /**
+         * Fail.
+         */
+        void fail();
+    }
+
+    /**
      * 获得全局的，防止使用getActivity()为空
      *
      * @param context
@@ -133,12 +148,19 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
 
     @Override
     public void onEmitter(ObservableEmitter<Boolean> emitter) {
-        if (initData()) {
-            emitter.onNext(true);
-        } else {
-            emitter.onNext(false);
-        }
-        emitter.onComplete();
+        initData(new InitDataCallBack() {
+            @Override
+            public void success() {
+                emitter.onNext(true);
+                emitter.onComplete();
+            }
+
+            @Override
+            public void fail() {
+                emitter.onNext(false);
+                emitter.onComplete();
+            }
+        });
     }
 
     @Override
@@ -172,9 +194,9 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     /**
      * 执行数据的加载
      *
-     * @return the string
+     * @param initDataCallBack the init data call back
      */
-    protected abstract boolean initData();
+    protected abstract void initData(InitDataCallBack initDataCallBack);
 
     /**
      * Init view.

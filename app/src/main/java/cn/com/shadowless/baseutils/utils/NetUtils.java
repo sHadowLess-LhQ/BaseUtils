@@ -137,7 +137,7 @@ public class NetUtils {
     }
 
     /**
-     * c初始化retrofit
+     * 初始化retrofit
      *
      * @param initInterface the init interface
      */

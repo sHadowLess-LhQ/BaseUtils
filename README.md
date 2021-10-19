@@ -30,8 +30,12 @@ Step 2. 添加依赖
 #### 使用说明
 
 1.  BaseActivity：直接继承
+    
+    【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
 
 2.  BaseFragment：直接继承
+
+    【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
 
 3.  CustomDialog：调用示例
 

@@ -43,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     /**
      * The interface Init data call back.
      */
-    protected interface InitDataCallBack {
+    private interface InitDataCallBack {
         /**
          * Success.
          */

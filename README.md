@@ -91,7 +91,7 @@ Step 2. 添加依赖
                 .view()        //传入自定义View，和.layout()两者选其一调用
                 .layout()      //传入xml，和.view()两者选其一调用
                 .isAnimation() //是否设置动画，默认不设置，和.anim()同步使用
-                .anim()  //设置窗口动画，和.isAnimation()同步使用
+                .anim()        //设置窗口动画，和.isAnimation()同步使用
                 .isSystem()    //是否设置为系统级窗口，默认不设置
                 .width()       //设置窗口宽度
                 .height()      //设置窗口高度
@@ -145,15 +145,15 @@ Step 2. 添加依赖
 ```
       NetUtils
                 .builder()
-                .baseUrl()  //设置根地址
+                .baseUrl()       //设置根地址
                 .okHttpClient()  //设置自定义okhttp，不设置有默认
-                .timeOut()  //设置超时时间
-                .timeOutUnit()  //设置超时时间单位
+                .timeOut()       //设置超时时间，不设置默认10秒
+                .timeOutUnit()   //设置超时时间单位，不设置默认单位秒
                 .build()
                 .initRetrofit(new NetUtils.InitInterface() {
                     @Override
                     public void createInterface(Retrofit retrofit) {
-                        //可在回调内实例化接口
+                                 //可在回调内实例化接口
                     }
                 });
 ```
@@ -167,8 +167,8 @@ Step 2. 添加依赖
             @Override
             public void onGetAddress(Address address) {
                 String countryName = address.getCountryName();//国家
-                String adminArea = address.getAdminArea();//省
-                String locality = address.getLocality();//市
+                String adminArea = address.getAdminArea();    //省
+                String locality = address.getLocality();      //市
                 String subLocality = address.getSubLocality();//区
                 String featureName = address.getFeatureName();//街道
             }

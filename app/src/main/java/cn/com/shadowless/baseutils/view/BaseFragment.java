@@ -55,7 +55,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     /**
      * The interface Init data call back.
      */
-    private interface InitDataCallBack {
+    public interface InitDataCallBack {
         /**
          * Success.
          */

@@ -30,36 +30,54 @@ Step 2. 添加依赖
 #### 使用说明
 
 1.  BaseActivity：直接继承
-    
+
+    重写函数：
+
+```
+    int setLayout() - 设置布局文件
+    String[] permissionName() - 设置需要获取的权限
+    initData(InitDataCallBack initDataCallBack) - 初始化数据
     【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
+    initView() - 初始化界面控件
+    errorView() - 初始化错误界面
+```
 
 2.  BaseFragment：直接继承
 
+    重写函数：
+
+```
+    int setLayout() - 设置布局文件
+    String[] permissionName() - 设置需要获取的权限
+    initData(InitDataCallBack initDataCallBack) - 初始化数据
     【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
+    initView() - 初始化界面控件
+    errorView() - 初始化错误界面
+```
 
 3.  CustomDialog：调用示例
 
 ```
     CustomDialog
                 .builder()
-                .context() //传入上下文
-                .dialogView()  //传入自定义View，但和layout两者选其一调用
-                .layout()  //传入xml，但和dialogView两者选其一调用
-                .isClearLayer()  //是否去除蒙层，默认不去除
-                .isSetAnim()  //是否添加动画，和anim()方法同步使用，不可单一使用，默认不设置
-                .anim()  //设置动画xml，和isSetAnim()方法同步使用，不可单一使用
-                .isSystemDialog()  //是否设置为系统级提示框，默认不设置
-                .isTitle()  //是否去除标题栏，默认不去除
-                .isWindowSize()  //是否设置提示框大小，和.windowHeight() .windowWidth()方法同步使用
-                .windowHeight()  //设置提示框高度，和.isWindowSize()同步使用，不可单独使用
-                .windowWidth()  //设置提示框宽度，和.isWindowSize()同步使用，不可单独使用
-                .cancel()  //是否外部触碰取消提示框，默认不取消
-                .location()  //设置提示框显示位置，传入CustomDialog.location枚举，具体枚举进入源码查看
+                .context()        //传入上下文
+                .dialogView()     //传入自定义View，但和layout两者选其一调用
+                .layout()         //传入xml，但和dialogView两者选其一调用
+                .isClearLayer()   //是否去除蒙层，默认不去除
+                .isSetAnim()      //是否添加动画，和anim()方法同步使用，不可单一使用，默认不设置
+                .anim()           //设置动画xml，和isSetAnim()方法同步使用，不可单一使用
+                .isSystemDialog() //是否设置为系统级提示框，默认不设置
+                .isTitle()        //是否去除标题栏，默认不去除
+                .isWindowSize()   //是否设置提示框大小，和.windowHeight() .windowWidth()方法同步使用
+                .windowHeight()   //设置提示框高度，和.isWindowSize()同步使用，不可单独使用
+                .windowWidth()    //设置提示框宽度，和.isWindowSize()同步使用，不可单独使用
+                .cancel()         //是否外部触碰取消提示框，默认不取消
+                .location()       //设置提示框显示位置，传入CustomDialog.location枚举，具体枚举进入源码查看
                 .build()
                 .show(new CustomDialog.InitViewListener() {
                     @Override
                     public void getDialogView(View view, Dialog dialog) {
-                           //回调自定义View和提示框对象
+                                  //回调自定义View和提示框对象
                     }
                 });
 ```
@@ -69,21 +87,21 @@ Step 2. 添加依赖
 ```
      CustomWindow
                 .builder()
-                .context()  //传入上下文
-                .view()  //传入自定义View，和.layout()两者选其一调用
-                .layout()  //传入xml，和.view()两者选其一调用
+                .context()     //传入上下文
+                .view()        //传入自定义View，和.layout()两者选其一调用
+                .layout()      //传入xml，和.view()两者选其一调用
                 .isAnimation() //是否设置动画，默认不设置，和.anim()同步使用
                 .anim()  //设置窗口动画，和.isAnimation()同步使用
-                .isSystem()  //是否设置为系统级窗口，默认不设置
-                .width()   //设置窗口宽度
-                .height()  //设置窗口高度
+                .isSystem()    //是否设置为系统级窗口，默认不设置
+                .width()       //设置窗口宽度
+                .height()      //设置窗口高度
                 .windowFlag()  //设置窗口标识
-                .location()  //设置窗口显示位置，传入Gravity的静态位置常量
+                .location()    //设置窗口显示位置，传入Gravity的静态位置常量
                 .build()
                 .show(new CustomWindow.InitWindowListener() {
                     @Override
                     public void getWindowView(View view, WindowManager windowManager) {
-                        //回调自定义View对象和WindowManager，用于移除自定义View
+                               //回调自定义View对象和WindowManager，用于移除自定义View
                     }
                 });
 ```
@@ -258,7 +276,53 @@ Step 2. 添加依赖
         - clearAllUserRestriction(Context context)
         //通过包名清除指定应用数据(仅API 28及以上有效)
         - clearApplicationUserData(Context context, String packageName)
+```
 
+12.     FileUtils：方法说明
+
+```
+        //获取内部存储data文件夹
+        - getAppData()
+        //获取内部存储应用file文件夹
+        - getAppFile(Context context)
+        //获取内部存储应用file文件夹下的子文件
+        - getAppFileList(Context context)
+        //获取内部存储应用cache文件夹
+        - getAppCacheFile(Context context)
+        //获取内部存储应用指定文件夹(若无自动创建)
+        - getAppDirFile(Context context, String fileName, int mode)
+        //获取内部存储应用file文件夹下创建子文件
+        - getAppFileOutPut(Context context, String fileName, int mode)
+        //内部存储应用file文件夹读取子文件
+        - getAppFileInPut(Context context, String fileName)
+        //内部存储应用file文件夹删除指定子文件
+        - deleteAppFile(Context context, String fileName)
+        //获取外部储存文件夹
+        - getDeviceStorageDir()
+        //获取外部储存应用file文件夹
+        - getDeviceAppFileDir(Context context)
+        //获取外部储存应用cache文件夹
+        - getDeviceAppCacheDir(Context context)
+        //获取外部储存相册文件夹
+        - getDeviceDiCmDir()
+        //获取外部储存视频文件夹
+        - getDeviceMovieDir()
+        //获取外部储存音乐文件夹
+        - getDeviceMusicDir()
+        //获取外部储存下载文件夹
+        - getDeviceDownloadDir()
+        //获取外部储存通知文件夹
+        - getDeviceNotificationDir()
+        //获取外部储存警告文件夹
+        - getDeviceAlarmsDir()
+        //获取外部储存播客文件夹
+        - getDevicePodCastDir()
+        //获取外部储存铃声文件夹
+        - getDeviceRingTonesDir()
+        //获取外部储存文件文件夹
+        - getDeviceDocumentDir()
+        //获取外部储存截屏文件夹
+        - getDeviceScreenShotDir()
 ```
 
 #### 特技

@@ -17,7 +17,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.disposables.Disposable;
 
 /**
- * The type Base activity.
+ * 基类Activity
  *
  * @author sHadowLess
  */
@@ -28,20 +28,20 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      */
     private final String TAG = BaseActivity.class.getSimpleName();
     /**
-     * The Unbinder.
+     * 黄油刀
      */
     private Unbinder unbinder = null;
     /**
-     * The Is orientation.
+     * 屏幕方向标志
      */
     protected boolean isOrientation = false;
     /**
-     * The Disposable.
+     * 订阅
      */
     private Disposable disposable;
 
     /**
-     * The interface Init data call back.
+     * 初始化数据回调接口
      */
     protected interface InitDataCallBack {
         /**
@@ -154,9 +154,9 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     }
 
     /**
-     * Show toast.
+     * 内部权限提示
      *
-     * @param name the name
+     * @param name the 权限名
      */
     private void showToast(String name) {
         String tip = "应用无法使用，请开启%s权限";
@@ -165,33 +165,33 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     }
 
     /**
-     * Permission name string [ ].
+     * 需要申请的权限
      *
      * @return the string [ ]
      */
     protected abstract String[] permissionName();
 
     /**
-     * Sets layout.
+     * 设置布局
      *
      * @return the layout
      */
     protected abstract int setLayout();
 
     /**
-     * Sets data.
+     * 初始化数据
      *
      * @param initDataCallBack the init data call back
      */
     protected abstract void initData(InitDataCallBack initDataCallBack);
 
     /**
-     * Init view.
+     * 初始化视图
      */
     protected abstract void initView();
 
     /**
-     * Error view.
+     * 初始化错误视图
      */
     protected abstract void errorView();
 

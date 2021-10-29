@@ -25,7 +25,7 @@ import io.reactivex.disposables.Disposable;
 
 
 /**
- * The type Base fragment.
+ * 基类Fragment
  *
  * @author sHadowLess
  */
@@ -36,24 +36,24 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      */
     private final String TAG = BaseFragment.class.getSimpleName();
     /**
-     * The Unbinder.
+     * 黄油刀
      */
     private Unbinder unbinder;
     /**
-     * The Is orientation.
+     * 屏幕方向标志
      */
     protected boolean isOrientation = false;
     /**
-     * The M activity.
+     * 依附的activity
      */
     protected Activity mActivity;
     /**
-     * The Disposable.
+     * 订阅
      */
     private Disposable disposable;
 
     /**
-     * The interface Init data call back.
+     * 初始化数据回调接口
      */
     protected interface InitDataCallBack {
         /**
@@ -67,11 +67,6 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
         void fail();
     }
 
-    /**
-     * 获得全局的，防止使用getActivity()为空
-     *
-     * @param context
-     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -198,9 +193,9 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     }
 
     /**
-     * Show toast.
+     * 内部权限提示
      *
-     * @param name the name
+     * @param name the 权限名
      */
     private void showToast(String name) {
         String tip = "应用无法使用，请开启%s权限";
@@ -209,33 +204,33 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     }
 
     /**
-     * Permission name string [ ].
+     * 需要申请的权限
      *
      * @return the string [ ]
      */
     protected abstract String[] permissionName();
 
     /**
-     * 该抽象方法就是 onCreateView中需要的layoutID
+     * 设置布局
      *
      * @return layout id
      */
     protected abstract int getLayoutId();
 
     /**
-     * 执行数据的加载
+     * 初始化数据
      *
      * @param initDataCallBack the init data call back
      */
     protected abstract void initData(InitDataCallBack initDataCallBack);
 
     /**
-     * Init view.
+     * 初始化视图
      */
     protected abstract void initView();
 
     /**
-     * Error view.
+     * 初始化错误视图
      */
     protected abstract void errorView();
 }

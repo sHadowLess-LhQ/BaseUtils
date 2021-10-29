@@ -230,7 +230,7 @@ Step 2. 添加依赖
                          <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
                          <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
                      </intent-filter>
-                 </receiver>
+           </receiver>
 ```
         方法说明：
 ```

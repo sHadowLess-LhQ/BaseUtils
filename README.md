@@ -217,7 +217,7 @@ Step 2. 添加依赖
        【注】：使用前，请在AM清单文件中，给BasicDeviceAdminReceiver注册广播，并在res/xml资源中新建声明文件
 ```
           <receiver
-                     android:name="cn.com.shadowless.baseutils.BasicDeviceAdminReceiver"
+                     android:name="cn.com.shadowless.baseutils.Receiver.BasicDeviceAdminReceiver"
                      android:description="描述"
                      android:label="名称"
                      android:permission="android.permission.BIND_DEVICE_ADMIN">
@@ -276,6 +276,9 @@ Step 2. 添加依赖
         - clearAllUserRestriction(Context context)
         //通过包名清除指定应用数据(仅API 28及以上有效)
         - clearApplicationUserData(Context context, String packageName)
+         //息屏
+        - lockScreen(Context context)
+        - lockScreen(Context context, int flag) //仅API 26以上有效
 ```
 
 12.     FileUtils：方法说明
@@ -323,6 +326,22 @@ Step 2. 添加依赖
         - getDeviceDocumentDir()
         //获取外部储存截屏文件夹
         - getDeviceScreenShotDir()
+```
+
+12.     WindowUtils：方法说明
+
+```
+        //隐藏状态栏
+        - hideStatusBar(Activity activity)
+        //设置状态栏透明
+        - setHalfTransparent(Activity activity)
+        //获取屏幕宽
+        - getWidth(Activity context)
+        //获取屏幕高
+        - getHeight(Activity context)
+        //隐藏软键盘
+        - hideSoftInput(Context context, View view)
+        
 ```
 
 #### 特技

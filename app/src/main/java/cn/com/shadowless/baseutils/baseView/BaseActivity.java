@@ -1,4 +1,4 @@
-package cn.com.shadowless.baseutils.view;
+package cn.com.shadowless.baseutils.baseView;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

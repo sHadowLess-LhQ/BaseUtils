@@ -1,6 +1,7 @@
 package cn.com.shadowless.baseutils.utils;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -31,6 +32,12 @@ public class LocationUtils {
      * 定位工具类实例
      */
     private volatile static LocationUtils uniqueInstance;
+
+    /**
+     * The constant REQUEST_CODE_CHECK_ACTIVE.
+     */
+    public static final int REQUEST_CODE_CHECK_ACTIVE = 2;
+
     /**
      * 位置管理器实例
      */
@@ -230,6 +237,36 @@ public class LocationUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Is open.
+     *
+     * @param context the context
+     */
+    public static boolean isOpen(Activity context) {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        // 通过GPS卫星定位，定位级别可以精确到街（通过24颗卫星定位，在室外和空旷的地方定位准确、速度快）
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        // 通过WLAN或移动网络(3G/2G)确定的位置（也称作AGPS，辅助GPS定位。主要用于在室内或遮盖物（建筑群或茂密的深林等）密集的地方定位）
+        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if (!gps || !network) {
+            openGPS(context);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Open gps.
+     *
+     * @param activity the activity
+     */
+    public static void openGPS(Activity activity) {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        activity.startActivityForResult(intent, REQUEST_CODE_CHECK_ACTIVE);
     }
 
     /**

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import cn.com.shadowless.baseutils.BasicDeviceAdminReceiver;
+import cn.com.shadowless.baseutils.Receiver.BasicDeviceAdminReceiver;
 import lombok.Builder;
 import lombok.Data;
 
@@ -330,6 +330,26 @@ public class DeviceUtils {
         } else {
             showToast(3, "该设备暂无企业空间权限");
         }
+    }
+
+    /**
+     * 锁屏
+     *
+     * @param context the 上下文
+     */
+    public void lockScreen(Context context) {
+        getDevicePolicyManager(context).lockNow();
+    }
+
+    /**
+     * 模式锁屏
+     *
+     * @param context the 上下文
+     * @param flag    the 锁屏标志
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void lockScreen(Context context, int flag) {
+        getDevicePolicyManager(context).lockNow(flag);
     }
 
     /**

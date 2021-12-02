@@ -1,4 +1,4 @@
-package cn.com.shadowless.baseutils.view;
+package cn.com.shadowless.baseutils.baseView;
 
 import android.app.Activity;
 import android.content.Context;

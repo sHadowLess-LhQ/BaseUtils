@@ -2,11 +2,13 @@ package cn.com.shadowless.baseutils.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 /**
  * The type Window util.
@@ -80,5 +82,18 @@ public class WindowUtils {
         DisplayMetrics dm = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getMetrics(dm);
         return dm.heightPixels;
+    }
+
+    /**
+     * Hide soft input.
+     *
+     * @param context the context
+     * @param view    the view
+     */
+    public static void hideSoftInput(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (view != null && imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

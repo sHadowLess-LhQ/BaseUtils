@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import cn.com.shadowless.baseutils.Receiver.BasicDeviceAdminReceiver;
+import cn.com.shadowless.baseutils.receiver.BasicDeviceAdminReceiver;
 import lombok.Builder;
 import lombok.Data;
 

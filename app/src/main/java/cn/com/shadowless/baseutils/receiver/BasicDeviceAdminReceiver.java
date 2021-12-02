@@ -1,5 +1,5 @@
 
-package cn.com.shadowless.baseutils.Receiver;
+package cn.com.shadowless.baseutils.receiver;
 
 import android.app.admin.DeviceAdminReceiver;
 import android.content.ComponentName;

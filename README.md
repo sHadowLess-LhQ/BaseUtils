@@ -328,7 +328,7 @@ Step 2. 添加依赖
         - getDeviceScreenShotDir()
 ```
 
-12.     WindowUtils：方法说明
+13.     WindowUtils：方法说明
 
 ```
         //隐藏状态栏
@@ -341,6 +341,30 @@ Step 2. 添加依赖
         - getHeight(Activity context)
         //隐藏软键盘
         - hideSoftInput(Context context, View view)
+        
+```
+
+14.     BaseXPop：以下类直接继承
+
+```
+        //依附输入法的PopView
+        - BaseBottomPopView
+        //水平气泡依附的PopView
+        - BaseBubbleHorizontalAttachPopupView
+        //垂直气泡依附的PopView
+        - BaseVerticalBubbleAttachPopupView
+        //居中弹出的PopView
+        - BaseCenterPopView
+        //侧滑拉出的PopView
+        - BaseDrawerPopupView
+        //全屏的PopView
+        - BaseFullScreenPopupView
+        //水平依附的PopView
+        - BaseHorizontalAttachPopView
+        //垂直依附的PopView
+        - BaseVerticalAttachPopView
+        //自定位的PopView
+        - BasePositionPopupView
         
 ```
 

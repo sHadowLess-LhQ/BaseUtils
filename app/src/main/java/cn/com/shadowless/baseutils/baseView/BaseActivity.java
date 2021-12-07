@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mengpeng.mphelper.ToastUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import java.util.Map;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
@@ -46,8 +48,10 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     protected interface InitDataCallBack {
         /**
          * Success.
+         *
+         * @param map the map
          */
-        void success();
+        void success(Map<String, Object> map);
 
         /**
          * Fail.
@@ -119,7 +123,8 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     public void onEmitter(ObservableEmitter<Boolean> emitter) {
         initData(new InitDataCallBack() {
             @Override
-            public void success() {
+            public void success(Map<String, Object> map) {
+                initView(map);
                 emitter.onNext(true);
                 emitter.onComplete();
             }
@@ -135,9 +140,7 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     @Override
     public void onSuccess(Boolean aBoolean) {
         Log.i(TAG, "onSuccess: " + aBoolean);
-        if (aBoolean) {
-            initView();
-        } else {
+        if (!aBoolean) {
             errorView();
         }
     }
@@ -188,7 +191,7 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     /**
      * 初始化视图
      */
-    protected abstract void initView();
+    protected abstract void initView(Map<String, Object> map);
 
     /**
      * 初始化错误视图

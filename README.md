@@ -20,8 +20,36 @@ Step 1. 添加maven仓库地址
 Step 2. 添加依赖
 
 ```
+    克隆项目直接引入model，无需添加任何依赖
+```
+
+```
     dependencies {
+            //主模块
 	        implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
+            implementation 'com.jakewharton:butterknife:10.2.1'
+            annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+            implementation 'com.github.mengpeng920223:ToastUtils:v1.0.3'
+            implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+            //【注：】使用RxUtils，请额外添加以下依赖：
+            //RxUtils
+                implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
+                implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+                implementation 'org.projectlombok:lombok:1.18.8'
+                annotationProcessor 'org.projectlombok:lombok:1.18.8'
+            //【注：】使用NetUtils，请额外添加以下依赖：
+            //NetUtils
+                implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+                implementation 'com.google.code.gson:gson:2.8.6'
+                implementation 'com.squareup.retrofit2:retrofit:2.6.1'
+                implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
+                implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+                implementation 'org.projectlombok:lombok:1.18.8'
+                annotationProcessor 'org.projectlombok:lombok:1.18.8'
+            //【注：】使用BaseXPop，请额外添加以下依赖：
+            //BaseXPop
+                implementation 'com.github.li-xiaojun:XPopup:2.5.15'
+                implementation 'com.google.android.material:material:1.3.0-alpha01'
 	}
 ```	
 

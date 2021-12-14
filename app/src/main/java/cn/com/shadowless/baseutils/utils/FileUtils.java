@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.text.DecimalFormat;
 
 /**
  * 设备文件工具类
@@ -223,6 +224,18 @@ public class FileUtils {
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public static File getDeviceScreenShotDir() {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_SCREENSHOTS);
+    }
+
+    /**
+     * Gets net file size description.
+     *
+     * @param size the size
+     * @return the net file size description
+     */
+    public static String getNetFileSizeDescription(long size) {
+        DecimalFormat format = new DecimalFormat("###.0");
+        double i = (size / (1024.0 * 1024.0));
+        return format.format(i) + "MB";
     }
 
 }

@@ -55,8 +55,10 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
 
         /**
          * Fail.
+         *
+         * @param error the error
          */
-        void fail();
+        void fail(String error);
     }
 
     @Override
@@ -86,30 +88,6 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("TAG", "onPause");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("TAG", "onStop");
-    }
-
-    @Override
     protected void onDestroy() {
         unbinder.unbind();
         if (!disposable.isDisposed()) {
@@ -130,7 +108,8 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
             }
 
             @Override
-            public void fail() {
+            public void fail(String error) {
+                errorView(error);
                 emitter.onNext(false);
                 emitter.onComplete();
             }
@@ -140,15 +119,11 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     @Override
     public void onSuccess(Boolean aBoolean) {
         Log.i(TAG, "onSuccess: " + aBoolean);
-        if (!aBoolean) {
-            errorView();
-        }
     }
 
     @Override
     public void onFail(Throwable throwable) {
         Log.e(TAG, "onFail: " + throwable);
-        errorView();
     }
 
     @Override
@@ -190,12 +165,16 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
 
     /**
      * 初始化视图
+     *
+     * @param objects the objects
      */
-    protected abstract void initView(Map<String, Object> map);
+    protected abstract void initView(Object... objects);
 
     /**
      * 初始化错误视图
+     *
+     * @param error the error
      */
-    protected abstract void errorView();
+    protected abstract void errorView(String error);
 
 }

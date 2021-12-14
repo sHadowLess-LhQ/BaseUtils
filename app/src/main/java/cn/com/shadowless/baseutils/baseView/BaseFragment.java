@@ -68,7 +68,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
         /**
          * Fail.
          */
-        void fail();
+        void fail(String error);
     }
 
     @Override
@@ -76,12 +76,6 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
         super.onAttach(context);
         Log.d(TAG, "onAttach");
         this.mActivity = (Activity) context;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
     }
 
     @Nullable
@@ -109,30 +103,6 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
                         }
                 );
         return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop");
     }
 
     @Override
@@ -169,7 +139,8 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
             }
 
             @Override
-            public void fail() {
+            public void fail(String error) {
+                errorView(error);
                 emitter.onNext(false);
                 emitter.onComplete();
             }
@@ -179,15 +150,11 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     @Override
     public void onSuccess(Boolean aBoolean) {
         Log.i(TAG, "onSuccess: " + aBoolean);
-        if (!aBoolean) {
-            errorView();
-        }
     }
 
     @Override
     public void onFail(Throwable throwable) {
         Log.e(TAG, "onFail: " + throwable);
-        errorView();
     }
 
     @Override
@@ -229,11 +196,15 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
 
     /**
      * 初始化视图
+     *
+     * @param map the map
      */
     protected abstract void initView(Map<String, Object> map);
 
     /**
      * 初始化错误视图
+     *
+     * @param error the error
      */
-    protected abstract void errorView();
+    protected abstract void errorView(String error);
 }

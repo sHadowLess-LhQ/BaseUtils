@@ -324,64 +324,64 @@ SharedPreferences所支持的所有数据类型进行操作，对于StringSet类
 
 ```
      //获取内部存储data文件夹
-     FileUtilsgetAppData()
+     FileUtils.getAppData()
      //获取内部存储应用file文件夹
-     FileUtilsgetAppFile(Context context)
+     FileUtils.getAppFile(Context context)
      //获取内部存储应用file文件夹下的子文件
-     FileUtilsgetAppFileList(Context context)
+     FileUtils.getAppFileList(Context context)
      //获取内部存储应用cache文件夹
-     FileUtilsgetAppCacheFile(Context context)
+     FileUtils.getAppCacheFile(Context context)
      //获取内部存储应用指定文件夹(若无自动创建)
-     FileUtilsgetAppDirFile(Context context, String fileName, int mode)
+     FileUtils.getAppDirFile(Context context, String fileName, int mode)
      //获取内部存储应用file文件夹下创建子文件
-     FileUtilsgetAppFileOutPut(Context context, String fileName, int mode)
+     FileUtils.getAppFileOutPut(Context context, String fileName, int mode)
      //内部存储应用file文件夹读取子文件
-     FileUtilsgetAppFileInPut(Context context, String fileName)
+     FileUtils.getAppFileInPut(Context context, String fileName)
      //内部存储应用file文件夹删除指定子文件
-     FileUtilsdeleteAppFile(Context context, String fileName)
+     FileUtils.deleteAppFile(Context context, String fileName)
      //获取外部储存文件夹
-     FileUtilsgetDeviceStorageDir()
+     FileUtils.getDeviceStorageDir()
      //获取外部储存应用file文件夹
-     FileUtilsgetDeviceAppFileDir(Context context)
+     FileUtils.getDeviceAppFileDir(Context context)
      //获取外部储存应用cache文件夹
-     FileUtilsgetDeviceAppCacheDir(Context context)
+     FileUtils.getDeviceAppCacheDir(Context context)
      //获取外部储存相册文件夹
-     FileUtilsgetDeviceDiCmDir()
+     FileUtils.getDeviceDiCmDir()
      //获取外部储存视频文件夹
-     FileUtilsgetDeviceMovieDir()
+     FileUtils.getDeviceMovieDir()
      //获取外部储存音乐文件夹
-     FileUtilsgetDeviceMusicDir()
+     FileUtils.getDeviceMusicDir()
      //获取外部储存下载文件夹
-     FileUtilsgetDeviceDownloadDir()
+     FileUtils.getDeviceDownloadDir()
      //获取外部储存通知文件夹
-     FileUtilsgetDeviceNotificationDir()
+     FileUtils.getDeviceNotificationDir()
      //获取外部储存警告文件夹
-     FileUtilsgetDeviceAlarmsDir()
+     FileUtils.getDeviceAlarmsDir()
      //获取外部储存播客文件夹
-     FileUtilsgetDevicePodCastDir()
+     FileUtils.getDevicePodCastDir()
      //获取外部储存铃声文件夹
-     FileUtilsgetDeviceRingTonesDir()
+     FileUtils.getDeviceRingTonesDir()
      //获取外部储存文件文件夹
-     FileUtilsgetDeviceDocumentDir()
+     FileUtils.getDeviceDocumentDir()
      //获取外部储存截屏文件夹
-     FileUtilsgetDeviceScreenShotDir()
+     FileUtils.getDeviceScreenShotDir()
      //kb转mb
-     FileUtilsgetNetFileSizeDescription(long size)
+     FileUtils.getNetFileSizeDescription(long size)
 ```
 
 ### 13、WindowUtils
 
 ```
      //隐藏状态栏
-     WindowUtilshideStatusBar(Activity activity)
+     WindowUtils.hideStatusBar(Activity activity)
      //设置状态栏透明
-     WindowUtilssetHalfTransparent(Activity activity)
+     WindowUtils.setHalfTransparent(Activity activity)
      //获取屏幕宽
-     WindowUtilsgetWidth(Activity context)
+     WindowUtils.getWidth(Activity context)
      //获取屏幕高
-     WindowUtilsgetHeight(Activity context)
+     WindowUtils.getHeight(Activity context)
      //隐藏软键盘
-     WindowUtilshideSoftInput(Context context, View view)
+     WindowUtils.hideSoftInput(Context context, View view)
 ```
 
 ### 14、BasePopView

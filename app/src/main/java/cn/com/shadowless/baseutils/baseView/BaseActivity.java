@@ -175,9 +175,9 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     /**
      * 初始化视图
      *
-     * @param objects the objects
+     * @param data the data
      */
-    protected abstract void initView(Object... objects);
+    protected abstract void initView(Map<String, Object> data);
 
     /**
      * 初始化错误视图

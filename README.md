@@ -62,12 +62,13 @@ Step 2. 添加依赖
 重写函数：
 
 ```
-     int setLayout() - 设置布局文件
-     String[] permissionName() - 设置需要获取的权限
-     initData(InitDataCallBack initDataCallBack) - 初始化数据
-     【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
-     initView() - 初始化界面控件
-     errorView() - 初始化错误界面
+       int setLayout() - 设置布局文件
+       String[] permissionName() - 设置需要获取的权限，无需申请可传null或空数组
+       initData(InitDataCallBack initDataCallBack) - 初始化数据
+       【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
+       initView() - 初始化界面控件
+       【注】：若需要传递数据，可直接使用mData表进行传递
+       errorView() - 初始化错误界面
 ```
 
 ### 2、BaseFragment：直接继承
@@ -76,10 +77,11 @@ Step 2. 添加依赖
 
 ```
      int setLayout() - 设置布局文件
-     String[] permissionName() - 设置需要获取的权限
+     String[] permissionName() - 设置需要获取的权限，无需申请可传null或空数组
      initData(InitDataCallBack initDataCallBack) - 初始化数据
      【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
      initView() - 初始化界面控件
+     【注】：若需要传递数据，可直接使用mData表进行传递
      errorView() - 初始化错误界面
 ```
 

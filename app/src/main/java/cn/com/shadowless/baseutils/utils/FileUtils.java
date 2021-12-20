@@ -20,6 +20,12 @@ import java.text.DecimalFormat;
 public class FileUtils {
 
     /**
+     * Instantiates a new File utils.
+     */
+    private FileUtils() {
+    }
+
+    /**
      * 内部存储data文件夹
      *
      * @return the /data

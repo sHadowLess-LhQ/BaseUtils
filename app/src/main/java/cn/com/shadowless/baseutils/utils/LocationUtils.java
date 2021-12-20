@@ -1,6 +1,7 @@
 package cn.com.shadowless.baseutils.utils;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -29,8 +30,15 @@ import java.util.Locale;
 public class LocationUtils {
 
     /**
+     * Instantiates a new Location utils.
+     */
+    private LocationUtils() {
+    }
+
+    /**
      * 定位工具类实例
      */
+    @SuppressLint("StaticFieldLeak")
     private volatile static LocationUtils uniqueInstance;
 
     /**
@@ -243,6 +251,7 @@ public class LocationUtils {
      * Is open.
      *
      * @param context the context
+     * @return the boolean
      */
     public static boolean isOpen(Activity context) {
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);

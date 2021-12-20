@@ -18,6 +18,12 @@ import android.view.inputmethod.InputMethodManager;
 public class WindowUtils {
 
     /**
+     * Instantiates a new Window utils.
+     */
+    private WindowUtils() {
+    }
+
+    /**
      * 通过设置全屏，设置状态栏透明
      *
      * @param activity 上下文

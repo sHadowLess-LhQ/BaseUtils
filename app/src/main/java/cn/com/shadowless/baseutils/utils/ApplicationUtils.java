@@ -27,6 +27,12 @@ import java.util.UUID;
 public class ApplicationUtils {
 
     /**
+     * Instantiates a new Application utils.
+     */
+    private ApplicationUtils() {
+    }
+
+    /**
      * 通过包名打开应用
      *
      * @param context  the 上下文

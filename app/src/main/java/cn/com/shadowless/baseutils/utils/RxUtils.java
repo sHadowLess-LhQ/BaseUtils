@@ -21,6 +21,12 @@ import lombok.Builder;
 public class RxUtils {
 
     /**
+     * Instantiates a new Rx utils.
+     */
+    private RxUtils() {
+    }
+
+    /**
      * 线程枚举
      */
     public enum ThreadSign {

@@ -9,6 +9,13 @@ import java.util.regex.Pattern;
  * @author sHadowLess
  */
 public class WordUtils {
+
+    /**
+     * Instantiates a new Word utils.
+     */
+    private WordUtils() {
+    }
+
     /**
      * Contain boolean.
      *

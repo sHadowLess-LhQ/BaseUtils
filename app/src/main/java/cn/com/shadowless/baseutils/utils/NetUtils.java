@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Builder
 public class NetUtils {
-
+    
     /**
      * 根地址
      */

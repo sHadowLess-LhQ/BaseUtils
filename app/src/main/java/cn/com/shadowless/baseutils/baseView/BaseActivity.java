@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mengpeng.mphelper.ToastUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -37,6 +38,10 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      * 屏幕方向标志
      */
     protected boolean isOrientation = false;
+    /**
+     * The Data.
+     */
+    protected Map<String, Object> mData = new HashMap<>();
     /**
      * 订阅
      */
@@ -71,20 +76,23 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
         }
         setContentView(setLayout());
         unbinder = ButterKnife.bind(this);
-        disposable = new RxPermissions(this).requestEachCombined(permissionName())
-                .subscribe(permission -> {
-                            if (permission.granted) {
-                                RxUtils
-                                        .builder()
-                                        .build()
-                                        .rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
-                            } else if (permission.shouldShowRequestPermissionRationale) {
-                                showToast(permission.name);
-                            } else {
-                                showToast(permission.name);
+        String[] permissions = permissionName();
+        if (null != permissions && permissions.length != 0) {
+            disposable = new RxPermissions(this).requestEachCombined(permissions)
+                    .subscribe(permission -> {
+                                if (permission.granted) {
+                                    RxUtils
+                                            .builder()
+                                            .build()
+                                            .rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+                                } else if (permission.shouldShowRequestPermissionRationale) {
+                                    showToast(permission.name);
+                                } else {
+                                    showToast(permission.name);
+                                }
                             }
-                        }
-                );
+                    );
+        }
     }
 
     @Override
@@ -99,6 +107,7 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
 
     @Override
     public void onEmitter(ObservableEmitter<Boolean> emitter) {
+        mData.clear();
         initData(new InitDataCallBack() {
             @Override
             public void success(Map<String, Object> map) {

@@ -8,6 +8,8 @@ import com.lxj.xpopup.core.PositionPopupView;
 
 /**
  * The type Base position popup view.
+ *
+ * @author sHadowLess
  */
 public abstract class BasePositionPopupView extends PositionPopupView {
     /**

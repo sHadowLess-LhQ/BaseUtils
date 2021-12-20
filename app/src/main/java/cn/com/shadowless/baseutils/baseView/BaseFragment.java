@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.mengpeng.mphelper.ToastUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -50,6 +51,10 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      */
     protected Activity mActivity;
     /**
+     * The M data.
+     */
+    protected Map<String, Object> mData = new HashMap<>();
+    /**
      * 订阅
      */
     private Disposable disposable;
@@ -67,6 +72,8 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
 
         /**
          * Fail.
+         *
+         * @param error the error
          */
         void fail(String error);
     }
@@ -88,20 +95,23 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
         }
         View view = LayoutInflater.from(mActivity).inflate(getLayoutId(), container, false);
         unbinder = ButterKnife.bind(this, view);
-        disposable = new RxPermissions(mActivity).requestEachCombined(permissionName())
-                .subscribe(permission -> {
-                            if (permission.granted) {
-                                RxUtils
-                                        .builder()
-                                        .build()
-                                        .rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
-                            } else if (permission.shouldShowRequestPermissionRationale) {
-                                showToast(permission.name);
-                            } else {
-                                showToast(permission.name);
+        String[] permissions = permissionName();
+        if (null != permissions && permissions.length != 0) {
+            disposable = new RxPermissions(mActivity).requestEachCombined(permissions)
+                    .subscribe(permission -> {
+                                if (permission.granted) {
+                                    RxUtils
+                                            .builder()
+                                            .build()
+                                            .rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+                                } else if (permission.shouldShowRequestPermissionRationale) {
+                                    showToast(permission.name);
+                                } else {
+                                    showToast(permission.name);
+                                }
                             }
-                        }
-                );
+                    );
+        }
         return view;
     }
 
@@ -130,6 +140,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
 
     @Override
     public void onEmitter(ObservableEmitter<Boolean> emitter) {
+        mData.clear();
         initData(new InitDataCallBack() {
             @Override
             public void success(Map<String, Object> map) {

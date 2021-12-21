@@ -1,8 +1,6 @@
 package cn.com.shadowless.baseutils.utils;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,95 +16,50 @@ import android.util.Log;
 import androidx.core.app.ActivityCompat;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 /**
- * 定位工具类
+ * The type Location utils.
  *
  * @author sHadowLess
  */
 public class LocationUtils {
 
     /**
+     * The constant uniqueInstance.
+     */
+    private volatile static LocationUtils uniqueInstance = null;
+    /**
+     * The Location manager.
+     */
+    private LocationManager locationManager = null;
+    /**
+     * The M context.
+     */
+    private Context mContext = null;
+
+    /**
+     * The constant location.
+     */
+    private Location location = null;
+
+    /**
+     * The Address callback.
+     */
+    private AddressCallback addressCallback = null;
+
+    /**
      * Instantiates a new Location utils.
-     */
-    private LocationUtils() {
-    }
-
-    /**
-     * 定位工具类实例
-     */
-    @SuppressLint("StaticFieldLeak")
-    private volatile static LocationUtils uniqueInstance;
-
-    /**
-     * The constant REQUEST_CODE_CHECK_ACTIVE.
-     */
-    public static final int REQUEST_CODE_CHECK_ACTIVE = 2;
-
-    /**
-     * 位置管理器实例
-     */
-    private LocationManager locationManager;
-    /**
-     * 上下文
-     */
-    private Context mContext;
-    /**
-     * 获取地址信息回调
-     */
-    private static ArrayList<AddressCallback> addressCallbacks = new ArrayList<>();
-    /**
-     * 地址信息接口
-     */
-    private AddressCallback addressCallback;
-
-    /**
-     * 获取地址信息回调
-     *
-     * @return the address callback
-     */
-    public AddressCallback getAddressCallback() {
-        return addressCallback;
-    }
-
-    /**
-     * 设置地址信息接口
-     *
-     * @param addressCallback the address callback
-     */
-    public void setAddressCallback(AddressCallback addressCallback) {
-        this.addressCallback = addressCallback;
-        if (isInit) {
-            showLocation();
-        } else {
-            isInit = true;
-        }
-    }
-
-    /**
-     * 位置实体类
-     */
-    private static Location location;
-    /**
-     * 是否初始化标识符
-     */
-    private boolean isInit = false;
-
-    /**
-     * 构造
      *
      * @param context the context
      */
     private LocationUtils(Context context) {
         mContext = context;
-        getLocation();
     }
 
     /**
-     * 获取定位工具类单例
+     * Gets instance.
      *
      * @param context the context
      * @return the instance
@@ -123,40 +76,19 @@ public class LocationUtils {
     }
 
     /**
-     * 添加回调事件
-     *
-     * @param addressCallback the address callback
-     */
-    private void addAddressCallback(AddressCallback addressCallback) {
-        addressCallbacks.add(addressCallback);
-        if (isInit) {
-            showLocation();
-        }
-    }
-
-    /**
-     * 移除回调事件
-     *
-     * @param addressCallback the address callback
-     */
-    public void removeAddressCallback(AddressCallback addressCallback) {
-        if (addressCallbacks.contains(addressCallback)) {
-            addressCallbacks.remove(addressCallback);
-        }
-    }
-
-    /**
      * 清空回调事件
      */
-    public void cleareAddressCallback() {
+    public void clearAddressCallback() {
         removeLocationUpdatesListener();
-        addressCallbacks.clear();
     }
 
     /**
-     * 获取位置
+     * Gets location.
+     *
+     * @param addressCallback the address callback
      */
-    public void getLocation() {
+    public void getLocation(AddressCallback addressCallback) {
+        this.addressCallback = addressCallback;
         //1.获取位置管理器
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         //添加用户权限申请判断
@@ -179,9 +111,7 @@ public class LocationUtils {
         } else {
             Log.e("getLocation", "=====NO_PROVIDER=====");
             // 当没有可用的位置提供器时，弹出Toast提示用户
-            Intent intent = new Intent();
-            intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            mContext.startActivity(intent);
+            isOpen(mContext);
             return;
         }
 
@@ -196,50 +126,45 @@ public class LocationUtils {
             getLngAndLatWithNetwork();
         }
         // 监视地理位置变化，第二个和第三个参数分别为更新的最短时间minTime和最短距离minDistace
-        //LocationManager 每隔 5 秒钟会检测一下位置的变化情况，当移动距离超过 10 米的时候，
+        // LocationManager 每隔 5 秒钟会检测一下位置的变化情况，当移动距离超过 10 米的时候，
         // 就会调用 LocationListener 的 onLocationChanged() 方法，并把新的位置信息作为参数传入。
-        locationManager.requestLocationUpdates(locationProvider, 5000, 10, locationListener);
+        locationManager.requestLocationUpdates(locationProvider, 30000, 10, locationListener);
     }
 
 
     /**
-     * 显示位置
+     * Show location.
      */
-    public void showLocation() {
+    private void showLocation() {
         if (location == null) {
-            getLocation();
+            getLocation(addressCallback);
         } else {
             //纬度
             double latitude = location.getLatitude();
             //经度
             double longitude = location.getLongitude();
             if (addressCallback != null) {
-                addressCallback.onGetLocation(latitude, longitude);
+                this.addressCallback.onGetLocation(latitude, longitude);
             }
             getAddress(latitude, longitude);
         }
     }
 
     /**
-     * 通过经纬度获取详细地址
+     * Gets address.
      *
      * @param latitude  the latitude
      * @param longitude the longitude
      */
-    public void getAddress(double latitude, double longitude) {
+    private void getAddress(double latitude, double longitude) {
         //Geocoder通过经纬度获取具体信息
         Geocoder gc = new Geocoder(mContext, Locale.getDefault());
         try {
             List<Address> locationList = gc.getFromLocation(latitude, longitude, 1);
             if (locationList != null) {
                 Address address = locationList.get(0);
-                for (int i = 0; address.getAddressLine(i) != null; i++) {
-                    String addressLine = address.getAddressLine(i);
-                    //街道名称:广东省深圳市罗湖区蔡屋围一街深圳瑞吉酒店
-                    Log.e("getAddress", addressLine);
-                }
                 if (addressCallback != null) {
-                    addressCallback.onGetAddress(address);
+                    this.addressCallback.onGetAddress(address);
                 }
             }
         } catch (IOException e) {
@@ -248,38 +173,7 @@ public class LocationUtils {
     }
 
     /**
-     * Is open.
-     *
-     * @param context the context
-     * @return the boolean
-     */
-    public static boolean isOpen(Activity context) {
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        // 通过GPS卫星定位，定位级别可以精确到街（通过24颗卫星定位，在室外和空旷的地方定位准确、速度快）
-        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        // 通过WLAN或移动网络(3G/2G)确定的位置（也称作AGPS，辅助GPS定位。主要用于在室内或遮盖物（建筑群或茂密的深林等）密集的地方定位）
-        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        if (!gps || !network) {
-            openGPS(context);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Open gps.
-     *
-     * @param activity the activity
-     */
-    public static void openGPS(Activity activity) {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        activity.startActivityForResult(intent, REQUEST_CODE_CHECK_ACTIVE);
-    }
-
-    /**
-     * 移除定位更新监听
+     * Remove location updates listener.
      */
     private void removeLocationUpdatesListener() {
         if (locationManager != null) {
@@ -290,7 +184,7 @@ public class LocationUtils {
 
 
     /**
-     * 位置监听
+     * The Location listener.
      */
     private LocationListener locationListener = new LocationListener() {
         // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
@@ -313,12 +207,12 @@ public class LocationUtils {
 
         @Override
         public void onLocationChanged(Location loc) {
-            getLocation();
+            //getLocation();
         }
     };
 
     /**
-     * 通过网络获取位置信息
+     * Gets lng and lat with network.
      */
     private void getLngAndLatWithNetwork() {
         //添加用户权限申请判断
@@ -327,27 +221,59 @@ public class LocationUtils {
             return;
         }
         LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 10, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 10, locationListener);
         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         showLocation();
     }
 
     /**
-     * 位置信息接口
+     * Is open.
+     *
+     * @param context the context
+     * @return the boolean
+     */
+    public static boolean isOpen(Context context) {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        // 通过GPS卫星定位，定位级别可以精确到街（通过24颗卫星定位，在室外和空旷的地方定位准确、速度快）
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        // 通过WLAN或移动网络(3G/2G)确定的位置（也称作AGPS，辅助GPS定位。主要用于在室内或遮盖物（建筑群或茂密的深林等）密集的地方定位）
+        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if (!gps || !network) {
+            openGPS(context);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Open gps.
+     *
+     * @param activity the activity
+     */
+    public static void openGPS(Context activity) {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * The interface Address callback.
      */
     public interface AddressCallback {
         /**
-         * 获取地址
+         * On get address.
          *
          * @param address the address
          */
         void onGetAddress(Address address);
 
         /**
-         * 获取详细地址
+         * On get location.
          *
-         * @param lat the 经度
-         * @param lng the 纬度
+         * @param lat the lat
+         * @param lng the lng
          */
         void onGetLocation(double lat, double lng);
     }

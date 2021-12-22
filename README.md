@@ -414,6 +414,29 @@ SharedPreferences所支持的所有数据类型进行操作，对于StringSet类
      WordUtils.contain(String input, String regex)
 ```
 
+### 16、SqlUtils
+
+```
+     //初始化数据库
+     SqlUtils.initDateBase(Context context, String dbName)
+     //写入字符串数据
+     SqlUtils.writeString(String key, String value)
+     //写入字节数组数据
+     SqlUtils.writeByteList(String key, byte[] value)
+     //获取字符串数据
+     SqlUtils.getString(String key)
+     //获取字节数组数据
+     SqlUtils.getByteList(String key)
+     //标记需要删除的数据
+     SqlUtils.deleteAndSign(String key)
+     //直接删除数据
+     SqlUtils.removeData(String key)
+     //删除标记的数据
+     SqlUtils.clearSignData()
+     //关闭数据库
+     SqlUtils.closeDb()
+```
+
 #### 特技
 
 1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md

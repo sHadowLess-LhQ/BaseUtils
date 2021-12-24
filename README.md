@@ -31,12 +31,11 @@ Step 2. 添加依赖
             annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
             implementation 'com.github.mengpeng920223:ToastUtils:v1.0.3'
             implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+            
             //【注：】使用RxUtils，请额外添加以下依赖：
             //RxUtils
                 implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
                 implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-                implementation 'org.projectlombok:lombok:1.18.8'
-                annotationProcessor 'org.projectlombok:lombok:1.18.8'
             //【注：】使用NetUtils，请额外添加以下依赖：
             //NetUtils
                 implementation 'com.squareup.okhttp3:okhttp:3.14.9'
@@ -50,6 +49,9 @@ Step 2. 添加依赖
             //BaseXPop
                 implementation 'com.github.li-xiaojun:XPopup:2.5.15'
                 implementation 'com.google.android.material:material:1.3.0-alpha01'
+            //【注：】使用CustomDialog、CustomWindow，请额外添加以下依赖：
+                implementation 'org.projectlombok:lombok:1.18.8'
+                annotationProcessor 'org.projectlombok:lombok:1.18.8'
     }
 ```
 
@@ -139,15 +141,13 @@ Step 2. 添加依赖
 ### 5、PreferencesUtils：
 
 ```
-SharedPreferences所支持的所有数据类型进行操作，对于StringSet类型，调用addStringSet()方法，可进行数据累加；调用removeStringSet()方法，可进行定向元素删除
+支持SharedPreferences可操作的数据类型进行处理，其中对于StringSet类型，调用addStringSet()方法，可进行数据累加；调用removeStringSet()方法，可进行指定元素删除
 ```
 
 ### 6、RxUtils：调用示例
 
 ```
      RxUtils
-                .builder()
-                .build()
                 //参数1：传入执行需要的线程枚举，更多枚举详见RxUtils.ThreadSign
                 //参数2：create()所需的发射器回调
                 //参数3：订阅执行后的结果回调
@@ -197,21 +197,22 @@ SharedPreferences所支持的所有数据类型进行操作，对于StringSet类
 ```
       //参数1：上下文
       //参数2：结果回调
-      LocationUtils.getInstance(this).setAddressCallback(new LocationUtils.AddressCallback() {
-            @Override
-            public void onGetAddress(Address address) {
-                String countryName = address.getCountryName();//国家
-                String adminArea = address.getAdminArea();    //省
-                String locality = address.getLocality();      //市
-                String subLocality = address.getSubLocality();//区
-                String featureName = address.getFeatureName();//街道
-            }
+      LocationUtils.getInstance(context).getLocation(new LocationUtils.AddressCallback() {
+           @Override
+           public void onGetAddress(Address address) {
+               String countryName = address.getCountryName();//国家
+               String adminArea = address.getAdminArea();    //省
+               String locality = address.getLocality();      //市
+               String subLocality = address.getSubLocality();//区
+               String featureName = address.getFeatureName();//街道
+           }
 
-            @Override
-            public void onGetLocation(double lat, double lng) {
-                AppLogger.i(DateUtils.getCurrentDateString() + " 经纬度：" + lng + "," + lat);
-            }
-        });
+           @Override
+           public void onGetLocation(double lat, double lng) {
+               double mLng = lng;//经度
+               double mLat = lat;//纬度
+           }
+       });
 ```
 
 ### 9、BaseModelUtils：调用示例
@@ -236,8 +237,6 @@ SharedPreferences所支持的所有数据类型进行操作，对于StringSet类
      //通过包名查看应用详情
      ApplicationUtils.startApplicationInfo(Context context)
      ApplicationUtils.startApplicationInfo(Context context, String packageName)
-     //打开日历
-     ApplicationUtils.startCalendar(Context context)
      //打开相机
      ApplicationUtils.startCamera(Context context)
      //打开浏览器访问

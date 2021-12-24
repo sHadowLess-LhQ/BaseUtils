@@ -81,10 +81,7 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
             disposable = new RxPermissions(this).requestEachCombined(permissions)
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    RxUtils
-                                            .builder()
-                                            .build()
-                                            .rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+                                    RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {

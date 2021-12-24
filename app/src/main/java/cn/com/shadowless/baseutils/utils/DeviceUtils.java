@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.UUID;
 
 import cn.com.shadowless.baseutils.receiver.BasicDeviceAdminReceiver;
-import lombok.Builder;
-import lombok.Data;
 
 import static android.app.admin.DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE;
 
@@ -40,8 +38,6 @@ public class DeviceUtils {
     /**
      * 应用信息类
      */
-    @Builder
-    @Data
     public static class AppInfo {
         /**
          * 应用包名
@@ -59,6 +55,13 @@ public class DeviceUtils {
          * 是否启用
          */
         private boolean mIsEnable;
+
+        public AppInfo(String packageName, Drawable ico, CharSequence name, boolean mIsEnable) {
+            this.packageName = packageName;
+            this.ico = ico;
+            this.name = name;
+            this.mIsEnable = mIsEnable;
+        }
     }
 
     /**
@@ -195,13 +198,12 @@ public class DeviceUtils {
                 List<ResolveInfo> mainActivities = packageManager.queryIntentActivities(mainIntent, PackageManager.GET_UNINSTALLED_PACKAGES);
                 if (mainActivities.size() > 0) {
                     boolean isEnable = isApplicationEnabled(context, info.packageName);
-                    AppInfo appInfo = AppInfo
-                            .builder()
-                            .ico(packageManager.getApplicationIcon(info.applicationInfo))
-                            .name(packageManager.getApplicationLabel(info.applicationInfo))
-                            .packageName(info.packageName)
-                            .mIsEnable(isEnable)
-                            .build();
+                    AppInfo appInfo = new AppInfo(
+                            info.packageName,
+                            packageManager.getApplicationIcon(info.applicationInfo),
+                            packageManager.getApplicationLabel(info.applicationInfo),
+                            isEnable
+                    );
                     mApplicationInfoList.add(appInfo);
                 }
             }

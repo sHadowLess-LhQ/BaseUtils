@@ -110,15 +110,6 @@ public class ApplicationUtils {
     }
 
     /**
-     * 跳转到系统日历
-     *
-     * @param context the 上下文
-     */
-    public static void startCalendar(Context context) {
-        context.startActivity(new Intent().setComponent(new ComponentName("com.android.calendar", "com.android.calendar.LaunchActivity")));
-    }
-
-    /**
      * 跳转到系统相册
      *
      * @param context the 上下文
@@ -163,11 +154,11 @@ public class ApplicationUtils {
     }
 
     /**
-     * Gets version code.
+     * 获取应用版本码
      *
-     * @param context  the context
-     * @param packName the pack name
-     * @return the version code
+     * @param context  the 上下文
+     * @param packName the 包名
+     * @return the 版本码
      */
     public static long getVersionCode(Context context, String packName) {
         PackageManager packageManager = context.getPackageManager();
@@ -185,11 +176,11 @@ public class ApplicationUtils {
     }
 
     /**
-     * Gets version code.
+     * 获取应用版本码名称
      *
-     * @param context  the context
-     * @param packName the pack name
-     * @return the version code
+     * @param context  the 上下文
+     * @param packName the 包名
+     * @return the 版本码名称
      */
     public static String getVersionName(Context context, String packName) {
         PackageManager packageManager = context.getPackageManager();
@@ -205,8 +196,8 @@ public class ApplicationUtils {
     /**
      * 检查手机上是否安装了指定的软件
      *
-     * @param context     the context
-     * @param packageName ：应用包名
+     * @param context     the 上下文
+     * @param packageName the 应用包名
      * @return boolean boolean
      */
     public static boolean isInstall(Context context, String packageName) {

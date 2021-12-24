@@ -100,10 +100,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
             disposable = new RxPermissions(mActivity).requestEachCombined(permissions)
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    RxUtils
-                                            .builder()
-                                            .build()
-                                            .rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+                                    RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {

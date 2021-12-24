@@ -10,14 +10,12 @@ import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import lombok.Builder;
 
 /**
  * RxJava2工具类
  *
  * @author sHadowLess
  */
-@Builder
 public class RxUtils {
 
     /**
@@ -165,12 +163,12 @@ public class RxUtils {
      * @param emitterCallBack  the 发射器回调
      * @param observerCallBack the 观察者回调
      */
-    public <T> void rxCreate(ThreadSign threadSign, ObserverCallBack.EmitterCallBack<T> emitterCallBack, ObserverCallBack<T> observerCallBack) {
+    public static <T> void rxCreate(ThreadSign threadSign, ObserverCallBack.EmitterCallBack<T> emitterCallBack, ObserverCallBack<T> observerCallBack) {
         Observable
                 .create(emitterCallBack::onEmitter)
                 .compose(dealThread(threadSign))
                 .subscribe(new Observer<T>() {
-                    Disposable disposable;
+                    Disposable disposable = null;
 
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -203,12 +201,12 @@ public class RxUtils {
      * @param threadSign       the 线程枚举
      * @param observerCallBack the 观察者回调
      */
-    public void rxTimer(long time, TimeUnit timeUnit, ThreadSign threadSign, ObserverCallBack<Long> observerCallBack) {
+    public static void rxTimer(long time, TimeUnit timeUnit, ThreadSign threadSign, ObserverCallBack<Long> observerCallBack) {
         Observable
                 .timer(time, timeUnit)
                 .compose(dealThread(threadSign))
                 .subscribe(new Observer<Long>() {
-                    Disposable disposable;
+                    Disposable disposable = null;
 
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -241,12 +239,12 @@ public class RxUtils {
      * @param threadSign       the 线程枚举
      * @param observerCallBack the 观察者回调
      */
-    public void rxInterval(long time, TimeUnit timeUnit, ThreadSign threadSign, ObserverCallBack<Long> observerCallBack) {
+    public static void rxInterval(long time, TimeUnit timeUnit, ThreadSign threadSign, ObserverCallBack<Long> observerCallBack) {
         Observable
                 .interval(time, timeUnit)
                 .compose(dealThread(threadSign))
                 .subscribe(new Observer<Long>() {
-                    Disposable disposable;
+                    Disposable disposable = null;
 
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -278,7 +276,7 @@ public class RxUtils {
      * @param threadSign the 线程枚举
      * @return the observable transformer
      */
-    private <T> ObservableTransformer<T, T> dealThread(ThreadSign threadSign) {
+    private static <T> ObservableTransformer<T, T> dealThread(ThreadSign threadSign) {
         switch (threadSign) {
             case IO_TO_MAIN:
                 return setStream(Schedulers.io(), AndroidSchedulers.mainThread());
@@ -333,7 +331,7 @@ public class RxUtils {
      * @param observeOn   the observe on
      * @return the stream
      */
-    private <T> ObservableTransformer<T, T> setStream(Scheduler subscribeOn, Scheduler observeOn) {
+    private static <T> ObservableTransformer<T, T> setStream(Scheduler subscribeOn, Scheduler observeOn) {
         return upstream -> upstream.subscribeOn(subscribeOn)
                 .unsubscribeOn(subscribeOn)
                 .observeOn(observeOn);

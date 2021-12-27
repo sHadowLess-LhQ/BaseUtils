@@ -138,10 +138,63 @@ Step 2. 添加依赖
                 });
 ```
 
-### 5、PreferencesUtils：
+### 5、PreferencesUtils：方法说明
 
 ```
-支持SharedPreferences可操作的数据类型进行处理，其中对于StringSet类型，调用addStringSet()方法，可进行数据累加；调用removeStringSet()方法，可进行指定元素删除
+     //同步存入字符串数据
+     PreferencesUtils.putStringNow(Context context, String key, String value)
+     //异步存入字符串数据
+     PreferencesUtils.putString(Context context, String key, String value)
+     //同步追加字符串集合数据
+     PreferencesUtils.addStringSetNow(Context context, String key, String value)
+     //异步追加字符串集合数据
+     PreferencesUtils.addStringSet(Context context, String key, String value)
+     //同步删除指定字符串集合数据
+     PreferencesUtils.removeStringSetNow(Context context, String key, String value)
+     //异步删除指定字符串集合数据
+     PreferencesUtils.removeStringSet(Context context, String key, String value)
+     //同步存入整型数据
+     PreferencesUtils.putIntNow(Context context, String key, int value)
+     //异步存入整型数据
+     PreferencesUtils.putInt(Context context, String key, int value)
+     //同步存入长整型数据
+     PreferencesUtils.putLongNow(Context context, String key, long value)
+     //异步存入长整型数据
+     PreferencesUtils.putLong(Context context, String key, long value)
+     //同步存入单精度浮点数据
+     PreferencesUtils.putFloatNow(Context context, String key, float value)
+     //异步存入单精度浮点数据
+     PreferencesUtils.putFloat(Context context, String key, float value)
+     //同步存入布尔类型数据
+     PreferencesUtils.putBooleanNow(Context context, String key, boolean value)
+     //异步存入布尔类型数据
+     PreferencesUtils.putBoolean(Context context, String key, boolean value)
+     //获取字符串数据
+     PreferencesUtils.getString(Context context, String key)
+     PreferencesUtils.getString(Context context, String key, String defaultValue)
+     //获取字符串集合
+     PreferencesUtils.getStringSet(Context context, String key)
+     PreferencesUtils.getStringSet(Context context, String key, Set<String> defaultValue)
+     //获取整型数据
+     PreferencesUtils.getInt(Context context, String key)
+     PreferencesUtils.getInt(Context context, String key, int defaultValue)
+     //获取长整型数据
+     PreferencesUtils.getLong(Context context, String key)
+     PreferencesUtils.getLong(Context context, String key, long defaultValue)
+     //获取单精度浮点数据
+     PreferencesUtils.getFloat(Context context, String key)
+     PreferencesUtils.getFloat(Context context, String key, float defaultValue)
+     //获取布尔类型数据
+     PreferencesUtils.getBoolean(Context context, String key)
+     PreferencesUtils.getBoolean(Context context, String key, boolean defaultValue)
+     //同步清空SP
+     PreferencesUtils.clearNow(Context context)
+     //异步清空SP
+     PreferencesUtils.clear(Context context)
+     //同步删除指定数据
+     PreferencesUtils.removeNow(Context context, String key)
+     //异步删除指定数据
+     PreferencesUtils.remove(Context context, String key)
 ```
 
 ### 6、RxUtils：调用示例
@@ -269,7 +322,7 @@ Step 2. 添加依赖
      </receiver>
 ```
 
- 方法说明：
+### 方法说明：
 
 ```
       //获取DeviceAdmin权限
@@ -319,7 +372,7 @@ Step 2. 添加依赖
      DeviceUtils.lockScreen(Context context, int flag) //仅API 26以上有效
 ```
 
-### 12、FileUtils
+### 12、FileUtils：方法说明
 
 ```
      //获取内部存储data文件夹
@@ -368,7 +421,7 @@ Step 2. 添加依赖
      FileUtils.getNetFileSizeDescription(long size)
 ```
 
-### 13、WindowUtils
+### 13、WindowUtils：方法说明
 
 ```
      //隐藏状态栏
@@ -383,7 +436,7 @@ Step 2. 添加依赖
      WindowUtils.hideSoftInput(Context context, View view)
 ```
 
-### 14、BasePopView
+### 14、BasePopView：直接继承
 
 ```
      //依附输入法的PopView
@@ -406,14 +459,14 @@ Step 2. 添加依赖
      - BasePositionPopupView
 ```
 
-### 15、WordUtils
+### 15、WordUtils：方法说明
 
 ```
      //比较字符串
      WordUtils.contain(String input, String regex)
 ```
 
-### 16、SqlUtils
+### 16、SqlUtils：方法说明
 
 ```
      //初始化数据库

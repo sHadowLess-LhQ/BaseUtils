@@ -17,8 +17,6 @@ import java.util.Map;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
-import cn.com.shadowless.baseutils.utils.RxUtils;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -26,7 +24,7 @@ import io.reactivex.disposables.Disposable;
  *
  * @author sHadowLess
  */
-public abstract class BaseActivity extends AppCompatActivity implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
+public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * The Tag.
@@ -49,25 +47,6 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      */
     private Disposable disposable = null;
 
-    /**
-     * 初始化数据回调接口
-     */
-    protected interface InitDataCallBack {
-        /**
-         * Success.
-         *
-         * @param map the map
-         */
-        void success(Map<String, Object> map);
-
-        /**
-         * Fail.
-         *
-         * @param error the error
-         */
-        void fail(String error);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +62,7 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
             disposable = new RxPermissions(this).requestEachCombined(permissions)
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+                                    init();
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {
@@ -92,7 +71,7 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
                             }
                     );
         } else {
-            RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+            init();
         }
     }
 
@@ -102,42 +81,17 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
         if (!disposable.isDisposed()) {
             disposable.dispose();
         }
-        Log.d("TAG", "onDestroy");
+        Log.d(TAG, "onDestroy");
         super.onDestroy();
     }
 
-    @Override
-    public void onEmitter(ObservableEmitter<Map<String, Object>> emitter) {
+    /**
+     * 初始化
+     */
+    private void init() {
         mData.clear();
-        initData(mData, new InitDataCallBack() {
-            @Override
-            public void success(Map<String, Object> map) {
-                emitter.onNext(map);
-                emitter.onComplete();
-            }
-
-            @Override
-            public void fail(String error) {
-                errorView(error);
-                emitter.onComplete();
-            }
-        });
-    }
-
-    @Override
-    public void onSuccess(Map<String, Object> mData) {
+        initData(mData);
         initView(mData);
-    }
-
-    @Override
-    public void onFail(Throwable throwable) {
-        Log.e(TAG, "onFail: " + throwable);
-    }
-
-    @Override
-    public void onEnd(Disposable disposable) {
-        disposable.dispose();
-        Log.i(TAG, "onEnd: " + "初始化数据成功");
     }
 
     /**
@@ -169,10 +123,9 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     /**
      * 初始化数据
      *
-     * @param mData            the m data
-     * @param initDataCallBack the init data call back
+     * @param mData the m data
      */
-    protected abstract void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack);
+    protected abstract void initData(@NonNull Map<String, Object> mData);
 
     /**
      * 初始化视图
@@ -180,12 +133,4 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      * @param data the data
      */
     protected abstract void initView(@NonNull Map<String, Object> data);
-
-    /**
-     * 初始化错误视图
-     *
-     * @param error the error
-     */
-    protected abstract void errorView(@Nullable String error);
-
 }

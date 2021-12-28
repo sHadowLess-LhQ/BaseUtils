@@ -22,8 +22,6 @@ import java.util.Map;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
-import cn.com.shadowless.baseutils.utils.RxUtils;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.disposables.Disposable;
 
 
@@ -32,7 +30,7 @@ import io.reactivex.disposables.Disposable;
  *
  * @author sHadowLess
  */
-public abstract class BaseFragment extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
+public abstract class BaseFragment extends Fragment {
 
     /**
      * The M activity.
@@ -59,25 +57,6 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      */
     private Disposable disposable = null;
 
-    /**
-     * 初始化数据回调接口
-     */
-    protected interface InitDataCallBack {
-        /**
-         * Success.
-         *
-         * @param map the map
-         */
-        void success(Map<String, Object> map);
-
-        /**
-         * Fail.
-         *
-         * @param error the error
-         */
-        void fail(String error);
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -100,7 +79,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
             disposable = new RxPermissions(mActivity).requestEachCombined(permissions)
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+                                    init();
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {
@@ -109,7 +88,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
                             }
                     );
         } else {
-            RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+            init();
         }
         return view;
     }
@@ -137,38 +116,13 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
         Log.d(TAG, "onDetach");
     }
 
-    @Override
-    public void onEmitter(ObservableEmitter<Map<String, Object>> emitter) {
+    /**
+     * 初始化
+     */
+    private void init() {
         mData.clear();
-        initData(mData, new InitDataCallBack() {
-            @Override
-            public void success(Map<String, Object> map) {
-                emitter.onNext(map);
-                emitter.onComplete();
-            }
-
-            @Override
-            public void fail(String error) {
-                errorView(error);
-                emitter.onComplete();
-            }
-        });
-    }
-
-    @Override
-    public void onSuccess(Map<String, Object> mData) {
+        initData(mData);
         initView(mData);
-    }
-
-    @Override
-    public void onFail(Throwable throwable) {
-        Log.e(TAG, "onFail: " + throwable);
-    }
-
-    @Override
-    public void onEnd(Disposable disposable) {
-        disposable.dispose();
-        Log.i(TAG, "onEnd: " + "初始化数据成功");
     }
 
     /**
@@ -200,10 +154,9 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     /**
      * 初始化数据
      *
-     * @param mData            the m data
-     * @param initDataCallBack the init data call back
+     * @param mData the m data
      */
-    protected abstract void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack);
+    protected abstract void initData(@NonNull Map<String, Object> mData);
 
     /**
      * 初始化视图
@@ -211,11 +164,4 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      * @param map the map
      */
     protected abstract void initView(@NonNull Map<String, Object> map);
-
-    /**
-     * 初始化错误视图
-     *
-     * @param error the error
-     */
-    protected abstract void errorView(@Nullable String error);
 }

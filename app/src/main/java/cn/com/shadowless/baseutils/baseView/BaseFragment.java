@@ -32,7 +32,7 @@ import io.reactivex.disposables.Disposable;
  *
  * @author sHadowLess
  */
-public abstract class BaseFragment extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Boolean>, RxUtils.ObserverCallBack<Boolean> {
+public abstract class BaseFragment extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
 
     /**
      * The M activity.
@@ -138,28 +138,26 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     }
 
     @Override
-    public void onEmitter(ObservableEmitter<Boolean> emitter) {
+    public void onEmitter(ObservableEmitter<Map<String, Object>> emitter) {
         mData.clear();
-        initData(new InitDataCallBack() {
+        initData(mData, new InitDataCallBack() {
             @Override
             public void success(Map<String, Object> map) {
-                initView(map);
-                emitter.onNext(true);
+                emitter.onNext(map);
                 emitter.onComplete();
             }
 
             @Override
             public void fail(String error) {
                 errorView(error);
-                emitter.onNext(false);
                 emitter.onComplete();
             }
         });
     }
 
     @Override
-    public void onSuccess(Boolean aBoolean) {
-        Log.i(TAG, "onSuccess: " + aBoolean);
+    public void onSuccess(Map<String, Object> mData) {
+        initView(mData);
     }
 
     @Override
@@ -168,7 +166,8 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     }
 
     @Override
-    public void onEnd() {
+    public void onEnd(Disposable disposable) {
+        disposable.dispose();
         Log.i(TAG, "onEnd: " + "初始化数据成功");
     }
 
@@ -188,6 +187,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      *
      * @return the string [ ]
      */
+    @Nullable
     protected abstract String[] permissionName();
 
     /**
@@ -200,21 +200,22 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     /**
      * 初始化数据
      *
+     * @param mData            the m data
      * @param initDataCallBack the init data call back
      */
-    protected abstract void initData(InitDataCallBack initDataCallBack);
+    protected abstract void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack);
 
     /**
      * 初始化视图
      *
      * @param map the map
      */
-    protected abstract void initView(Map<String, Object> map);
+    protected abstract void initView(@NonNull Map<String, Object> map);
 
     /**
      * 初始化错误视图
      *
      * @param error the error
      */
-    protected abstract void errorView(String error);
+    protected abstract void errorView(@Nullable String error);
 }

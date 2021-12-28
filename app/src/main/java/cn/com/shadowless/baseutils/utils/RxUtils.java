@@ -151,8 +151,10 @@ public class RxUtils {
 
         /**
          * 结束
+         *
+         * @param disposable the disposable
          */
-        void onEnd();
+        void onEnd(Disposable disposable);
     }
 
     /**
@@ -187,8 +189,7 @@ public class RxUtils {
 
                     @Override
                     public void onComplete() {
-                        observerCallBack.onEnd();
-                        disposable.dispose();
+                        observerCallBack.onEnd(disposable);
                     }
                 });
     }
@@ -225,8 +226,7 @@ public class RxUtils {
 
                     @Override
                     public void onComplete() {
-                        observerCallBack.onEnd();
-                        disposable.dispose();
+                        observerCallBack.onEnd(disposable);
                     }
                 });
     }
@@ -263,8 +263,7 @@ public class RxUtils {
 
                     @Override
                     public void onComplete() {
-                        observerCallBack.onEnd();
-                        disposable.dispose();
+                        observerCallBack.onEnd(disposable);
                     }
                 });
     }

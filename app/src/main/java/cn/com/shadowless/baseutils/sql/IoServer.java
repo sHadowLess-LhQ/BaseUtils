@@ -24,7 +24,7 @@ public class IoServer {
     /**
      * The File.
      */
-    private final File file;
+    private File file = null;
     /**
      * The Access file.
      */
@@ -32,11 +32,11 @@ public class IoServer {
     /**
      * The File head.
      */
-    private final Map<String, FileInfo> fileHead = new ConcurrentHashMap<>();
+    private Map<String, FileInfo> fileHead = new ConcurrentHashMap<>();
     /**
      * The Head queue.
      */
-    private final Stack<FileInfo> headQueue = new Stack<>();
+    private Stack<FileInfo> headQueue = new Stack<>();
     /**
      * The Lock.
      */
@@ -44,11 +44,11 @@ public class IoServer {
     /**
      * The Write lock.
      */
-    private final Object writeLock = new Object();
+    private Object writeLock = new Object();
     /**
      * The Thread service.
      */
-    static final ExecutorService THREAD_SERVICE = Executors.newScheduledThreadPool(5);
+    static ExecutorService THREAD_SERVICE = Executors.newScheduledThreadPool(5);
     /**
      * The Task.
      */
@@ -56,7 +56,7 @@ public class IoServer {
     /**
      * The Write cache.
      */
-    private final Map<String, byte[]> writeCache = new ConcurrentHashMap<>(500);
+    private Map<String, byte[]> writeCache = new ConcurrentHashMap<>(500);
 
     /**
      * The type Task.

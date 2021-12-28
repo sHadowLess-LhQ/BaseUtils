@@ -21,19 +21,19 @@ public class ResponseInvoker {
     /**
      * The Input stream.
      */
-    private InputStream inputStream;
+    private InputStream inputStream = null;
     /**
      * The Output stream.
      */
-    private OutputStream outputStream;
+    private OutputStream outputStream = null;
     /**
      * The Client.
      */
-    private LocalSocket client;
+    private LocalSocket client = null;
     /**
      * The Server.
      */
-    private ISqlServer server;
+    private ISqlServer server = null;
 
     /**
      * Instantiates a new Response invoker.
@@ -42,7 +42,7 @@ public class ResponseInvoker {
      * @param client the client
      * @throws FileNotFoundException the file not found exception
      */
-    public ResponseInvoker(ISqlServer server, LocalSocket client) throws FileNotFoundException {
+    public ResponseInvoker(ISqlServer server, LocalSocket client) {
         this.server = server;
         this.client = client;
         invoke();

@@ -41,7 +41,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     /**
      * 黄油刀
      */
-    private Unbinder unbinder;
+    private Unbinder unbinder = null;
     /**
      * 屏幕方向标志
      */
@@ -49,7 +49,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     /**
      * 依附的activity
      */
-    protected Activity mActivity;
+    protected Activity mActivity = null;
     /**
      * The M data.
      */
@@ -57,7 +57,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     /**
      * 订阅
      */
-    private Disposable disposable;
+    private Disposable disposable = null;
 
     /**
      * 初始化数据回调接口
@@ -108,6 +108,8 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
                                 }
                             }
                     );
+        } else {
+            RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
         }
         return view;
     }

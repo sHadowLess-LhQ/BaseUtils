@@ -20,15 +20,15 @@ public class SqlClient implements ISqlServer {
     /**
      * The Socket.
      */
-    private final LocalSocket socket;
+    private LocalSocket socket = null;
     /**
      * The Input stream.
      */
-    private InputStream inputStream;
+    private InputStream inputStream = null;
     /**
      * The Output stream.
      */
-    private OutputStream outputStream;
+    private OutputStream outputStream = null;
     /**
      * The Is connected.
      */

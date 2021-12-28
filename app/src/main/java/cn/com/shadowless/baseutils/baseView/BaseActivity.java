@@ -45,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     /**
      * 订阅
      */
-    private Disposable disposable;
+    private Disposable disposable = null;
 
     /**
      * 初始化数据回调接口
@@ -89,6 +89,8 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
                                 }
                             }
                     );
+        } else {
+            RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
         }
     }
 

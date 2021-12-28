@@ -29,15 +29,15 @@ public class Sql {
     /**
      * The Server socket.
      */
-    private LocalServerSocket serverSocket;
+    private LocalServerSocket serverSocket = null;
     /**
      * The Server.
      */
-    private LocalSocket server;
+    private LocalSocket server = null;
     /**
      * The Addr.
      */
-    private String address;
+    private String address = null;
     /**
      * The Is create.
      */
@@ -45,11 +45,11 @@ public class Sql {
     /**
      * The Sql server.
      */
-    private IoServer ioServer;
+    private IoServer ioServer = null;
     /**
      * The Bamboo server.
      */
-    private ISqlServer sqlServer;
+    private ISqlServer sqlServer = null;
     /**
      * The constant END_TAG.
      */

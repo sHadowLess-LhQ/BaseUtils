@@ -3,13 +3,12 @@ package cn.com.shadowless.baseutils.sql;
 import android.net.LocalServerSocket;
 import android.net.LocalSocket;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 class SqlServer implements ISqlServer {
 
-    private LocalServerSocket serverSocket;
-    private IoServer ioServer;
+    private LocalServerSocket serverSocket = null;
+    private IoServer ioServer = null;
 
     public SqlServer(LocalServerSocket serverSocket, final IoServer ioServer) {
         this.serverSocket = serverSocket;
@@ -23,11 +22,7 @@ class SqlServer implements ISqlServer {
                     try {
                         client = SqlServer.this.serverSocket.accept();
                         IoServer.THREAD_SERVICE.execute(() -> {
-                            try {
-                                new ResponseInvoker(SqlServer.this, client);
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
+                            new ResponseInvoker(SqlServer.this, client);
                         });
                     } catch (IOException e) {
                         e.printStackTrace();

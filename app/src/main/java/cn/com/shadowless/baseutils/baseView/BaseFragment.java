@@ -35,7 +35,7 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseFragment extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
 
     /**
-     * The M activity.
+     * TAG
      */
     private final String TAG = BaseFragment.class.getSimpleName();
     /**
@@ -51,7 +51,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      */
     protected Activity mActivity = null;
     /**
-     * The M data.
+     * 数据存储表
      */
     protected Map<String, Object> mData = new HashMap<>();
     /**
@@ -64,7 +64,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      */
     protected interface InitDataCallBack {
         /**
-         * Success.
+         * 成功
          *
          * @param map the map
          */

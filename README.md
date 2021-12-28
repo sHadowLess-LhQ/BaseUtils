@@ -71,8 +71,6 @@ Step 2. 添加依赖
      【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
      //初始化界面控件
      void initView(@NonNull Map<String, Object> map)
-     //初始化错误界面
-     void errorView(@Nullable String error)
 ```
 
 ### 2、BaseFragment：直接继承
@@ -90,8 +88,6 @@ Step 2. 添加依赖
      【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
      //初始化界面控件
      void initView(@NonNull Map<String, Object> map)
-     //初始化错误界面
-     void errorView(@Nullable String error)
 ```
 
 ### 3、CustomDialog：调用示例

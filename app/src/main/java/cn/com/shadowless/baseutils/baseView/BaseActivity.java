@@ -29,7 +29,7 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseActivity extends AppCompatActivity implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
 
     /**
-     * The Tag.
+     * TAG
      */
     private final String TAG = BaseActivity.class.getSimpleName();
     /**
@@ -41,7 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      */
     protected boolean isOrientation = false;
     /**
-     * The Data.
+     * 数据存储表
      */
     protected Map<String, Object> mData = new HashMap<>();
     /**
@@ -54,7 +54,7 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      */
     protected interface InitDataCallBack {
         /**
-         * Success.
+         * 成功
          *
          * @param map the map
          */

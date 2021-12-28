@@ -22,6 +22,8 @@ import java.util.Map;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
+import cn.com.shadowless.baseutils.utils.RxUtils;
+import io.reactivex.ObservableEmitter;
 import io.reactivex.disposables.Disposable;
 
 
@@ -30,7 +32,7 @@ import io.reactivex.disposables.Disposable;
  *
  * @author sHadowLess
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
 
     /**
      * The M activity.
@@ -57,6 +59,18 @@ public abstract class BaseFragment extends Fragment {
      */
     private Disposable disposable = null;
 
+    /**
+     * 初始化数据回调接口
+     */
+    protected interface InitDataCallBack {
+        /**
+         * Success.
+         *
+         * @param map the map
+         */
+        void success(Map<String, Object> map);
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -79,7 +93,7 @@ public abstract class BaseFragment extends Fragment {
             disposable = new RxPermissions(mActivity).requestEachCombined(permissions)
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    init();
+                                    RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {
@@ -88,7 +102,7 @@ public abstract class BaseFragment extends Fragment {
                             }
                     );
         } else {
-            init();
+            RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
         }
         return view;
     }
@@ -116,13 +130,29 @@ public abstract class BaseFragment extends Fragment {
         Log.d(TAG, "onDetach");
     }
 
-    /**
-     * 初始化
-     */
-    private void init() {
+    @Override
+    public void onEmitter(ObservableEmitter<Map<String, Object>> emitter) {
         mData.clear();
-        initData(mData);
+        initData(mData, map -> {
+            emitter.onNext(map);
+            emitter.onComplete();
+        });
+    }
+
+    @Override
+    public void onSuccess(Map<String, Object> mData) {
         initView(mData);
+    }
+
+    @Override
+    public void onFail(Throwable throwable) {
+        Log.e(TAG, "onFail: " + throwable);
+    }
+
+    @Override
+    public void onEnd(Disposable disposable) {
+        disposable.dispose();
+        Log.i(TAG, "onEnd: " + "初始化数据成功");
     }
 
     /**
@@ -154,9 +184,10 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 初始化数据
      *
-     * @param mData the m data
+     * @param mData            the m data
+     * @param initDataCallBack the init data call back
      */
-    protected abstract void initData(@NonNull Map<String, Object> mData);
+    protected abstract void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack);
 
     /**
      * 初始化视图

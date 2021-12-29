@@ -20,7 +20,10 @@ Step 1. 添加maven仓库地址
 Step 2. 添加依赖
 
 ```
-    克隆项目直接引入model，无需添加任何依赖
+     删除build.gradle中的
+     apply plugin: 'com.github.dcendents.android-maven'
+     group = 'com.gitee.shadowless_lhq'
+     克隆项目直接引入model，无需添加任何依赖
 ```
 
 ```

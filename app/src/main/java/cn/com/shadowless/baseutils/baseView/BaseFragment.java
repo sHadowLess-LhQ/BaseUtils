@@ -39,6 +39,10 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      */
     private final String TAG = BaseFragment.class.getSimpleName();
     /**
+     * 数据存储表
+     */
+    private static Map<String, Object> mData = new HashMap<>();
+    /**
      * 黄油刀
      */
     private Unbinder unbinder = null;
@@ -50,10 +54,6 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      * 依附的activity
      */
     protected Activity mActivity = null;
-    /**
-     * 数据存储表
-     */
-    protected Map<String, Object> mData = new HashMap<>();
     /**
      * 订阅
      */

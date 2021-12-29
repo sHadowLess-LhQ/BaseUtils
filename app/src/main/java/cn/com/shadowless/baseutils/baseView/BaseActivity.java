@@ -33,6 +33,10 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      */
     private final String TAG = BaseActivity.class.getSimpleName();
     /**
+     * 数据存储表
+     */
+    private static Map<String, Object> mData = new HashMap<>();
+    /**
      * 黄油刀
      */
     private Unbinder unbinder = null;
@@ -40,10 +44,6 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      * 屏幕方向标志
      */
     protected boolean isOrientation = false;
-    /**
-     * 数据存储表
-     */
-    protected Map<String, Object> mData = new HashMap<>();
     /**
      * 订阅
      */

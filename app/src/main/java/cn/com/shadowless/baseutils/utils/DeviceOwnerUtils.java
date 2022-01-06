@@ -33,41 +33,21 @@ import static android.app.admin.DevicePolicyManager.ACTION_PROVISION_MANAGED_PRO
  *
  * @author sHadowLess
  */
-public class DeviceUtils {
+public class DeviceOwnerUtils {
 
     /**
      * 应用信息类
      */
     public static class AppInfo {
-        /**
-         * 应用包名
-         */
-        private String packageName;
-        /**
-         * 应用图标
-         */
-        private Drawable ico;
-        /**
-         * 应用名称
-         */
-        private CharSequence name;
-        /**
-         * 是否启用
-         */
-        private boolean mIsEnable;
 
         public AppInfo(String packageName, Drawable ico, CharSequence name, boolean mIsEnable) {
-            this.packageName = packageName;
-            this.ico = ico;
-            this.name = name;
-            this.mIsEnable = mIsEnable;
         }
     }
 
     /**
      * The Tag.
      */
-    private final String TAG = DeviceUtils.class.getSimpleName();
+    private final String TAG = DeviceOwnerUtils.class.getSimpleName();
     /**
      * 密码令牌
      */
@@ -83,7 +63,7 @@ public class DeviceUtils {
     /**
      * 设备工具类实例
      */
-    public static DeviceUtils mInstance = null;
+    public static DeviceOwnerUtils mInstance = null;
     /**
      * 设备策略管理器实例
      */
@@ -97,7 +77,7 @@ public class DeviceUtils {
     /**
      * 构造
      */
-    private DeviceUtils() {
+    private DeviceOwnerUtils() {
 
     }
 
@@ -121,11 +101,11 @@ public class DeviceUtils {
      *
      * @return the instance
      */
-    public synchronized static DeviceUtils getInstance() {
+    public synchronized static DeviceOwnerUtils getInstance() {
         if (null == mInstance) {
-            synchronized (DeviceUtils.class) {
+            synchronized (DeviceOwnerUtils.class) {
                 if (null == mInstance) {
-                    mInstance = new DeviceUtils();
+                    mInstance = new DeviceOwnerUtils();
                 }
             }
         }

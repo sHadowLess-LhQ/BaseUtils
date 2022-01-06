@@ -9,7 +9,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
+        versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,33 +30,29 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-
     //主模块
-    implementation 'com.jakewharton:butterknife:10.2.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
-    implementation 'com.github.mengpeng920223:ToastUtils:v1.0.3'
-    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+    api 'com.github.mengpeng920223:ToastUtils:v1.0.3'
+    api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
 
     //BaseXPop
-    implementation 'com.github.li-xiaojun:XPopup:2.5.15'
-    implementation 'com.google.android.material:material:1.3.0-alpha01'
+    api 'com.github.li-xiaojun:XPopup:2.5.15'
+    api 'com.google.android.material:material:1.3.0-alpha01'
 
     //RxUtils
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    api 'io.reactivex.rxjava2:rxjava:2.2.20'
+    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     //NetUtils
-    implementation 'com.squareup.okhttp3:okhttp:3.14.9'
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.squareup.retrofit2:retrofit:2.6.1'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    api 'com.squareup.okhttp3:okhttp:3.14.9'
+    api 'com.google.code.gson:gson:2.8.6'
+    api 'com.squareup.retrofit2:retrofit:2.6.1'
+    api 'com.squareup.retrofit2:converter-gson:2.6.1'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 
     //实体类注解
-    implementation 'org.projectlombok:lombok:1.18.8'
+    api 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
 }

@@ -19,8 +19,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
 import io.reactivex.ObservableEmitter;
@@ -42,10 +40,6 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      * 数据存储表
      */
     private static Map<String, Object> mData = new HashMap<>();
-    /**
-     * 黄油刀
-     */
-    private Unbinder unbinder = null;
     /**
      * 屏幕方向标志
      */
@@ -74,7 +68,6 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        Log.d(TAG, "onAttach");
         this.mActivity = (Activity) context;
     }
 
@@ -86,8 +79,6 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
         } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             isOrientation = true;
         }
-        View view = LayoutInflater.from(mActivity).inflate(getLayoutId(), container, false);
-        unbinder = ButterKnife.bind(this, view);
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
             disposable = new RxPermissions(mActivity).requestEachCombined(permissions)
@@ -104,13 +95,11 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
         } else {
             RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
         }
-        return view;
+        return setLayout();
     }
 
     @Override
     public void onDestroyView() {
-        unbinder.unbind();
-        Log.d(TAG, "onDestroyView");
         super.onDestroyView();
     }
 
@@ -120,14 +109,12 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
             disposable.dispose();
         }
         super.onDestroy();
-        Log.d(TAG, "onDestroy");
     }
 
     @Override
     public void onDetach() {
         mActivity = null;
         super.onDetach();
-        Log.d(TAG, "onDetach");
     }
 
     @Override
@@ -179,7 +166,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      *
      * @return layout id
      */
-    protected abstract int getLayoutId();
+    protected abstract View setLayout();
 
     /**
      * 初始化数据

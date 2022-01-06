@@ -3,6 +3,7 @@ package cn.com.shadowless.baseutils.baseView;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,8 +15,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
 import io.reactivex.ObservableEmitter;
@@ -36,10 +35,6 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      * 数据存储表
      */
     private static Map<String, Object> mData = new HashMap<>();
-    /**
-     * 黄油刀
-     */
-    private Unbinder unbinder = null;
     /**
      * 屏幕方向标志
      */
@@ -70,7 +65,6 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
             isOrientation = true;
         }
         setContentView(setLayout());
-        unbinder = ButterKnife.bind(this);
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
             disposable = new RxPermissions(this).requestEachCombined(permissions)
@@ -91,11 +85,9 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
 
     @Override
     protected void onDestroy() {
-        unbinder.unbind();
         if (!disposable.isDisposed()) {
             disposable.dispose();
         }
-        Log.d("TAG", "onDestroy");
         super.onDestroy();
     }
 
@@ -148,7 +140,7 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      *
      * @return the layout
      */
-    protected abstract int setLayout();
+    protected abstract View setLayout();
 
     /**
      * 初始化数据

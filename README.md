@@ -13,25 +13,36 @@ Step 1. 添加maven仓库地址
          repositories {
             ...
               maven { url 'https://jitpack.io' }
+              maven { url 'https://www.jitpack.io' }
          }
+     }
+```
+
+```
+     android {
+      ...
+       viewBinding {
+         enabled = true
+          }
      }
 ```
 
 Step 2. 添加依赖
 
+a、克隆引入
+
 ```
-     删除build.gradle中的
+     删除model中build.gradle的
      apply plugin: 'com.github.dcendents.android-maven'
      group = 'com.gitee.shadowless_lhq'
-     克隆项目直接引入model，无需添加任何依赖
 ```
+
+b、远程仓库引入
 
 ```
      dependencies {
             //主模块
             implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
-            implementation 'com.jakewharton:butterknife:10.2.1'
-            annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
             implementation 'com.github.mengpeng920223:ToastUtils:v1.0.3'
             implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
             implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
@@ -65,7 +76,8 @@ Step 2. 添加依赖
 
 ```
      //设置布局文件
-     int setLayout()
+     //通过ViewBinding绑定的视图对象回传getRoot()
+     View setLayout()
      //设置需要获取的权限，无需申请可传null或空数组
      String[] permissionName()
      //初始化数据
@@ -82,7 +94,8 @@ Step 2. 添加依赖
 
 ```
      //设置布局文件
-     int setLayout()
+     //通过ViewBinding绑定的视图对象回传getRoot()
+     View setLayout()
      //设置需要获取的权限，无需申请可传null或空数组
      String[] permissionName()
      //初始化数据

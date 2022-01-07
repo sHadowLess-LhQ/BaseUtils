@@ -3,11 +3,11 @@ package cn.com.shadowless.baseutils.baseView;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewbinding.ViewBinding;
 
 import com.mengpeng.mphelper.ToastUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -23,9 +23,10 @@ import io.reactivex.disposables.Disposable;
 /**
  * 基类Activity
  *
+ * @param <T> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseActivity extends AppCompatActivity implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
+public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActivity implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
 
     /**
      * TAG
@@ -40,9 +41,9 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
      */
     protected boolean isOrientation = false;
     /**
-     * 订阅
+     * The Bind.
      */
-    private Disposable disposable = null;
+    private T bind = null;
 
     /**
      * 初始化数据回调接口
@@ -56,6 +57,12 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
         void success(Map<String, Object> map);
     }
 
+    /**
+     * 订阅
+     */
+    private Disposable disposable = null;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +71,8 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
         } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             isOrientation = true;
         }
-        setContentView(setLayout());
+        bind = (T) setBindView();
+        setContentView(bind.getRoot());
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
             disposable = new RxPermissions(this).requestEachCombined(permissions)
@@ -87,6 +95,9 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     protected void onDestroy() {
         if (!disposable.isDisposed()) {
             disposable.dispose();
+        }
+        if (null != bind) {
+            bind = null;
         }
         super.onDestroy();
     }
@@ -117,6 +128,15 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     }
 
     /**
+     * Gets bind view.
+     *
+     * @return the bind view
+     */
+    public T getBindView() {
+        return bind;
+    }
+
+    /**
      * 内部权限提示
      *
      * @param name the 权限名
@@ -136,11 +156,12 @@ public abstract class BaseActivity extends AppCompatActivity implements RxUtils.
     protected abstract String[] permissionName();
 
     /**
-     * 设置布局
+     * Sets view.
      *
-     * @return the layout
+     * @return the view
      */
-    protected abstract View setLayout();
+    @NonNull
+    protected abstract T setBindView();
 
     /**
      * 初始化数据

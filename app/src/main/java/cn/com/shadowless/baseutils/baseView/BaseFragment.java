@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewbinding.ViewBinding;
 
 import com.mengpeng.mphelper.ToastUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -30,7 +31,7 @@ import io.reactivex.disposables.Disposable;
  *
  * @author sHadowLess
  */
-public abstract class BaseFragment extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
+public abstract class BaseFragment<T extends ViewBinding> extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
 
     /**
      * TAG
@@ -52,6 +53,10 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
      * 订阅
      */
     private Disposable disposable = null;
+    /**
+     * The Binding.
+     */
+    private T bind = null;
 
     /**
      * 初始化数据回调接口
@@ -79,6 +84,7 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
         } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             isOrientation = true;
         }
+        bind = (T) setBindView();
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
             disposable = new RxPermissions(mActivity).requestEachCombined(permissions)
@@ -95,11 +101,14 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
         } else {
             RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
         }
-        return setLayout();
+        return bind.getRoot();
     }
 
     @Override
     public void onDestroyView() {
+        if (bind != null) {
+            bind = null;
+        }
         super.onDestroyView();
     }
 
@@ -143,6 +152,15 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     }
 
     /**
+     * Gets bind view.
+     *
+     * @return the bind view
+     */
+    public T getBindView() {
+        return bind;
+    }
+
+    /**
      * 内部权限提示
      *
      * @param name the 权限名
@@ -162,11 +180,12 @@ public abstract class BaseFragment extends Fragment implements RxUtils.ObserverC
     protected abstract String[] permissionName();
 
     /**
-     * 设置布局
+     * Sets view.
      *
-     * @return layout id
+     * @return the view
      */
-    protected abstract View setLayout();
+    @NonNull
+    protected abstract T setBindView();
 
     /**
      * 初始化数据

@@ -6,7 +6,7 @@
 
 #### 安装教程
 
-Step 1. 添加maven仓库地址
+Step 1. 添加maven仓库地址和配置
 
 ```
      allprojects {
@@ -19,6 +19,7 @@ Step 1. 添加maven仓库地址
 ```
 
 ```
+     //主项目的build.gradle中加入
      android {
       ...
        viewBinding {
@@ -72,38 +73,72 @@ b、远程仓库引入
 
 ### 1、BaseActivity：直接继承
 
-重写函数：
-
 ```
-     //设置布局文件
-     //通过ViewBinding绑定的视图对象回传getRoot()
-     View setLayout()
-     //设置需要获取的权限，无需申请可传null或空数组
-     String[] permissionName()
-     //初始化数据
-     void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack)
-     【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
-     【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
-     //初始化界面控件
-     void initView(@NonNull Map<String, Object> map)
+//创建xml后，点击编译，填入需要绑定的视图
+public class MainActivity extends BaseActivity<ActivityMainBinding> {
+
+    @Nullable
+    @Override
+    protected String[] permissionName() {
+       //设置需要获取的权限，无需申请可传null或空数组
+       return null;
+    }
+
+    @NonNull
+    @Override
+    protected ActivityMainBinding setBindView() {
+       //回传ViewBinding绑定的视图
+       return ActivityMainBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
+    protected void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack) {
+       //初始化数据
+       【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
+       【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
+    }
+
+    @Override
+    protected void initView(@NonNull Map<String, Object> data) {
+       //初始化界面控件
+       getBindView().test.setText("成功");
+    }
+}
 ```
 
 ### 2、BaseFragment：直接继承
 
-重写函数：
-
 ```
-     //设置布局文件
-     //通过ViewBinding绑定的视图对象回传getRoot()
-     View setLayout()
-     //设置需要获取的权限，无需申请可传null或空数组
-     String[] permissionName()
-     //初始化数据
-     void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack)
-     【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
-     【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
-     //初始化界面控件
-     void initView(@NonNull Map<String, Object> map)
+//创建xml后，点击编译，填入需要绑定的视图
+public class MainFragment extends BaseFragment<FragmentMainBinding> {
+    
+    @Nullable
+    @Override
+    protected String[] permissionName() {
+       //设置需要获取的权限，无需申请可传null或空数组
+       return null;
+    }
+
+    @NonNull
+    @Override
+    protected FragmentMainBinding setBindView() {
+        //回传ViewBinding绑定的视图
+        return FragmentMainBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
+    protected void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack) {
+       //初始化数据
+       【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
+       【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
+    }
+
+    @Override
+    protected void initView(@NonNull Map<String, Object> map) {
+       //初始化界面控件
+       getBindView().test.setText("成功");
+    }
+}
 ```
 
 ### 3、CustomDialog：调用示例

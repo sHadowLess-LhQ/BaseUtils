@@ -54,7 +54,7 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
      */
     private Disposable disposable = null;
     /**
-     * The Binding.
+     * 视图绑定
      */
     private T bind = null;
 
@@ -152,9 +152,9 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
     }
 
     /**
-     * Gets bind view.
+     * 获取绑定的视图
      *
-     * @return the bind view
+     * @return the 视图
      */
     public T getBindView() {
         return bind;
@@ -174,15 +174,15 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
     /**
      * 需要申请的权限
      *
-     * @return the string [ ]
+     * @return the 权限组
      */
     @Nullable
     protected abstract String[] permissionName();
 
     /**
-     * Sets view.
+     * 设置绑定视图
      *
-     * @return the view
+     * @return the 视图
      */
     @NonNull
     protected abstract T setBindView();
@@ -190,15 +190,15 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
     /**
      * 初始化数据
      *
-     * @param mData            the m data
-     * @param initDataCallBack the init data call back
+     * @param mData            the 数据表
+     * @param initDataCallBack the 数据回调
      */
     protected abstract void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack);
 
     /**
      * 初始化视图
      *
-     * @param map the map
+     * @param map the 数据表
      */
     protected abstract void initView(@NonNull Map<String, Object> map);
 }

@@ -41,7 +41,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
      */
     protected boolean isOrientation = false;
     /**
-     * The Bind.
+     * 视图绑定
      */
     private T bind = null;
 
@@ -52,7 +52,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         /**
          * 成功
          *
-         * @param map the map
+         * @param map the 数据表
          */
         void success(Map<String, Object> map);
     }
@@ -128,9 +128,9 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     }
 
     /**
-     * Gets bind view.
+     * 获取绑定的视图
      *
-     * @return the bind view
+     * @return the 视图
      */
     public T getBindView() {
         return bind;
@@ -150,15 +150,15 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     /**
      * 需要申请的权限
      *
-     * @return the string [ ]
+     * @return the 权限组
      */
     @Nullable
     protected abstract String[] permissionName();
 
     /**
-     * Sets view.
+     * 设置绑定视图
      *
-     * @return the view
+     * @return the 视图
      */
     @NonNull
     protected abstract T setBindView();
@@ -166,15 +166,15 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     /**
      * 初始化数据
      *
-     * @param mData            the m data
-     * @param initDataCallBack the init data call back
+     * @param mData            the  数据表
+     * @param initDataCallBack the  回调
      */
     protected abstract void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack);
 
     /**
      * 初始化视图
      *
-     * @param data the data
+     * @param data the 数据表
      */
     protected abstract void initView(@NonNull Map<String, Object> data);
 }

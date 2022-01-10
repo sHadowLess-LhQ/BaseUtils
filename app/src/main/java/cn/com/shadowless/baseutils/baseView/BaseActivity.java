@@ -33,17 +33,13 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
      */
     private final String TAG = BaseActivity.class.getSimpleName();
     /**
-     * 数据存储表
+     * 视图绑定
      */
-    private static Map<String, Object> mData = new HashMap<>();
+    private T bind = null;
     /**
      * 屏幕方向标志
      */
     protected boolean isOrientation = false;
-    /**
-     * 视图绑定
-     */
-    private T bind = null;
 
     /**
      * 初始化数据回调接口
@@ -71,7 +67,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             isOrientation = true;
         }
-        bind = (T) setBindView();
+        bind = setBindView();
         setContentView(bind.getRoot());
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
@@ -104,7 +100,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
 
     @Override
     public void onEmitter(ObservableEmitter<Map<String, Object>> emitter) {
-        mData.clear();
+        Map<String, Object> mData = new HashMap<>();
         initData(mData, map -> {
             emitter.onNext(map);
             emitter.onComplete();
@@ -124,7 +120,6 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     @Override
     public void onEnd(Disposable disposable) {
         disposable.dispose();
-        Log.i(TAG, "onEnd: " + "初始化数据成功");
     }
 
     /**

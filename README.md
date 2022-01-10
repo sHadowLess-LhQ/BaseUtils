@@ -33,7 +33,7 @@ Step 2. 添加依赖
 a、克隆引入
 
 ```
-     删除model中build.gradle的
+     //删除model中build.gradle的
      apply plugin: 'com.github.dcendents.android-maven'
      group = 'com.gitee.shadowless_lhq'
 ```
@@ -96,12 +96,19 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
        【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
+       if(isOrientation){
+        //竖屏
+       }else{
+        //横屏
+       }
+       mData.put("data","成功");
+       initDataCallBack.success(mData);
     }
 
     @Override
     protected void initView(@NonNull Map<String, Object> data) {
        //初始化界面控件
-       getBindView().test.setText("成功");
+       getBindView().test.setText(map.get("data"));
     }
 }
 ```
@@ -131,12 +138,19 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
        【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
+       if(isOrientation){
+        //竖屏
+       }else{
+        //横屏
+       }
+       mData.put("data","成功");
+       initDataCallBack.success(mData);
     }
 
     @Override
     protected void initView(@NonNull Map<String, Object> map) {
        //初始化界面控件
-       getBindView().test.setText("成功");
+       getBindView().test.setText(map.get("data"));
     }
 }
 ```

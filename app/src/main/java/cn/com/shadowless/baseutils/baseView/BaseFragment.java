@@ -29,6 +29,7 @@ import io.reactivex.disposables.Disposable;
 /**
  * 基类Fragment
  *
+ * @param <T> the type parameter
  * @author sHadowLess
  */
 public abstract class BaseFragment<T extends ViewBinding> extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
@@ -38,9 +39,9 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
      */
     private final String TAG = BaseFragment.class.getSimpleName();
     /**
-     * 数据存储表
+     * 视图绑定
      */
-    private static Map<String, Object> mData = new HashMap<>();
+    private T bind = null;
     /**
      * 屏幕方向标志
      */
@@ -53,10 +54,6 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
      * 订阅
      */
     private Disposable disposable = null;
-    /**
-     * 视图绑定
-     */
-    private T bind = null;
 
     /**
      * 初始化数据回调接口
@@ -84,7 +81,7 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
         } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             isOrientation = true;
         }
-        bind = (T) setBindView();
+        bind = setBindView();
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
             disposable = new RxPermissions(mActivity).requestEachCombined(permissions)
@@ -128,7 +125,7 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
 
     @Override
     public void onEmitter(ObservableEmitter<Map<String, Object>> emitter) {
-        mData.clear();
+        Map<String, Object> mData = new HashMap<>();
         initData(mData, map -> {
             emitter.onNext(map);
             emitter.onComplete();
@@ -148,7 +145,6 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
     @Override
     public void onEnd(Disposable disposable) {
         disposable.dispose();
-        Log.i(TAG, "onEnd: " + "初始化数据成功");
     }
 
     /**

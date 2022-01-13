@@ -353,7 +353,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
      //通过包名卸载应用
      ApplicationUtils.startUnInstall(Context context, String packageName)
      //通过路径安装应用
-     【注】：AM配置的Provider中的authorities，需要包名+.fileProvider
+     【注】：MF配置的Provider中的authorities，需要包名+.fileProvider
      ApplicationUtils.startInstallApk(Context context, String apkPath)
      //通过包名查看应用详情
      ApplicationUtils.startApplicationInfo(Context context)
@@ -376,7 +376,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
 
 ### 11、DeviceUtils
 
-【注】：使用前，请在MF清单文件中，给BasicDeviceAdminReceiver注册广播，并在res/xml资源中新建声明文件
+【注】：使用前，请在MF清单文件中，给BasicDeviceAdminReceiver注册广播，并在res/xml资源中新建声明文件，也可以使用库中默认的配置文件，如下示例
 
 ```
      <receiver
@@ -574,7 +574,7 @@ public class HelpService extends BaseAccessibilityService {
 }
 ```
 
-MF文件中，注册服务
+MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 
 ```
      <service
@@ -599,100 +599,100 @@ MF文件中，注册服务
      //获取辅助服务对象
      HelpService.getService()
      //查找指定字符的不可点击视图节点
-     HelpService.findViewByTextUnClickable(String text)
+     HelpService.getService().findViewByTextUnClickable(String text)
      //查找指定字符的可点击视图节点
-     HelpService.findViewByTextClickable(String text)
+     HelpService.getService().findViewByTextClickable(String text)
      //查找指定视图id的不可点击视图节点
      //id规范：包名:id/视图id
-     HelpService.findViewByIdUnClickable(String id)
+     HelpService.getService().findViewByIdUnClickable(String id)
      //查找指定视图id的可点击视图节点
      //id规范：包名:id/视图id
-     HelpService.findViewByClickable(String id)
+     HelpService.getService().findViewByClickable(String id)
      //单击视图节点
-     HelpService.performViewClick(AccessibilityNodeInfo nodeInfo)
+     HelpService.getService().performViewClick(AccessibilityNodeInfo nodeInfo)
      //长按视图节点
-     HelpService.performViewLongClick(AccessibilityNodeInfo nodeInfo)
+     HelpService.getService().performViewLongClick(AccessibilityNodeInfo nodeInfo)
      //执行单击返回键
-     HelpService.performBackClick()
+     HelpService.getService().performBackClick()
      //延迟单击返回键
-     HelpService.performBackClick(int milliSecond)
+     HelpService.getService().performBackClick(int milliSecond)
      //执行分屏
-     HelpService.performSplitScreen()
+     HelpService.getService().performSplitScreen()
      //延迟执行分屏
-     HelpService.performSplitScreen(int milliSecond)
+     HelpService.getService().performSplitScreen(int milliSecond)
      //执行截图
-     HelpService.performTakeScreenShot()
+     HelpService.getService().performTakeScreenShot()
      //延迟执行截图
-     HelpService.performTakeScreenShot(int milliSecond)
+     HelpService.getService().performTakeScreenShot(int milliSecond)
      //执行单击最近任务
-     HelpService.performRecent()
+     HelpService.getService().performRecent()
      //延迟执行单击最近任务
-     HelpService.performRecent(int milliSecond)
+     HelpService.getService().performRecent(int milliSecond)
      //执行下拉二级状态栏
-     HelpService.performChildStatueBar()
+     HelpService.getService().performChildStatueBar()
      //延迟执行下拉二级状态栏
-     HelpService.performChildStatueBar(int milliSecond)
+     HelpService.getService().performChildStatueBar(int milliSecond)
      //执行弹出电源管理框
-     HelpService.performPowerDialog()
+     HelpService.getService().performPowerDialog()
      //延迟执行弹出电源管理框
-     HelpService.performPowerDialog(int milliSecond)
+     HelpService.getService().performPowerDialog(int milliSecond)
      //执行下拉状态栏
-     HelpService.performStatueBar()
+     HelpService.getService().performStatueBar()
      //延迟执行下拉状态栏
-     HelpService.performStatueBar(int milliSecond)
+     HelpService.getService().performStatueBar(int milliSecond)
      //执行单击home键
-     HelpService.performBackHomClicke()
+     HelpService.getService().performBackHomClicke()
      //延迟执行单击home键
-     HelpService.performBackHomeClick(int milliSecond)
+     HelpService.getService().performBackHomeClick(int milliSecond)
      //执行锁屏
-     HelpService.performLockScreen()
+     HelpService.getService().performLockScreen()
      //延迟执行锁屏
-     HelpService.performLockScreen(int milliSecond)
+     HelpService.getService().performLockScreen(int milliSecond)
      //点击指定字符的视图
-     HelpService.clickTextViewByText(String text)
+     HelpService.getService().clickTextViewByText(String text)
      //延迟点击指定字符的视图
-     HelpService.clickTextViewByText(String text, int milliSecond)
+     HelpService.getService().clickTextViewByText(String text, int milliSecond)
      //长按指定字符的视图
-     HelpService.longClickTextViewByText(String text)
+     HelpService.getService().longClickTextViewByText(String text)
      //延迟长按指定字符的视图
-     HelpService.longClickTextViewByText(String text, int milliSecond)
+     HelpService.getService().longClickTextViewByText(String text, int milliSecond)
      //点击指定id的视图
      //id规范：包名:id/视图id
-     HelpService.clickTextViewById(String id)
+     HelpService.getService().clickTextViewById(String id)
      //延迟点击指定id的视图
      //id规范：包名:id/视图id
-     HelpService.clickTextViewById(String id, int milliSecond)
+     HelpService.getService().clickTextViewById(String id, int milliSecond)
      //长按指定id的视图
      //id规范：包名:id/视图id
-     HelpService.longClickTextViewById(String id)
+     HelpService.getService().longClickTextViewById(String id)
      //延迟长按指定id的视图
      //id规范：包名:id/视图id
-     HelpService.longClickTextViewById(String id, int milliSecond)
+     HelpService.getService().longClickTextViewById(String id, int milliSecond)
      //输入指定字符到指定字符的视图
-     HelpService.inputTextView(String view, String text)
+     HelpService.getService().inputTextView(String view, String text)
      //延迟输入指定字符到指定字符的视图
-     HelpService.inputTextView(String view, String text, int milliSecond)
+     HelpService.getService().inputTextView(String view, String text, int milliSecond)
      //输入指定id到指定id的视图
      //id规范：包名:id/视图id
-     HelpService.inputIdView(String view, String text)
+     HelpService.getService().inputIdView(String view, String text)
      //延迟输入指定id到指定id的视图
      //id规范：包名:id/视图id
-     HelpService.inputIdView(String view, String text, int milliSecond)
+     HelpService.getService().inputIdView(String view, String text, int milliSecond)
      //单击指定坐标
-     HelpService.dispatchGestureClick(int x, int y)
+     HelpService.getService().dispatchGestureClick(int x, int y)
      //延迟单击指定坐标
-     HelpService.dispatchGestureClick(int x, int y, int milliSecond)
+     HelpService.getService().dispatchGestureClick(int x, int y, int milliSecond)
      //长按指定坐标
-     HelpService.dispatchGestureLongClick(int x, int y)
+     HelpService.getService().dispatchGestureLongClick(int x, int y)
      //延迟长按指定坐标
-     HelpService.dispatchGestureLongClick(int x, int y, int milliSecond)
+     HelpService.getService().dispatchGestureLongClick(int x, int y, int milliSecond)
      //指定坐标连续手势滑动
      //参数1：x坐标
      //参数2：y坐标
      //参数3：滑动持续时间
      //参数4：每次滑动的间隔时间
      //坐标数量需要对应，否则不会执行方法
-     HelpService.continueSwipe(int[] x, int[] y, int swipeDuration, int stepDuration)
+     HelpService.getService().continueSwipe(int[] x, int[] y, int swipeDuration, int stepDuration)
 ```
 
 #### 特技

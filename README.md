@@ -390,7 +390,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
      </receiver>
 ```
 
-### 方法说明：
+方法说明：
 
 ```
       //获取DeviceAdmin权限

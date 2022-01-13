@@ -1,21 +1,21 @@
-package cn.com.shadowless.baseutils.baseView;
+package cn.com.shadowless.baseutils.view;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.lxj.xpopup.core.HorizontalAttachPopupView;
+import com.lxj.xpopup.core.BubbleHorizontalAttachPopupView;
 
 /**
- * The type Base horizontal attach pop view.
+ * The type Base bubble horizontal attach popup view.
  */
-public abstract class BaseHorizontalAttachPopView extends HorizontalAttachPopupView {
+public abstract class BaseBubbleHorizontalAttachPopupView extends BubbleHorizontalAttachPopupView {
     /**
-     * Instantiates a new Base horizontal attach pop view.
+     * Instantiates a new Base bubble horizontal attach popup view.
      *
      * @param context the context
      */
-    public BaseHorizontalAttachPopView(@NonNull Context context) {
+    public BaseBubbleHorizontalAttachPopupView(@NonNull Context context) {
         super(context);
     }
 

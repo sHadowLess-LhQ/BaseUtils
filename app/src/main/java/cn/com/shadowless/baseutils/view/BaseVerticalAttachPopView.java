@@ -1,23 +1,21 @@
-package cn.com.shadowless.baseutils.baseView;
+package cn.com.shadowless.baseutils.view;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.lxj.xpopup.core.BottomPopupView;
+import com.lxj.xpopup.core.AttachPopupView;
 
 /**
- * The type Base bottom pop view.
- *
- * @author sHadowLess
+ * The type Base vertical attach pop view.
  */
-public abstract class BaseBottomPopView extends BottomPopupView {
+public abstract class BaseVerticalAttachPopView extends AttachPopupView {
     /**
-     * Instantiates a new Base bottom pop view.
+     * Instantiates a new Base vertical attach pop view.
      *
      * @param context the context
      */
-    public BaseBottomPopView(@NonNull Context context) {
+    public BaseVerticalAttachPopView(@NonNull Context context) {
         super(context);
     }
 

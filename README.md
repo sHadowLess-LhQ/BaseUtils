@@ -991,6 +991,9 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      //参数4：每次滑动的间隔时间
      //坐标数量需要对应，否则不会执行方法
      HelpService.getService().continueSwipe(int[] x, int[] y, int swipeDuration, int stepDuration)
+     //判断辅助服务是否开启
+     //参数2：辅助服务类
+     HelpService.getService().isAccessibilitySettingsOn(Context mContext, Class<?> cls)
 ```
 
 #### 特技

@@ -9,6 +9,8 @@
 Step 1. 添加maven仓库地址和配置
 
 ```
+     //旧AndroidStudio版本
+     //build.gradle
      allprojects {
          repositories {
             ...
@@ -16,6 +18,17 @@ Step 1. 添加maven仓库地址和配置
               maven { url 'https://www.jitpack.io' }
          }
      }
+     
+     //新AndroidStudio版本
+     //settings.gradle
+     dependencyResolutionManagement {
+          repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+          repositories {
+            ...
+             maven { url 'https://jitpack.io' }
+             maven { url 'https://www.jitpack.io' }
+          }
+      }
 ```
 
 ```

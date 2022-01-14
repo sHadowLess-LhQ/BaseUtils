@@ -560,16 +560,289 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
 ### 17、BaseAccessibilityService：直接继承
 
 ```
-public class HelpService extends BaseAccessibilityService {
+public class MyService extends BaseAccessibilityService {
 
     @Override
-    public void onConnected() {
-      //服务开启成功
+    protected void onConnected() {
+        //服务已开启
     }
 
     @Override
-    public void onRunning(AccessibilityEvent event) {
-     //服务运行后监听到的事件
+    protected void viewClickListener(AccessibilityEvent event) {
+        //视图单击监听
+        //可用属性：
+           getEventType()-事件类型。
+           getSource()-源信息（对于已注册的客户端）。 
+           getClassName()-源的类名。 
+           getPackageName()-源的包名。
+           getEventTime()-事件时间。
+           getText()-源的子树的文本。 
+           isEnabled()-源是否可用。
+           isPassword()-源是否是个密码。 
+           isChecked()-源是否选中。
+           getContentDescription()-源的内容描述。
+           getScrollX()-使用像素表示源左边缘的偏移量(不包含AdapterView的子视图)。 
+           getScrollY()-使用像素表示源顶部边缘的偏移量(不包含AdapterView的子视图)。 
+           getFromIndex()-源第一个可见项的从零开始的索引，包含（用于
+            AdapterView 的子视图）。
+           getToIndex()-源最后一个可见项的从零开始的索引，包含（用于
+            AdapterView 的子视图）。
+    }
+
+    @Override
+    protected void viewLongClickListener(AccessibilityEvent event) {
+        //视图长按监听
+        //可用属性：
+           getEventType()-事件类型。
+           getSource()-源信息（对于已注册的客户端）。 
+           getClassName()-源的类名。 
+           getPackageName()-源的包名。
+           getEventTime()-事件时间。
+           getText()-源的子树的文本。 
+           isEnabled()-源是否可用。
+           isPassword()-源是否是个密码。 
+           isChecked()-源是否选中。
+           getContentDescription()-源的内容描述。
+           getScrollX()-使用像素表示源左边缘的偏移量(不包含AdapterView的子视图)。 
+           getScrollY()-使用像素表示源顶部边缘的偏移量(不包含AdapterView的子视图)。 
+           getFromIndex()-源第一个可见项的从零开始的索引，包含（用于
+            AdapterView 的子视图）。
+           getToIndex()-源最后一个可见项的从零开始的索引，包含（用于
+            AdapterView 的子视图）。
+    }
+
+    @Override
+    protected void viewSelectListener(AccessibilityEvent event) {
+          //选中视图监听
+          //可用属性：
+             getEventType()-事件类型。
+             getSource()-源信息（对于已注册的客户端）。 
+             getClassName()-源的类名。 
+             getPackageName()-源的包名。
+             getEventTime()-事件时间。
+             getText()-源的子树的文本。 
+             isEnabled()-源是否可用。
+             isPassword()-源是否是个密码。 
+             isChecked()-源是否选中。
+             getContentDescription()-源的内容描述。
+             getScrollX()-使用像素表示源左边缘的偏移量(不包含AdapterView的子视图)。 
+             getScrollY()-使用像素表示源顶部边缘的偏移量(不包含AdapterView的子视图)。 
+             getFromIndex()-源第一个可见项的从零开始的索引，包含（用于
+              AdapterView 的子视图）。
+             getToIndex()-源最后一个可见项的从零开始的索引，包含（用于
+              AdapterView 的子视图）。
+    }
+
+    @Override
+    protected void viewFocusListener(AccessibilityEvent event) {
+          //聚焦的视图
+          //可用属性：
+             getEventType()-事件类型。
+             getSource()-源信息（对于已注册的客户端）。 
+             getClassName()-源的类名。 
+             getPackageName()-源的包名。
+             getEventTime()-事件时间。
+             getText()-源的子树的文本。 
+             isEnabled()-源是否可用。
+             isPassword()-源是否是个密码。 
+             isChecked()-源是否选中。
+             getContentDescription()-源的内容描述。
+             getScrollX()-使用像素表示源左边缘的偏移量(不包含AdapterView的子视图)。 
+             getScrollY()-使用像素表示源顶部边缘的偏移量(不包含AdapterView的子视图)。 
+             getFromIndex()-源第一个可见项的从零开始的索引，包含（用于
+              AdapterView 的子视图）。
+             getToIndex()-源最后一个可见项的从零开始的索引，包含（用于
+              AdapterView 的子视图）。
+    } 
+
+    @Override
+    protected void etTextChangedListener(AccessibilityEvent event) {
+          //编辑框文本改变监听
+          //可用属性：
+             getEventType()-事件类型。
+             getSource()-源信息（对于已注册的客户端）。 
+             getClassName()-源的类名。 
+             getPackageName()-源的包名。
+             getEventTime()-事件时间。
+             getText()-源的子树的文本。 
+             isEnabled()-源是否可用。
+             isPassword()-源是否是个密码。 
+             isChecked()-源是否选中。
+             getFromIndex()-文本改变起始索引。 
+             getAddedCount()-被添加的字符数。
+             getRemovedCount()-被移除的字符数。
+             getBeforeText()-改变之前的源文本。
+             getContentDescription()-源的内容描述。
+    }
+
+    @Override
+    protected void etSelectedTextChangedListener(AccessibilityEvent event) {
+          //编辑框选中文本改变监听
+          //可用属性：
+             getEventType()-事件类型。
+             getSource()-源信息（对于已注册的客户端）。 
+             getClassName()-源的类名。 
+             getPackageName()-源的包名。
+             getEventTime()-事件时间。
+             getText()-源的子树的文本。 
+             isEnabled()-源是否可用。
+             isPassword()-源是否是个密码。 
+             isChecked()-源是否选中。
+             getFromIndex()-文本改变起始索引。 
+             getAddedCount()-被添加的字符数。
+             getRemovedCount()-被移除的字符数。
+             getBeforeText()-改变之前的源文本。
+             getContentDescription()-源的内容描述。
+    }
+
+    @Override
+    protected void viewScrollListener(AccessibilityEvent event) {
+          //视图滚动监听
+          //可用属性：
+             getEventType()-事件类型。
+             getSource()-源信息（对于已注册的客户端）。 
+             getClassName()-源的类名。 
+             getPackageName()-源的包名。
+             getEventTime()-事件时间。
+             getText()-源的子树的文本。 
+             isEnabled()-源是否可用。
+             getContentDescription()-源的内容描述。
+             getScrollX()-使用像素表示源左边缘的偏移量(不包含AdapterView的子视图)。
+             getScrollY()-使用像素表示源顶边缘的偏移量(不包含AdapterView的子视图)。 
+             getFromIndex()-源第一个可见项的从零开始的索引，包含（用于
+              AdapterView 的子视图）。
+               getToIndex()-源最后一个可见项的从零开始的索引，包含（用于
+              AdapterView 的子视图）。 
+             getItemCount()-源的总项目数（用于AdapterView 的子视图）
+    }
+
+    @Override
+    protected void windowStatusChangedListener(AccessibilityEvent event) {
+          //窗口状态改变监听
+          //可用属性：
+             getEventType()-事件类型。
+             getSource()-源信息（对于已注册的客户端）。 
+             getClassName()-源的类名。 
+             getPackageName()-源的包名。
+             getEventTime()-事件时间。
+             getText()-源的子树的文本。 
+             isEnabled()-源是否可用。
+    }
+
+    @Override
+    protected void windowContentChangedListener(AccessibilityEvent event) {
+          //窗口内容改变监听
+          //可用属性：
+             getEventType()-事件的类型。
+             getContentChangeTypes()-内容改变的类型。 
+             getSource()-源信息（对于已注册的客户端）。 
+             getClassName()-源的类名。 
+             getPackageName()-源的包名。
+             getEventTime()-事件时间。
+    }
+
+    @Override
+    protected void windowChangedListener(AccessibilityEvent event) {
+          //窗口内容改变监听
+          //可用属性：
+             getEventType()-事件类型。
+             getEventTime()-事件时间。
+    }
+
+    @Override
+    protected void notificationStatusChangedListener(AccessibilityEvent event) {
+          //通知监听
+          //可用属性：
+             getEventType()-事件类型。
+             getClassName()-源的类名。
+             getPackageName()-源的包名。
+             getEventTime()-事件时间。
+             getParcelableData-发布的通知（Notification）。 
+             getText-提供更多上下文的文本。
+    }
+
+    @Override
+    protected void viewHoverEnterListener(AccessibilityEvent event) {
+          //视图悬停进入监听
+          //可用属性：
+             getEventType()-事件类型。
+             getSource()-源信息（对于已注册的客户端）。 
+             getClassName()-源的类名。 
+             getPackageName()-源的包名。
+             getEventTime()-事件时间。
+             getText()-源的子树的文本。 
+             isEnabled()-源是否可用。
+             getContentDescription()-源的内容描述。
+             getScrollX()-使用像素表示源左边缘的偏移量(不包含AdapterView的子视图)。
+             getScrollY()-使用像素表示源顶边缘的偏移量(不包含AdapterView的子视图)。 
+             getFromIndex()-源第一个可见项的从零开始的索引，包含（用于
+              AdapterView 的子视图）。
+             getToIndex()-源最后一个可见项的从零开始的索引，包含（用于
+              AdapterView 的子视图）。 
+             getItemCount()-源的总项目数（用于 AdapterView 的子视图）。
+    }
+
+    @Override
+    protected void viewHoverExitListener(AccessibilityEvent event) {
+          //视图悬停退出监听
+          //可用属性：
+             getEventType()-事件类型。
+             getSource()-源信息（对于已注册的客户端）。 
+             getClassName()-源的类名。 
+             getPackageName()-源的包名。
+             getEventTime()-事件时间。
+             getText()-源的子树的文本。 
+             isEnabled()-源是否可用。
+             getContentDescription()-源的内容描述。
+             getScrollX()-使用像素表示源左边缘的偏移量(不包含AdapterView的子视图)。
+             getScrollY()-使用像素表示源顶边缘的偏移量(不包含AdapterView的子视图)。 
+             getFromIndex()-源第一个可见项的从零开始的索引，包含（用于
+              AdapterView 的子视图）。
+             getToIndex()-源最后一个可见项的从零开始的索引，包含（用于
+              AdapterView 的子视图）。 
+             getItemCount()-源的总项目数（用于 AdapterView 的子视图）。
+    }
+
+    @Override
+    protected void touchInteractionStartedListener(AccessibilityEvent event) {
+          //触摸交互开始监听
+          //可用属性：
+             getEventType()-事件的类型。
+    }
+
+    @Override
+    protected void touchInteractionEndedListener(AccessibilityEvent event) {
+          //触摸交互结束出监听
+          //可用属性：
+             getEventType()-事件的类型。
+    }
+
+    @Override
+    protected void touchExploredStartedListener(AccessibilityEvent event) {
+          //触摸浏览手势开始监听
+          //可用属性：
+             getEventType()-事件的类型。
+    }
+
+    @Override
+    protected void touchExploredEndedListener(AccessibilityEvent event) {
+          //触摸浏览手势结束监听
+          //可用属性：
+             getEventType()-事件的类型。
+    }
+
+    @Override
+    protected void gestureDetectedStartListener(AccessibilityEvent event) {
+          //触摸手势检测开始监听
+          //可用属性：
+             getEventType()-事件的类型。
+    }
+
+    @Override
+    protected void gestureDetectedEndListener(AccessibilityEvent event) {
+          //触摸手势检测结束监听
+          //可用属性：
+             getEventType()-事件的类型。
     }
 }
 ```
@@ -649,35 +922,35 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      //延迟执行锁屏
      HelpService.getService().performLockScreen(int milliSecond)
      //点击指定字符的视图
-     HelpService.getService().clickTextViewByText(String text)
+     HelpService.getService().clickViewByText(String text)
      //延迟点击指定字符的视图
-     HelpService.getService().clickTextViewByText(String text, int milliSecond)
+     HelpService.getService().clickViewByText(String text, int milliSecond)
      //长按指定字符的视图
-     HelpService.getService().longClickTextViewByText(String text)
+     HelpService.getService().longClickViewByText(String text)
      //延迟长按指定字符的视图
-     HelpService.getService().longClickTextViewByText(String text, int milliSecond)
+     HelpService.getService().longClickViewByText(String text, int milliSecond)
      //点击指定id的视图
      //id规范：包名:id/视图id
-     HelpService.getService().clickTextViewById(String id)
+     HelpService.getService().clickViewById(String id)
      //延迟点击指定id的视图
      //id规范：包名:id/视图id
-     HelpService.getService().clickTextViewById(String id, int milliSecond)
+     HelpService.getService().clickViewById(String id, int milliSecond)
      //长按指定id的视图
      //id规范：包名:id/视图id
-     HelpService.getService().longClickTextViewById(String id)
+     HelpService.getService().longClickViewById(String id)
      //延迟长按指定id的视图
      //id规范：包名:id/视图id
-     HelpService.getService().longClickTextViewById(String id, int milliSecond)
+     HelpService.getService().longClickViewById(String id, int milliSecond)
      //输入指定字符到指定字符的视图
-     HelpService.getService().inputTextView(String view, String text)
+     HelpService.getService().inputTextToEtView(String view, String text)
      //延迟输入指定字符到指定字符的视图
-     HelpService.getService().inputTextView(String view, String text, int milliSecond)
+     HelpService.getService().inputTextToEtView(String view, String text, int milliSecond)
      //输入指定id到指定id的视图
      //id规范：包名:id/视图id
-     HelpService.getService().inputIdView(String view, String text)
+     HelpService.getService().inputIdToEtView(String view, String text)
      //延迟输入指定id到指定id的视图
      //id规范：包名:id/视图id
-     HelpService.getService().inputIdView(String view, String text, int milliSecond)
+     HelpService.getService().inputIdToEtView(String view, String text, int milliSecond)
      //单击指定坐标
      HelpService.getService().dispatchGestureClick(int x, int y)
      //延迟单击指定坐标

@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -674,7 +676,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
         if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
             for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
                 if (nodeInfo != null) {
-                    performViewClick(nodeInfo);
+                    performViewLongClick(nodeInfo);
                     break;
                 }
             }
@@ -700,7 +702,6 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param id the id
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void clickViewById(String id) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
         if (accessibilityNodeInfo == null) {
@@ -736,7 +737,6 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param id the id
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void longClickViewById(String id) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
         if (accessibilityNodeInfo == null) {
@@ -912,6 +912,42 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
                     }
                 }
             }, null);
+        }
+    }
+
+    /**
+     * 判断辅助服务是否开启
+     *
+     * @param mContext the 上下文
+     * @param cls      the 辅助服务类
+     * @return the boolean
+     */
+    public boolean isAccessibilitySettingsOn(Context mContext, Class<?> cls) {
+        try {
+            String service = getPackageName() + "/" + cls.getCanonicalName();
+            int accessibilityEnabled = Settings.Secure.getInt(mContext.getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
+            TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
+            if (accessibilityEnabled == 1) {
+                String settingValue = Settings.Secure.getString(
+                        mContext.getApplicationContext().getContentResolver(),
+                        Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+                if (settingValue != null) {
+                    mStringColonSplitter.setString(settingValue);
+                    while (mStringColonSplitter.hasNext()) {
+                        String accessibilityService = mStringColonSplitter.next();
+                        if (accessibilityService.equalsIgnoreCase(service)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

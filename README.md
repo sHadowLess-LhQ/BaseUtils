@@ -886,18 +886,30 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      HelpService.getService()
      //查找指定字符的不可点击视图节点
      HelpService.getService().findViewByTextUnClickable(String text)
+     //延迟查找指定字符的不可点击视图节点
+     HelpService.getService().findViewByTextUnClickable(String text, int milliSecond)
      //查找指定字符的可点击视图节点
      HelpService.getService().findViewByTextClickable(String text)
+     //延迟查找指定字符的可点击视图节点
+     HelpService.getService().findViewByTextClickable(String text, int milliSecond)
      //查找指定视图id的不可点击视图节点
      //id规范：包名:id/视图id
      HelpService.getService().findViewByIdUnClickable(String id)
+     //延迟查找指定视图id的不可点击视图节点
+     HelpService.getService().findViewByIdUnClickable(String id, int milliSecond)
      //查找指定视图id的可点击视图节点
      //id规范：包名:id/视图id
      HelpService.getService().findViewByClickable(String id)
+     //延迟查找指定视图id的可点击视图节点
+     HelpService.getService().findViewByIdClickable(String id, int milliSecond)
      //单击视图节点
      HelpService.getService().performViewClick(AccessibilityNodeInfo nodeInfo)
+     //延迟单击视图节点
+     HelpService.getService().performViewClick(AccessibilityNodeInfo nodeInfo, int milliSecond)
      //长按视图节点
      HelpService.getService().performViewLongClick(AccessibilityNodeInfo nodeInfo)
+     //延迟长按视图节点
+     HelpService.getService().performViewLongClick(AccessibilityNodeInfo nodeInfo, int milliSecond)
      //执行单击返回键
      HelpService.getService().performBackClick()
      //延迟单击返回键

@@ -102,6 +102,14 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
                     String[] inputId = ((String) msg.obj).split(",");
                     inputIdToEtView(inputId[0], inputId[1]);
                     break;
+                case 18:
+                    AccessibilityNodeInfo clickInfo = (AccessibilityNodeInfo) msg.obj;
+                    performViewClick(clickInfo);
+                    break;
+                case 19:
+                    AccessibilityNodeInfo longClickInfo = (AccessibilityNodeInfo) msg.obj;
+                    performViewLongClick(longClickInfo);
+                    break;
                 default:
                     break;
             }
@@ -368,12 +376,42 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
     }
 
     /**
+     * 延迟查找指定文本不可点击可访问节点信息
+     *
+     * @param text the 文本
+     * @return the 可访问节点信息
+     */
+    public AccessibilityNodeInfo findViewByTextUnClickable(String text, int milliSecond) {
+        try {
+            Thread.sleep(milliSecond);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return findViewByText(text, false);
+    }
+
+    /**
      * 查找指定文本可点击可访问节点信息
      *
      * @param text the 文本
      * @return the 可访问节点信息
      */
     public AccessibilityNodeInfo findViewByTextClickable(String text) {
+        return findViewByText(text, true);
+    }
+
+    /**
+     * 延迟查找指定文本可点击可访问节点信息
+     *
+     * @param text the 文本
+     * @return the 可访问节点信息
+     */
+    public AccessibilityNodeInfo findViewByTextClickable(String text, int milliSecond) {
+        try {
+            Thread.sleep(milliSecond);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return findViewByText(text, true);
     }
 
@@ -386,14 +424,13 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      */
     private AccessibilityNodeInfo findViewByText(String text, boolean clickable) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
-        if (accessibilityNodeInfo == null) {
-            return null;
-        }
-        List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByText(text);
-        if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
-            for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
-                if (nodeInfo != null && (nodeInfo.isClickable() == clickable)) {
-                    return nodeInfo;
+        if (accessibilityNodeInfo != null) {
+            List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByText(text);
+            if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
+                for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
+                    if (nodeInfo != null && (nodeInfo.isClickable() == clickable)) {
+                        return nodeInfo;
+                    }
                 }
             }
         }
@@ -411,12 +448,42 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
     }
 
     /**
+     * 延迟查找指定id不可点击的可访问节点信息
+     *
+     * @param id the 视图id
+     * @return the 可访问节点信息
+     */
+    public AccessibilityNodeInfo findViewByIdUnClickable(String id, int milliSecond) {
+        try {
+            Thread.sleep(milliSecond);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return findViewById(id, false);
+    }
+
+    /**
      * 查找指定id可点击的可访问节点信息
      *
      * @param id the 视图id
      * @return the 可访问节点信息
      */
     public AccessibilityNodeInfo findViewByIdClickable(String id) {
+        return findViewById(id, true);
+    }
+
+    /**
+     * 延迟查找指定id可点击的可访问节点信息
+     *
+     * @param id the 视图id
+     * @return the 可访问节点信息
+     */
+    public AccessibilityNodeInfo findViewByIdClickable(String id, int milliSecond) {
+        try {
+            Thread.sleep(milliSecond);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return findViewById(id, true);
     }
 
@@ -430,14 +497,13 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private AccessibilityNodeInfo findViewById(String id, boolean clickable) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
-        if (accessibilityNodeInfo == null) {
-            return null;
-        }
-        List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByViewId(id);
-        if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
-            for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
-                if (nodeInfo != null && (nodeInfo.isClickable() == clickable)) {
-                    return nodeInfo;
+        if (accessibilityNodeInfo != null) {
+            List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByViewId(id);
+            if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
+                for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
+                    if (nodeInfo != null && (nodeInfo.isClickable() == clickable)) {
+                        return nodeInfo;
+                    }
                 }
             }
         }
@@ -450,9 +516,6 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param nodeInfo the 可访问节点信息
      */
     public void performViewClick(AccessibilityNodeInfo nodeInfo) {
-        if (nodeInfo == null) {
-            return;
-        }
         while (nodeInfo != null) {
             if (nodeInfo.isClickable()) {
                 nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
@@ -460,6 +523,22 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
             }
             nodeInfo = nodeInfo.getParent();
         }
+        if (nodeInfo != null) {
+            nodeInfo.recycle();
+        }
+    }
+
+    /**
+     * 延迟单击视图
+     *
+     * @param nodeInfo    the node info
+     * @param milliSecond the milli second
+     */
+    public void performViewClick(AccessibilityNodeInfo nodeInfo, int milliSecond) {
+        Message msg = Message.obtain(mHandler);
+        msg.what = 18;
+        msg.obj = nodeInfo;
+        mHandler.sendMessageDelayed(msg, milliSecond);
     }
 
     /**
@@ -468,9 +547,6 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param nodeInfo the 可访问节点信息
      */
     public void performViewLongClick(AccessibilityNodeInfo nodeInfo) {
-        if (nodeInfo == null) {
-            return;
-        }
         while (nodeInfo != null) {
             if (nodeInfo.isClickable()) {
                 nodeInfo.performAction(AccessibilityNodeInfo.ACTION_LONG_CLICK);
@@ -478,6 +554,22 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
             }
             nodeInfo = nodeInfo.getParent();
         }
+        if (nodeInfo != null) {
+            nodeInfo.recycle();
+        }
+    }
+
+    /**
+     * 延迟长按视图
+     *
+     * @param nodeInfo    the node info
+     * @param milliSecond the milli second
+     */
+    public void performViewLongClick(AccessibilityNodeInfo nodeInfo, int milliSecond) {
+        Message msg = Message.obtain(mHandler);
+        msg.what = 19;
+        msg.obj = nodeInfo;
+        mHandler.sendMessageDelayed(msg, milliSecond);
     }
 
     /**
@@ -634,19 +726,26 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      */
     public void clickViewByText(String text) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
-        if (accessibilityNodeInfo == null) {
-            return;
-        }
-        List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByText(text);
-        if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
-            for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
-                if (nodeInfo != null) {
-                    performViewClick(nodeInfo);
-                    break;
+        if (accessibilityNodeInfo != null) {
+            List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByText(text);
+            if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
+                for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
+                    if (nodeInfo != null) {
+                        CharSequence nodeText = nodeInfo.getText();
+                        if (null != nodeText && nodeText.toString().equals(text)) {
+                            performViewClick(nodeInfo);
+                        } else {
+                            CharSequence content = nodeInfo.getContentDescription();
+                            if (null != content && content.toString().equals(text)) {
+                                performViewClick(nodeInfo);
+                            }
+                        }
+                        performViewClick(nodeInfo);
+                        break;
+                    }
                 }
             }
         }
-        accessibilityNodeInfo.recycle();
     }
 
     /**
@@ -669,19 +768,26 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      */
     public void longClickViewByText(String text) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
-        if (accessibilityNodeInfo == null) {
-            return;
-        }
-        List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByText(text);
-        if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
-            for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
-                if (nodeInfo != null) {
-                    performViewLongClick(nodeInfo);
-                    break;
+        if (accessibilityNodeInfo != null) {
+            List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByText(text);
+            if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
+                for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
+                    if (nodeInfo != null) {
+                        CharSequence nodeText = nodeInfo.getText();
+                        if (null != nodeText && nodeText.toString().equals(text)) {
+                            performViewLongClick(nodeInfo);
+                        } else {
+                            CharSequence content = nodeInfo.getContentDescription();
+                            if (null != content && content.toString().equals(text)) {
+                                performViewLongClick(nodeInfo);
+                            }
+                        }
+                        performViewLongClick(nodeInfo);
+                        break;
+                    }
                 }
             }
         }
-        accessibilityNodeInfo.recycle();
     }
 
     /**
@@ -704,19 +810,26 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      */
     public void clickViewById(String id) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
-        if (accessibilityNodeInfo == null) {
-            return;
-        }
-        List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByViewId(id);
-        if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
-            for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
-                if (nodeInfo != null) {
-                    performViewClick(nodeInfo);
-                    break;
+        if (accessibilityNodeInfo != null) {
+            List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByViewId(id);
+            if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
+                for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
+                    if (nodeInfo != null) {
+                        String nodeId = nodeInfo.getViewIdResourceName();
+                        if (null != nodeId && nodeId.equals(id)) {
+                            performViewClick(nodeInfo);
+                        } else {
+                            CharSequence content = nodeInfo.getContentDescription();
+                            if (null != content && content.toString().equals(id)) {
+                                performViewClick(nodeInfo);
+                            }
+                        }
+                        performViewClick(nodeInfo);
+                        break;
+                    }
                 }
             }
         }
-        accessibilityNodeInfo.recycle();
     }
 
     /**
@@ -746,12 +859,20 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
         if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
             for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
                 if (nodeInfo != null) {
+                    String nodeId = nodeInfo.getViewIdResourceName();
+                    if (null != nodeId && nodeId.equals(id)) {
+                        performViewLongClick(nodeInfo);
+                    } else {
+                        CharSequence content = nodeInfo.getContentDescription();
+                        if (null != content && content.toString().equals(id)) {
+                            performViewLongClick(nodeInfo);
+                        }
+                    }
                     performViewLongClick(nodeInfo);
                     break;
                 }
             }
         }
-        accessibilityNodeInfo.recycle();
     }
 
     /**
@@ -843,7 +964,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      */
     public void dispatchGestureClick(int x, int y, int milliSecond) {
         Message msg = Message.obtain(mHandler);
-        msg.what = 12;
+        msg.what = 13;
         msg.obj = x + "," + y;
         mHandler.sendMessageDelayed(msg, milliSecond);
     }
@@ -874,7 +995,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      */
     public void dispatchGestureLongClick(int x, int y, int milliSecond) {
         Message msg = Message.obtain(mHandler);
-        msg.what = 13;
+        msg.what = 14;
         msg.obj = x + "," + y;
         mHandler.sendMessageDelayed(msg, milliSecond);
     }

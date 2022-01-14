@@ -1043,9 +1043,9 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param cls      the 辅助服务类
      * @return the boolean
      */
-    public boolean isAccessibilitySettingsOn(Context mContext, Class<?> cls) {
+    public static boolean isAccessibilitySettingsOn(Context mContext, Class<?> cls) {
         try {
-            String service = getPackageName() + "/" + cls.getCanonicalName();
+            String service = mContext.getPackageName() + "/" + cls.getCanonicalName();
             int accessibilityEnabled = Settings.Secure.getInt(mContext.getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
             TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
             if (accessibilityEnabled == 1) {

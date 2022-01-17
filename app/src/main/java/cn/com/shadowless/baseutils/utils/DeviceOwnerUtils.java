@@ -15,10 +15,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-
-import com.mengpeng.mphelper.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -255,7 +254,7 @@ public class DeviceOwnerUtils {
         if (isProfileOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).setScreenCaptureDisabled(BasicDeviceAdminReceiver.getComponentName(context), disable);
         } else {
-            showToast(3, "该设备暂无企业空间权限");
+            showToast(context, 3, "该设备暂无企业空间权限");
         }
     }
 
@@ -269,7 +268,7 @@ public class DeviceOwnerUtils {
         if (isDeviceOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).setScreenCaptureDisabled(BasicDeviceAdminReceiver.getComponentName(context), disable);
         } else {
-            showToast(3, "暂无最高设备权限");
+            showToast(context, 3, "暂无最高设备权限");
         }
     }
 
@@ -283,7 +282,7 @@ public class DeviceOwnerUtils {
         if (isProfileOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).setCameraDisabled(BasicDeviceAdminReceiver.getComponentName(context), disable);
         } else {
-            showToast(3, "该设备暂无企业空间权限");
+            showToast(context, 3, "该设备暂无企业空间权限");
         }
     }
 
@@ -297,7 +296,7 @@ public class DeviceOwnerUtils {
         if (isDeviceOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).setCameraDisabled(BasicDeviceAdminReceiver.getComponentName(context), disable);
         } else {
-            showToast(3, "暂无最高设备权限");
+            showToast(context, 3, "暂无最高设备权限");
         }
     }
 
@@ -310,7 +309,7 @@ public class DeviceOwnerUtils {
         if (isProfileOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).wipeData(0);
         } else {
-            showToast(3, "该设备暂无企业空间权限");
+            showToast(context, 3, "该设备暂无企业空间权限");
         }
     }
 
@@ -343,7 +342,7 @@ public class DeviceOwnerUtils {
         if (isDeviceOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).wipeData(DevicePolicyManager.WIPE_EXTERNAL_STORAGE);
         } else {
-            showToast(3, "暂无最高设备权限");
+            showToast(context, 3, "暂无最高设备权限");
         }
     }
 
@@ -363,13 +362,13 @@ public class DeviceOwnerUtils {
                 if (hasToken && isTokenActive) {
                     manager.resetPasswordWithToken(componentName, password, token.getBytes(), 0);
                 } else {
-                    showToast(2, "企业空间已设置密码，无法再次设置");
+                    showToast(context, 2, "企业空间已设置密码，无法再次设置");
                 }
             } else {
                 manager.resetPassword(password, 0);
             }
         } else {
-            showToast(3, "该设备暂无企业空间权限");
+            showToast(context, 3, "该设备暂无企业空间权限");
         }
     }
 
@@ -389,13 +388,13 @@ public class DeviceOwnerUtils {
                 if (hasToken && isTokenActive) {
                     manager.resetPasswordWithToken(componentName, password, token.getBytes(), 0);
                 } else {
-                    showToast(2, "设备已设置密码，无法再次设置");
+                    showToast(context, 2, "设备已设置密码，无法再次设置");
                 }
             } else {
                 manager.resetPassword(password, 0);
             }
         } else {
-            showToast(3, "暂无最高设备权限");
+            showToast(context, 3, "暂无最高设备权限");
         }
     }
 
@@ -513,16 +512,16 @@ public class DeviceOwnerUtils {
      * @param level the 提示等级
      * @param text  the 提示信息
      */
-    private void showToast(int level, String text) {
+    private void showToast(Context context, int level, String text) {
         switch (level) {
             case 1:
-                ToastUtils.onInfoShowToast(text);
+                ToastUtils.info(context, text);
                 break;
             case 2:
-                ToastUtils.onWarnShowToast(text);
+                ToastUtils.warning(context, text);
                 break;
             case 3:
-                ToastUtils.onErrorShowToast(text);
+                ToastUtils.error(context, text);
                 break;
             default:
                 break;

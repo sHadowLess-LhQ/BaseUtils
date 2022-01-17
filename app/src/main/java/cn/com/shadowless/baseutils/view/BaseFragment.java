@@ -8,13 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
 
-import com.mengpeng.mphelper.ToastUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.HashMap;
@@ -22,6 +22,7 @@ import java.util.Map;
 
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
+import cn.com.shadowless.baseutils.utils.ToastUtils;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.disposables.Disposable;
 
@@ -163,7 +164,7 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
      */
     private void showToast(String name) {
         String tip = "应用无法使用，请开启%s权限";
-        ToastUtils.onWarnShowToast(String.format(tip, name));
+        ToastUtils.warning(mActivity, String.format(tip, name));
         ApplicationUtils.startApplicationInfo(mActivity);
     }
 

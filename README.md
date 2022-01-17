@@ -35,8 +35,8 @@ Step 1. 添加maven仓库地址和配置
      //主项目的build.gradle中加入
      android {
       ...
-       viewBinding {
-         enabled = true
+       buildFeatures {
+         viewBinding = true
           }
      }
 ```
@@ -57,7 +57,6 @@ b、远程仓库引入
      dependencies {
             //主模块
             implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
-            implementation 'com.github.mengpeng920223:ToastUtils:v1.0.3'
             implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
             implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
@@ -993,7 +992,57 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      HelpService.getService().continueSwipe(int[] x, int[] y, int swipeDuration, int stepDuration)
      //判断辅助服务是否开启
      //参数2：辅助服务类
-     HelpService.getService().isAccessibilitySettingsOn(Context mContext, Class<?> cls)
+     HelpService.isAccessibilitySettingsOn(Context mContext, Class<?> cls)
+```
+
+### 18、ToastUtils：方法说明
+
+```
+
+     //普通土司
+     ToastUtils.normal(@NonNull Context context, @NonNull String message)
+     //普通土司带图标
+     ToastUtils.normal(@NonNull Context context, @NonNull String message, Drawable icon)
+     //普通土司带显示时长
+     ToastUtils.normal(@NonNull Context context, @NonNull String message, int duration)
+     //普通土司带图标带显示时长
+     ToastUtils.normal(@NonNull Context context, @NonNull String message, int duration, Drawable icon)
+     //获取一个自定义土司对象
+     ToastUtils.normal(@NonNull Context context, @NonNull String message, int duration, Drawable icon, boolean withIcon)
+     //警告土司
+     ToastUtils.warning(@NonNull Context context, @NonNull String message)
+     //警告土司带时长
+     ToastUtils.warning(@NonNull Context context, @NonNull String message, int duration) 
+     //警告土司带时长是否带图标
+     ToastUtils.warning(@NonNull Context context, @NonNull String message, int duration, boolean withIcon)
+     //信息土司
+     ToastUtils.info(@NonNull Context context, @NonNull String message)
+     //信息土司带时长
+     ToastUtils.info(@NonNull Context context, @NonNull String message, int duration)
+     //信息土司带时长是否带图标
+     ToastUtils.info(@NonNull Context context, @NonNull String message, int duration, boolean withIcon)
+     //成功土司
+     ToastUtils.success(@NonNull Context context, @NonNull String message)
+     //成功土司带时长
+     ToastUtils.success(@NonNull Context context, @NonNull String message, int duration)
+     //成功土司带时长是否带图标
+     ToastUtils.success(@NonNull Context context, @NonNull String message, int duration, boolean withIcon)
+     //错误土司
+     ToastUtils.error(@NonNull Context context, @NonNull String message)
+     //错误土司带时长
+     ToastUtils.error(@NonNull Context context, @NonNull String message, int duration)
+     //错误土司带时长是否带图标
+     ToastUtils.error(@NonNull Context context, @NonNull String message, int duration, boolean withIcon)
+     //自定义土司
+     ToastUtils.custom(@NonNull Context context, @NonNull String message, Drawable icon, @ColorInt int textColor, int duration, boolean withIcon)
+     //自定义土司
+     ToastUtils.custom(@NonNull Context context, @NonNull String message, @DrawableRes int iconRes, @ColorInt int textColor, @ColorInt int tintColor, int duration, boolean withIcon, boolean shouldTint)
+     //自定义土司
+     ToastUtils.custom(@NonNull Context context, @NonNull String message, Drawable icon, @ColorInt int textColor, @ColorInt int tintColor, int duration, boolean withIcon, boolean shouldTint)
+     //获取图片资源
+     ToastUtils.getDrawable(@NonNull Context context, @DrawableRes int id)
+     //获取.9位图
+     ToastUtils.tint9PatchDrawableFrame(@NonNull Context context, @ColorInt int tintColor)
 ```
 
 #### 特技

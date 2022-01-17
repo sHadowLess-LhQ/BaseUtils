@@ -26,8 +26,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -38,7 +38,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     //主模块
-    api 'com.github.mengpeng920223:ToastUtils:v1.0.3'
     api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
 
     //BaseXPop

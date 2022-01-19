@@ -30,10 +30,6 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActivity implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
 
     /**
-     * TAG
-     */
-    private final String TAG = BaseActivity.class.getSimpleName();
-    /**
      * 视图绑定
      */
     private T bind = null;
@@ -62,6 +58,9 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (0 != theme()) {
+            setTheme(theme());
+        }
         super.onCreate(savedInstanceState);
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             isOrientation = false;
@@ -90,7 +89,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
 
     @Override
     protected void onDestroy() {
-        if (!disposable.isDisposed()) {
+        if (null != disposable && !disposable.isDisposed()) {
             disposable.dispose();
         }
         if (null != bind) {
@@ -111,11 +110,6 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     @Override
     public void onSuccess(Map<String, Object> mData) {
         initView(mData);
-    }
-
-    @Override
-    public void onFail(Throwable throwable) {
-        Log.e(TAG, "onFail: " + throwable);
     }
 
     @Override
@@ -158,6 +152,13 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
      */
     @NonNull
     protected abstract T setBindView();
+
+    /**
+     * Sets theme.
+     *
+     * @return the theme
+     */
+    protected abstract int theme();
 
     /**
      * 初始化数据

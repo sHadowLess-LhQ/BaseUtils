@@ -36,10 +36,6 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseFragment<T extends ViewBinding> extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
 
     /**
-     * TAG
-     */
-    private final String TAG = BaseFragment.class.getSimpleName();
-    /**
      * 视图绑定
      */
     private T bind = null;
@@ -104,6 +100,9 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
 
     @Override
     public void onDestroyView() {
+        if (null != disposable && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
         if (bind != null) {
             bind = null;
         }
@@ -136,11 +135,6 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
     @Override
     public void onSuccess(Map<String, Object> mData) {
         initView(mData);
-    }
-
-    @Override
-    public void onFail(Throwable throwable) {
-        Log.e(TAG, "onFail: " + throwable);
     }
 
     @Override

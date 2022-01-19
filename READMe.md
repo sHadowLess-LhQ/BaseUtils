@@ -33,10 +33,20 @@ Step 1. 添加maven仓库地址和配置
 
 ```
      //主项目的build.gradle中加入
+     //新AndroidStudio版本
      android {
       ...
        buildFeatures {
          viewBinding = true
+          }
+     }
+     
+     //主项目的build.gradle中加入
+     //旧AndroidStudio版本
+     android {
+      ...
+       viewBinding {
+         enable = true
           }
      }
 ```
@@ -187,6 +197,12 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                 .location()       //设置提示框显示位置，传入CustomDialog.location枚举，具体枚举进入源码查看
                 .build()
                 .show(new CustomDialog.InitViewListener() {
+                    @Override
+                    public void getDialogView(View view, Dialog dialog) {
+                                  //回调自定义View和提示框对象
+                    }
+                //参数1：自定义主题
+                .show(int stype, new CustomDialog.InitViewListener() {
                     @Override
                     public void getDialogView(View view, Dialog dialog) {
                                   //回调自定义View和提示框对象

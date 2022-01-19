@@ -220,4 +220,80 @@ public class CustomDialog {
         dialog.setCanceledOnTouchOutside(cancel);
         dialog.show();
     }
+
+    @SuppressLint("RtlHardcoded")
+    public void show(int style, @NonNull InitViewListener initViewListener) {
+        if (null == dialogView) {
+            dialogView = LayoutInflater.from(context).inflate(layout, null);
+        }
+        Dialog dialog = new Dialog(context, style);
+        if (isTitle) {
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+        dialog.setContentView(dialogView);
+        Window window = dialog.getWindow();
+        if (null != window) {
+            if (isWindowSize) {
+                WindowManager.LayoutParams layoutParams = window.getAttributes();
+                layoutParams.width = windowWidth;
+                layoutParams.height = windowHeight;
+                window.setAttributes(layoutParams);
+            }
+            if (isSetAnim && 0 != anim) {
+                window.setWindowAnimations(anim);
+            }
+            if (isSystemDialog) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    window.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+                } else {
+                    window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                }
+            }
+            if (isClearLayer) {
+                window.setDimAmount(0f);
+            }
+            switch (location) {
+                case TOP:
+                    window.setGravity(Gravity.TOP);
+                    break;
+                case LEFT:
+                    window.setGravity(Gravity.LEFT);
+                    break;
+                case RIGHT:
+                    window.setGravity(Gravity.RIGHT);
+                    break;
+                case BOTTOM:
+                    window.setGravity(Gravity.BOTTOM);
+                    break;
+                case CENTER:
+                    window.setGravity(Gravity.CENTER);
+                    break;
+                case UPPER_LEFT:
+                    window.setGravity(Gravity.TOP | Gravity.LEFT);
+                    break;
+                case UPPER_RIGHT:
+                    window.setGravity(Gravity.TOP | Gravity.RIGHT);
+                    break;
+                case LOWER_LEFT:
+                    window.setGravity(Gravity.BOTTOM | Gravity.LEFT);
+                    break;
+                case LOWER_RIGHT:
+                    window.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
+                    break;
+                case CENTER_LEFT:
+                    window.setGravity(Gravity.CENTER | Gravity.LEFT);
+                    break;
+                case CENTER_RIGHT:
+                    window.setGravity(Gravity.CENTER | Gravity.RIGHT);
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (null != initViewListener) {
+            initViewListener.getDialogView(dialogView, dialog);
+        }
+        dialog.setCanceledOnTouchOutside(cancel);
+        dialog.show();
+    }
 }

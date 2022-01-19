@@ -58,8 +58,9 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (0 != theme()) {
-            setTheme(theme());
+        int customTheme = theme();
+        if (0 != customTheme) {
+            setTheme(customTheme);
         }
         super.onCreate(savedInstanceState);
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {

@@ -30,6 +30,10 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActivity implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
 
     /**
+     * The Tag.
+     */
+    private final String TAG = BaseActivity.class.getSimpleName();
+    /**
      * 视图绑定
      */
     private T bind = null;
@@ -111,6 +115,11 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     @Override
     public void onSuccess(Map<String, Object> mData) {
         initView(mData);
+    }
+
+    @Override
+    public void onFail(Throwable throwable) {
+        Log.e(TAG, "onFail: " + throwable);
     }
 
     @Override

@@ -239,6 +239,8 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                 .anim()       //设置窗口动画，和.isAnimation()同步使用
                 .background() //设置背景色，默认透明
                 .isSystemPopWindow()  //是否设置为系统级窗口，默认不设置
+                .width()      //设置宽
+                .height()     //设置高
                 .build();   
         custom.showDropDown(view);    //显示
         custom.showDropDown(view,1,1);//显示

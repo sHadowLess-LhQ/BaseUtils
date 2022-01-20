@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
@@ -49,9 +50,21 @@ public class CustomPopWindow {
      */
     private boolean isSystemPopWindow;
     /**
+     * The Width.
+     */
+    private int width;
+    /**
+     * The Height.
+     */
+    private int height;
+    /**
+     * The Is focus.
+     */
+    private boolean isFocus;
+    /**
      * popWindow对象
      */
-    private PopupWindow popupWindow;
+    private PopupWindow popupWindow = new PopupWindow();
 
     /**
      * 构造
@@ -63,8 +76,11 @@ public class CustomPopWindow {
      * @param anim              the anim
      * @param background        the background
      * @param isSystemPopWindow the is system pop window
+     * @param width             the width
+     * @param height            the height
+     * @param isFocus           the is focus
      */
-    public CustomPopWindow(View popView, Context context, int layout, boolean isSetAnim, int anim, Drawable background, boolean isSystemPopWindow) {
+    public CustomPopWindow(View popView, Context context, int layout, boolean isSetAnim, int anim, Drawable background, boolean isSystemPopWindow, int width, int height, boolean isFocus) {
         this.popView = popView;
         this.context = context;
         this.layout = layout;
@@ -72,6 +88,9 @@ public class CustomPopWindow {
         this.anim = anim;
         this.background = background;
         this.isSystemPopWindow = isSystemPopWindow;
+        this.width = width;
+        this.height = height;
+        this.isFocus = isFocus;
     }
 
     /**
@@ -115,6 +134,18 @@ public class CustomPopWindow {
          * The Is system pop window.
          */
         private boolean isSystemPopWindow;
+        /**
+         * The Width.
+         */
+        private int width;
+        /**
+         * The Height.
+         */
+        private int height;
+        /**
+         * The Is focus.
+         */
+        private boolean isFocus;
 
         /**
          * Pop view custom pop window builder.
@@ -124,6 +155,39 @@ public class CustomPopWindow {
          */
         public CustomPopWindowBuilder popView(View popView) {
             this.popView = popView;
+            return this;
+        }
+
+        /**
+         * Width custom pop window builder.
+         *
+         * @param width the width
+         * @return the custom pop window builder
+         */
+        public CustomPopWindowBuilder width(int width) {
+            this.width = width;
+            return this;
+        }
+
+        /**
+         * Height custom pop window builder.
+         *
+         * @param height the height
+         * @return the custom pop window builder
+         */
+        public CustomPopWindowBuilder height(int height) {
+            this.height = height;
+            return this;
+        }
+
+        /**
+         * Is focus custom pop window builder.
+         *
+         * @param isFocus the is focus
+         * @return the custom pop window builder
+         */
+        public CustomPopWindowBuilder isFocus(boolean isFocus) {
+            this.isFocus = isFocus;
             return this;
         }
 
@@ -199,7 +263,7 @@ public class CustomPopWindow {
          * @return the custom pop window
          */
         public CustomPopWindow build() {
-            return new CustomPopWindow(this.popView, this.context, this.layout, this.isSetAnim, this.anim, this.background, this.isSystemPopWindow);
+            return new CustomPopWindow(this.popView, this.context, this.layout, this.isSetAnim, this.anim, this.background, this.isSystemPopWindow, this.width, this.height, this.isFocus);
         }
 
         @Override
@@ -257,7 +321,17 @@ public class CustomPopWindow {
         if (null == popView) {
             popView = LayoutInflater.from(context).inflate(layout, null);
         }
-        popupWindow = new PopupWindow();
+        if (0 != width) {
+            popupWindow.setWidth(width);
+        } else {
+            popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        if (0 != height) {
+            popupWindow.setHeight(height);
+        } else {
+            popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        popupWindow.setFocusable(isFocus);
         popupWindow.setContentView(popView);
         if (isSetAnim) {
             popupWindow.setAnimationStyle(anim);
@@ -289,7 +363,17 @@ public class CustomPopWindow {
         if (null == popView) {
             popView = LayoutInflater.from(context).inflate(layout, null);
         }
-        popupWindow = new PopupWindow();
+        if (0 != width) {
+            popupWindow.setWidth(width);
+        } else {
+            popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        if (0 != height) {
+            popupWindow.setHeight(height);
+        } else {
+            popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        popupWindow.setFocusable(isFocus);
         popupWindow.setContentView(popView);
         if (isSetAnim) {
             popupWindow.setAnimationStyle(anim);
@@ -321,7 +405,15 @@ public class CustomPopWindow {
         if (null == popView) {
             popView = LayoutInflater.from(context).inflate(layout, null);
         }
-        popupWindow = new PopupWindow();
+        if (0 == width) {
+            width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+        popupWindow.setWidth(width);
+        if (0 != height) {
+            height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+        popupWindow.setHeight(height);
+        popupWindow.setFocusable(isFocus);
         popupWindow.setContentView(popView);
         if (isSetAnim) {
             popupWindow.setAnimationStyle(anim);
@@ -350,6 +442,15 @@ public class CustomPopWindow {
             return popupWindow.isShowing();
         }
         return false;
+    }
+
+    /**
+     * Gets pop window.
+     *
+     * @return the pop window
+     */
+    public PopupWindow getPopWindow() {
+        return popupWindow;
     }
 
     /**

@@ -125,7 +125,7 @@ public class CustomDialog {
     }
 
     /**
-     * Instantiates a new Custom dialog.
+     * 构造
      *
      * @param dialogView     the dialog view
      * @param context        the context
@@ -158,7 +158,7 @@ public class CustomDialog {
     }
 
     /**
-     * Builder custom dialog builder.
+     * 构造者
      *
      * @return the custom dialog builder
      */
@@ -167,7 +167,7 @@ public class CustomDialog {
     }
 
     /**
-     * The type Custom dialog builder.
+     * 构造者实体
      */
     public static class CustomDialogBuilder {
 
@@ -374,25 +374,6 @@ public class CustomDialog {
          */
         public CustomDialog build() {
             return new CustomDialog(this.dialogView, this.context, this.layout, this.windowWidth, this.windowHeight, this.anim, this.cancel, this.isSetAnim, this.isSystemDialog, this.isClearLayer, this.isTitle, this.isWindowSize, this.location);
-        }
-
-        @Override
-        public String toString() {
-            return "CustomDialogBuilder{" +
-                    "dialogView=" + dialogView +
-                    ", context=" + context +
-                    ", layout=" + layout +
-                    ", windowWidth=" + windowWidth +
-                    ", windowHeight=" + windowHeight +
-                    ", anim=" + anim +
-                    ", cancel=" + cancel +
-                    ", isSetAnim=" + isSetAnim +
-                    ", isSystemDialog=" + isSystemDialog +
-                    ", isClearLayer=" + isClearLayer +
-                    ", isTitle=" + isTitle +
-                    ", isWindowSize=" + isWindowSize +
-                    ", location=" + location +
-                    '}';
         }
     }
 

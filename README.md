@@ -77,8 +77,6 @@ b、远程仓库引入
                 implementation 'com.squareup.retrofit2:retrofit:2.6.1'
                 implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
                 implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
-                implementation 'org.projectlombok:lombok:1.18.8'
-                annotationProcessor 'org.projectlombok:lombok:1.18.8'
             //【注：】使用BaseXPop，请额外添加以下依赖：
             //BaseXPop
                 implementation 'com.github.li-xiaojun:XPopup:2.5.15'

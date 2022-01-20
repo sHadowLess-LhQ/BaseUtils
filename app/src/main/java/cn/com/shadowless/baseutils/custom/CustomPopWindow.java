@@ -265,19 +265,6 @@ public class CustomPopWindow {
         public CustomPopWindow build() {
             return new CustomPopWindow(this.popView, this.context, this.layout, this.isSetAnim, this.anim, this.background, this.isSystemPopWindow, this.width, this.height, this.isFocus);
         }
-
-        @Override
-        public String toString() {
-            return "CustomPopWindowBuilder{" +
-                    "popView=" + popView +
-                    ", context=" + context +
-                    ", layout=" + layout +
-                    ", isSetAnim=" + isSetAnim +
-                    ", anim=" + anim +
-                    ", background=" + background +
-                    ", isSystemPopWindow=" + isSystemPopWindow +
-                    '}';
-        }
     }
 
     /**

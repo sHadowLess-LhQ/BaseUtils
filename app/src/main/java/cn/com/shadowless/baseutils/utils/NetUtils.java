@@ -23,9 +23,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  * @author sHadowLess
  */
-@Builder
 public class NetUtils {
-    
+
     /**
      * 根地址
      */
@@ -219,6 +218,105 @@ public class NetUtils {
                 return ERROR_WAVE_MESSAGE;
             default:
                 return ERROR_DEFAULT;
+        }
+    }
+
+    /**
+     * 构造
+     *
+     * @param baseUrl      the base url
+     * @param timeOut      the time out
+     * @param timeOutUnit  the time out unit
+     * @param okHttpClient the ok http client
+     */
+    public NetUtils(String baseUrl, int timeOut, TimeUnit timeOutUnit, OkHttpClient okHttpClient) {
+        this.baseUrl = baseUrl;
+        this.timeOut = timeOut;
+        this.timeOutUnit = timeOutUnit;
+        this.okHttpClient = okHttpClient;
+    }
+
+    /**
+     * 构造者
+     *
+     * @return the net utils . net utils builder
+     */
+    public static NetUtils.NetUtilsBuilder builder() {
+        return new NetUtils.NetUtilsBuilder();
+    }
+
+    /**
+     * 构造者实体
+     */
+    public static class NetUtilsBuilder {
+        /**
+         * The Base url.
+         */
+        private String baseUrl;
+        /**
+         * The Time out.
+         */
+        private int timeOut;
+        /**
+         * The Time out unit.
+         */
+        private TimeUnit timeOutUnit;
+        /**
+         * The Ok http client.
+         */
+        private OkHttpClient okHttpClient;
+
+        /**
+         * Base url net utils . net utils builder.
+         *
+         * @param baseUrl the base url
+         * @return the net utils . net utils builder
+         */
+        public NetUtils.NetUtilsBuilder baseUrl(String baseUrl) {
+            this.baseUrl = baseUrl;
+            return this;
+        }
+
+        /**
+         * Time out net utils . net utils builder.
+         *
+         * @param timeOut the time out
+         * @return the net utils . net utils builder
+         */
+        public NetUtils.NetUtilsBuilder timeOut(int timeOut) {
+            this.timeOut = timeOut;
+            return this;
+        }
+
+        /**
+         * Time out unit net utils . net utils builder.
+         *
+         * @param timeOutUnit the time out unit
+         * @return the net utils . net utils builder
+         */
+        public NetUtils.NetUtilsBuilder timeOutUnit(TimeUnit timeOutUnit) {
+            this.timeOutUnit = timeOutUnit;
+            return this;
+        }
+
+        /**
+         * Ok http client net utils . net utils builder.
+         *
+         * @param okHttpClient the ok http client
+         * @return the net utils . net utils builder
+         */
+        public NetUtils.NetUtilsBuilder okHttpClient(OkHttpClient okHttpClient) {
+            this.okHttpClient = okHttpClient;
+            return this;
+        }
+
+        /**
+         * Build net utils.
+         *
+         * @return the net utils
+         */
+        public NetUtils build() {
+            return new NetUtils(this.baseUrl, this.timeOut, this.timeOutUnit, this.okHttpClient);
         }
     }
 }

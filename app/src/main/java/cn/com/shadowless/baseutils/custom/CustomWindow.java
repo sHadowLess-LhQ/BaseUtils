@@ -65,12 +65,12 @@ public class CustomWindow {
      */
     private int y;
     /**
-     * The Window manager.
+     * 窗口服务管理
      */
     private WindowManager windowManager;
 
     /**
-     * Instantiates a new Custom window.
+     * 构造
      *
      * @param context     the context
      * @param isSystem    the is system
@@ -101,7 +101,7 @@ public class CustomWindow {
     }
 
     /**
-     * Builder custom window builder.
+     * 构造者
      *
      * @return the custom window builder
      */
@@ -110,7 +110,7 @@ public class CustomWindow {
     }
 
     /**
-     * The type Custom window builder.
+     * 构造者实体
      */
     public static class CustomWindowBuilder {
         /**

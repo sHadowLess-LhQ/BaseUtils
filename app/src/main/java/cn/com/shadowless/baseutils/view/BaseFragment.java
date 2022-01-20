@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,10 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.shadowless.baseutils.R;
+import cn.com.shadowless.baseutils.custom.CustomDialog;
+import cn.com.shadowless.baseutils.custom.CustomPopWindow;
+import cn.com.shadowless.baseutils.custom.CustomWindow;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
 import cn.com.shadowless.baseutils.utils.ToastUtils;

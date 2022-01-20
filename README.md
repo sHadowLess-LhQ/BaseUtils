@@ -83,9 +83,6 @@ b、远程仓库引入
             //BaseXPop
                 implementation 'com.github.li-xiaojun:XPopup:2.5.15'
                 implementation 'com.google.android.material:material:1.3.0-alpha01'
-            //【注：】使用CustomDialog、CustomWindow，请额外添加以下依赖：
-                implementation 'org.projectlombok:lombok:1.18.8'
-                annotationProcessor 'org.projectlombok:lombok:1.18.8'
     }
 ```
 
@@ -187,7 +184,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
 ### 3、CustomDialog：调用示例
 
 ```
-     CustomDialog
+     CustomDialog custom = CustomDialog
                 .builder()
                 .context()        //传入上下文
                 .dialogView()     //传入自定义View，但和layout两者选其一调用
@@ -202,25 +199,17 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                 .windowWidth()    //设置提示框宽度，和.isWindowSize()同步使用，不可单独使用
                 .cancel()         //是否外部触碰取消提示框，默认不取消
                 .location()       //设置提示框显示位置，传入CustomDialog.location枚举，具体枚举进入源码查看
-                .build()
-                .show(new CustomDialog.InitViewListener() {
-                    @Override
-                    public void getDialogView(View view, Dialog dialog) {
-                                  //回调自定义View和提示框对象
-                    }
-                //参数1：自定义主题
-                .show(int stype, new CustomDialog.InitViewListener() {
-                    @Override
-                    public void getDialogView(View view, Dialog dialog) {
-                                  //回调自定义View和提示框对象
-                    }
-                });
+                .build();
+        custom.show();            //显示
+        custom.show(R.style.AlertDialog_AppCompat); //指定风格显示
+        custom.isShow();          //是否正在显示
+        custom.dismiss();         //关闭
 ```
 
 ### 4、CustomWindow：调用示例
 
 ```
-     CustomWindow
+     CustomWindow custom = CustomWindow
                 .builder()
                 .context()     //传入上下文
                 .view()        //传入自定义View，和.layout()两者选其一调用
@@ -232,16 +221,34 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                 .height()      //设置窗口高度
                 .windowFlag()  //设置窗口标识
                 .location()    //设置窗口显示位置，传入Gravity的静态位置常量
-                .build()
-                .show(new CustomWindow.InitWindowListener() {
-                    @Override
-                    public void getWindowView(View view, WindowManager windowManager) {
-                               //回调自定义View对象和WindowManager，用于移除自定义View
-                    }
-                });
+                .build();
+        custom.show();         //显示
+        custom.isShow();       //是否正在显示
+        custom.remove();       //移除
 ```
 
-### 5、PreferencesUtils：方法说明
+### 5、CustomPopWindow：调用示例
+
+```
+     CustomPopWindow custom = CustomPopWindow
+                .builder()
+                .context()    //传入上下文
+                .layout()     //传入xml，和.popView()两者选其一调用
+                .popView()    //传入自定义popView，和.layout()两者选其一调用
+                .isSetAnim()  //是否设置动画，默认不设置，和.anim()同步使用
+                .anim()       //设置窗口动画，和.isAnimation()同步使用
+                .background() //设置背景色，默认透明
+                .isSystemPopWindow()  //是否设置为系统级窗口，默认不设置
+                .build();   
+        custom.showDropDown(view);    //显示
+        custom.showDropDown(view,1,1);//显示
+        custom.showDropDown(view,1,1, Gravity.CENTER); //显示
+        custom.showLocation(view,1,1, Gravity.CENTER); //显示
+        custom.isShow();              //是否显示
+        custom.dismiss();             //关闭
+```
+
+### 6、PreferencesUtils：方法说明
 
 ```
      //同步存入字符串数据
@@ -300,7 +307,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
      PreferencesUtils.remove(Context context, String key)
 ```
 
-### 6、RxUtils：调用示例
+### 7、RxUtils：调用示例
 
 ```
      RxUtils
@@ -330,7 +337,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                 });
 ```
 
-### 7、NetUtils：调用示例
+### 8、NetUtils：调用示例
 
 ```
       NetUtils
@@ -348,7 +355,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                 });
 ```
 
-### 8、LocationUtils：调用示例
+### 9、LocationUtils：调用示例
 
 ```
       //参数1：上下文
@@ -369,15 +376,6 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                double mLat = lat;//纬度
            }
        });
-```
-
-### 9、BaseModelUtils：调用示例
-
-```
-      //参数1：状态码 - int
-      //参数2：状态消息 - String 
-      //参数3：数据 - T
-      BaseModelUtils.getMod(参数1，参数二，参数三);
 ```
 
 ### 10、ApplicationUtils：方法说明

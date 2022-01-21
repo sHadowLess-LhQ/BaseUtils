@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import cn.com.shadowless.baseutils.R;
  *
  * @author sHadowLess
  */
-public class CustomPopWindow {
+public class CustomPopWindow extends PopupWindow {
 
     /**
      * 自定义视图
@@ -61,10 +62,6 @@ public class CustomPopWindow {
      * The Is focus.
      */
     private boolean isFocus;
-    /**
-     * popWindow对象
-     */
-    private PopupWindow popupWindow;
 
     /**
      * 构造
@@ -91,6 +88,42 @@ public class CustomPopWindow {
         this.width = width;
         this.height = height;
         this.isFocus = isFocus;
+    }
+
+    public CustomPopWindow(Context context) {
+        super(context);
+    }
+
+    public CustomPopWindow(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public CustomPopWindow(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public CustomPopWindow(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    public CustomPopWindow() {
+        super();
+    }
+
+    public CustomPopWindow(View contentView) {
+        super(contentView);
+    }
+
+    public CustomPopWindow(int width, int height) {
+        super(width, height);
+    }
+
+    public CustomPopWindow(View contentView, int width, int height) {
+        super(contentView, width, height);
+    }
+
+    public CustomPopWindow(View contentView, int width, int height, boolean focusable) {
+        super(contentView, width, height, focusable);
     }
 
     /**
@@ -283,25 +316,24 @@ public class CustomPopWindow {
         if (0 == height) {
             height = popView.getLayoutParams().height;
         }
-        popupWindow = new PopupWindow();
-        popupWindow.setWidth(width);
-        popupWindow.setHeight(height);
-        popupWindow.setContentView(popView);
+        setWidth(width);
+        setHeight(height);
+        setContentView(popView);
         if (isSetAnim && 0 != anim) {
-            popupWindow.setAnimationStyle(anim);
+            setAnimationStyle(anim);
         }
         if (null == background) {
             background = new ColorDrawable(context.getResources().getColor(R.color.transparent));
         }
-        popupWindow.setBackgroundDrawable(background);
+        setBackgroundDrawable(background);
         if (isSystemPopWindow) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+                setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
             } else {
-                popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
         }
-        popupWindow.showAsDropDown(view);
+        showAsDropDown(view);
     }
 
     /**
@@ -322,26 +354,25 @@ public class CustomPopWindow {
         if (0 == height) {
             height = popView.getLayoutParams().height;
         }
-        popupWindow = new PopupWindow();
-        popupWindow.setWidth(width);
-        popupWindow.setHeight(height);
-        popupWindow.setFocusable(isFocus);
-        popupWindow.setContentView(popView);
+        setWidth(width);
+        setHeight(height);
+        setFocusable(isFocus);
+        setContentView(popView);
         if (isSetAnim) {
-            popupWindow.setAnimationStyle(anim);
+            setAnimationStyle(anim);
         }
         if (null == background) {
             background = new ColorDrawable(context.getResources().getColor(R.color.transparent));
         }
-        popupWindow.setBackgroundDrawable(background);
+        setBackgroundDrawable(background);
         if (isSystemPopWindow) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+                setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
             } else {
-                popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
         }
-        popupWindow.showAsDropDown(view, x, y);
+        showAsDropDown(view, x, y);
     }
 
     /**
@@ -363,26 +394,25 @@ public class CustomPopWindow {
         if (0 == height) {
             height = popView.getLayoutParams().height;
         }
-        popupWindow = new PopupWindow();
-        popupWindow.setWidth(width);
-        popupWindow.setHeight(height);
-        popupWindow.setFocusable(isFocus);
-        popupWindow.setContentView(popView);
+        setWidth(width);
+        setHeight(height);
+        setFocusable(isFocus);
+        setContentView(popView);
         if (isSetAnim) {
-            popupWindow.setAnimationStyle(anim);
+            setAnimationStyle(anim);
         }
         if (null == background) {
             background = new ColorDrawable(context.getResources().getColor(R.color.transparent));
         }
-        popupWindow.setBackgroundDrawable(background);
+        setBackgroundDrawable(background);
         if (isSystemPopWindow) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+                setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
             } else {
-                popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
         }
-        popupWindow.showAsDropDown(view, x, y, location);
+        showAsDropDown(view, x, y, location);
     }
 
     /**
@@ -404,26 +434,25 @@ public class CustomPopWindow {
         if (0 == height) {
             height = popView.getLayoutParams().height;
         }
-        popupWindow = new PopupWindow();
-        popupWindow.setWidth(width);
-        popupWindow.setHeight(height);
-        popupWindow.setFocusable(isFocus);
-        popupWindow.setContentView(popView);
+        setWidth(width);
+        setHeight(height);
+        setFocusable(isFocus);
+        setContentView(popView);
         if (isSetAnim) {
-            popupWindow.setAnimationStyle(anim);
+            setAnimationStyle(anim);
         }
         if (null == background) {
             background = new ColorDrawable(context.getResources().getColor(R.color.transparent));
         }
-        popupWindow.setBackgroundDrawable(background);
+        setBackgroundDrawable(background);
         if (isSystemPopWindow) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+                setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
             } else {
-                popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
         }
-        popupWindow.showAtLocation(view, location, x, y);
+        showAtLocation(view, location, x, y);
     }
 
     /**
@@ -432,26 +461,6 @@ public class CustomPopWindow {
      * @return the boolean
      */
     public boolean isShow() {
-        if (popupWindow != null) {
-            return popupWindow.isShowing();
-        }
-        return false;
-    }
-
-    /**
-     * Gets pop window.
-     *
-     * @return the pop window
-     */
-    public PopupWindow getPopWindow() {
-        return popupWindow;
-    }
-
-    /**
-     * Dismiss.
-     */
-    public void dismiss() {
-        popupWindow.dismiss();
-        popupWindow = null;
+        return isShowing();
     }
 }

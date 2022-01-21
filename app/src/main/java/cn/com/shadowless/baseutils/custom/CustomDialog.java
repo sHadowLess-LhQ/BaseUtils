@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * 自定义提示框工具类
  *
  * @author sHadowLess
  */
-public class CustomDialog {
+public class CustomDialog extends Dialog {
 
     /**
      * 自定义视图
@@ -69,10 +72,6 @@ public class CustomDialog {
      * 显示位置
      */
     private location location;
-    /**
-     * The Dialog.
-     */
-    private Dialog dialog;
 
     /**
      * 位置枚举
@@ -127,6 +126,36 @@ public class CustomDialog {
     /**
      * 构造
      *
+     * @param context the context
+     */
+    public CustomDialog(@NonNull Context context) {
+        super(context);
+    }
+
+    /**
+     * 构造
+     *
+     * @param context    the context
+     * @param themeResId the theme res id
+     */
+    public CustomDialog(@NonNull Context context, int themeResId) {
+        super(context, themeResId);
+    }
+
+    /**
+     * 构造
+     *
+     * @param context        the context
+     * @param cancelable     the cancelable
+     * @param cancelListener the cancel listener
+     */
+    protected CustomDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
+        super(context, cancelable, cancelListener);
+    }
+
+    /**
+     * 构造
+     *
      * @param dialogView     the dialog view
      * @param context        the context
      * @param layout         the layout
@@ -142,6 +171,7 @@ public class CustomDialog {
      * @param location       the location
      */
     public CustomDialog(View dialogView, Context context, int layout, int windowWidth, int windowHeight, int anim, boolean cancel, boolean isSetAnim, boolean isSystemDialog, boolean isClearLayer, boolean isTitle, boolean isWindowSize, location location) {
+        super(context);
         this.dialogView = dialogView;
         this.context = context;
         this.layout = layout;
@@ -368,7 +398,7 @@ public class CustomDialog {
         }
 
         /**
-         * Build custom dialog.
+         * Build custom
          *
          * @return the custom dialog
          */
@@ -384,16 +414,15 @@ public class CustomDialog {
      * @throws Exception the exception
      */
     @SuppressLint("RtlHardcoded")
-    public void show() {
+    public void showDialog() {
         if (null == dialogView) {
             dialogView = LayoutInflater.from(context).inflate(layout, null);
         }
-        dialog = new Dialog(context);
         if (isTitle) {
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
-        dialog.setContentView(dialogView);
-        Window window = dialog.getWindow();
+        setContentView(dialogView);
+        Window window = getWindow();
         if (null != window) {
             if (isWindowSize) {
                 WindowManager.LayoutParams layoutParams = window.getAttributes();
@@ -452,8 +481,8 @@ public class CustomDialog {
                     break;
             }
         }
-        dialog.setCanceledOnTouchOutside(cancel);
-        dialog.show();
+        setCanceledOnTouchOutside(cancel);
+        show();
     }
 
     /**
@@ -461,16 +490,15 @@ public class CustomDialog {
      *
      * @param style the style
      */
-    public void show(int style) {
+    public void showDialog(int style) {
         if (null == dialogView) {
             dialogView = LayoutInflater.from(context).inflate(layout, null);
         }
-        Dialog dialog = new Dialog(context, style);
         if (isTitle) {
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
-        dialog.setContentView(dialogView);
-        Window window = dialog.getWindow();
+        setContentView(dialogView);
+        Window window = getWindow();
         if (null != window) {
             if (isWindowSize) {
                 WindowManager.LayoutParams layoutParams = window.getAttributes();
@@ -529,8 +557,8 @@ public class CustomDialog {
                     break;
             }
         }
-        dialog.setCanceledOnTouchOutside(cancel);
-        dialog.show();
+        setCanceledOnTouchOutside(cancel);
+        show();
     }
 
     /**
@@ -539,17 +567,6 @@ public class CustomDialog {
      * @return the boolean
      */
     public boolean isShow() {
-        if (null != dialog) {
-            return dialog.isShowing();
-        }
-        return false;
-    }
-
-    /**
-     * Dismiss.
-     */
-    public void dismiss() {
-        dialog.dismiss();
-        dialog = null;
+        return isShowing();
     }
 }

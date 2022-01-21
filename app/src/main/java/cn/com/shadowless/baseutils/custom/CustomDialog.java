@@ -35,11 +35,11 @@ public class CustomDialog {
     /**
      * 提示框宽度
      */
-    private int windowWidth;
+    private int width;
     /**
      * 提示框高度
      */
-    private int windowHeight;
+    private int height;
     /**
      * 动画值
      */
@@ -133,8 +133,8 @@ public class CustomDialog {
      * @param dialogView     the dialog view
      * @param context        the context
      * @param layout         the layout
-     * @param windowWidth    the window width
-     * @param windowHeight   the window height
+     * @param width          the width
+     * @param height         the height
      * @param anim           the anim
      * @param cancel         the cancel
      * @param isSetAnim      the is set anim
@@ -144,12 +144,12 @@ public class CustomDialog {
      * @param isWindowSize   the is window size
      * @param location       the location
      */
-    public CustomDialog(View dialogView, Context context, int layout, int windowWidth, int windowHeight, int anim, boolean cancel, boolean isSetAnim, boolean isSystemDialog, boolean isClearLayer, boolean isTitle, boolean isWindowSize, location location) {
+    public CustomDialog(View dialogView, Context context, int layout, int width, int height, int anim, boolean cancel, boolean isSetAnim, boolean isSystemDialog, boolean isClearLayer, boolean isTitle, boolean isWindowSize, location location) {
         this.dialogView = dialogView;
         this.context = context;
         this.layout = layout;
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeight;
+        this.width = width;
+        this.height = height;
         this.anim = anim;
         this.cancel = cancel;
         this.isSetAnim = isSetAnim;
@@ -189,11 +189,11 @@ public class CustomDialog {
         /**
          * 提示框宽度
          */
-        private int windowWidth;
+        private int width;
         /**
          * 提示框高度
          */
-        private int windowHeight;
+        private int height;
         /**
          * 动画值
          */
@@ -261,39 +261,6 @@ public class CustomDialog {
         }
 
         /**
-         * Window width custom dialog builder.
-         *
-         * @param windowWidth the window width
-         * @return the custom dialog builder
-         */
-        public CustomDialogBuilder windowWidth(int windowWidth) {
-            this.windowWidth = windowWidth;
-            return this;
-        }
-
-        /**
-         * Window height custom dialog builder.
-         *
-         * @param windowHeight the window height
-         * @return the custom dialog builder
-         */
-        public CustomDialogBuilder windowHeight(int windowHeight) {
-            this.windowHeight = windowHeight;
-            return this;
-        }
-
-        /**
-         * Anim custom dialog builder.
-         *
-         * @param anim the anim
-         * @return the custom dialog builder
-         */
-        public CustomDialogBuilder anim(int anim) {
-            this.anim = anim;
-            return this;
-        }
-
-        /**
          * Cancel custom dialog builder.
          *
          * @param cancel the cancel
@@ -308,10 +275,12 @@ public class CustomDialog {
          * Is set anim custom dialog builder.
          *
          * @param isSetAnim the is set anim
+         * @param anim      the anim
          * @return the custom dialog builder
          */
-        public CustomDialogBuilder isSetAnim(boolean isSetAnim) {
+        public CustomDialogBuilder isSetAnim(boolean isSetAnim, int anim) {
             this.isSetAnim = isSetAnim;
+            this.anim = anim;
             return this;
         }
 
@@ -352,10 +321,14 @@ public class CustomDialog {
          * Is window size custom dialog builder.
          *
          * @param isWindowSize the is window size
+         * @param width        the width
+         * @param height       the height
          * @return the custom dialog builder
          */
-        public CustomDialogBuilder isWindowSize(boolean isWindowSize) {
+        public CustomDialogBuilder isWindowSize(boolean isWindowSize, int width, int height) {
             this.isWindowSize = isWindowSize;
+            this.width = width;
+            this.height = height;
             return this;
         }
 
@@ -376,7 +349,7 @@ public class CustomDialog {
          * @return the custom dialog
          */
         public CustomDialog build() {
-            return new CustomDialog(this.dialogView, this.context, this.layout, this.windowWidth, this.windowHeight, this.anim, this.cancel, this.isSetAnim, this.isSystemDialog, this.isClearLayer, this.isTitle, this.isWindowSize, this.location);
+            return new CustomDialog(this.dialogView, this.context, this.layout, this.width, this.height, this.anim, this.cancel, this.isSetAnim, this.isSystemDialog, this.isClearLayer, this.isTitle, this.isWindowSize, this.location);
         }
     }
 
@@ -400,8 +373,8 @@ public class CustomDialog {
         if (null != window) {
             if (isWindowSize) {
                 WindowManager.LayoutParams layoutParams = window.getAttributes();
-                layoutParams.width = windowWidth;
-                layoutParams.height = windowHeight;
+                layoutParams.width = width;
+                layoutParams.height = height;
                 window.setAttributes(layoutParams);
             }
             if (isSetAnim && 0 != anim) {
@@ -475,8 +448,8 @@ public class CustomDialog {
         if (null != window) {
             if (isWindowSize) {
                 WindowManager.LayoutParams layoutParams = window.getAttributes();
-                layoutParams.width = windowWidth;
-                layoutParams.height = windowHeight;
+                layoutParams.width = width;
+                layoutParams.height = height;
                 window.setAttributes(layoutParams);
             }
             if (isSetAnim && 0 != anim) {

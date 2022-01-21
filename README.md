@@ -188,13 +188,10 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                 .dialogView()     //传入自定义View，但和layout两者选其一调用
                 .layout()         //传入xml，但和dialogView两者选其一调用
                 .isClearLayer()   //是否去除蒙层，默认不去除
-                .isSetAnim()      //是否添加动画，和anim()方法同步使用，不可单一使用，默认不设置
-                .anim()           //设置动画xml，和isSetAnim()方法同步使用，不可单一使用
+                .isSetAnim()      //是否添加动画和设置动画值，默认不设置
                 .isSystemDialog() //是否设置为系统级提示框，默认不设置
                 .isTitle()        //是否去除标题栏，默认不去除
-                .isWindowSize()   //是否设置提示框大小，和.windowHeight() .windowWidth()方法同步使用
-                .windowHeight()   //设置提示框高度，和.isWindowSize()同步使用，不可单独使用
-                .windowWidth()    //设置提示框宽度，和.isWindowSize()同步使用，不可单独使用
+                .isWindowSize()   //是否设置提示框大小，和设置宽、高，默认不设置
                 .cancel()         //是否外部触碰取消提示框，默认不取消
                 .location()       //设置提示框显示位置，传入CustomDialog.location枚举，具体枚举进入源码查看
                 .build();
@@ -213,8 +210,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                 .context()     //传入上下文
                 .view()        //传入自定义View，和.layout()两者选其一调用
                 .layout()      //传入xml，和.view()两者选其一调用
-                .isAnimation() //是否设置动画，默认不设置，和.anim()同步使用
-                .anim()        //设置窗口动画，和.isAnimation()同步使用
+                .isAnimation() //是否设置动画和设置窗口动画，默认不设置
                 .isSystem()    //是否设置为系统级窗口，默认不设置
                 .width()       //设置窗口宽度
                 .height()      //设置窗口高度
@@ -1013,7 +1009,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      //参数3：滑动持续时间
      //参数4：每次滑动的间隔时间
      //坐标数量需要对应，否则不会执行方法
-     HelpService.getService().continueSwipe(int[] x, int[] y, int swipeDuration, int stepDuration)
+     HelpService.getService().continueSwipe(List<Integer> x, List<Integer> y, int swipeDuration, int stepDuration)
      //判断辅助服务是否开启
      //参数2：辅助服务类
      HelpService.isAccessibilitySettingsOn(Context mContext, Class<?> cls)

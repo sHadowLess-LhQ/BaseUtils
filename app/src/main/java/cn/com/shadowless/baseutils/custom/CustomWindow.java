@@ -192,20 +192,11 @@ public class CustomWindow {
          * Is animation custom window builder.
          *
          * @param isAnimation the is animation
+         * @param anim        the anim
          * @return the custom window builder
          */
-        public CustomWindowBuilder isAnimation(boolean isAnimation) {
+        public CustomWindowBuilder isAnimation(boolean isAnimation,int anim) {
             this.isAnimation = isAnimation;
-            return this;
-        }
-
-        /**
-         * Anim custom window builder.
-         *
-         * @param anim the anim
-         * @return the custom window builder
-         */
-        public CustomWindowBuilder anim(int anim) {
             this.anim = anim;
             return this;
         }

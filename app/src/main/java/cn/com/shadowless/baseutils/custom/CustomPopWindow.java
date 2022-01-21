@@ -239,20 +239,11 @@ public class CustomPopWindow {
          * Is set anim custom pop window builder.
          *
          * @param isSetAnim the is set anim
+         * @param anim      the anim
          * @return the custom pop window builder
          */
-        public CustomPopWindowBuilder isSetAnim(boolean isSetAnim) {
+        public CustomPopWindowBuilder isSetAnim(boolean isSetAnim, int anim) {
             this.isSetAnim = isSetAnim;
-            return this;
-        }
-
-        /**
-         * Anim custom pop window builder.
-         *
-         * @param anim the anim
-         * @return the custom pop window builder
-         */
-        public CustomPopWindowBuilder anim(int anim) {
             this.anim = anim;
             return this;
         }

@@ -1009,18 +1009,18 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param stepDuration  the step duration
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void continueSwipe(int[] x, int[] y, int swipeDuration, int stepDuration) {
-        if (x.length != y.length) {
+    public void continueSwipe(List<Integer> x, List<Integer> y, int swipeDuration, int stepDuration) {
+        if (x.size() != y.size()) {
             return;
         }
         Path path = new Path();
-        for (int i = 0; i < x.length; i++) {
-            if (i + 1 == x.length) {
+        for (int i = 0; i < x.size(); i++) {
+            if (i + 1 == x.size()) {
                 return;
             }
             path.reset();
-            path.moveTo(x[i], y[i]);
-            path.lineTo(x[i + 1], y[i + 1]);
+            path.moveTo(x.get(i), y.get(i));
+            path.lineTo(x.get(i + 1), y.get(i + 1));
             dispatchGesture(new GestureDescription.Builder().addStroke(new GestureDescription.StrokeDescription
                     (path, 0, swipeDuration)).build(), new GestureResultCallback() {
                 @Override

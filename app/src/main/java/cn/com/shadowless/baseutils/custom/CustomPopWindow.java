@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +20,7 @@ import cn.com.shadowless.baseutils.R;
  *
  * @author sHadowLess
  */
-public class CustomPopWindow extends PopupWindow {
+public class CustomPopWindow {
 
     /**
      * 自定义视图
@@ -62,6 +62,14 @@ public class CustomPopWindow extends PopupWindow {
      * The Is focus.
      */
     private boolean isFocus;
+    /**
+     * The Is outside.
+     */
+    private boolean isOutside;
+    /**
+     * The Popup window.
+     */
+    private PopupWindow popupWindow;
 
     /**
      * 构造
@@ -76,8 +84,9 @@ public class CustomPopWindow extends PopupWindow {
      * @param width             the width
      * @param height            the height
      * @param isFocus           the is focus
+     * @param isOutside         the is outside
      */
-    public CustomPopWindow(View popView, Context context, int layout, boolean isSetAnim, int anim, Drawable background, boolean isSystemPopWindow, int width, int height, boolean isFocus) {
+    public CustomPopWindow(View popView, Context context, int layout, boolean isSetAnim, int anim, Drawable background, boolean isSystemPopWindow, int width, int height, boolean isFocus, boolean isOutside) {
         this.popView = popView;
         this.context = context;
         this.layout = layout;
@@ -88,97 +97,7 @@ public class CustomPopWindow extends PopupWindow {
         this.width = width;
         this.height = height;
         this.isFocus = isFocus;
-    }
-
-    /**
-     * 构造
-     *
-     * @param context the context
-     */
-    public CustomPopWindow(Context context) {
-        super(context);
-    }
-
-    /**
-     * 构造
-     *
-     * @param context the context
-     * @param attrs   the attrs
-     */
-    public CustomPopWindow(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    /**
-     * 构造
-     *
-     * @param context      the context
-     * @param attrs        the attrs
-     * @param defStyleAttr the def style attr
-     */
-    public CustomPopWindow(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    /**
-     * 构造
-     *
-     * @param context      the context
-     * @param attrs        the attrs
-     * @param defStyleAttr the def style attr
-     * @param defStyleRes  the def style res
-     */
-    public CustomPopWindow(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    /**
-     * 构造
-     */
-    public CustomPopWindow() {
-        super();
-    }
-
-    /**
-     * 构造
-     *
-     * @param contentView the content view
-     */
-    public CustomPopWindow(View contentView) {
-        super(contentView);
-    }
-
-    /**
-     * 构造
-     *
-     * @param width  the width
-     * @param height the height
-     */
-    public CustomPopWindow(int width, int height) {
-        super(width, height);
-    }
-
-    /**
-     * 构造
-     *
-     * @param contentView the content view
-     * @param width       the width
-     * @param height      the height
-     */
-    public CustomPopWindow(View contentView, int width, int height) {
-        super(contentView, width, height);
-    }
-
-    /**
-     * 构造
-     *
-     * @param contentView the content view
-     * @param width       the width
-     * @param height      the height
-     * @param focusable   the focusable
-     */
-    public CustomPopWindow(View contentView, int width, int height, boolean focusable) {
-        super(contentView, width, height, focusable);
+        this.isOutside = isOutside;
     }
 
     /**
@@ -234,6 +153,10 @@ public class CustomPopWindow extends PopupWindow {
          * The Is focus.
          */
         private boolean isFocus;
+        /**
+         * The Is outside.
+         */
+        private boolean isOutside;
 
         /**
          * Pop view custom pop window builder.
@@ -243,6 +166,17 @@ public class CustomPopWindow extends PopupWindow {
          */
         public CustomPopWindowBuilder popView(View popView) {
             this.popView = popView;
+            return this;
+        }
+
+        /**
+         * Is outside custom pop window builder.
+         *
+         * @param isOutside the is outside
+         * @return the custom pop window builder
+         */
+        public CustomPopWindowBuilder isOutside(boolean isOutside) {
+            this.isOutside = isOutside;
             return this;
         }
 
@@ -351,7 +285,7 @@ public class CustomPopWindow extends PopupWindow {
          * @return the custom pop window
          */
         public CustomPopWindow build() {
-            return new CustomPopWindow(this.popView, this.context, this.layout, this.isSetAnim, this.anim, this.background, this.isSystemPopWindow, this.width, this.height, this.isFocus);
+            return new CustomPopWindow(this.popView, this.context, this.layout, this.isSetAnim, this.anim, this.background, this.isSystemPopWindow, this.width, this.height, this.isFocus, this.isOutside);
         }
     }
 
@@ -369,22 +303,94 @@ public class CustomPopWindow extends PopupWindow {
         if (0 == height) {
             height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
-        setWidth(width);
-        setHeight(height);
-        setContentView(popView);
+        popupWindow = new PopupWindow();
+        popupWindow.setWidth(width);
+        popupWindow.setFocusable(isFocus);
+        popupWindow.setOutsideTouchable(isOutside);
+        popupWindow.setHeight(height);
+        popupWindow.setContentView(popView);
         if (isSetAnim && 0 != anim) {
-            setAnimationStyle(anim);
+            popupWindow.setAnimationStyle(anim);
         }
         if (null == background) {
             background = new ColorDrawable(context.getResources().getColor(R.color.transparent));
         }
-        setBackgroundDrawable(background);
+        popupWindow.setBackgroundDrawable(background);
         if (isSystemPopWindow) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+                popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
             } else {
-                setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
         }
+    }
+
+    /**
+     * Show location.
+     *
+     * @param view     the view
+     * @param location the location
+     * @param x        the x
+     * @param y        the y
+     */
+    public void showLocation(View view, int location, int x, int y) {
+        popupWindow.showAtLocation(view, location, x, y);
+    }
+
+    /**
+     * Show drop.
+     *
+     * @param view the view
+     */
+    public void showDropDown(View view) {
+        popupWindow.showAsDropDown(view);
+    }
+
+    /**
+     * Show drop.
+     *
+     * @param view the view
+     * @param x    the x
+     * @param y    the y
+     */
+    public void showDropDown(View view, int x, int y) {
+        popupWindow.showAsDropDown(view, x, y);
+    }
+
+    /**
+     * Show drop.
+     *
+     * @param view     the view
+     * @param x        the x
+     * @param y        the y
+     * @param location the location
+     */
+    public void showDropDown(View view, int x, int y, int location) {
+        popupWindow.showAsDropDown(view, x, y, location);
+    }
+
+    /**
+     * Dismiss.
+     */
+    public void dismiss() {
+        popupWindow.dismiss();
+    }
+
+    /**
+     * Gets pop window.
+     *
+     * @return the pop window
+     */
+    public PopupWindow getPopWindow() {
+        return popupWindow;
+    }
+
+    /**
+     * Is show boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isShowing() {
+        return popupWindow.isShowing();
     }
 }

@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
  *
  * @author sHadowLess
  */
-public class CustomDialog extends Dialog {
+public class CustomDialog {
 
     /**
      * 自定义视图
@@ -72,6 +72,10 @@ public class CustomDialog extends Dialog {
      * 显示位置
      */
     private location location;
+    /**
+     * The Dialog.
+     */
+    private Dialog dialog;
 
     /**
      * 位置枚举
@@ -126,36 +130,6 @@ public class CustomDialog extends Dialog {
     /**
      * 构造
      *
-     * @param context the context
-     */
-    public CustomDialog(@NonNull Context context) {
-        super(context);
-    }
-
-    /**
-     * 构造
-     *
-     * @param context    the context
-     * @param themeResId the theme res id
-     */
-    public CustomDialog(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
-    }
-
-    /**
-     * 构造
-     *
-     * @param context        the context
-     * @param cancelable     the cancelable
-     * @param cancelListener the cancel listener
-     */
-    protected CustomDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
-        super(context, cancelable, cancelListener);
-    }
-
-    /**
-     * 构造
-     *
      * @param dialogView     the dialog view
      * @param context        the context
      * @param layout         the layout
@@ -171,7 +145,6 @@ public class CustomDialog extends Dialog {
      * @param location       the location
      */
     public CustomDialog(View dialogView, Context context, int layout, int windowWidth, int windowHeight, int anim, boolean cancel, boolean isSetAnim, boolean isSystemDialog, boolean isClearLayer, boolean isTitle, boolean isWindowSize, location location) {
-        super(context);
         this.dialogView = dialogView;
         this.context = context;
         this.layout = layout;
@@ -418,11 +391,12 @@ public class CustomDialog extends Dialog {
         if (null == dialogView) {
             dialogView = LayoutInflater.from(context).inflate(layout, null);
         }
+        dialog = new Dialog(context);
         if (isTitle) {
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
-        setContentView(dialogView);
-        Window window = getWindow();
+        dialog.setContentView(dialogView);
+        Window window = dialog.getWindow();
         if (null != window) {
             if (isWindowSize) {
                 WindowManager.LayoutParams layoutParams = window.getAttributes();
@@ -481,7 +455,7 @@ public class CustomDialog extends Dialog {
                     break;
             }
         }
-        setCanceledOnTouchOutside(cancel);
+        dialog.setCanceledOnTouchOutside(cancel);
     }
 
     /**
@@ -494,10 +468,10 @@ public class CustomDialog extends Dialog {
             dialogView = LayoutInflater.from(context).inflate(layout, null);
         }
         if (isTitle) {
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
-        setContentView(dialogView);
-        Window window = getWindow();
+        dialog.setContentView(dialogView);
+        Window window = dialog.getWindow();
         if (null != window) {
             if (isWindowSize) {
                 WindowManager.LayoutParams layoutParams = window.getAttributes();
@@ -556,6 +530,31 @@ public class CustomDialog extends Dialog {
                     break;
             }
         }
-        setCanceledOnTouchOutside(cancel);
+        dialog.setCanceledOnTouchOutside(cancel);
+    }
+
+    /**
+     * Gets dialog.
+     *
+     * @return the dialog
+     */
+    public Dialog getDialog() {
+        return dialog;
+    }
+
+    /**
+     * Dismiss.
+     */
+    public void dismiss() {
+        dialog.dismiss();
+    }
+
+    /**
+     * Is showing boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isShowing() {
+        return dialog.isShowing();
     }
 }

@@ -68,6 +68,10 @@ public class CustomWindow {
      * 窗口服务管理
      */
     private WindowManager windowManager;
+    /**
+     * 窗口参数
+     */
+    private WindowManager.LayoutParams layoutParams;
 
     /**
      * 构造
@@ -308,14 +312,11 @@ public class CustomWindow {
     /**
      * 显示
      */
-    public void show() {
-
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-
+    public void initWindow() {
+        layoutParams = new WindowManager.LayoutParams();
         if (isAnimation && 0 != anim) {
             layoutParams.windowAnimations = anim;
         }
-
         if (isSystem) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -323,7 +324,6 @@ public class CustomWindow {
                 layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
             }
         }
-
         layoutParams.format = PixelFormat.RGBA_8888;
         layoutParams.gravity = location;
         layoutParams.flags = windowFlag;
@@ -331,11 +331,15 @@ public class CustomWindow {
         layoutParams.height = height;
         layoutParams.x = x;
         layoutParams.y = y;
-
         if (view == null) {
             view = LayoutInflater.from(context).inflate(layout, null, false);
         }
+    }
 
+    /**
+     * Show.
+     */
+    public void show() {
         if (windowManager == null) {
             windowManager = getWindowManager();
         }
@@ -361,7 +365,7 @@ public class CustomWindow {
      *
      * @return the boolean
      */
-    public boolean isShow() {
+    public boolean isShowing() {
         return null != view;
     }
 

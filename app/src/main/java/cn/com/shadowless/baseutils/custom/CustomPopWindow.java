@@ -64,7 +64,7 @@ public class CustomPopWindow {
     /**
      * popWindow对象
      */
-    private PopupWindow popupWindow = new PopupWindow();
+    private PopupWindow popupWindow;
 
     /**
      * 构造
@@ -277,7 +277,15 @@ public class CustomPopWindow {
         if (null == popView) {
             popView = LayoutInflater.from(context).inflate(layout, null);
         }
+        if (0 == width) {
+            width = popView.getLayoutParams().width;
+        }
+        if (0 == height) {
+            height = popView.getLayoutParams().height;
+        }
         popupWindow = new PopupWindow();
+        popupWindow.setWidth(width);
+        popupWindow.setHeight(height);
         popupWindow.setContentView(popView);
         if (isSetAnim && 0 != anim) {
             popupWindow.setAnimationStyle(anim);
@@ -308,16 +316,15 @@ public class CustomPopWindow {
         if (null == popView) {
             popView = LayoutInflater.from(context).inflate(layout, null);
         }
-        if (0 != width) {
-            popupWindow.setWidth(width);
-        } else {
-            popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (0 == width) {
+            width = popView.getLayoutParams().width;
         }
-        if (0 != height) {
-            popupWindow.setHeight(height);
-        } else {
-            popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (0 == height) {
+            height = popView.getLayoutParams().height;
         }
+        popupWindow = new PopupWindow();
+        popupWindow.setWidth(width);
+        popupWindow.setHeight(height);
         popupWindow.setFocusable(isFocus);
         popupWindow.setContentView(popView);
         if (isSetAnim) {
@@ -350,16 +357,15 @@ public class CustomPopWindow {
         if (null == popView) {
             popView = LayoutInflater.from(context).inflate(layout, null);
         }
-        if (0 != width) {
-            popupWindow.setWidth(width);
-        } else {
-            popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (0 == width) {
+            width = popView.getLayoutParams().width;
         }
-        if (0 != height) {
-            popupWindow.setHeight(height);
-        } else {
-            popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (0 == height) {
+            height = popView.getLayoutParams().height;
         }
+        popupWindow = new PopupWindow();
+        popupWindow.setWidth(width);
+        popupWindow.setHeight(height);
         popupWindow.setFocusable(isFocus);
         popupWindow.setContentView(popView);
         if (isSetAnim) {
@@ -393,12 +399,13 @@ public class CustomPopWindow {
             popView = LayoutInflater.from(context).inflate(layout, null);
         }
         if (0 == width) {
-            width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            width = popView.getLayoutParams().width;
         }
+        if (0 == height) {
+            height = popView.getLayoutParams().height;
+        }
+        popupWindow = new PopupWindow();
         popupWindow.setWidth(width);
-        if (0 != height) {
-            height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        }
         popupWindow.setHeight(height);
         popupWindow.setFocusable(isFocus);
         popupWindow.setContentView(popView);

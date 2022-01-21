@@ -382,7 +382,7 @@ public class CustomDialog {
 
 
     /**
-     * 显示初始化
+     * 初始化Dialog
      *
      * @throws Exception the exception
      */
@@ -459,7 +459,7 @@ public class CustomDialog {
     }
 
     /**
-     * Show.
+     * 初始化Dialog
      *
      * @param style the style
      */
@@ -534,7 +534,7 @@ public class CustomDialog {
     }
 
     /**
-     * Gets dialog.
+     * 获取Dialog对象
      *
      * @return the dialog
      */
@@ -543,14 +543,14 @@ public class CustomDialog {
     }
 
     /**
-     * Dismiss.
+     * 关闭
      */
     public void dismiss() {
         dialog.dismiss();
     }
 
     /**
-     * Is showing boolean.
+     * 是否显示
      *
      * @return the boolean
      */

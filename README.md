@@ -198,8 +198,9 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                 .cancel()         //是否外部触碰取消提示框，默认不取消
                 .location()       //设置提示框显示位置，传入CustomDialog.location枚举，具体枚举进入源码查看
                 .build();
+        custom.initDialog();      //初始化Dialog
+        custom.initDialog(R.style.AlertDialog_AppCompat); //指定风格初始化Dialog
         custom.show();            //显示
-        custom.show(R.style.AlertDialog_AppCompat); //指定风格显示
         custom.isShow();          //是否正在显示
         custom.dismiss();         //关闭
 ```
@@ -220,8 +221,9 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                 .windowFlag()  //设置窗口标识
                 .location()    //设置窗口显示位置，传入Gravity的静态位置常量
                 .build();
+        custom.initWindow();   //初始化Window
         custom.show();         //显示
-        custom.isShow();       //是否正在显示
+        custom.isShowing();    //是否正在显示
         custom.remove();       //移除
 ```
 
@@ -239,12 +241,13 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                 .isSystemPopWindow()  //是否设置为系统级窗口，默认不设置
                 .width()      //设置宽
                 .height()     //设置高
-                .build();   
+                .build();
+        custom.initPopWindow()        //初始化PopWinodw
         custom.showDropDown(view);    //显示
         custom.showDropDown(view,1,1);//显示
         custom.showDropDown(view,1,1, Gravity.CENTER); //显示
         custom.showLocation(view,1,1, Gravity.CENTER); //显示
-        custom.isShow();              //是否显示
+        custom.isShowing();              //是否显示
         custom.dismiss();             //关闭
 ```
 

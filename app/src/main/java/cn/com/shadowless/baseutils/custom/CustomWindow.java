@@ -337,7 +337,7 @@ public class CustomWindow {
     }
 
     /**
-     * Show.
+     * 显示
      */
     public void show() {
         if (windowManager == null) {
@@ -347,7 +347,7 @@ public class CustomWindow {
     }
 
     /**
-     * Remove.
+     * 移除
      */
     public void remove() {
         if (null != view) {
@@ -361,7 +361,7 @@ public class CustomWindow {
     }
 
     /**
-     * Is show boolean.
+     * 是否显示
      *
      * @return the boolean
      */
@@ -370,7 +370,7 @@ public class CustomWindow {
     }
 
     /**
-     * Gets window manager.
+     * 获取视窗管理对象
      *
      * @return the window manager
      */

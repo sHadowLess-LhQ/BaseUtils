@@ -290,7 +290,7 @@ public class CustomPopWindow {
     }
 
     /**
-     * Show.
+     * 初始化PopWindow
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void initPopWindow() {
@@ -326,7 +326,7 @@ public class CustomPopWindow {
     }
 
     /**
-     * Show location.
+     * 显示
      *
      * @param view     the view
      * @param location the location
@@ -338,7 +338,7 @@ public class CustomPopWindow {
     }
 
     /**
-     * Show drop.
+     * 显示
      *
      * @param view the view
      */
@@ -347,7 +347,7 @@ public class CustomPopWindow {
     }
 
     /**
-     * Show drop.
+     * 显示
      *
      * @param view the view
      * @param x    the x
@@ -358,7 +358,7 @@ public class CustomPopWindow {
     }
 
     /**
-     * Show drop.
+     * 显示
      *
      * @param view     the view
      * @param x        the x
@@ -370,14 +370,14 @@ public class CustomPopWindow {
     }
 
     /**
-     * Dismiss.
+     * 关闭
      */
     public void dismiss() {
         popupWindow.dismiss();
     }
 
     /**
-     * Gets pop window.
+     * 获取PopWindow对象
      *
      * @return the pop window
      */
@@ -386,7 +386,7 @@ public class CustomPopWindow {
     }
 
     /**
-     * Is show boolean.
+     * 是否显示
      *
      * @return the boolean
      */

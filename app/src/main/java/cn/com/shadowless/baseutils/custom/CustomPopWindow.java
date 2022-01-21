@@ -90,38 +90,93 @@ public class CustomPopWindow extends PopupWindow {
         this.isFocus = isFocus;
     }
 
+    /**
+     * 构造
+     *
+     * @param context the context
+     */
     public CustomPopWindow(Context context) {
         super(context);
     }
 
+    /**
+     * 构造
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public CustomPopWindow(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * 构造
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     */
     public CustomPopWindow(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
+    /**
+     * 构造
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     * @param defStyleRes  the def style res
+     */
     public CustomPopWindow(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    /**
+     * 构造
+     */
     public CustomPopWindow() {
         super();
     }
 
+    /**
+     * 构造
+     *
+     * @param contentView the content view
+     */
     public CustomPopWindow(View contentView) {
         super(contentView);
     }
 
+    /**
+     * 构造
+     *
+     * @param width  the width
+     * @param height the height
+     */
     public CustomPopWindow(int width, int height) {
         super(width, height);
     }
 
+    /**
+     * 构造
+     *
+     * @param contentView the content view
+     * @param width       the width
+     * @param height      the height
+     */
     public CustomPopWindow(View contentView, int width, int height) {
         super(contentView, width, height);
     }
 
+    /**
+     * 构造
+     *
+     * @param contentView the content view
+     * @param width       the width
+     * @param height      the height
+     * @param focusable   the focusable
+     */
     public CustomPopWindow(View contentView, int width, int height, boolean focusable) {
         super(contentView, width, height, focusable);
     }
@@ -302,19 +357,17 @@ public class CustomPopWindow extends PopupWindow {
 
     /**
      * Show.
-     *
-     * @param view the view
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void showDropDown(View view) {
+    public void initPopWindow() {
         if (null == popView) {
             popView = LayoutInflater.from(context).inflate(layout, null);
         }
         if (0 == width) {
-            width = popView.getLayoutParams().width;
+            width = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
         if (0 == height) {
-            height = popView.getLayoutParams().height;
+            height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
         setWidth(width);
         setHeight(height);
@@ -333,134 +386,5 @@ public class CustomPopWindow extends PopupWindow {
                 setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
         }
-        showAsDropDown(view);
-    }
-
-    /**
-     * Show drop down.
-     *
-     * @param view the view
-     * @param x    the x
-     * @param y    the y
-     */
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void showDropDown(View view, int x, int y) {
-        if (null == popView) {
-            popView = LayoutInflater.from(context).inflate(layout, null);
-        }
-        if (0 == width) {
-            width = popView.getLayoutParams().width;
-        }
-        if (0 == height) {
-            height = popView.getLayoutParams().height;
-        }
-        setWidth(width);
-        setHeight(height);
-        setFocusable(isFocus);
-        setContentView(popView);
-        if (isSetAnim) {
-            setAnimationStyle(anim);
-        }
-        if (null == background) {
-            background = new ColorDrawable(context.getResources().getColor(R.color.transparent));
-        }
-        setBackgroundDrawable(background);
-        if (isSystemPopWindow) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-            } else {
-                setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-            }
-        }
-        showAsDropDown(view, x, y);
-    }
-
-    /**
-     * Show drop down.
-     *
-     * @param view     the view
-     * @param x        the x
-     * @param y        the y
-     * @param location the location
-     */
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void showDropDown(View view, int x, int y, int location) {
-        if (null == popView) {
-            popView = LayoutInflater.from(context).inflate(layout, null);
-        }
-        if (0 == width) {
-            width = popView.getLayoutParams().width;
-        }
-        if (0 == height) {
-            height = popView.getLayoutParams().height;
-        }
-        setWidth(width);
-        setHeight(height);
-        setFocusable(isFocus);
-        setContentView(popView);
-        if (isSetAnim) {
-            setAnimationStyle(anim);
-        }
-        if (null == background) {
-            background = new ColorDrawable(context.getResources().getColor(R.color.transparent));
-        }
-        setBackgroundDrawable(background);
-        if (isSystemPopWindow) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-            } else {
-                setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-            }
-        }
-        showAsDropDown(view, x, y, location);
-    }
-
-    /**
-     * Show location.
-     *
-     * @param view     the view
-     * @param x        the x
-     * @param y        the y
-     * @param location the location
-     */
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void showLocation(View view, int x, int y, int location) {
-        if (null == popView) {
-            popView = LayoutInflater.from(context).inflate(layout, null);
-        }
-        if (0 == width) {
-            width = popView.getLayoutParams().width;
-        }
-        if (0 == height) {
-            height = popView.getLayoutParams().height;
-        }
-        setWidth(width);
-        setHeight(height);
-        setFocusable(isFocus);
-        setContentView(popView);
-        if (isSetAnim) {
-            setAnimationStyle(anim);
-        }
-        if (null == background) {
-            background = new ColorDrawable(context.getResources().getColor(R.color.transparent));
-        }
-        setBackgroundDrawable(background);
-        if (isSystemPopWindow) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-            } else {
-                setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-            }
-        }
-        showAtLocation(view, location, x, y);
-    }
-
-    /**
-     * Is show boolean.
-     *
-     * @return the boolean
-     */
-    public boolean isShow() {
-        return isShowing();
     }
 }

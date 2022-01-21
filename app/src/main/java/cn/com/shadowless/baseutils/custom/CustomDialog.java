@@ -414,7 +414,7 @@ public class CustomDialog extends Dialog {
      * @throws Exception the exception
      */
     @SuppressLint("RtlHardcoded")
-    public void showDialog() {
+    public void initDialog() {
         if (null == dialogView) {
             dialogView = LayoutInflater.from(context).inflate(layout, null);
         }
@@ -482,7 +482,6 @@ public class CustomDialog extends Dialog {
             }
         }
         setCanceledOnTouchOutside(cancel);
-        show();
     }
 
     /**
@@ -490,7 +489,7 @@ public class CustomDialog extends Dialog {
      *
      * @param style the style
      */
-    public void showDialog(int style) {
+    public void initDialog(int style) {
         if (null == dialogView) {
             dialogView = LayoutInflater.from(context).inflate(layout, null);
         }
@@ -558,15 +557,5 @@ public class CustomDialog extends Dialog {
             }
         }
         setCanceledOnTouchOutside(cancel);
-        show();
-    }
-
-    /**
-     * Is show boolean.
-     *
-     * @return the boolean
-     */
-    public boolean isShow() {
-        return isShowing();
     }
 }

@@ -5,6 +5,7 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import lombok.Builder;
@@ -72,6 +73,10 @@ public class CustomWindow {
      * 窗口参数
      */
     private WindowManager.LayoutParams layoutParams;
+    /**
+     * The On view.
+     */
+    private OnView onView;
 
     /**
      * 构造
@@ -88,8 +93,9 @@ public class CustomWindow {
      * @param view        the view
      * @param x           the x
      * @param y           the y
+     * @param onView      the on view
      */
-    public CustomWindow(Context context, boolean isSystem, boolean isAnimation, int anim, int windowFlag, int location, int width, int height, int layout, View view, int x, int y) {
+    public CustomWindow(Context context, boolean isSystem, boolean isAnimation, int anim, int windowFlag, int location, int width, int height, int layout, View view, int x, int y, OnView onView) {
         this.context = context;
         this.isSystem = isSystem;
         this.isAnimation = isAnimation;
@@ -102,6 +108,19 @@ public class CustomWindow {
         this.view = view;
         this.x = x;
         this.y = y;
+        this.onView = onView;
+    }
+
+    /**
+     * The interface On view.
+     */
+    public interface OnView {
+        /**
+         * View.
+         *
+         * @param v the v
+         */
+        void view(View v);
     }
 
     /**
@@ -165,6 +184,10 @@ public class CustomWindow {
          * 窗口生成坐标Y
          */
         private int y;
+        /**
+         * The On view.
+         */
+        private OnView onView;
 
         /**
          * Context custom window builder.
@@ -174,6 +197,11 @@ public class CustomWindow {
          */
         public CustomWindowBuilder context(Context context) {
             this.context = context;
+            return this;
+        }
+
+        public CustomWindowBuilder onView(OnView onView) {
+            this.onView = onView;
             return this;
         }
 
@@ -195,7 +223,7 @@ public class CustomWindow {
          * @param anim        the anim
          * @return the custom window builder
          */
-        public CustomWindowBuilder isAnimation(boolean isAnimation,int anim) {
+        public CustomWindowBuilder isAnimation(boolean isAnimation, int anim) {
             this.isAnimation = isAnimation;
             this.anim = anim;
             return this;
@@ -295,7 +323,7 @@ public class CustomWindow {
          * @return the custom window
          */
         public CustomWindow build() {
-            return new CustomWindow(this.context, this.isSystem, this.isAnimation, this.anim, this.windowFlag, this.location, this.width, this.height, this.layout, this.view, this.x, this.y);
+            return new CustomWindow(this.context, this.isSystem, this.isAnimation, this.anim, this.windowFlag, this.location, this.width, this.height, this.layout, this.view, this.x, this.y, this.onView);
         }
 
     }
@@ -317,13 +345,29 @@ public class CustomWindow {
         }
         layoutParams.format = PixelFormat.RGBA_8888;
         layoutParams.gravity = location;
+        if (windowFlag == 0) {
+            windowFlag = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
         layoutParams.flags = windowFlag;
-        layoutParams.width = width;
-        layoutParams.height = height;
-        layoutParams.x = x;
-        layoutParams.y = y;
         if (view == null) {
             view = LayoutInflater.from(context).inflate(layout, null, false);
+        }
+        if (width == 0) {
+            width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+        layoutParams.width = width;
+        if (height == 0) {
+            height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+        layoutParams.height = height;
+        if (x != 0) {
+            layoutParams.x = x;
+        }
+        if (y != 0) {
+            layoutParams.y = y;
+        }
+        if (onView != null) {
+            onView.view(view);
         }
     }
 

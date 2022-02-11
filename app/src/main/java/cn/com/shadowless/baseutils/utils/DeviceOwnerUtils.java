@@ -2,6 +2,7 @@ package cn.com.shadowless.baseutils.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.KeyguardManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -39,6 +41,14 @@ public class DeviceOwnerUtils {
      */
     public static class AppInfo {
 
+        /**
+         * Instantiates a new App info.
+         *
+         * @param packageName the package name
+         * @param ico         the ico
+         * @param name        the name
+         * @param mIsEnable   the m is enable
+         */
         public AppInfo(String packageName, Drawable ico, CharSequence name, boolean mIsEnable) {
         }
     }
@@ -59,6 +69,10 @@ public class DeviceOwnerUtils {
      * ProfileOwner请求码
      */
     public static final int REQUEST_CODE_CHECK_PROFILE = 2;
+    /**
+     * 确认凭证请求码
+     */
+    public static final int REQUEST_CODE_CONFIRM_TOKEN = 3;
     /**
      * 设备工具类实例
      */
@@ -151,11 +165,12 @@ public class DeviceOwnerUtils {
      * @param context the 上下文
      */
     public void clearDeviceOwner(Context context) {
-        ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
-        DevicePolicyManager manager = getDevicePolicyManager(context);
-        boolean isAdminActive = manager.isAdminActive(componentName);
-        if (isAdminActive) {
-            manager.clearDeviceOwnerApp(context.getPackageName());
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            boolean isAdminActive = getDevicePolicyManager(context).isAdminActive(componentName);
+            if (isAdminActive) {
+                getDevicePolicyManager(context).clearDeviceOwnerApp(context.getPackageName());
+            }
         }
     }
 
@@ -201,17 +216,19 @@ public class DeviceOwnerUtils {
      * @return the boolean
      */
     private boolean isApplicationEnabled(Context context, String packageName) {
-        PackageManager packageManager = context.getPackageManager();
-        DevicePolicyManager manager = getDevicePolicyManager(context);
-        try {
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
-            if (0 == (applicationInfo.flags & ApplicationInfo.FLAG_INSTALLED)) {
+        if (isDeviceOwnerDeviceApp(context)) {
+            PackageManager packageManager = context.getPackageManager();
+            try {
+                ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
+                if (0 == (applicationInfo.flags & ApplicationInfo.FLAG_INSTALLED)) {
+                    return false;
+                }
+                return !getDevicePolicyManager(context).isApplicationHidden(BasicDeviceAdminReceiver.getComponentName(context), packageName);
+            } catch (PackageManager.NameNotFoundException e) {
                 return false;
             }
-            return !manager.isApplicationHidden(BasicDeviceAdminReceiver.getComponentName(context), packageName);
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -253,8 +270,6 @@ public class DeviceOwnerUtils {
     public void banCompanyScreenShoot(Context context, boolean disable) {
         if (isProfileOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).setScreenCaptureDisabled(BasicDeviceAdminReceiver.getComponentName(context), disable);
-        } else {
-            showToast(context, 3, "该设备暂无企业空间权限");
         }
     }
 
@@ -267,8 +282,6 @@ public class DeviceOwnerUtils {
     public void banDeviceScreenShoot(Context context, boolean disable) {
         if (isDeviceOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).setScreenCaptureDisabled(BasicDeviceAdminReceiver.getComponentName(context), disable);
-        } else {
-            showToast(context, 3, "暂无最高设备权限");
         }
     }
 
@@ -281,8 +294,6 @@ public class DeviceOwnerUtils {
     public void banCompanyCamera(Context context, boolean disable) {
         if (isProfileOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).setCameraDisabled(BasicDeviceAdminReceiver.getComponentName(context), disable);
-        } else {
-            showToast(context, 3, "该设备暂无企业空间权限");
         }
     }
 
@@ -295,8 +306,19 @@ public class DeviceOwnerUtils {
     public void banDeviceCamera(Context context, boolean disable) {
         if (isDeviceOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).setCameraDisabled(BasicDeviceAdminReceiver.getComponentName(context), disable);
-        } else {
-            showToast(context, 3, "暂无最高设备权限");
+        }
+    }
+
+    /**
+     * 重启设别
+     *
+     * @param context the 上下文
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void reboot(Context context) {
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            getDevicePolicyManager(context).reboot(componentName);
         }
     }
 
@@ -308,8 +330,6 @@ public class DeviceOwnerUtils {
     public void wipeCompanyData(Context context) {
         if (isProfileOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).wipeData(0);
-        } else {
-            showToast(context, 3, "该设备暂无企业空间权限");
         }
     }
 
@@ -319,7 +339,9 @@ public class DeviceOwnerUtils {
      * @param context the 上下文
      */
     public void lockScreen(Context context) {
-        getDevicePolicyManager(context).lockNow();
+        if (isDeviceOwnerDeviceApp(context)) {
+            getDevicePolicyManager(context).lockNow();
+        }
     }
 
     /**
@@ -330,7 +352,9 @@ public class DeviceOwnerUtils {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void lockScreen(Context context, int flag) {
-        getDevicePolicyManager(context).lockNow(flag);
+        if (isDeviceOwnerDeviceApp(context)) {
+            getDevicePolicyManager(context).lockNow(flag);
+        }
     }
 
     /**
@@ -341,60 +365,209 @@ public class DeviceOwnerUtils {
     public void wipeDeviceData(Context context) {
         if (isDeviceOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).wipeData(DevicePolicyManager.WIPE_EXTERNAL_STORAGE);
-        } else {
-            showToast(context, 3, "暂无最高设备权限");
         }
     }
 
     /**
-     * 设置企业空间应用密码
+     * 清除企业空间拥有者权限
      *
-     * @param context  the 上下文
-     * @param password the 密码
+     * @param context the 上下文
      */
-    public void setCompanyPassword(Context context, String password) {
-        DevicePolicyManager manager = getDevicePolicyManager(context);
-        ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void clearCompanyProfile(Context context) {
         if (isProfileOwnerDeviceApp(context)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                boolean hasToken = manager.setResetPasswordToken(componentName, token.getBytes());
-                boolean isTokenActive = manager.isResetPasswordTokenActive(componentName);
-                if (hasToken && isTokenActive) {
-                    manager.resetPasswordWithToken(componentName, password, token.getBytes(), 0);
-                } else {
-                    showToast(context, 2, "企业空间已设置密码，无法再次设置");
-                }
-            } else {
-                manager.resetPassword(password, 0);
-            }
-        } else {
-            showToast(context, 3, "该设备暂无企业空间权限");
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            getDevicePolicyManager(context).clearProfileOwner(componentName);
         }
     }
 
     /**
-     * 设置设备锁屏密码
+     * 设置系统时间
+     *
+     * @param context the 上下文
+     * @param time    the 时间
+     * @return the 是否成功
+     */
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    public boolean setSystemTime(Context context, long time) {
+        boolean isSuccess = false;
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            isSuccess = getDevicePolicyManager(context).setTime(componentName, time);
+        }
+        return isSuccess;
+    }
+
+    /**
+     * 设置系统时区
+     *
+     * @param context  the 上下文
+     * @param timeZone the 时区
+     * @return the 是否成功
+     */
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    public boolean setSystemTimeZone(Context context, String timeZone) {
+        boolean isSuccess = false;
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            isSuccess = getDevicePolicyManager(context).setTimeZone(componentName, timeZone);
+        }
+        return isSuccess;
+    }
+
+    /**
+     * 禁用状态栏下拉
+     *
+     * @param context the 上下文
+     * @param isBan   the 是否禁用
+     * @return the 是否已经禁用
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public boolean banStatueBar(Context context, boolean isBan) {
+        boolean isSuccess = false;
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            isSuccess = getDevicePolicyManager(context).setStatusBarDisabled(componentName, isBan);
+        }
+        return isSuccess;
+    }
+
+    /**
+     * 设置锁屏设备拥有者信息
+     *
+     * @param context the 上下文
+     * @param info    the 屏幕信息
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setDeviceOwnerScreenInfo(Context context, String info) {
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            getDevicePolicyManager(context).setDeviceOwnerLockScreenInfo(componentName, info);
+        }
+    }
+
+    /**
+     * 令牌是否重置成功
+     *
+     * @param context the 上下文
+     * @return the 是否成功
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean isResetPasswordToken(Context context) {
+        boolean isSuccess = false;
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            isSuccess = getDevicePolicyManager(context).isResetPasswordTokenActive(componentName);
+        }
+        return isSuccess;
+    }
+
+    /**
+     * 清除密码令牌
+     *
+     * @param context the 上下文
+     * @return the 是否成功
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean clearPasswordToken(Context context) {
+        boolean isSuccess = false;
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            isSuccess = getDevicePolicyManager(context).clearResetPasswordToken(componentName);
+        }
+        return isSuccess;
+    }
+
+    /**
+     * 确认激活token
+     *
+     * @param activity       the activity
+     * @param confirmTitle   the 确认标题
+     * @param confirmContent the 确认内容
+     */
+    public void confirmToken(Activity activity, String confirmTitle, String confirmContent) {
+        KeyguardManager keyguardManager = (android.app.KeyguardManager) activity.getSystemService(Context.KEYGUARD_SERVICE);
+        Intent intent = keyguardManager.createConfirmDeviceCredentialIntent(confirmTitle, confirmContent);
+        if (null != intent) {
+            activity.startActivityForResult(intent, REQUEST_CODE_CONFIRM_TOKEN);
+        }
+    }
+
+    /**
+     * 输入最大次数错误密码擦除设备
+     *
+     * @param context the 上下文
+     * @param num     the 次数
+     */
+    public void setMaxNumInputErrorPwd(Context context, int num) {
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            getDevicePolicyManager(context).setMaximumFailedPasswordsForWipe(componentName, num);
+        }
+    }
+
+    /**
+     * 设置锁屏密码
      *
      * @param context  the 上下文
      * @param password the 密码
+     * @return the 是否设置
      */
-    public void setDevicePassword(Context context, String password) {
-        DevicePolicyManager manager = getDevicePolicyManager(context);
-        ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+    public boolean setScreenPassword(Context context, String password) {
+        boolean isSuccess = false;
         if (isDeviceOwnerDeviceApp(context)) {
+            DevicePolicyManager manager = getDevicePolicyManager(context);
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                boolean hasToken = manager.setResetPasswordToken(componentName, token.getBytes());
-                boolean isTokenActive = manager.isResetPasswordTokenActive(componentName);
-                if (hasToken && isTokenActive) {
-                    manager.resetPasswordWithToken(componentName, password, token.getBytes(), 0);
-                } else {
-                    showToast(context, 2, "设备已设置密码，无法再次设置");
-                }
+                isSuccess = manager.resetPasswordWithToken(componentName, password, token.getBytes(), 0);
             } else {
-                manager.resetPassword(password, 0);
+                isSuccess = manager.resetPassword(password, 0);
             }
-        } else {
-            showToast(context, 3, "暂无最高设备权限");
+        }
+        return isSuccess;
+    }
+
+    /**
+     * 关闭备份服务
+     *
+     * @param context the 上下文
+     * @param isBan   the 是否关闭
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void closeBackUpService(Context context, boolean isBan) {
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            getDevicePolicyManager(context).setBackupServiceEnabled(componentName, isBan);
+        }
+    }
+
+    /**
+     * 是否关闭备份服务
+     *
+     * @param context the 上下文
+     * @return the 是否关闭
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean isCloseBackUp(Context context) {
+        boolean isSuccess = false;
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            isSuccess = getDevicePolicyManager(context).isBackupServiceEnabled(componentName);
+        }
+        return isSuccess;
+    }
+
+    /**
+     * 关闭定位服务
+     *
+     * @param context the 上下文
+     * @param isBan   the 是否关闭
+     */
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void closeLocation(Context context, boolean isBan) {
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            getDevicePolicyManager(context).setLocationEnabled(componentName, isBan);
         }
     }
 
@@ -405,9 +578,25 @@ public class DeviceOwnerUtils {
      * @param key     the 限制名
      */
     public void setUserRestriction(Context context, String key) {
-        DevicePolicyManager manager = getDevicePolicyManager(context);
-        ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
-        manager.addUserRestriction(componentName, key);
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            getDevicePolicyManager(context).addUserRestriction(componentName, key);
+        }
+    }
+
+    /**
+     * 获取电源锁
+     *
+     * @param activity the 主页
+     * @return the 电源锁
+     */
+    public void acquireWakeLock(Activity activity) {
+        PowerManager pm = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock m_wakeLockObj = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK
+                | PowerManager.ACQUIRE_CAUSES_WAKEUP
+                | PowerManager.ON_AFTER_RELEASE, activity.getClass().getName());
+        m_wakeLockObj.acquire(10000);
+        m_wakeLockObj.release();
     }
 
     /**
@@ -417,9 +606,10 @@ public class DeviceOwnerUtils {
      * @param key     the 限制名
      */
     public void clearUserRestriction(Context context, String key) {
-        DevicePolicyManager manager = getDevicePolicyManager(context);
-        ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
-        manager.clearUserRestriction(componentName, key);
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            getDevicePolicyManager(context).clearUserRestriction(componentName, key);
+        }
     }
 
     /**
@@ -429,10 +619,12 @@ public class DeviceOwnerUtils {
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void clearAllUserRestriction(Context context) {
-        Bundle bundle = getUserRestriction(context);
-        if (null != bundle) {
-            for (String key : bundle.keySet()) {
-                clearUserRestriction(context, key);
+        if (isDeviceOwnerDeviceApp(context)) {
+            Bundle bundle = getUserRestriction(context);
+            if (null != bundle) {
+                for (String key : bundle.keySet()) {
+                    clearUserRestriction(context, key);
+                }
             }
         }
     }
@@ -445,9 +637,12 @@ public class DeviceOwnerUtils {
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Bundle getUserRestriction(Context context) {
-        DevicePolicyManager manager = getDevicePolicyManager(context);
-        ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
-        return manager.getUserRestrictions(componentName);
+        Bundle isSuccess = null;
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            isSuccess = getDevicePolicyManager(context).getUserRestrictions(componentName);
+        }
+        return isSuccess;
     }
 
     /**
@@ -458,11 +653,12 @@ public class DeviceOwnerUtils {
      */
     @RequiresApi(api = Build.VERSION_CODES.P)
     public void clearApplicationUserData(Context context, String packageName) {
-        DevicePolicyManager manager = getDevicePolicyManager(context);
-        ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
-        manager.clearApplicationUserData(componentName, packageName, command -> {
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);
+            getDevicePolicyManager(context).clearApplicationUserData(componentName, packageName, command -> {
 
-        }, (packageName1, succeeded) -> Log.e(TAG, "onApplicationUserDataCleared: " + packageName1 + succeeded));
+            }, (packageName1, succeeded) -> Log.e(TAG, "onApplicationUserDataCleared: " + packageName1 + succeeded));
+        }
     }
 
     /**
@@ -504,28 +700,6 @@ public class DeviceOwnerUtils {
                 .setNegativeButton("取消", onClickListener)
                 .create();
         alertDialog.show();
-    }
-
-    /**
-     * 显示图示
-     *
-     * @param level the 提示等级
-     * @param text  the 提示信息
-     */
-    private void showToast(Context context, int level, String text) {
-        switch (level) {
-            case 1:
-                ToastUtils.info(context, text);
-                break;
-            case 2:
-                ToastUtils.warning(context, text);
-                break;
-            case 3:
-                ToastUtils.error(context, text);
-                break;
-            default:
-                break;
-        }
     }
 
     /**

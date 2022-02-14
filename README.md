@@ -79,8 +79,8 @@ b、远程仓库引入
                 implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
             //【注：】使用BaseXPop，请额外添加以下依赖：
             //BaseXPop
-                implementation 'com.github.li-xiaojun:XPopup:2.5.15'
-                implementation 'com.google.android.material:material:1.3.0-alpha01'
+                implementation 'com.github.li-xiaojun:XPopup:2.7.5'
+                implementation 'com.google.android.material:material:1.4.0'
     }
 ```
 

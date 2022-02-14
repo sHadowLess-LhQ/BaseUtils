@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -270,6 +271,33 @@ public class DeviceOwnerUtils {
     public void banCompanyScreenShoot(Context context, boolean disable) {
         if (isProfileOwnerDeviceApp(context)) {
             getDevicePolicyManager(context).setScreenCaptureDisabled(BasicDeviceAdminReceiver.getComponentName(context), disable);
+        }
+    }
+
+    /**
+     * 添加程序默认项
+     *
+     * @param context      the 上下文
+     * @param packageName  the 包名
+     * @param className    the 类名
+     * @param intentFilter the 过滤器
+     */
+    public void addPersistentPreferred(Context context, String packageName, String className, IntentFilter intentFilter) {
+        if (isDeviceOwnerDeviceApp(context)) {
+            ComponentName componentName = new ComponentName(packageName, className);
+            getDevicePolicyManager(context).addPersistentPreferredActivity(BasicDeviceAdminReceiver.getComponentName(context), intentFilter, componentName);
+        }
+    }
+
+    /**
+     * 清除程序默认项
+     *
+     * @param context     the 上下文
+     * @param packageName the 包名
+     */
+    public void clearPackagePersistentPreferred(Context context, String packageName) {
+        if (isDeviceOwnerDeviceApp(context)) {
+            getDevicePolicyManager(context).clearPackagePersistentPreferredActivities(BasicDeviceAdminReceiver.getComponentName(context), packageName);
         }
     }
 

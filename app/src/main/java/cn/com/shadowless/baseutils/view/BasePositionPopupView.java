@@ -3,15 +3,23 @@ package cn.com.shadowless.baseutils.view;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.PositionPopupView;
 
 /**
  * The type Base position popup view.
  *
+ * @param <T> the type parameter
  * @author sHadowLess
  */
-public abstract class BasePositionPopupView extends PositionPopupView {
+public abstract class BasePositionPopupView<T extends ViewBinding> extends PositionPopupView {
+
+    /**
+     * The Bind.
+     */
+    private T bind = null;
+
     /**
      * Instantiates a new Base position popup view.
      *
@@ -29,6 +37,7 @@ public abstract class BasePositionPopupView extends PositionPopupView {
     @Override
     protected void onCreate() {
         super.onCreate();
+        bind = setBindView();
         initView();
     }
 
@@ -36,6 +45,15 @@ public abstract class BasePositionPopupView extends PositionPopupView {
     protected void onShow() {
         super.onShow();
         initListener();
+    }
+
+    /**
+     * Gets bind view.
+     *
+     * @return the bind view
+     */
+    protected T getBindView() {
+        return bind;
     }
 
     /**
@@ -54,4 +72,12 @@ public abstract class BasePositionPopupView extends PositionPopupView {
      * Init listener.
      */
     protected abstract void initListener();
+
+    /**
+     * Sets bind view.
+     *
+     * @return the bind view
+     */
+    @NonNull
+    protected abstract T setBindView();
 }

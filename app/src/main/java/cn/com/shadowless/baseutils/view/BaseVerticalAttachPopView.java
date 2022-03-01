@@ -3,13 +3,23 @@ package cn.com.shadowless.baseutils.view;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.AttachPopupView;
 
 /**
  * The type Base vertical attach pop view.
+ *
+ * @param <T> the type parameter
+ * @author sHadowLess
  */
-public abstract class BaseVerticalAttachPopView extends AttachPopupView {
+public abstract class BaseVerticalAttachPopView<T extends ViewBinding> extends AttachPopupView {
+
+    /**
+     * The Bind.
+     */
+    private T bind = null;
+
     /**
      * Instantiates a new Base vertical attach pop view.
      *
@@ -27,6 +37,7 @@ public abstract class BaseVerticalAttachPopView extends AttachPopupView {
     @Override
     protected void onCreate() {
         super.onCreate();
+        bind = setBindView();
         initView();
     }
 
@@ -34,6 +45,15 @@ public abstract class BaseVerticalAttachPopView extends AttachPopupView {
     protected void onShow() {
         super.onShow();
         initListener();
+    }
+
+    /**
+     * Gets bind view.
+     *
+     * @return the bind view
+     */
+    protected T getBindView() {
+        return bind;
     }
 
     /**
@@ -52,4 +72,12 @@ public abstract class BaseVerticalAttachPopView extends AttachPopupView {
      * Init listener.
      */
     protected abstract void initListener();
+
+    /**
+     * Sets bind view.
+     *
+     * @return the bind view
+     */
+    @NonNull
+    protected abstract T setBindView();
 }

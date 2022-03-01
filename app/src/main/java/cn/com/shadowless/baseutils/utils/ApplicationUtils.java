@@ -43,7 +43,7 @@ public class ApplicationUtils {
         if (null != intent) {
             context.startActivity(intent);
         } else {
-            Toast.makeText(context, "展示终端没有安装", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "终端没有安装", Toast.LENGTH_LONG).show();
         }
     }
 

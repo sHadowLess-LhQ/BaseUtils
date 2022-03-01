@@ -15,7 +15,6 @@ Step 1. 添加maven仓库地址和配置
          repositories {
             ...
               maven { url 'https://jitpack.io' }
-              maven { url 'https://www.jitpack.io' }
          }
      }
      
@@ -26,7 +25,6 @@ Step 1. 添加maven仓库地址和配置
           repositories {
             ...
              maven { url 'https://jitpack.io' }
-             maven { url 'https://www.jitpack.io' }
           }
       }
 ```
@@ -164,6 +162,8 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
        【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
        if(isOrientation){
         //竖屏
+        //mActivity是所依附的Activity对象
+        Toast.makeText(mActivity, "可用Activity对象", Toast.LENGTH_SHORT).show();
        }else{
         //横屏
        }

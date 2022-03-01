@@ -132,7 +132,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
      *
      * @return the 视图
      */
-    public T getBindView() {
+    protected T getBindView() {
         return bind;
     }
 

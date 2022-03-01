@@ -161,7 +161,7 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
      *
      * @return the 视图
      */
-    public T getBindView() {
+    protected T getBindView() {
         return bind;
     }
 

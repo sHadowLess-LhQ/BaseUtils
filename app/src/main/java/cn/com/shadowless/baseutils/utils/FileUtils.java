@@ -233,10 +233,25 @@ public class FileUtils {
     }
 
     /**
-     * Gets net file size description.
+     * 删除文件
      *
-     * @param size the size
-     * @return the net file size description
+     * @param filePath the 文件路径
+     * @return the 是否删除成功
+     */
+    public static boolean deleteFile(String filePath) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            return file.delete();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 转换文件大小单位MB
+     *
+     * @param size the 字节
+     * @return the 文件MB单位大小字符串
      */
     public static String getNetFileSizeDescription(long size) {
         DecimalFormat format = new DecimalFormat("###.0");

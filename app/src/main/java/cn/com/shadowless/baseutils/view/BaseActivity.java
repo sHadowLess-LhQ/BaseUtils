@@ -3,11 +3,12 @@ package cn.com.shadowless.baseutils.view;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewbinding.ViewBinding;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -37,6 +38,10 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
      * 视图绑定
      */
     private T bind = null;
+    /**
+     * The Current fragment.
+     */
+    private Fragment currentFragment = null;
     /**
      * 屏幕方向标志
      */
@@ -145,6 +150,45 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         String tip = "应用无法使用，请开启%s权限";
         ToastUtils.warning(this, String.format(tip, name));
         ApplicationUtils.startApplicationInfo(this);
+    }
+
+    /**
+     * Show fragment.
+     *
+     * @param fragment the fragment
+     * @param layout   the layout
+     */
+    protected void showFragment(Fragment fragment, int layout) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (currentFragment == null) {
+            currentFragment = fragment;
+            if (!fragment.isAdded()) {
+                transaction.add(layout, fragment).show(fragment).commit();
+            } else {
+                transaction.show(fragment).commit();
+            }
+        } else if (currentFragment != fragment) {
+            transaction.hide(currentFragment);
+            currentFragment = fragment;
+            if (!fragment.isAdded()) {
+                transaction.add(layout, fragment).show(fragment).commit();
+            } else {
+                transaction.show(fragment).commit();
+            }
+        }
+    }
+
+    /**
+     * Replace fragment.
+     *
+     * @param fragment the fragment
+     * @param layout   the layout
+     */
+    protected void replaceFragment(Fragment fragment, int layout) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction
+                .replace(layout, fragment)
+                .commit();
     }
 
     /**

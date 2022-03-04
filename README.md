@@ -539,24 +539,37 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
 ### 14、BasePopView：直接继承
 
 ```
-     //依附输入法的PopView
-     - BaseBottomPopView
-     //水平气泡依附的PopView
-     - BaseBubbleHorizontalAttachPopupView
-     //垂直气泡依附的PopView
-     - BaseVerticalBubbleAttachPopupView
-     //居中弹出的PopView
-     - BaseCenterPopView
-     //侧滑拉出的PopView
-     - BaseDrawerPopupView
-     //全屏的PopView
-     - BaseFullScreenPopupView
-     //水平依附的PopView
-     - BaseHorizontalAttachPopView
-     //垂直依附的PopView
-     - BaseVerticalAttachPopView
-     //自定位的PopView
-     - BasePositionPopupView
+//创建xml后，点击编译，填入需要绑定的视图
+public class AddCardPopView extends BaseCenterPopView<PopAddCardViewBinding>{
+
+    public AddCardPopView(@NonNull Context context) {
+        super(context);
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.pop_add_card_view;
+    }
+
+    @Override
+    protected void initView() {
+      //初始化控件
+      getBindView().popAddCardBtn.setText("设置");
+    }
+
+    @Override
+    protected void initListener() {
+      //初始化控件事件监听
+      getBindView().popAddCardBtn.setOnClickListener(this);
+    }
+
+    @NonNull
+    @Override
+    protected PopAddCardViewBinding setBindView() {
+        //回传ViewBinding绑定的视图
+        return PopAddCardViewBinding.bind(getPopupImplView());
+    }
+}
 ```
 
 ### 15、WordUtils：方法说明

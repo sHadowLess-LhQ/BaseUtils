@@ -7,6 +7,8 @@ import java.net.ConnectException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.ObservableTransformer;
@@ -76,6 +78,11 @@ public class NetUtils {
     private static final String ERROR_DEFAULT = "请求失败，请重试";
 
     /**
+     * The Api map.
+     */
+    private static Map<String, Object> API_MAP = null;
+
+    /**
      * 错误枚举
      */
     private enum ERROR {
@@ -106,18 +113,6 @@ public class NetUtils {
     }
 
     /**
-     * 初始化接口回调
-     */
-    public interface InitInterface {
-        /**
-         * 初始化接口
-         *
-         * @param retrofit the retrofit实例
-         */
-        void createInterface(Retrofit retrofit);
-    }
-
-    /**
      * 获取ohkHttp实例
      *
      * @return the ok http client
@@ -138,10 +133,9 @@ public class NetUtils {
     /**
      * 初始化retrofit
      *
-     * @param initInterface the init interface
+     * @param cls the cls
      */
-    public void initRetrofit(InitInterface initInterface) {
-        //初始化接口
+    public void initRetrofit(Class<?>... cls) {
         if (null == okHttpClient) {
             okHttpClient = getOkHttpClient();
         }
@@ -151,7 +145,21 @@ public class NetUtils {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
-        initInterface.createInterface(retrofit);
+        API_MAP = new HashMap<>(cls.length);
+        for (Class<?> cl : cls) {
+            Object obj = retrofit.create(cl);
+            API_MAP.put(cl.getSimpleName(), obj);
+        }
+    }
+
+    /**
+     * 获取Api对象
+     *
+     * @param name the name
+     * @return the object
+     */
+    public static Object getApi(String name) {
+        return API_MAP.get(name);
     }
 
     /**

@@ -346,12 +346,11 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
                 .timeOut()       //设置超时时间，不设置默认10秒
                 .timeOutUnit()   //设置超时时间单位，不设置默认单位秒
                 .build()
-                .initRetrofit(new NetUtils.InitInterface() {
-                    @Override
-                    public void createInterface(Retrofit retrofit) {
-                                 //可在回调内实例化接口
-                    }
-                });
+                .initRetrofit(Api.class,xx.class...); //传入需要创建的接口类
+                
+      //取出需要的接口对象实例
+      Api api = (Api) NetUtils.getApi(Api.class.getSimpleName());
+       ...
 ```
 
 ### 9、LocationUtils：调用示例

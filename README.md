@@ -135,6 +135,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 }
 ```
 
+可根据实际使用二次封装
+
+```
+public abstract class PrinterBaseActivity<T extends ViewBinding> extends BaseActivity<T> {
+    ...
+}
+```
+
 ### 2、BaseFragment：直接继承
 
 ```
@@ -176,6 +184,14 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
        //初始化界面控件
        getBindView().test.setText(map.get("data"));
     }
+}
+```
+
+可根据实际使用二次封装
+
+```
+public abstract class PrinterBaseFragment<T extends ViewBinding> extends BaseFragment<T> {
+     ...
 }
 ```
 

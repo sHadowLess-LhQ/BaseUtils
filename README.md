@@ -577,6 +577,13 @@ public class AddCardPopView extends BaseCenterPopView<PopAddCardViewBinding>{
       //初始化控件事件监听
       getBindView().popAddCardBtn.setOnClickListener(this);
     }
+    
+    @Override
+    protected boolean isDefaultBackground() {
+      //为true使用默认背景样式
+      //为false不使用
+      return false;
+    }
 
     @NonNull
     @Override

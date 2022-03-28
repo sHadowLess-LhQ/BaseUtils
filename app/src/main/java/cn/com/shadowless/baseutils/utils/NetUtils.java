@@ -158,8 +158,8 @@ public class NetUtils {
      * @param name the name
      * @return the object
      */
-    public static Object getApi(String name) {
-        return API_MAP.get(name);
+    public static <T> T getApi(String name) {
+        return (T) API_MAP.get(name);
     }
 
     /**

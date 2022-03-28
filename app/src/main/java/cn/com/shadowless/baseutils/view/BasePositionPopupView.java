@@ -7,6 +7,8 @@ import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.PositionPopupView;
 
+import cn.com.shadowless.baseutils.R;
+
 /**
  * The type Base position popup view.
  *
@@ -19,6 +21,10 @@ public abstract class BasePositionPopupView<T extends ViewBinding> extends Posit
      * The Bind.
      */
     private T bind = null;
+    /**
+     * The Context.
+     */
+    private Context context = null;
 
     /**
      * Instantiates a new Base position popup view.
@@ -27,6 +33,7 @@ public abstract class BasePositionPopupView<T extends ViewBinding> extends Posit
      */
     public BasePositionPopupView(@NonNull Context context) {
         super(context);
+        this.context = context;
     }
 
     @Override
@@ -39,6 +46,9 @@ public abstract class BasePositionPopupView<T extends ViewBinding> extends Posit
         super.onCreate();
         bind = setBindView();
         initView();
+        if (isDefaultBackground()) {
+            getPopupImplView().setBackground(context.getDrawable(R.drawable.bg_base_pop_view));
+        }
     }
 
     @Override
@@ -72,6 +82,13 @@ public abstract class BasePositionPopupView<T extends ViewBinding> extends Posit
      * Init listener.
      */
     protected abstract void initListener();
+
+    /**
+     * Is default background boolean.
+     *
+     * @return the boolean
+     */
+    protected abstract boolean isDefaultBackground();
 
     /**
      * Sets bind view.

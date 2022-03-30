@@ -3,6 +3,7 @@ package cn.com.shadowless.baseutils.view;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +19,6 @@ import java.util.Map;
 
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
-import cn.com.shadowless.baseutils.utils.ToastUtils;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.disposables.Disposable;
 
@@ -148,7 +148,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
      */
     private void showToast(String name) {
         String tip = "应用无法使用，请开启%s权限";
-        ToastUtils.warning(this, String.format(tip, name));
+        Toast.makeText(this, String.format(tip, name), Toast.LENGTH_SHORT).show();
         ApplicationUtils.startApplicationInfo(this);
     }
 

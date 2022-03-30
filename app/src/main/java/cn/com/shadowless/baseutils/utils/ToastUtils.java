@@ -2,6 +2,7 @@ package cn.com.shadowless.baseutils.utils;
 
 import static androidx.core.view.ViewCompat.setBackground;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -33,7 +34,7 @@ public class ToastUtils {
     /**
      * 构造
      */
-    private ToastUtils() {
+    public ToastUtils() {
     }
 
     /**
@@ -70,209 +71,231 @@ public class ToastUtils {
      * 类型
      */
     private static final String TOAST_TYPEFACE = "sans-serif-condensed";
+
     /**
      * 土司对象
      */
     private static Toast currentToast = null;
 
     /**
+     * The constant toastUtils.
+     */
+    @SuppressLint("StaticFieldLeak")
+    private static ToastUtils toastUtils;
+
+    /**
+     * The constant mContext.
+     */
+    @SuppressLint("StaticFieldLeak")
+    private static Context context;
+
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
+    public static ToastUtils getInstance() {
+        if (toastUtils == null) {
+            toastUtils = new ToastUtils();
+        }
+
+        return toastUtils;
+    }
+
+    /**
+     * Init toast.
+     *
+     * @param mContext the m context
+     */
+    public void initToast(Context mContext) {
+        if (null == context) {
+            context = mContext;
+        }
+        if (null == currentToast) {
+            currentToast = new Toast(context);
+        }
+    }
+
+    /**
      * 正常
      *
-     * @param context the 上下文
      * @param message the 信息
      */
-    public static void normal(@NonNull Context context, @NonNull String message) {
-        normal(context, message, Toast.LENGTH_SHORT, null, false).show();
+    public static void normal(@NonNull String message) {
+        normal(message, Toast.LENGTH_SHORT, null, false).show();
     }
 
     /**
      * 正常带图标
      *
-     * @param context the 上下文
      * @param message the 信息
      * @param icon    the 图标
      */
-    public static void normal(@NonNull Context context, @NonNull String message, Drawable icon) {
-        normal(context, message, Toast.LENGTH_SHORT, icon, true).show();
+    public static void normal(@NonNull String message, Drawable icon) {
+        normal(message, Toast.LENGTH_SHORT, icon, true).show();
     }
 
     /**
      * 正常带显示时长
      *
-     * @param context  the 上下文
      * @param message  the 信息
      * @param duration the 时长
      */
-    public static void normal(@NonNull Context context, @NonNull String message, int duration) {
-        normal(context, message, duration, null, false).show();
+    public static void normal(@NonNull String message, int duration) {
+        normal(message, duration, null, false).show();
     }
 
     /**
      * 正常带图标带显示时长
      *
-     * @param context  the 上下文
      * @param message  the 信息
      * @param duration the 时长
      * @param icon     the 图标
      */
-    public static void normal(@NonNull Context context, @NonNull String message, int duration, Drawable icon) {
-        normal(context, message, duration, icon, true).show();
+    public static void normal(@NonNull String message, int duration, Drawable icon) {
+        normal(message, duration, icon, true).show();
     }
 
     /**
      * 正常土司
      *
-     * @param context  the 上下文
      * @param message  the 信息
      * @param duration the 时长
      * @param icon     the 图标
      * @param withIcon the 是否带图标
      * @return the toast
      */
-    public static Toast normal(@NonNull Context context, @NonNull String message, int duration, Drawable icon, boolean withIcon) {
-        return custom(context, message, icon, DEFAULT_TEXT_COLOR, duration, withIcon);
+    public static Toast normal(@NonNull String message, int duration, Drawable icon, boolean withIcon) {
+        return custom(message, icon, DEFAULT_TEXT_COLOR, duration, withIcon);
     }
 
     /**
      * 警告
      *
-     * @param context the 上下文
      * @param message the 信息
      */
-    public static void warning(@NonNull Context context, @NonNull String message) {
-        warning(context, message, Toast.LENGTH_SHORT, true).show();
+    public static void warning(@NonNull String message) {
+        warning(message, Toast.LENGTH_SHORT, true).show();
     }
 
     /**
      * 警告带时长
      *
-     * @param context  the 上下文
      * @param message  the 信息
      * @param duration the 时长
      */
-    public static void warning(@NonNull Context context, @NonNull String message, int duration) {
-        warning(context, message, duration, true).show();
+    public static void warning(@NonNull String message, int duration) {
+        warning(message, duration, true).show();
     }
 
     /**
      * 警告土司
      *
-     * @param context  the 上下文
      * @param message  the 信息
      * @param duration the 时长
      * @param withIcon the 是否带图标
      * @return the toast
      */
-    public static Toast warning(@NonNull Context context, @NonNull String message, int duration, boolean withIcon) {
-        return custom(context, message, getDrawable(context, R.mipmap.ic_error_outline_white_48dp), DEFAULT_TEXT_COLOR, WARNING_COLOR, duration, withIcon, true);
+    public static Toast warning(@NonNull String message, int duration, boolean withIcon) {
+        return custom(message, getDrawable(context, R.mipmap.ic_error_outline_white_48dp), DEFAULT_TEXT_COLOR, WARNING_COLOR, duration, withIcon, true);
     }
 
     /**
      * 信息
      *
-     * @param context the 上下文
      * @param message the 信息
      */
-    public static void info(@NonNull Context context, @NonNull String message) {
-        info(context, message, Toast.LENGTH_SHORT, true).show();
+    public static void info(@NonNull String message) {
+        info(message, Toast.LENGTH_SHORT, true).show();
     }
 
     /**
      * 信息带时长
      *
-     * @param context  the 上下文
      * @param message  the 信息
      * @param duration the 时长
      */
-    public static void info(@NonNull Context context, @NonNull String message, int duration) {
-        info(context, message, duration, true).show();
+    public static void info(@NonNull String message, int duration) {
+        info(message, duration, true).show();
     }
 
     /**
      * 信息土司
      *
-     * @param context  the 上下文
      * @param message  the 信息
      * @param duration the 时长
      * @param withIcon the 是否带图标
      * @return the toast
      */
-    public static Toast info(@NonNull Context context, @NonNull String message, int duration, boolean withIcon) {
-        return custom(context, message, getDrawable(context, R.mipmap.ic_info_outline_white_48dp), DEFAULT_TEXT_COLOR, INFO_COLOR, duration, withIcon, true);
+    public static Toast info(@NonNull String message, int duration, boolean withIcon) {
+        return custom(message, getDrawable(context, R.mipmap.ic_info_outline_white_48dp), DEFAULT_TEXT_COLOR, INFO_COLOR, duration, withIcon, true);
     }
 
     /**
      * 成功
      *
-     * @param context the 上下文
      * @param message the 信息
      */
-    public static void success(@NonNull Context context, @NonNull String message) {
-        success(context, message, Toast.LENGTH_SHORT, true).show();
+    public static void success(@NonNull String message) {
+        success(message, Toast.LENGTH_SHORT, true).show();
     }
 
     /**
      * 成功带时长
      *
-     * @param context  the 上下文
      * @param message  the 信息
      * @param duration the 时长
      */
-    public static void success(@NonNull Context context, @NonNull String message, int duration) {
-        success(context, message, duration, true).show();
+    public static void success(@NonNull String message, int duration) {
+        success(message, duration, true).show();
     }
 
     /**
      * 成功带时长
      *
-     * @param context  the 上下文
      * @param message  the 信息
      * @param duration the 时长
      * @param withIcon the 是否带图标
      * @return the toast
      */
-    public static Toast success(@NonNull Context context, @NonNull String message, int duration, boolean withIcon) {
-        return custom(context, message, getDrawable(context, R.mipmap.ic_check_white_48dp), DEFAULT_TEXT_COLOR, SUCCESS_COLOR, duration, withIcon, true);
+    public static Toast success(@NonNull String message, int duration, boolean withIcon) {
+        return custom(message, getDrawable(context, R.mipmap.ic_check_white_48dp), DEFAULT_TEXT_COLOR, SUCCESS_COLOR, duration, withIcon, true);
     }
 
     /**
      * 错误
      *
-     * @param context the 上下文
      * @param message the 信息
      */
-    public static void error(@NonNull Context context, @NonNull String message) {
-        error(context, message, Toast.LENGTH_SHORT, true).show();
+    public static void error(@NonNull String message) {
+        error(message, Toast.LENGTH_SHORT, true).show();
     }
 
     /**
      * 错误带时长
      *
-     * @param context  the 上下文
      * @param message  the 信息
      * @param duration the 时长
      */
-    public static void error(@NonNull Context context, @NonNull String message, int duration) {
-        error(context, message, duration, true).show();
+    public static void error(@NonNull String message, int duration) {
+        error(message, duration, true).show();
     }
 
     /**
      * 错误土司
      *
-     * @param context  the 上下文
      * @param message  the 信息
      * @param duration the 时长
      * @param withIcon the 是否带图标
      * @return the toast
      */
-    public static Toast error(@NonNull Context context, @NonNull String message, int duration, boolean withIcon) {
-        return custom(context, message, getDrawable(context, R.mipmap.ic_clear_white_48dp), DEFAULT_TEXT_COLOR, ERROR_COLOR, duration, withIcon, true);
+    public static Toast error(@NonNull String message, int duration, boolean withIcon) {
+        return custom(message, getDrawable(context, R.mipmap.ic_clear_white_48dp), DEFAULT_TEXT_COLOR, ERROR_COLOR, duration, withIcon, true);
     }
 
     /**
      * 自定义土司
      *
-     * @param context   the 上下文
      * @param message   the 信息
      * @param icon      the 图标
      * @param textColor the 文字颜色
@@ -280,14 +303,13 @@ public class ToastUtils {
      * @param withIcon  the 是否带图标
      * @return the toast
      */
-    public static Toast custom(@NonNull Context context, @NonNull String message, Drawable icon, @ColorInt int textColor, int duration, boolean withIcon) {
-        return custom(context, message, icon, textColor, -1, duration, withIcon, false);
+    public static Toast custom(@NonNull String message, Drawable icon, @ColorInt int textColor, int duration, boolean withIcon) {
+        return custom(message, icon, textColor, -1, duration, withIcon, false);
     }
 
     /**
      * 自定义土司
      *
-     * @param context    the 上下文
      * @param message    the 信息
      * @param iconRes    the 图标资源
      * @param textColor  the 文字颜色
@@ -297,14 +319,13 @@ public class ToastUtils {
      * @param shouldTint the 是否简单色
      * @return the toast
      */
-    public static Toast custom(@NonNull Context context, @NonNull String message, @DrawableRes int iconRes, @ColorInt int textColor, @ColorInt int tintColor, int duration, boolean withIcon, boolean shouldTint) {
-        return custom(context, message, getDrawable(context, iconRes), textColor, tintColor, duration, withIcon, shouldTint);
+    public static Toast custom(@NonNull String message, @DrawableRes int iconRes, @ColorInt int textColor, @ColorInt int tintColor, int duration, boolean withIcon, boolean shouldTint) {
+        return custom(message, getDrawable(context, iconRes), textColor, tintColor, duration, withIcon, shouldTint);
     }
 
     /**
      * 自定义土司
      *
-     * @param context    the 上下文
      * @param message    the 信息
      * @param icon       the 图标
      * @param textColor  the 文字颜色
@@ -314,7 +335,7 @@ public class ToastUtils {
      * @param shouldTint the 是否简单色
      * @return the toast
      */
-    public static Toast custom(@NonNull Context context, @NonNull String message, Drawable icon, @ColorInt int textColor, @ColorInt int tintColor, int duration, boolean withIcon, boolean shouldTint) {
+    public static Toast custom(@NonNull String message, Drawable icon, @ColorInt int textColor, @ColorInt int tintColor, int duration, boolean withIcon, boolean shouldTint) {
         if (currentToast == null) {
             currentToast = new Toast(context);
         }
@@ -374,11 +395,10 @@ public class ToastUtils {
     /**
      * 参数：消息 显示时长
      *
-     * @param context the 上下文
-     * @param str     the 字符
-     * @param isLong  the 是否长显示
+     * @param str    the 字符
+     * @param isLong the 是否长显示
      */
-    public static void showToast(Context context, String str, boolean isLong) {
+    public static void showToast(String str, boolean isLong) {
         if (isLong) {
             Toast.makeText(context, str, Toast.LENGTH_LONG).show();
         } else {
@@ -389,20 +409,18 @@ public class ToastUtils {
     /**
      * 参数：消息
      *
-     * @param context the 上下文
-     * @param str     the str
+     * @param str the str
      */
-    public static void showToastShort(Context context, String str) {
-        showToast(context, str, false);
+    public static void showToastShort(String str) {
+        showToast(str, false);
     }
 
     /**
      * 参数：消息id
      *
-     * @param context the 上下文
-     * @param resId   the res id
+     * @param resId the res id
      */
-    public static void showToastShort(Context context, int resId) {
-        showToast(context, context.getString(resId), false);
+    public static void showToastShort(int resId) {
+        showToast(context.getString(resId), false);
     }
 }

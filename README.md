@@ -1053,7 +1053,8 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 ### 18、ToastUtils：方法说明
 
 ```
-
+     //在Application中初始化土司
+     ToastUtils.getInstance().initToast(Context mContext);
      //普通土司
      ToastUtils.normal(@NonNull Context context, @NonNull String message)
      //普通土司带图标

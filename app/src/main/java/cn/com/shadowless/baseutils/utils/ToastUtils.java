@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.Build;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -78,6 +79,11 @@ public class ToastUtils {
     private static Toast currentToast = null;
 
     /**
+     * The constant textSize.
+     */
+    private static float textSize = 18f;
+
+    /**
      * The constant toastUtils.
      */
     @SuppressLint("StaticFieldLeak")
@@ -106,8 +112,10 @@ public class ToastUtils {
      * Init toast.
      *
      * @param mContext the m context
+     * @param size     the size
      */
-    public void initToast(Context mContext) {
+    public void initToast(Context mContext, float size) {
+        textSize = size;
         if (null == context) {
             context = mContext;
         }
@@ -357,7 +365,7 @@ public class ToastUtils {
         } else {
             toastIcon.setVisibility(View.GONE);
         }
-
+        toastTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
         toastTextView.setTextColor(textColor);
         toastTextView.setText(message);
         toastTextView.setTypeface(Typeface.create(TOAST_TYPEFACE, Typeface.NORMAL));
@@ -374,6 +382,7 @@ public class ToastUtils {
      * @param id      the 资源id
      * @return the drawable
      */
+    @SuppressLint("UseCompatLoadingForDrawables")
     public static Drawable getDrawable(@NonNull Context context, @DrawableRes int id) {
         return context.getDrawable(id);
     }

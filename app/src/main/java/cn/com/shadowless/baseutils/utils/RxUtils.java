@@ -1,5 +1,7 @@
 package cn.com.shadowless.baseutils.utils;
 
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -173,17 +175,17 @@ public class RxUtils {
                     Disposable disposable = null;
 
                     @Override
-                    public void onSubscribe(Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         disposable = d;
                     }
 
                     @Override
-                    public void onNext(T t) {
+                    public void onNext(@NonNull T t) {
                         observerCallBack.onSuccess(t);
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         observerCallBack.onFail(e);
                     }
 
@@ -210,17 +212,17 @@ public class RxUtils {
                     Disposable disposable = null;
 
                     @Override
-                    public void onSubscribe(Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         disposable = d;
                     }
 
                     @Override
-                    public void onNext(Long aLong) {
+                    public void onNext(@NonNull Long aLong) {
                         observerCallBack.onSuccess(aLong);
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         observerCallBack.onFail(e);
                     }
 
@@ -247,17 +249,17 @@ public class RxUtils {
                     Disposable disposable = null;
 
                     @Override
-                    public void onSubscribe(Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         disposable = d;
                     }
 
                     @Override
-                    public void onNext(Long aLong) {
+                    public void onNext(@NonNull Long aLong) {
                         observerCallBack.onSuccess(aLong);
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         observerCallBack.onFail(e);
                     }
 

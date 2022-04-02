@@ -153,10 +153,15 @@ public class RxUtils {
 
         /**
          * 结束
+         */
+        void onEnd();
+
+        /**
+         * 订阅
          *
          * @param disposable the disposable
          */
-        void onEnd(Disposable disposable);
+        void onSubscribe(Disposable disposable);
     }
 
     /**
@@ -172,11 +177,10 @@ public class RxUtils {
                 .create(emitterCallBack::onEmitter)
                 .compose(dealThread(threadSign))
                 .subscribe(new Observer<T>() {
-                    Disposable disposable = null;
 
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        disposable = d;
+                        observerCallBack.onSubscribe(d);
                     }
 
                     @Override
@@ -191,7 +195,7 @@ public class RxUtils {
 
                     @Override
                     public void onComplete() {
-                        observerCallBack.onEnd(disposable);
+                        observerCallBack.onEnd();
                     }
                 });
     }
@@ -209,11 +213,10 @@ public class RxUtils {
                 .timer(time, timeUnit)
                 .compose(dealThread(threadSign))
                 .subscribe(new Observer<Long>() {
-                    Disposable disposable = null;
 
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        disposable = d;
+                        observerCallBack.onSubscribe(d);
                     }
 
                     @Override
@@ -228,7 +231,7 @@ public class RxUtils {
 
                     @Override
                     public void onComplete() {
-                        observerCallBack.onEnd(disposable);
+                        observerCallBack.onEnd();
                     }
                 });
     }
@@ -246,11 +249,10 @@ public class RxUtils {
                 .interval(time, timeUnit)
                 .compose(dealThread(threadSign))
                 .subscribe(new Observer<Long>() {
-                    Disposable disposable = null;
 
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        disposable = d;
+                        observerCallBack.onSubscribe(d);
                     }
 
                     @Override
@@ -265,7 +267,7 @@ public class RxUtils {
 
                     @Override
                     public void onComplete() {
-                        observerCallBack.onEnd(disposable);
+                        observerCallBack.onEnd();
                     }
                 });
     }

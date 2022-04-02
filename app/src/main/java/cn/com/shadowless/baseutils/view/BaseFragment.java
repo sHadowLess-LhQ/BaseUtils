@@ -54,6 +54,11 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
      * 订阅
      */
     private Disposable disposable = null;
+    /**
+     * 订阅
+     */
+    private Disposable temp = null;
+
 
     /**
      * 初始化数据回调接口
@@ -82,6 +87,7 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
             isOrientation = true;
         }
         bind = setBindView();
+        temp = null;
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
             disposable = new RxPermissions(mActivity).requestEachCombined(permissions)
@@ -136,6 +142,11 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
     }
 
     @Override
+    public void onSubscribe(Disposable disposable) {
+        temp = disposable;
+    }
+
+    @Override
     public void onSuccess(Map<String, Object> mData) {
         initView(mData);
     }
@@ -146,8 +157,8 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
     }
 
     @Override
-    public void onEnd(Disposable disposable) {
-        disposable.dispose();
+    public void onEnd() {
+        temp.dispose();
     }
 
     /**

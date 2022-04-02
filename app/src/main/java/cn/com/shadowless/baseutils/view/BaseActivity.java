@@ -63,6 +63,10 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
      * 订阅
      */
     private Disposable disposable = null;
+    /**
+     * 订阅
+     */
+    private Disposable temp = null;
 
 
     @Override
@@ -78,6 +82,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
             isOrientation = true;
         }
         bind = setBindView();
+        temp = null;
         setContentView(bind.getRoot());
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
@@ -118,6 +123,11 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     }
 
     @Override
+    public void onSubscribe(Disposable disposable) {
+        temp = disposable;
+    }
+
+    @Override
     public void onSuccess(Map<String, Object> mData) {
         initView(mData);
     }
@@ -128,8 +138,8 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     }
 
     @Override
-    public void onEnd(Disposable disposable) {
-        disposable.dispose();
+    public void onEnd() {
+        temp.dispose();
     }
 
     /**

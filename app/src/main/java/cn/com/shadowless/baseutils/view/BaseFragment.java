@@ -32,7 +32,7 @@ import io.reactivex.disposables.Disposable;
  * @param <T> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseFragment<T extends ViewBinding> extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
+public abstract class BaseFragment<T extends ViewBinding,R> extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, R>>, RxUtils.ObserverCallBack<Map<String, R>> {
 
     /**
      * The Tag.
@@ -63,13 +63,13 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
     /**
      * 初始化数据回调接口
      */
-    protected interface InitDataCallBack {
+    protected interface InitDataCallBack<R> {
         /**
          * 成功
          *
          * @param map the map
          */
-        void success(Map<String, Object> map);
+        void success(Map<String, R> map);
     }
 
     @Override
@@ -133,8 +133,8 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
     }
 
     @Override
-    public void onEmitter(ObservableEmitter<Map<String, Object>> emitter) {
-        Map<String, Object> mData = new HashMap<>();
+    public void onEmitter(ObservableEmitter<Map<String, R>> emitter) {
+        Map<String, R> mData = new HashMap<>();
         initData(mData, map -> {
             emitter.onNext(map);
             emitter.onComplete();
@@ -147,7 +147,7 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
     }
 
     @Override
-    public void onSuccess(Map<String, Object> mData) {
+    public void onSuccess(Map<String, R> mData) {
         initView(mData);
     }
 
@@ -203,12 +203,12 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
      * @param mData            the 数据表
      * @param initDataCallBack the 数据回调
      */
-    protected abstract void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack);
+    protected abstract void initData(@NonNull Map<String, R> mData, @NonNull InitDataCallBack<R> initDataCallBack);
 
     /**
      * 初始化视图
      *
      * @param map the 数据表
      */
-    protected abstract void initView(@NonNull Map<String, Object> map);
+    protected abstract void initView(@NonNull Map<String, R> map);
 }

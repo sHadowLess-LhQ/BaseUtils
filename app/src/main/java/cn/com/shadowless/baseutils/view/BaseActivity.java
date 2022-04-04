@@ -26,9 +26,10 @@ import io.reactivex.disposables.Disposable;
  * 基类Activity
  *
  * @param <T> the type parameter
+ * @param <R> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActivity implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, Object>>, RxUtils.ObserverCallBack<Map<String, Object>> {
+public abstract class BaseActivity<T extends ViewBinding, R> extends AppCompatActivity implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, R>>, RxUtils.ObserverCallBack<Map<String, R>> {
 
     /**
      * The Tag.
@@ -49,14 +50,16 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
 
     /**
      * 初始化数据回调接口
+     *
+     * @param <R> the type parameter
      */
-    protected interface InitDataCallBack {
+    protected interface InitDataCallBack<R> {
         /**
          * 成功
          *
          * @param map the 数据表
          */
-        void success(Map<String, Object> map);
+        void success(Map<String, R> map);
     }
 
     /**
@@ -114,8 +117,8 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     }
 
     @Override
-    public void onEmitter(ObservableEmitter<Map<String, Object>> emitter) {
-        Map<String, Object> mData = new HashMap<>();
+    public void onEmitter(ObservableEmitter<Map<String, R>> emitter) {
+        Map<String, R> mData = new HashMap<>();
         initData(mData, map -> {
             emitter.onNext(map);
             emitter.onComplete();
@@ -128,7 +131,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     }
 
     @Override
-    public void onSuccess(Map<String, Object> mData) {
+    public void onSuccess(Map<String, R> mData) {
         initView(mData);
     }
 
@@ -140,65 +143,6 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     @Override
     public void onEnd() {
         temp.dispose();
-    }
-
-    /**
-     * 获取绑定的视图
-     *
-     * @return the 视图
-     */
-    protected T getBindView() {
-        return bind;
-    }
-
-    /**
-     * 内部权限提示
-     *
-     * @param name the 权限名
-     */
-    private void showToast(String name) {
-        String tip = "应用无法使用，请开启%s权限";
-        Toast.makeText(this, String.format(tip, name), Toast.LENGTH_SHORT).show();
-        ApplicationUtils.startApplicationInfo(this);
-    }
-
-    /**
-     * Show fragment.
-     *
-     * @param fragment the fragment
-     * @param layout   the layout
-     */
-    protected void showFragment(Fragment fragment, int layout) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (currentFragment == null) {
-            currentFragment = fragment;
-            if (!fragment.isAdded()) {
-                transaction.add(layout, fragment).show(fragment).commit();
-            } else {
-                transaction.show(fragment).commit();
-            }
-        } else if (currentFragment != fragment) {
-            transaction.hide(currentFragment);
-            currentFragment = fragment;
-            if (!fragment.isAdded()) {
-                transaction.add(layout, fragment).show(fragment).commit();
-            } else {
-                transaction.show(fragment).commit();
-            }
-        }
-    }
-
-    /**
-     * Replace fragment.
-     *
-     * @param fragment the fragment
-     * @param layout   the layout
-     */
-    protected void replaceFragment(Fragment fragment, int layout) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction
-                .replace(layout, fragment)
-                .commit();
     }
 
     /**
@@ -230,12 +174,142 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
      * @param mData            the  数据表
      * @param initDataCallBack the  回调
      */
-    protected abstract void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack);
+    protected abstract void initData(@NonNull Map<String, R> mData, @NonNull InitDataCallBack<R> initDataCallBack);
 
     /**
      * 初始化视图
      *
      * @param data the 数据表
      */
-    protected abstract void initView(@NonNull Map<String, Object> data);
+    protected abstract void initView(@NonNull Map<String, R> data);
+
+    /**
+     * 获取绑定的视图
+     *
+     * @return the 视图
+     */
+    protected T getBindView() {
+        return bind;
+    }
+
+    /**
+     * 显示碎片
+     *
+     * @param fragment the 碎片
+     * @param layout   the 布局
+     */
+    protected void showFragment(Fragment fragment, int layout) {
+        show(fragment, layout, false, null);
+    }
+
+    /**
+     * 显示碎片
+     *
+     * @param fragment  the 碎片
+     * @param layout    the 布局
+     * @param animation the 动画
+     */
+    protected void showFragment(Fragment fragment, int layout, int... animation) {
+        show(fragment, layout, true, animation);
+    }
+
+    /**
+     * 替换碎片
+     *
+     * @param fragment the 碎片
+     * @param layout   the 布局
+     */
+    protected void replaceFragment(Fragment fragment, int layout) {
+        replace(fragment, layout, false, null);
+    }
+
+    /**
+     * 替换碎片
+     *
+     * @param fragment  the 碎片
+     * @param layout    the 布局
+     * @param animation the 动画
+     */
+    protected void replaceFragment(Fragment fragment, int layout, int... animation) {
+        replace(fragment, layout, true, animation);
+    }
+
+    /**
+     * 内部权限提示
+     *
+     * @param name the 权限名
+     */
+    private void showToast(String name) {
+        String tip = "应用无法使用，请开启%s权限";
+        Toast.makeText(this, String.format(tip, name), Toast.LENGTH_SHORT).show();
+        ApplicationUtils.startApplicationInfo(this);
+    }
+
+    /**
+     * 显示
+     *
+     * @param fragment  the 碎片
+     * @param layout    the 布局
+     * @param anim      the 是否动画
+     * @param animation the 动画
+     */
+    private void show(Fragment fragment, int layout, boolean anim, int... animation) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (currentFragment == null) {
+            currentFragment = fragment;
+        } else if (currentFragment != fragment) {
+            transaction.hide(currentFragment);
+            currentFragment = fragment;
+        }
+        if (!fragment.isAdded()) {
+            if (anim) {
+                transaction.add(layout, fragment).show(fragment).setCustomAnimations(
+                        animation[0],
+                        animation[1],
+                        animation[2],
+                        animation[3]
+                ).commit();
+            } else {
+                transaction.add(layout, fragment).show(fragment).commit();
+            }
+        } else {
+            if (anim) {
+                transaction.show(fragment).setCustomAnimations(
+                        animation[0],
+                        animation[1],
+                        animation[2],
+                        animation[3]
+                ).commit();
+            } else {
+                transaction.show(fragment).commit();
+            }
+        }
+    }
+
+    /**
+     * 替换
+     *
+     * @param fragment  the 碎片
+     * @param layout    the 布局
+     * @param anim      the 是否动画
+     * @param animation the 动画
+     */
+    private void replace(Fragment fragment, int layout, boolean anim, int... animation) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (anim) {
+            transaction
+                    .setCustomAnimations(
+                            animation[0],
+                            animation[1],
+                            animation[2],
+                            animation[3]
+                    )
+                    .replace(layout, fragment)
+                    .commit();
+        } else {
+            transaction
+                    .replace(layout, fragment)
+                    .commit();
+        }
+    }
 }

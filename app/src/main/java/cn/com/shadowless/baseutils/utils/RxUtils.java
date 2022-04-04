@@ -138,6 +138,13 @@ public class RxUtils {
         }
 
         /**
+         * 订阅
+         *
+         * @param d the d
+         */
+        void onSubscribe(Disposable d);
+
+        /**
          * 成功
          *
          * @param t the 泛型数据
@@ -147,21 +154,15 @@ public class RxUtils {
         /**
          * 失败
          *
-         * @param throwable the 异常
+         * @param e the e
          */
-        void onFail(Throwable throwable);
+        void onFail(Throwable e);
 
         /**
          * 结束
          */
         void onEnd();
 
-        /**
-         * 订阅
-         *
-         * @param disposable the disposable
-         */
-        void onSubscribe(Disposable disposable);
     }
 
     /**

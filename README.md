@@ -68,6 +68,9 @@ b、远程仓库引入
             implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
             implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+            //【注：】使用LogUtils请额外添加一下依赖：
+            implementation 'com.apkfuns.logutils:library:1.7.5'
+            implementation 'com.apkfuns.log2file:log2file:1.3.1'
             //【注：】使用NetUtils，请额外添加以下依赖：
             //NetUtils
                 implementation 'com.squareup.okhttp3:okhttp:3.14.9'
@@ -89,8 +92,8 @@ b、远程仓库引入
 ### 1、BaseActivity：直接继承
 
 ```
-//创建xml后，点击编译，填入需要绑定的视图
-public class MainActivity extends BaseActivity<ActivityMainBinding> {
+//创建xml后，点击编译，填入需要绑定的视图和传递数据类型
+public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
 
     @Nullable
     @Override
@@ -107,7 +110,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
     @Override
-    protected void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack) {
+    protected void initData(@NonNull Map<String, String> mData, @NonNull InitDataCallBack<String> initDataCallBack) {
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
        【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
@@ -121,7 +124,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
     @Override
-    protected void initView(@NonNull Map<String, Object> data) {
+    protected void initView(@NonNull Map<String, String> data) {
        //初始化界面控件
        getBindView().test.setText(map.get("data"));
     }
@@ -138,7 +141,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 可根据实际使用二次封装
 
 ```
-public abstract class PrinterBaseActivity<T extends ViewBinding> extends BaseActivity<T> {
+public abstract class PrinterBaseActivity<T extends ViewBinding,R> extends BaseActivity<T,R> {
     ...
 }
 ```
@@ -147,7 +150,7 @@ public abstract class PrinterBaseActivity<T extends ViewBinding> extends BaseAct
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图
-public class MainFragment extends BaseFragment<FragmentMainBinding> {
+public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
     
     @Nullable
     @Override
@@ -164,7 +167,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
     }
 
     @Override
-    protected void initData(@NonNull Map<String, Object> mData, @NonNull InitDataCallBack initDataCallBack) {
+    protected void initData(@NonNull Map<String, String> mData, @NonNull InitDataCallBack<String> initDataCallBack) {
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
        【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
@@ -180,7 +183,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
     }
 
     @Override
-    protected void initView(@NonNull Map<String, Object> map) {
+    protected void initView(@NonNull Map<String, String> map) {
        //初始化界面控件
        getBindView().test.setText(map.get("data"));
     }
@@ -190,7 +193,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding> {
 可根据实际使用二次封装
 
 ```
-public abstract class PrinterBaseFragment<T extends ViewBinding> extends BaseFragment<T> {
+public abstract class PrinterBaseFragment<T extends ViewBinding,R> extends BaseFragment<T,R> {
      ...
 }
 ```
@@ -335,6 +338,12 @@ public abstract class PrinterBaseFragment<T extends ViewBinding> extends BaseFra
 
                     }
                 }, new RxUtils.ObserverCallBack<所定义的数据类型>() {
+                    
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                     
+                    }
+                    
                     @Override
                     public void onSuccess(所定义的数据类型 x) {
                         
@@ -1100,6 +1109,70 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      ToastUtils.getDrawable(@NonNull Context context, @DrawableRes int id)
      //获取.9位图
      ToastUtils.tint9PatchDrawableFrame(@NonNull Context context, @ColorInt int tintColor)
+```
+
+### 19、LogUtils：方法说明
+
+```
+     //配置日志库
+     LogUtils.getLogConfig()
+                //允许显示log
+                .configAllowLog(true)
+                //设置log显示抬头
+                .configTagPrefix("MyAppName")
+                //设置显示边框
+                .configShowBorders(true)
+                //自定义TAG
+                .configFormatTag("%d{HH:mm:ss:SSS} %t %c{-5}")
+     //配置写入本地日志
+     LogUtils.getLog2FileConfig()
+                //允许写入本地
+                .configLog2FileEnable(true)
+                //设置日志路径
+                .configLog2FilePath("/sdcard/项目文件夹/logs/")
+                //设置日志文件名
+                .configLog2FileNameFormat("%d{yyyyMMdd}.txt")
+                //设置日志引擎
+                .configLogFileEngine(new LogFileEngineFactory());
+      //输出字符串
+      LogUtils.d("12345");
+      //输出参数
+      LogUtils.d("12%s3%d45", "a", 0);
+      //输出异常
+      LogUtils.d(new NullPointerException("12345"));
+      //输出对象
+      Person person = new Person();
+      person.setAge(11);
+      person.setName("pengwei");
+      person.setScore(37.5f);
+      LogUtils.d(person);
+      //对象为空
+      LogUtils.d(null);
+      //输出json（json默认debug打印）
+      String json = "{'a':'b','c':{'aa':234,'dd':{'az':12}}}";
+      LogUtils.json(json);
+      //打印数据集合
+      List<Person> list1 = new ArrayList<>();
+      for(int i = 0; i < 4; i++){
+          list1.add(person);
+      }
+      LogUtils.d(list1);
+      //打印数组
+      double[][] doubles = {{1.2, 1.6, 1.7, 30, 33},
+                {1.2, 1.6, 1.7, 30, 33},
+                {1.2, 1.6, 1.7, 30, 33},
+                {1.2, 1.6, 1.7, 30, 33}};
+      LogUtils.d(doubles);
+      //自定义tag
+      LogUtils.tag("我是自定义tag").d("我是打印内容");
+      //其他用法
+      LogUtils.v("12345");
+      LogUtils.i("12345");
+      LogUtils.w("12345");
+      LogUtils.e("12345");
+      LogUtils.wtf("12345");
+      
+更多配置，请参考https://github.com/pengwei1024/LogUtils/blob/master/README_USAGE.md
 ```
 
 #### 特技

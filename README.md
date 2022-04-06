@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String,String
     }
 
     @Override
-    protected void initData(@NonNull Map<String, String> mData, @NonNull InitDataCallBack<String> initDataCallBack) {
+    protected void initData(@NonNull Map<String, String> mData, @NonNull InitDataCallBack<String, String> initDataCallBack) {
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
        【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
@@ -167,7 +167,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String,String
     }
 
     @Override
-    protected void initData(@NonNull Map<String, String> mData, @NonNull InitDataCallBack<String> initDataCallBack) {
+    protected void initData(@NonNull Map<String, String> mData, @NonNull InitDataCallBack<String, String> initDataCallBack) {
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
        【注】：若遇到mData表未清空，请手动调用mData.clear()清空。

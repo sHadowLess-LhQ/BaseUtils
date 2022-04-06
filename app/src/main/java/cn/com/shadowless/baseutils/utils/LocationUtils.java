@@ -1,7 +1,6 @@
 package cn.com.shadowless.baseutils.utils;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,9 +19,6 @@ import androidx.core.app.ActivityCompat;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.OkHttpClient;
 
 /**
  * 获取地理位置工具类

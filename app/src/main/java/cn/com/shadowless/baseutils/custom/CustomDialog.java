@@ -10,9 +10,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 /**
  * 自定义提示框工具类
  *

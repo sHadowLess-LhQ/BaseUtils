@@ -1,7 +1,6 @@
 package cn.com.shadowless.baseutils.utils;
 
 import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;

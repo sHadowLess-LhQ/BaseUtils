@@ -29,10 +29,12 @@ import io.reactivex.disposables.Disposable;
 /**
  * 基类Fragment
  *
- * @param <T> the type parameter
+ * @param <VB> the type 视图
+ * @param <K>  the type Key值类型
+ * @param <V>  the type Value值类型
  * @author sHadowLess
  */
-public abstract class BaseFragment<T extends ViewBinding,R> extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, R>>, RxUtils.ObserverCallBack<Map<String, R>> {
+public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<K, V>>, RxUtils.ObserverCallBack<Map<K, V>> {
 
     /**
      * The Tag.
@@ -41,7 +43,7 @@ public abstract class BaseFragment<T extends ViewBinding,R> extends Fragment imp
     /**
      * 视图绑定
      */
-    private T bind = null;
+    private VB bind = null;
     /**
      * 屏幕方向标志
      */
@@ -62,14 +64,17 @@ public abstract class BaseFragment<T extends ViewBinding,R> extends Fragment imp
 
     /**
      * 初始化数据回调接口
+     *
+     * @param <K> the type parameter
+     * @param <V> the type parameter
      */
-    protected interface InitDataCallBack<R> {
+    protected interface InitDataCallBack<K, V> {
         /**
          * 成功
          *
          * @param map the map
          */
-        void success(Map<String, R> map);
+        void success(Map<K, V> map);
     }
 
     @Override
@@ -133,8 +138,8 @@ public abstract class BaseFragment<T extends ViewBinding,R> extends Fragment imp
     }
 
     @Override
-    public void onEmitter(ObservableEmitter<Map<String, R>> emitter) {
-        Map<String, R> mData = new HashMap<>();
+    public void onEmitter(ObservableEmitter<Map<K, V>> emitter) {
+        Map<K, V> mData = new HashMap<>();
         initData(mData, map -> {
             emitter.onNext(map);
             emitter.onComplete();
@@ -147,7 +152,7 @@ public abstract class BaseFragment<T extends ViewBinding,R> extends Fragment imp
     }
 
     @Override
-    public void onSuccess(Map<String, R> mData) {
+    public void onSuccess(Map<K, V> mData) {
         initView(mData);
     }
 
@@ -166,7 +171,7 @@ public abstract class BaseFragment<T extends ViewBinding,R> extends Fragment imp
      *
      * @return the 视图
      */
-    protected T getBindView() {
+    protected VB getBindView() {
         return bind;
     }
 
@@ -195,7 +200,7 @@ public abstract class BaseFragment<T extends ViewBinding,R> extends Fragment imp
      * @return the 视图
      */
     @NonNull
-    protected abstract T setBindView();
+    protected abstract VB setBindView();
 
     /**
      * 初始化数据
@@ -203,12 +208,12 @@ public abstract class BaseFragment<T extends ViewBinding,R> extends Fragment imp
      * @param mData            the 数据表
      * @param initDataCallBack the 数据回调
      */
-    protected abstract void initData(@NonNull Map<String, R> mData, @NonNull InitDataCallBack<R> initDataCallBack);
+    protected abstract void initData(@NonNull Map<K, V> mData, @NonNull InitDataCallBack<K, V> initDataCallBack);
 
     /**
      * 初始化视图
      *
      * @param map the 数据表
      */
-    protected abstract void initView(@NonNull Map<String, R> map);
+    protected abstract void initView(@NonNull Map<K, V> map);
 }

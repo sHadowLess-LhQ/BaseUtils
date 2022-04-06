@@ -93,7 +93,7 @@ b、远程仓库引入
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图和传递数据类型
-public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
+public class MainActivity extends BaseActivity<ActivityMainBinding,String,String> {
 
     @Nullable
     @Override
@@ -141,7 +141,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
 可根据实际使用二次封装
 
 ```
-public abstract class PrinterBaseActivity<T extends ViewBinding,R> extends BaseActivity<T,R> {
+public abstract class PrinterBaseActivity<VB extends ViewBinding,K,V> extends BaseActivity<VB,K,V> {
     ...
 }
 ```
@@ -150,7 +150,7 @@ public abstract class PrinterBaseActivity<T extends ViewBinding,R> extends BaseA
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图
-public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
+public class MainFragment extends BaseFragment<FragmentMainBinding,String,String> {
     
     @Nullable
     @Override
@@ -193,7 +193,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
 可根据实际使用二次封装
 
 ```
-public abstract class PrinterBaseFragment<T extends ViewBinding,R> extends BaseFragment<T,R> {
+public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends BaseFragment<VB,K,V> {
      ...
 }
 ```
@@ -381,24 +381,33 @@ public abstract class PrinterBaseFragment<T extends ViewBinding,R> extends BaseF
 ### 9、LocationUtils：调用示例
 
 ```
-      //参数1：上下文
-      //参数2：结果回调
-      LocationUtils.getInstance(context).getLocation(new LocationUtils.AddressCallback() {
-           @Override
-           public void onGetAddress(Address address) {
-               String countryName = address.getCountryName();//国家
-               String adminArea = address.getAdminArea();    //省
-               String locality = address.getLocality();      //市
-               String subLocality = address.getSubLocality();//区
-               String featureName = address.getFeatureName();//街道
-           }
+     LocationUtils.builder()
+                .mContext(context)  //设置上下文
+                .minTime(30000)     //设置最短更新时间（单位毫秒），不设置默认30000
+                .minDistance(10)    //设置最短更新距离，不设置默认10
+                .locationListener(new LocationListener() {
+                    @Override
+                    public void onLocationChanged(@NonNull Location location) {
+                        //位置回调，不设置有默认
+                    }
+                })
+                .build()
+                .getLocation(new LocationUtils.AddressCallback() {
+                    @Override
+                    public void onGetAddress(Address address) {
+                      String countryName = address.getCountryName();//国家
+                      String adminArea = address.getAdminArea();    //省
+                      String locality = address.getLocality();      //市
+                      String subLocality = address.getSubLocality();//区
+                      String featureName = address.getFeatureName();//街道
+                    }
 
-           @Override
-           public void onGetLocation(double lat, double lng) {
-               double mLng = lng;//经度
-               double mLat = lat;//纬度
-           }
-       });
+                    @Override
+                    public void onGetLocation(double lat, double lng) {
+                      double mLng = lng;//经度
+                      double mLat = lat;//纬度
+                    }
+                });
 ```
 
 ### 10、ApplicationUtils：方法说明

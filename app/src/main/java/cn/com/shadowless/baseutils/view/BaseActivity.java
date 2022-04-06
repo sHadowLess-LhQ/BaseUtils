@@ -25,11 +25,12 @@ import io.reactivex.disposables.Disposable;
 /**
  * 基类Activity
  *
- * @param <T> the type parameter
- * @param <R> the type parameter
+ * @param <VB> the type 视图
+ * @param <K>  the type Key值类型
+ * @param <V>  the type Value类型
  * @author sHadowLess
  */
-public abstract class BaseActivity<T extends ViewBinding, R> extends AppCompatActivity implements RxUtils.ObserverCallBack.EmitterCallBack<Map<String, R>>, RxUtils.ObserverCallBack<Map<String, R>> {
+public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppCompatActivity implements RxUtils.ObserverCallBack.EmitterCallBack<Map<K, V>>, RxUtils.ObserverCallBack<Map<K, V>> {
 
     /**
      * The Tag.
@@ -38,9 +39,9 @@ public abstract class BaseActivity<T extends ViewBinding, R> extends AppCompatAc
     /**
      * 视图绑定
      */
-    private T bind = null;
+    private VB bind = null;
     /**
-     * The Current fragment.
+     * 当前碎片
      */
     private Fragment currentFragment = null;
     /**
@@ -51,15 +52,16 @@ public abstract class BaseActivity<T extends ViewBinding, R> extends AppCompatAc
     /**
      * 初始化数据回调接口
      *
-     * @param <R> the type parameter
+     * @param <K> the type parameter
+     * @param <V> the type parameter
      */
-    protected interface InitDataCallBack<R> {
+    protected interface InitDataCallBack<K, V> {
         /**
          * 成功
          *
          * @param map the 数据表
          */
-        void success(Map<String, R> map);
+        void success(Map<K, V> map);
     }
 
     /**
@@ -117,8 +119,8 @@ public abstract class BaseActivity<T extends ViewBinding, R> extends AppCompatAc
     }
 
     @Override
-    public void onEmitter(ObservableEmitter<Map<String, R>> emitter) {
-        Map<String, R> mData = new HashMap<>();
+    public void onEmitter(ObservableEmitter<Map<K, V>> emitter) {
+        Map<K, V> mData = new HashMap<>();
         initData(mData, map -> {
             emitter.onNext(map);
             emitter.onComplete();
@@ -131,7 +133,7 @@ public abstract class BaseActivity<T extends ViewBinding, R> extends AppCompatAc
     }
 
     @Override
-    public void onSuccess(Map<String, R> mData) {
+    public void onSuccess(Map<K, V> mData) {
         initView(mData);
     }
 
@@ -159,7 +161,7 @@ public abstract class BaseActivity<T extends ViewBinding, R> extends AppCompatAc
      * @return the 视图
      */
     @NonNull
-    protected abstract T setBindView();
+    protected abstract VB setBindView();
 
     /**
      * Sets theme.
@@ -174,21 +176,21 @@ public abstract class BaseActivity<T extends ViewBinding, R> extends AppCompatAc
      * @param mData            the  数据表
      * @param initDataCallBack the  回调
      */
-    protected abstract void initData(@NonNull Map<String, R> mData, @NonNull InitDataCallBack<R> initDataCallBack);
+    protected abstract void initData(@NonNull Map<K, V> mData, @NonNull InitDataCallBack<K, V> initDataCallBack);
 
     /**
      * 初始化视图
      *
      * @param data the 数据表
      */
-    protected abstract void initView(@NonNull Map<String, R> data);
+    protected abstract void initView(@NonNull Map<K, V> data);
 
     /**
      * 获取绑定的视图
      *
      * @return the 视图
      */
-    protected T getBindView() {
+    protected VB getBindView() {
         return bind;
     }
 

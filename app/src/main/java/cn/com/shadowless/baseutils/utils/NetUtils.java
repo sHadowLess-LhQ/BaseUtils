@@ -118,11 +118,6 @@ public class NetUtils {
      * @return the ok http client
      */
     private OkHttpClient getOkHttpClient() {
-        if (timeOutUnit == null) {
-            timeOutUnit = TimeUnit.SECONDS;
-        } else if (timeOut == 0) {
-            timeOut = 10;
-        }
         return new OkHttpClient.Builder()
                 .connectTimeout(timeOut, timeOutUnit)
                 .readTimeout(timeOut, timeOutUnit)
@@ -258,19 +253,19 @@ public class NetUtils {
      */
     public static class NetUtilsBuilder {
         /**
-         * The Base url.
+         * 根地址
          */
         private String baseUrl;
         /**
-         * The Time out.
+         * 超时时间
          */
-        private int timeOut;
+        private int timeOut = 10;
         /**
-         * The Time out unit.
+         * 超时时间单位
          */
-        private TimeUnit timeOutUnit;
+        private TimeUnit timeOutUnit = TimeUnit.SECONDS;
         /**
-         * The Ok http client.
+         * OkHttp对象
          */
         private OkHttpClient okHttpClient;
 

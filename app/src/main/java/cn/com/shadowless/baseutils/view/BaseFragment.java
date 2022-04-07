@@ -22,7 +22,11 @@ import java.util.Map;
 
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
+import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 
@@ -34,7 +38,7 @@ import io.reactivex.disposables.Disposable;
  * @param <V>  the type Value值类型
  * @author sHadowLess
  */
-public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragment implements RxUtils.ObserverCallBack.EmitterCallBack<Map<K, V>>, RxUtils.ObserverCallBack<Map<K, V>> {
+public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragment implements ObservableOnSubscribe<Map<K, V>>, Observer<Map<K, V>> {
 
     /**
      * The Tag.
@@ -60,6 +64,10 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
      * 订阅
      */
     private Disposable temp = null;
+    /**
+     * 统一订阅管理
+     */
+    protected CompositeDisposable mDisposable = null;
 
 
     /**
@@ -91,6 +99,7 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
         } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             isOrientation = true;
         }
+        mDisposable = new CompositeDisposable();
         bind = setBindView();
         temp = null;
         String[] permissions = permissionName();
@@ -98,7 +107,7 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
             disposable = new RxPermissions(mActivity).requestEachCombined(permissions)
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+                                    Observable.create(this).compose(RxUtils.dealThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {
@@ -107,7 +116,7 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
                             }
                     );
         } else {
-            RxUtils.rxCreate(RxUtils.ThreadSign.DEFAULT, this, this);
+            Observable.create(this).compose(RxUtils.dealThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
         }
         return bind.getRoot();
     }
@@ -117,18 +126,14 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
         if (null != disposable && !disposable.isDisposed()) {
             disposable.dispose();
         }
+        if (null != mDisposable && mDisposable.size() != 0 && !mDisposable.isDisposed()) {
+            mDisposable.clear();
+            mDisposable = null;
+        }
         if (bind != null) {
             bind = null;
         }
         super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        if (!disposable.isDisposed()) {
-            disposable.dispose();
-        }
-        super.onDestroy();
     }
 
     @Override
@@ -138,7 +143,7 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
     }
 
     @Override
-    public void onEmitter(ObservableEmitter<Map<K, V>> emitter) {
+    public void subscribe(@NonNull ObservableEmitter<Map<K, V>> emitter) throws Exception {
         Map<K, V> mData = new HashMap<>();
         initData(mData, map -> {
             emitter.onNext(map);
@@ -147,23 +152,24 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
     }
 
     @Override
-    public void onSubscribe(Disposable disposable) {
-        temp = disposable;
+    public void onSubscribe(@NonNull Disposable d) {
+        temp = d;
     }
 
     @Override
-    public void onSuccess(Map<K, V> mData) {
+    public void onNext(@NonNull Map<K, V> mData) {
         initView(mData);
     }
 
     @Override
-    public void onFail(Throwable throwable) {
-        Log.e(TAG, "onFail: " + throwable);
+    public void onError(@NonNull Throwable e) {
+        Log.e(TAG, "onFail: " + e);
     }
 
     @Override
-    public void onEnd() {
+    public void onComplete() {
         temp.dispose();
+        Log.e(TAG, "onEnd: " + "Activity加载成功");
     }
 
     /**

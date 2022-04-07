@@ -1,16 +1,8 @@
 package cn.com.shadowless.baseutils.utils;
 
-import androidx.annotation.NonNull;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableTransformer;
-import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -117,170 +109,13 @@ public class RxUtils {
     }
 
     /**
-     * 观察者回调
-     *
-     * @param <T> the type parameter
-     */
-    public interface ObserverCallBack<T> {
-
-        /**
-         * 发射器回调
-         *
-         * @param <T> the type parameter
-         */
-        interface EmitterCallBack<T> {
-            /**
-             * On 发射器.
-             *
-             * @param emitter the emitter
-             */
-            void onEmitter(ObservableEmitter<T> emitter);
-        }
-
-        /**
-         * 订阅
-         *
-         * @param d the d
-         */
-        void onSubscribe(Disposable d);
-
-        /**
-         * 成功
-         *
-         * @param t the 泛型数据
-         */
-        void onSuccess(T t);
-
-        /**
-         * 失败
-         *
-         * @param e the e
-         */
-        void onFail(Throwable e);
-
-        /**
-         * 结束
-         */
-        void onEnd();
-
-    }
-
-    /**
-     * Create操作符
-     *
-     * @param <T>              the type parameter
-     * @param threadSign       the 线程枚举
-     * @param emitterCallBack  the 发射器回调
-     * @param observerCallBack the 观察者回调
-     */
-    public static <T> void rxCreate(ThreadSign threadSign, ObserverCallBack.EmitterCallBack<T> emitterCallBack, ObserverCallBack<T> observerCallBack) {
-        Observable
-                .create(emitterCallBack::onEmitter)
-                .compose(dealThread(threadSign))
-                .subscribe(new Observer<T>() {
-
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        observerCallBack.onSubscribe(d);
-                    }
-
-                    @Override
-                    public void onNext(@NonNull T t) {
-                        observerCallBack.onSuccess(t);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        observerCallBack.onFail(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        observerCallBack.onEnd();
-                    }
-                });
-    }
-
-    /**
-     * timer操作符
-     *
-     * @param time             the 计时时间
-     * @param timeUnit         the 时间单位
-     * @param threadSign       the 线程枚举
-     * @param observerCallBack the 观察者回调
-     */
-    public static void rxTimer(long time, TimeUnit timeUnit, ThreadSign threadSign, ObserverCallBack<Long> observerCallBack) {
-        Observable
-                .timer(time, timeUnit)
-                .compose(dealThread(threadSign))
-                .subscribe(new Observer<Long>() {
-
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        observerCallBack.onSubscribe(d);
-                    }
-
-                    @Override
-                    public void onNext(@NonNull Long aLong) {
-                        observerCallBack.onSuccess(aLong);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        observerCallBack.onFail(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        observerCallBack.onEnd();
-                    }
-                });
-    }
-
-    /**
-     * interval操作符
-     *
-     * @param time             the 循环时间
-     * @param timeUnit         the 时间单位
-     * @param threadSign       the 线程枚举
-     * @param observerCallBack the 观察者回调
-     */
-    public static void rxInterval(long time, TimeUnit timeUnit, ThreadSign threadSign, ObserverCallBack<Long> observerCallBack) {
-        Observable
-                .interval(time, timeUnit)
-                .compose(dealThread(threadSign))
-                .subscribe(new Observer<Long>() {
-
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        observerCallBack.onSubscribe(d);
-                    }
-
-                    @Override
-                    public void onNext(@NonNull Long aLong) {
-                        observerCallBack.onSuccess(aLong);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        observerCallBack.onFail(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        observerCallBack.onEnd();
-                    }
-                });
-    }
-
-    /**
      * 线程转换器
      *
      * @param <T>        the type parameter
      * @param threadSign the 线程枚举
      * @return the observable transformer
      */
-    private static <T> ObservableTransformer<T, T> dealThread(ThreadSign threadSign) {
+    public static <T> ObservableTransformer<T, T> dealThread(ThreadSign threadSign) {
         switch (threadSign) {
             case IO_TO_MAIN:
                 return setStream(Schedulers.io(), AndroidSchedulers.mainThread());

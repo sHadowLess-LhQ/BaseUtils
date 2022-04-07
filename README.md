@@ -93,6 +93,8 @@ b、远程仓库引入
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图和传递数据类型
+//填入传递数据表数据类型
+//新增CompositeDisposable，可统一管理Dispose
 public class MainActivity extends BaseActivity<ActivityMainBinding,String,String> {
 
     @Nullable
@@ -150,6 +152,8 @@ public abstract class PrinterBaseActivity<VB extends ViewBinding,K,V> extends Ba
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图
+//填入传递数据表数据类型
+//新增CompositeDisposable，可统一管理Dispose
 public class MainFragment extends BaseFragment<FragmentMainBinding,String,String> {
     
     @Nullable
@@ -328,37 +332,93 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
 ### 7、RxUtils：调用示例
 
 ```
-     RxUtils
-                //参数1：传入执行需要的线程枚举，更多枚举详见RxUtils.ThreadSign
-                //参数2：create()所需的发射器回调
-                //参数3：订阅执行后的结果回调
-                .rxCreate(RxUtils.ThreadSign.DEFAULT, new EmitterCallBack<所需数据类型>() {
-                    @Override
-                    public void onEmitter(ObservableEmitter<所定义的数据类型> emitter) {
-
-                    }
-                }, new RxUtils.ObserverCallBack<所定义的数据类型>() {
-                    
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                     
-                    }
-                    
-                    @Override
-                    public void onSuccess(所定义的数据类型 x) {
-                        
-                    }
-
-                    @Override
-                    public void onFail(Throwable throwable) {
-
-                    }
-
-                    @Override
-                    public void onEnd() {
-
-                    }
-                });
+     //具体枚举
+     /**
+         * 默认
+         */
+        DEFAULT,
+        /**
+         * 非密集计算线程到主线程
+         */
+        IO_TO_MAIN,
+        /**
+         * 非密集计算线程到非密集计算线程
+         */
+        IO_TO_IO,
+        /**
+         * 非密集计算线程到新线程
+         */
+        IO_TO_NEW_THREAD,
+        /**
+         * 非密集计算线程到密集计算线程
+         */
+        IO_TO_COMPUTATION,
+        /**
+         * 非密集计算线程到有序单线程
+         */
+        IO_TO_SINGLE,
+        /**
+         * 新线程到主线程
+         */
+        NEW_THREAD_TO_MAIN,
+        /**
+         * 新线程到非密集计算线程
+         */
+        NEW_THREAD_TO_IO,
+        /**
+         * 新线程到新线程
+         */
+        NEW_THREAD_TO_NEW_THREAD,
+        /**
+         * 新线程到密集计算线程
+         */
+        NEW_THREAD_TO_COMPUTATION,
+        /**
+         * 新线程到有序单线程
+         */
+        NEW_THREAD_TO_SINGLE,
+        /**
+         * 密集计算线程到主线程
+         */
+        COMPUTATION_TO_MAIN,
+        /**
+         * 密集计算线程到非密集计算线程到
+         */
+        COMPUTATION_TO_IO,
+        /**
+         * 密集计算线程到新线程
+         */
+        COMPUTATION_TO_NEW_THREAD,
+        /**
+         * 密集计算线程到密集计算线程到
+         */
+        COMPUTATION_TO_COMPUTATION,
+        /**
+         * 密集计算线程到有序单线程
+         */
+        COMPUTATION_TO_SINGLE,
+        /**
+         * 有序单线程到主线程
+         */
+        SINGLE_TO_MAIN,
+        /**
+         * 有序单线程到非密集计算线程
+         */
+        SINGLE_TO_IO,
+        /**
+         * 有序单线程到新线程
+         */
+        SINGLE_TO_NEW_THREAD,
+        /**
+         * 有序单线程到密集计算线程
+         */
+        SINGLE_TO_COMPUTATION,
+        /**
+         * 有序单线程到有序单线程到
+         */
+        SINGLE_TO_SINGLE
+     //返回ObservableTransformer流对象
+     RxUtils.dealThread(ThreadSign threadSign)
 ```
 
 ### 8、NetUtils：调用示例

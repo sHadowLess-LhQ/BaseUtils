@@ -1,19 +1,21 @@
 package cn.com.shadowless.baseutils.sql;
 
-import lombok.Builder;
-import lombok.Data;
 
-/**
- * The type Result wrapper.
- *
- * @param <T> the type parameter
- * @author sHadowLess
- */
-@Builder
-@Data
 public class ResultWrapper<T> {
     /**
      * The Object.
      */
     private T object;
+
+    public ResultWrapper(T b) {
+        this.object = b;
+    }
+
+    public T getObject() {
+        return object;
+    }
+
+    public void setObject(T object) {
+        this.object = object;
+    }
 }

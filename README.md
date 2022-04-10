@@ -65,12 +65,8 @@ b、远程仓库引入
      dependencies {
             //主模块
             implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
-            implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
             implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-            //【注：】使用LogUtils请额外添加一下依赖：
-            implementation 'com.apkfuns.logutils:library:1.7.5'
-            implementation 'com.apkfuns.log2file:log2file:1.3.1'
             //【注：】使用NetUtils，请额外添加以下依赖：
             //NetUtils
                 implementation 'com.squareup.okhttp3:okhttp:3.14.9'
@@ -80,8 +76,9 @@ b、远程仓库引入
                 implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
             //【注：】使用BaseXPop，请额外添加以下依赖：
             //BaseXPop
-                implementation 'com.github.li-xiaojun:XPopup:2.7.5'
+                implementation 'com.github.li-xiaojun:XPopup:2.7.6'
                 implementation 'com.google.android.material:material:1.4.0'
+                implementation 'androidx.recyclerview:recyclerview:1.2.1'
     }
 ```
 

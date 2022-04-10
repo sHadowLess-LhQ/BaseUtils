@@ -12,11 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewbinding.ViewBinding;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.shadowless.baseutils.permission.RxPermissions;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
 import io.reactivex.Observable;

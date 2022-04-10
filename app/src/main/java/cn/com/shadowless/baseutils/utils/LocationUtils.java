@@ -115,7 +115,7 @@ public class LocationUtils {
          * @param minTime the min time
          * @return the net utils . net utils builder
          */
-        public LocationUtils.LocationUtilsBuilder timeOut(int minTime) {
+        public LocationUtils.LocationUtilsBuilder minTime(int minTime) {
             this.minTime = minTime;
             return this;
         }
@@ -126,7 +126,7 @@ public class LocationUtils {
          * @param minDistance the min distance
          * @return the net utils . net utils builder
          */
-        public LocationUtils.LocationUtilsBuilder timeOutUnit(int minDistance) {
+        public LocationUtils.LocationUtilsBuilder minDistance(int minDistance) {
             this.minDistance = minDistance;
             return this;
         }

@@ -15,11 +15,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.shadowless.baseutils.permission.RxPermissions;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
 import io.reactivex.Observable;
@@ -104,7 +104,7 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
         temp = null;
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
-            disposable = new RxPermissions(mActivity).requestEachCombined(permissions)
+            disposable = new RxPermissions(this).requestEachCombined(permissions)
                     .subscribe(permission -> {
                                 if (permission.granted) {
                                     Observable.create(this).compose(RxUtils.dealThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);

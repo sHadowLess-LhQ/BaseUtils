@@ -431,7 +431,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
                 .initRetrofit(Api.class,xx.class...); //传入需要创建的接口类
                 
       //取出需要的接口对象实例
-      Api api = (Api) NetUtils.getApi(Api.class.getSimpleName());
+      Api api = NetUtils.getApi(Api.class.getSimpleName());
        ...
 ```
 
@@ -515,7 +515,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
 方法说明：
 
 ```
-      //获取DeviceAdmin权限
+     //获取DeviceAdmin权限
      //在onActivityResult()回调中，判断DeviceUtils.REQUEST_CODE_CHECK_ACTIVE的请求值，是否获取成功
      DeviceUtils.initDeviceAdmin(Activity context)
      //创建企业空间
@@ -630,6 +630,8 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图
+//支持ViewBinding
+//封装基类很多，详细源码查看
 public class AddCardPopView extends BaseCenterPopView<PopAddCardViewBinding>{
 
     public AddCardPopView(@NonNull Context context) {
@@ -1014,112 +1016,112 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      //获取辅助服务对象
      HelpService.getService()
      //查找指定字符的不可点击视图节点
-     HelpService.getService().findViewByTextUnClickable(String text)
+     .findViewByTextUnClickable(String text)
      //延迟查找指定字符的不可点击视图节点
-     HelpService.getService().findViewByTextUnClickable(String text, int milliSecond)
+     .findViewByTextUnClickable(String text, int milliSecond)
      //查找指定字符的可点击视图节点
-     HelpService.getService().findViewByTextClickable(String text)
+     .findViewByTextClickable(String text)
      //延迟查找指定字符的可点击视图节点
-     HelpService.getService().findViewByTextClickable(String text, int milliSecond)
+     .findViewByTextClickable(String text, int milliSecond)
      //查找指定视图id的不可点击视图节点
      //id规范：包名:id/视图id
-     HelpService.getService().findViewByIdUnClickable(String id)
+     .findViewByIdUnClickable(String id)
      //延迟查找指定视图id的不可点击视图节点
-     HelpService.getService().findViewByIdUnClickable(String id, int milliSecond)
+     .findViewByIdUnClickable(String id, int milliSecond)
      //查找指定视图id的可点击视图节点
      //id规范：包名:id/视图id
-     HelpService.getService().findViewByClickable(String id)
+     .findViewByClickable(String id)
      //延迟查找指定视图id的可点击视图节点
-     HelpService.getService().findViewByIdClickable(String id, int milliSecond)
+     .findViewByIdClickable(String id, int milliSecond)
      //单击视图节点
-     HelpService.getService().performViewClick(AccessibilityNodeInfo nodeInfo)
+     .performViewClick(AccessibilityNodeInfo nodeInfo)
      //延迟单击视图节点
-     HelpService.getService().performViewClick(AccessibilityNodeInfo nodeInfo, int milliSecond)
+     .performViewClick(AccessibilityNodeInfo nodeInfo, int milliSecond)
      //长按视图节点
-     HelpService.getService().performViewLongClick(AccessibilityNodeInfo nodeInfo)
+     .performViewLongClick(AccessibilityNodeInfo nodeInfo)
      //延迟长按视图节点
-     HelpService.getService().performViewLongClick(AccessibilityNodeInfo nodeInfo, int milliSecond)
+     .performViewLongClick(AccessibilityNodeInfo nodeInfo, int milliSecond)
      //执行单击返回键
-     HelpService.getService().performBackClick()
+     .performBackClick()
      //延迟单击返回键
-     HelpService.getService().performBackClick(int milliSecond)
+     .performBackClick(int milliSecond)
      //执行分屏
-     HelpService.getService().performSplitScreen()
+     .performSplitScreen()
      //延迟执行分屏
-     HelpService.getService().performSplitScreen(int milliSecond)
+     .performSplitScreen(int milliSecond)
      //执行截图
-     HelpService.getService().performTakeScreenShot()
+     .performTakeScreenShot()
      //延迟执行截图
-     HelpService.getService().performTakeScreenShot(int milliSecond)
+     .performTakeScreenShot(int milliSecond)
      //执行单击最近任务
-     HelpService.getService().performRecent()
+     .performRecent()
      //延迟执行单击最近任务
-     HelpService.getService().performRecent(int milliSecond)
+     .performRecent(int milliSecond)
      //执行下拉二级状态栏
-     HelpService.getService().performChildStatueBar()
+     .performChildStatueBar()
      //延迟执行下拉二级状态栏
-     HelpService.getService().performChildStatueBar(int milliSecond)
+     .performChildStatueBar(int milliSecond)
      //执行弹出电源管理框
-     HelpService.getService().performPowerDialog()
+     .performPowerDialog()
      //延迟执行弹出电源管理框
-     HelpService.getService().performPowerDialog(int milliSecond)
+     .performPowerDialog(int milliSecond)
      //执行下拉状态栏
-     HelpService.getService().performStatueBar()
+     .performStatueBar()
      //延迟执行下拉状态栏
-     HelpService.getService().performStatueBar(int milliSecond)
+     .performStatueBar(int milliSecond)
      //执行单击home键
-     HelpService.getService().performBackHomClicke()
+     .performBackHomClicke()
      //延迟执行单击home键
-     HelpService.getService().performBackHomeClick(int milliSecond)
+     .performBackHomeClick(int milliSecond)
      //执行锁屏
-     HelpService.getService().performLockScreen()
+     .performLockScreen()
      //延迟执行锁屏
-     HelpService.getService().performLockScreen(int milliSecond)
+     .performLockScreen(int milliSecond)
      //点击指定字符的视图
-     HelpService.getService().clickViewByText(String text)
+     .clickViewByText(String text)
      //延迟点击指定字符的视图
-     HelpService.getService().clickViewByText(String text, int milliSecond)
+     .clickViewByText(String text, int milliSecond)
      //长按指定字符的视图
-     HelpService.getService().longClickViewByText(String text)
+     .longClickViewByText(String text)
      //延迟长按指定字符的视图
-     HelpService.getService().longClickViewByText(String text, int milliSecond)
+     .longClickViewByText(String text, int milliSecond)
      //点击指定id的视图
      //id规范：包名:id/视图id
-     HelpService.getService().clickViewById(String id)
+     .clickViewById(String id)
      //延迟点击指定id的视图
      //id规范：包名:id/视图id
-     HelpService.getService().clickViewById(String id, int milliSecond)
+     .clickViewById(String id, int milliSecond)
      //长按指定id的视图
      //id规范：包名:id/视图id
-     HelpService.getService().longClickViewById(String id)
+     .longClickViewById(String id)
      //延迟长按指定id的视图
      //id规范：包名:id/视图id
-     HelpService.getService().longClickViewById(String id, int milliSecond)
+     .longClickViewById(String id, int milliSecond)
      //输入指定字符到指定字符的视图
-     HelpService.getService().inputTextToEtView(String view, String text)
+     .inputTextToEtView(String view, String text)
      //延迟输入指定字符到指定字符的视图
-     HelpService.getService().inputTextToEtView(String view, String text, int milliSecond)
+     .inputTextToEtView(String view, String text, int milliSecond)
      //输入指定id到指定id的视图
      //id规范：包名:id/视图id
-     HelpService.getService().inputIdToEtView(String view, String text)
+     .inputIdToEtView(String view, String text)
      //延迟输入指定id到指定id的视图
      //id规范：包名:id/视图id
-     HelpService.getService().inputIdToEtView(String view, String text, int milliSecond)
+     .inputIdToEtView(String view, String text, int milliSecond)
      //单击指定坐标
-     HelpService.getService().dispatchGestureClick(int x, int y)
+     .dispatchGestureClick(int x, int y)
      //延迟单击指定坐标
-     HelpService.getService().dispatchGestureClick(int x, int y, int milliSecond)
+     .dispatchGestureClick(int x, int y, int milliSecond)
      //长按指定坐标
-     HelpService.getService().dispatchGestureLongClick(int x, int y)
+     .dispatchGestureLongClick(int x, int y)
      //延迟长按指定坐标
-     HelpService.getService().dispatchGestureLongClick(int x, int y, int milliSecond)
+     .dispatchGestureLongClick(int x, int y, int milliSecond)
      //指定坐标连续手势滑动
      //参数1：x坐标
      //参数2：y坐标
      //参数3：滑动持续时间
      //参数4：每次滑动的间隔时间
      //坐标数量需要对应，否则不会执行方法
-     HelpService.getService().continueSwipe(List<Integer> x, List<Integer> y, int swipeDuration, int stepDuration)
+     .continueSwipe(List<Integer> x, List<Integer> y, int swipeDuration, int stepDuration)
      //判断辅助服务是否开启
      //参数2：辅助服务类
      HelpService.isAccessibilitySettingsOn(Context mContext, Class<?> cls)
@@ -1129,7 +1131,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 
 ```
      //在Application中初始化土司
-     //参数2是显示文本大小
+     //参数2是显示文本大小，单位sp，不设置默认18
      ToastUtils.getInstance().initToast(Context mContext,float size);
      //普通土司
      ToastUtils.normal(@NonNull Context context, @NonNull String message)
@@ -1237,8 +1239,6 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       LogUtils.w("12345");
       LogUtils.e("12345");
       LogUtils.wtf("12345");
-      
-更多配置，请参考https://github.com/pengwei1024/LogUtils/blob/master/README_USAGE.md
 ```
 
 #### 特技

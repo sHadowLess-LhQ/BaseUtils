@@ -132,11 +132,15 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
 
     @Override
     public void subscribe(@NonNull ObservableEmitter<Map<K, V>> emitter) throws Exception {
-        Map<K, V> mData = new HashMap<>();
-        initData(mData, map -> {
-            emitter.onNext(map);
-            emitter.onComplete();
-        });
+        try {
+            Map<K, V> mData = new HashMap<>();
+            initData(mData, map -> {
+                emitter.onNext(map);
+                emitter.onComplete();
+            });
+        } catch (Exception e) {
+            emitter.onError(e);
+        }
     }
 
     @Override
@@ -183,6 +187,7 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
      */
     protected abstract int theme();
 
+
     /**
      * 初始化数据
      *
@@ -203,6 +208,7 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
      *
      * @return the 视图
      */
+    @NonNull
     protected VB getBindView() {
         return bind;
     }

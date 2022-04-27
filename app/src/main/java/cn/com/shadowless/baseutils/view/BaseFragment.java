@@ -144,11 +144,15 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
 
     @Override
     public void subscribe(@NonNull ObservableEmitter<Map<K, V>> emitter) throws Exception {
-        Map<K, V> mData = new HashMap<>();
-        initData(mData, map -> {
-            emitter.onNext(map);
-            emitter.onComplete();
-        });
+        try {
+            Map<K, V> mData = new HashMap<>();
+            initData(mData, map -> {
+                emitter.onNext(map);
+                emitter.onComplete();
+            });
+        } catch (Exception e) {
+            emitter.onError(e);
+        }
     }
 
     @Override
@@ -177,19 +181,9 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
      *
      * @return the 视图
      */
+    @NonNull
     protected VB getBindView() {
         return bind;
-    }
-
-    /**
-     * 内部权限提示
-     *
-     * @param name the 权限名
-     */
-    private void showToast(String name) {
-        String tip = "应用无法使用，请开启%s权限";
-        Toast.makeText(mActivity, String.format(tip, name), Toast.LENGTH_SHORT).show();
-        ApplicationUtils.startApplicationInfo(mActivity);
     }
 
     /**
@@ -222,4 +216,15 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
      * @param map the 数据表
      */
     protected abstract void initView(@NonNull Map<K, V> map);
+
+    /**
+     * 内部权限提示
+     *
+     * @param name the 权限名
+     */
+    private void showToast(String name) {
+        String tip = "应用无法使用，请开启%s权限";
+        Toast.makeText(mActivity, String.format(tip, name), Toast.LENGTH_SHORT).show();
+        ApplicationUtils.startApplicationInfo(mActivity);
+    }
 }

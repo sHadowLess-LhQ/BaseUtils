@@ -90,7 +90,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
                     break;
                 case 14:
                     String[] longClick = ((String) msg.obj).split(",");
-                    dispatchGestureLongClick(Integer.parseInt(longClick[0]), Integer.parseInt(longClick[1]));
+                    dispatchGestureLongClick(Integer.parseInt(longClick[0]), Integer.parseInt(longClick[1]), Integer.parseInt(longClick[2]));
                     break;
                 case 15:
                     longClickViewByText((String) msg.obj);
@@ -515,7 +515,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param nodeInfo the 可访问节点信息
      */
-    public void performViewClick(AccessibilityNodeInfo nodeInfo) {
+    public BaseAccessibilityService performViewClick(AccessibilityNodeInfo nodeInfo) {
         while (nodeInfo != null) {
             if (nodeInfo.isClickable()) {
                 nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
@@ -526,6 +526,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
         if (nodeInfo != null) {
             nodeInfo.recycle();
         }
+        return this;
     }
 
     /**
@@ -534,11 +535,12 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param nodeInfo    the node info
      * @param milliSecond the milli second
      */
-    public void performViewClick(AccessibilityNodeInfo nodeInfo, int milliSecond) {
+    public BaseAccessibilityService performViewClick(AccessibilityNodeInfo nodeInfo, int milliSecond) {
         Message msg = Message.obtain(mHandler);
         msg.what = 18;
         msg.obj = nodeInfo;
         mHandler.sendMessageDelayed(msg, milliSecond);
+        return this;
     }
 
     /**
@@ -546,7 +548,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param nodeInfo the 可访问节点信息
      */
-    public void performViewLongClick(AccessibilityNodeInfo nodeInfo) {
+    public BaseAccessibilityService performViewLongClick(AccessibilityNodeInfo nodeInfo) {
         while (nodeInfo != null) {
             if (nodeInfo.isClickable()) {
                 nodeInfo.performAction(AccessibilityNodeInfo.ACTION_LONG_CLICK);
@@ -557,6 +559,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
         if (nodeInfo != null) {
             nodeInfo.recycle();
         }
+        return this;
     }
 
     /**
@@ -565,18 +568,20 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param nodeInfo    the node info
      * @param milliSecond the milli second
      */
-    public void performViewLongClick(AccessibilityNodeInfo nodeInfo, int milliSecond) {
+    public BaseAccessibilityService performViewLongClick(AccessibilityNodeInfo nodeInfo, int milliSecond) {
         Message msg = Message.obtain(mHandler);
         msg.what = 19;
         msg.obj = nodeInfo;
         mHandler.sendMessageDelayed(msg, milliSecond);
+        return this;
     }
 
     /**
      * 单击返回键
      */
-    public void performBackClick() {
+    public BaseAccessibilityService performBackClick() {
         performGlobalAction(GLOBAL_ACTION_BACK);
+        return this;
     }
 
     /**
@@ -584,16 +589,18 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param milliSecond the milli second
      */
-    public void performBackClick(int milliSecond) {
+    public BaseAccessibilityService performBackClick(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(1, milliSecond);
+        return this;
     }
 
     /**
      * 分屏
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void performSplitScreen() {
+    public BaseAccessibilityService performSplitScreen() {
         performGlobalAction(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
+        return this;
     }
 
     /**
@@ -601,16 +608,18 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param milliSecond the milli second
      */
-    public void performSplitScreen(int milliSecond) {
+    public BaseAccessibilityService performSplitScreen(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(2, milliSecond);
+        return this;
     }
 
     /**
      * 截屏
      */
     @RequiresApi(api = Build.VERSION_CODES.P)
-    public void performTakeScreenShot() {
+    public BaseAccessibilityService performTakeScreenShot() {
         performGlobalAction(GLOBAL_ACTION_TAKE_SCREENSHOT);
+        return this;
     }
 
     /**
@@ -618,15 +627,17 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param milliSecond the milli second
      */
-    public void performTakeScreenShot(int milliSecond) {
+    public BaseAccessibilityService performTakeScreenShot(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(3, milliSecond);
+        return this;
     }
 
     /**
      * 任务视图
      */
-    public void performRecent() {
+    public BaseAccessibilityService performRecent() {
         performGlobalAction(GLOBAL_ACTION_RECENTS);
+        return this;
     }
 
     /**
@@ -634,15 +645,17 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param milliSecond the milli second
      */
-    public void performRecent(int milliSecond) {
+    public BaseAccessibilityService performRecent(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(4, milliSecond);
+        return this;
     }
 
     /**
      * 下拉二级状态栏
      */
-    public void performChildStatueBar() {
+    public BaseAccessibilityService performChildStatueBar() {
         performGlobalAction(GLOBAL_ACTION_QUICK_SETTINGS);
+        return this;
     }
 
     /**
@@ -650,15 +663,17 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param milliSecond the milli second
      */
-    public void performChildStatueBar(int milliSecond) {
+    public BaseAccessibilityService performChildStatueBar(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(5, milliSecond);
+        return this;
     }
 
     /**
      * 电源管理框
      */
-    public void performPowerDialog() {
+    public BaseAccessibilityService performPowerDialog() {
         performGlobalAction(GLOBAL_ACTION_POWER_DIALOG);
+        return this;
     }
 
     /**
@@ -666,15 +681,17 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param milliSecond the milli second
      */
-    public void performPowerDialog(int milliSecond) {
+    public BaseAccessibilityService performPowerDialog(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(6, milliSecond);
+        return this;
     }
 
     /**
      * 下拉状态栏
      */
-    public void performStatueBar() {
+    public BaseAccessibilityService performStatueBar() {
         performGlobalAction(GLOBAL_ACTION_NOTIFICATIONS);
+        return this;
     }
 
     /**
@@ -682,15 +699,17 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param milliSecond the milli second
      */
-    public void performStatueBar(int milliSecond) {
+    public BaseAccessibilityService performStatueBar(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(7, milliSecond);
+        return this;
     }
 
     /**
      * 单击home键
      */
-    public void performBackHomeClick() {
+    public BaseAccessibilityService performBackHomeClick() {
         performGlobalAction(GLOBAL_ACTION_HOME);
+        return this;
     }
 
     /**
@@ -698,16 +717,18 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param milliSecond the milli second
      */
-    public void performBackHomeClick(int milliSecond) {
+    public BaseAccessibilityService performBackHomeClick(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(8, milliSecond);
+        return this;
     }
 
     /**
      * 锁屏
      */
     @RequiresApi(api = Build.VERSION_CODES.P)
-    public void performLockScreen() {
+    public BaseAccessibilityService performLockScreen() {
         performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
+        return this;
     }
 
     /**
@@ -715,8 +736,9 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param milliSecond the milli second
      */
-    public void performLockScreen(int milliSecond) {
+    public BaseAccessibilityService performLockScreen(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(9, milliSecond);
+        return this;
     }
 
     /**
@@ -724,7 +746,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param text the text
      */
-    public void clickViewByText(String text) {
+    public BaseAccessibilityService clickViewByText(String text) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
         if (accessibilityNodeInfo != null) {
             List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByText(text);
@@ -746,6 +768,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
                 }
             }
         }
+        return this;
     }
 
     /**
@@ -754,11 +777,12 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param text        the text
      * @param milliSecond the milli second
      */
-    public void clickViewByText(String text, int milliSecond) {
+    public BaseAccessibilityService clickViewByText(String text, int milliSecond) {
         Message msg = Message.obtain(mHandler);
         msg.what = 10;
         msg.obj = text;
         mHandler.sendMessageDelayed(msg, milliSecond);
+        return this;
     }
 
     /**
@@ -766,7 +790,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param text the text
      */
-    public void longClickViewByText(String text) {
+    public BaseAccessibilityService longClickViewByText(String text) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
         if (accessibilityNodeInfo != null) {
             List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByText(text);
@@ -788,6 +812,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
                 }
             }
         }
+        return this;
     }
 
     /**
@@ -796,11 +821,12 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param text        the text
      * @param milliSecond the milli second
      */
-    public void longClickViewByText(String text, int milliSecond) {
+    public BaseAccessibilityService longClickViewByText(String text, int milliSecond) {
         Message msg = Message.obtain(mHandler);
         msg.what = 15;
         msg.obj = text;
         mHandler.sendMessageDelayed(msg, milliSecond);
+        return this;
     }
 
     /**
@@ -808,7 +834,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param id the id
      */
-    public void clickViewById(String id) {
+    public BaseAccessibilityService clickViewById(String id) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
         if (accessibilityNodeInfo != null) {
             List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByViewId(id);
@@ -830,6 +856,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
                 }
             }
         }
+        return this;
     }
 
     /**
@@ -838,11 +865,12 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param id          the id
      * @param milliSecond the milli second
      */
-    public void clickViewById(String id, int milliSecond) {
+    public BaseAccessibilityService clickViewById(String id, int milliSecond) {
         Message msg = Message.obtain(mHandler);
         msg.what = 16;
         msg.obj = id;
         mHandler.sendMessageDelayed(msg, milliSecond);
+        return this;
     }
 
     /**
@@ -850,10 +878,10 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param id the id
      */
-    public void longClickViewById(String id) {
+    public BaseAccessibilityService longClickViewById(String id) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
         if (accessibilityNodeInfo == null) {
-            return;
+            return this;
         }
         List<AccessibilityNodeInfo> nodeInfoList = accessibilityNodeInfo.findAccessibilityNodeInfosByViewId(id);
         if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
@@ -873,6 +901,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
                 }
             }
         }
+        return this;
     }
 
     /**
@@ -881,11 +910,12 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param id          the id
      * @param milliSecond the milli second
      */
-    public void longClickViewById(String id, int milliSecond) {
+    public BaseAccessibilityService longClickViewById(String id, int milliSecond) {
         Message msg = Message.obtain(mHandler);
         msg.what = 11;
         msg.obj = id;
         mHandler.sendMessageDelayed(msg, milliSecond);
+        return this;
     }
 
     /**
@@ -894,10 +924,11 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param view the view
      * @param text the text
      */
-    public void inputTextToEtView(String view, String text) {
+    public BaseAccessibilityService inputTextToEtView(String view, String text) {
         Bundle arguments = new Bundle();
         arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, text);
         findViewByTextClickable(view).performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
+        return this;
     }
 
     /**
@@ -907,11 +938,12 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param text        the text
      * @param milliSecond the milli second
      */
-    public void inputTextToEtView(String view, String text, int milliSecond) {
+    public BaseAccessibilityService inputTextToEtView(String view, String text, int milliSecond) {
         Message msg = Message.obtain(mHandler);
         msg.what = 12;
         msg.obj = view + "," + text;
         mHandler.sendMessageDelayed(msg, milliSecond);
+        return this;
     }
 
     /**
@@ -920,10 +952,11 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param id   the id
      * @param text the text
      */
-    public void inputIdToEtView(String id, String text) {
+    public BaseAccessibilityService inputIdToEtView(String id, String text) {
         Bundle arguments = new Bundle();
         arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, text);
         findViewByIdClickable(id).performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
+        return this;
     }
 
     /**
@@ -933,11 +966,12 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param text        the text
      * @param milliSecond the milli second
      */
-    public void inputIdToEtView(String id, String text, int milliSecond) {
+    public BaseAccessibilityService inputIdToEtView(String id, String text, int milliSecond) {
         Message msg = Message.obtain(mHandler);
         msg.what = 17;
         msg.obj = id + "," + text;
         mHandler.sendMessageDelayed(msg, milliSecond);
+        return this;
     }
 
     /**
@@ -947,12 +981,13 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param y the y
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void dispatchGestureClick(int x, int y) {
+    public BaseAccessibilityService dispatchGestureClick(int x, int y) {
         Path path = new Path();
         path.moveTo(x - 1, y - 1);
         path.lineTo(x + 1, y + 1);
         dispatchGesture(new GestureDescription.Builder().addStroke(new GestureDescription.StrokeDescription
-                (path, 0, 100)).build(), null, null);
+                (path, 0, 300)).build(), null, null);
+        return this;
     }
 
     /**
@@ -962,11 +997,12 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param y           the y
      * @param milliSecond the milli second
      */
-    public void dispatchGestureClick(int x, int y, int milliSecond) {
+    public BaseAccessibilityService dispatchGestureClick(int x, int y, int milliSecond) {
         Message msg = Message.obtain(mHandler);
         msg.what = 13;
         msg.obj = x + "," + y;
         mHandler.sendMessageDelayed(msg, milliSecond);
+        return this;
     }
 
     /**
@@ -976,14 +1012,15 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param y the y
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void dispatchGestureLongClick(int x, int y) {
+    public BaseAccessibilityService dispatchGestureLongClick(int x, int y, int delay) {
         Path path = new Path();
         path.moveTo(x - 1, y - 1);
         path.lineTo(x, y - 1);
         path.lineTo(x, y);
         path.lineTo(x - 1, y);
         dispatchGesture(new GestureDescription.Builder().addStroke(new GestureDescription.StrokeDescription
-                (path, 0, 1500)).build(), null, null);
+                (path, 0, delay)).build(), null, null);
+        return this;
     }
 
     /**
@@ -993,11 +1030,12 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param y           the y
      * @param milliSecond the milli second
      */
-    public void dispatchGestureLongClick(int x, int y, int milliSecond) {
+    public BaseAccessibilityService dispatchGestureLongClick(int x, int y, int delay, int milliSecond) {
         Message msg = Message.obtain(mHandler);
         msg.what = 14;
-        msg.obj = x + "," + y;
+        msg.obj = x + "," + y + "," + delay;
         mHandler.sendMessageDelayed(msg, milliSecond);
+        return this;
     }
 
     /**
@@ -1009,14 +1047,14 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param stepDuration  the step duration
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void continueSwipe(List<Integer> x, List<Integer> y, int swipeDuration, int stepDuration) {
+    public BaseAccessibilityService continueSwipe(List<Integer> x, List<Integer> y, int swipeDuration, int stepDuration) {
         if (x.size() != y.size()) {
-            return;
+            return this;
         }
         Path path = new Path();
         for (int i = 0; i < x.size(); i++) {
             if (i + 1 == x.size()) {
-                return;
+                return this;
             }
             path.reset();
             path.moveTo(x.get(i), y.get(i));
@@ -1034,6 +1072,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
                 }
             }, null);
         }
+        return this;
     }
 
     /**

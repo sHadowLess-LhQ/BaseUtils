@@ -77,24 +77,24 @@ public class ToastUtils {
     private static Toast currentToast = null;
 
     /**
-     * The constant textSize.
+     * 文字大小
      */
     private static float textSize = 18f;
 
     /**
-     * The constant toastUtils.
+     * 土司单例
      */
     @SuppressLint("StaticFieldLeak")
     private static ToastUtils toastUtils;
 
     /**
-     * The constant mContext.
+     * 上下文
      */
     @SuppressLint("StaticFieldLeak")
     private static Context context;
 
     /**
-     * Gets instance.
+     * 获取土司单例
      *
      * @return the instance
      */
@@ -107,13 +107,27 @@ public class ToastUtils {
     }
 
     /**
-     * Init toast.
+     * 初始化土司
      *
-     * @param mContext the m context
-     * @param size     the size
+     * @param mContext the 上下文
+     * @param size     the 文字大小
      */
     public void initToast(Context mContext, float size) {
         textSize = size;
+        if (null == context) {
+            context = mContext;
+        }
+        if (null == currentToast) {
+            currentToast = new Toast(context);
+        }
+    }
+
+    /**
+     * 初始化土司
+     *
+     * @param mContext the 上下文
+     */
+    public void initToast(Context mContext) {
         if (null == context) {
             context = mContext;
         }

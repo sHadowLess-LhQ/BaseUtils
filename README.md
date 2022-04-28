@@ -82,6 +82,53 @@ b、远程仓库引入
     }
 ```
 
+c、混淆规则
+
+```
+//主模块混淆
+-keepattributes Signature
+-keep class cn.com.shadowless.baseutils.log.**{*;}
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+    long producerIndex;
+    long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+-keepclassmembers class rx.android.**{*;}
+
+//NetUtils混淆
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
+-dontwarn com.squareup.**
+-dontwarn okio.**
+-keep public class org.codehaus.* { *; }
+-keep public class java.nio.* { *; }
+-dontwarn sun.misc.**
+-keep class com.google.gson.examples.android.model.** { <fields>; }
+-keep class * extends com.google.gson.TypeAdapter
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+-keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+
+//BaseXPop混淆
+-dontwarn com.lxj.xpopup.widget.**
+-keep class com.lxj.xpopup.widget.**{*;}
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-keep class android.support.**{*;}
+```
+
 [![](https://jitpack.io/v/com.gitee.shadowless_lhq/base-utils.svg)](https://jitpack.io/#com.gitee.shadowless_lhq/base-utils)
 
 #### 使用说明

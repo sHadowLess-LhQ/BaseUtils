@@ -173,7 +173,7 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
     @Override
     public void onComplete() {
         temp.dispose();
-        Log.e(TAG, "onEnd: " + "Activity加载成功");
+        Log.e(TAG, "onEnd: " + "Fragment加载成功");
     }
 
     /**

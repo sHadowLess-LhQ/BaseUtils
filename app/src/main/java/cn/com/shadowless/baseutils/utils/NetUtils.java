@@ -157,18 +157,6 @@ public class NetUtils {
     }
 
     /**
-     * RxJava订阅所处线程
-     *
-     * @param <T> the type parameter
-     * @return the observable transformer
-     */
-    public static <T> ObservableTransformer<T, T> obsIoMain() {
-        return upstream -> upstream.subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    /**
      * 获取错误信息
      *
      * @param throwable the 异常

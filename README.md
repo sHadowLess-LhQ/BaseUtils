@@ -1177,53 +1177,56 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 ### 18、ToastUtils：方法说明
 
 ```
-     //在Application中初始化土司
-     //参数2是显示文本大小，单位sp，不设置默认18
-     ToastUtils.getInstance().initToast(Context mContext,float size);
-     //普通土司
-     ToastUtils.normal(@NonNull Context context, @NonNull String message)
-     //普通土司带图标
-     ToastUtils.normal(@NonNull Context context, @NonNull String message, Drawable icon)
-     //普通土司带显示时长
-     ToastUtils.normal(@NonNull Context context, @NonNull String message, int duration)
-     //普通土司带图标带显示时长
-     ToastUtils.normal(@NonNull Context context, @NonNull String message, int duration, Drawable icon)
-     //获取一个自定义土司对象
-     ToastUtils.normal(@NonNull Context context, @NonNull String message, int duration, Drawable icon, boolean withIcon)
-     //警告土司
-     ToastUtils.warning(@NonNull Context context, @NonNull String message)
-     //警告土司带时长
-     ToastUtils.warning(@NonNull Context context, @NonNull String message, int duration) 
-     //警告土司带时长是否带图标
-     ToastUtils.warning(@NonNull Context context, @NonNull String message, int duration, boolean withIcon)
-     //信息土司
-     ToastUtils.info(@NonNull Context context, @NonNull String message)
-     //信息土司带时长
-     ToastUtils.info(@NonNull Context context, @NonNull String message, int duration)
-     //信息土司带时长是否带图标
-     ToastUtils.info(@NonNull Context context, @NonNull String message, int duration, boolean withIcon)
+  带图标   //在Application中初始化土司
+     ToastUtils.getInstance().initToast(Context mContext);
      //成功土司
-     ToastUtils.success(@NonNull Context context, @NonNull String message)
-     //成功土司带时长
-     ToastUtils.success(@NonNull Context context, @NonNull String message, int duration)
-     //成功土司带时长是否带图标
-     ToastUtils.success(@NonNull Context context, @NonNull String message, int duration, boolean withIcon)
+     ToastUtils.onSuccessShowToast(String message);
+     //成功显示xml文字
+     ToastUtils.onSuccessShowToast(int messageID);
+     //成功显示自定义icon
+     ToastUtils.onSuccessShowToast(String message, int iconID);
+     //成功显示xml自定义icon
+     ToastUtils.onSuccessShowToast(int messageID, int iconID);
      //错误土司
-     ToastUtils.error(@NonNull Context context, @NonNull String message)
-     //错误土司带时长
-     ToastUtils.error(@NonNull Context context, @NonNull String message, int duration)
-     //错误土司带时长是否带图标
-     ToastUtils.error(@NonNull Context context, @NonNull String message, int duration, boolean withIcon)
-     //自定义土司
-     ToastUtils.custom(@NonNull Context context, @NonNull String message, Drawable icon, @ColorInt int textColor, int duration, boolean withIcon)
-     //自定义土司
-     ToastUtils.custom(@NonNull Context context, @NonNull String message, @DrawableRes int iconRes, @ColorInt int textColor, @ColorInt int tintColor, int duration, boolean withIcon, boolean shouldTint)
-     //自定义土司
-     ToastUtils.custom(@NonNull Context context, @NonNull String message, Drawable icon, @ColorInt int textColor, @ColorInt int tintColor, int duration, boolean withIcon, boolean shouldTint)
-     //获取图片资源
-     ToastUtils.getDrawable(@NonNull Context context, @DrawableRes int id)
-     //获取.9位图
-     ToastUtils.tint9PatchDrawableFrame(@NonNull Context context, @ColorInt int tintColor)
+     ToastUtils.onErrorShowToast(String message);
+     //错误显示xml文字
+     ToastUtils.onErrorShowToast(int messageID);
+     //错误显示自定义icon
+     ToastUtils.onErrorShowToast(String message, int iconID);
+     //错误显示xml自定义icon
+     ToastUtils.onErrorShowToast(int messageID, int iconID);
+     //默认土司
+     ToastUtils.onDefaultShowToast(String message);
+     //默认显示xml文字
+     ToastUtils.onDefaultShowToast(int messageID);
+     //默认显示自定义icon
+     ToastUtils.onDefaultShowToast(String message, int iconID);
+     //默认显示xml自定义icon
+     ToastUtils.onDefaultShowToast(int messageID, int iconID);
+     //默认带图标土司
+     ToastUtils.onDefaultWithoutIconShowToast(String message);
+     //默认带图标显示xml文字
+     ToastUtils.onDefaultWithoutIconShowToast(int messageID);
+     //默认带图标显示自定义icon
+     ToastUtils.onDefaultWithoutIconShowToast(String message, int iconID);
+     //默认带图标显示xml自定义icon
+     ToastUtils.onDefaultWithoutIconShowToast(int messageID, int iconID);
+     //警告土司
+     ToastUtils.onWarnShowToast(String message);
+     //警告显示xml文字
+     ToastUtils.onWarnShowToast(int messageID);
+     //警告显示自定义icon
+     ToastUtils.onWarnShowToast(String message, int iconID);
+     //警告显示xml自定义icon
+     ToastUtils.onWarnShowToast(int messageID, int iconID);
+     //信息土司
+     ToastUtils.onInfoShowToast(String message);
+     //信息显示xml文字
+     ToastUtils.onInfoShowToast(int messageID);
+     //信息显示自定义icon
+     ToastUtils.onInfoShowToast(String message, int iconID);
+     //信息显示xml自定义icon
+     ToastUtils.onInfoShowToast(int messageID, int iconID);
 ```
 
 ### 19、LogUtils：方法说明

@@ -63,7 +63,7 @@ public class ToastUtils {
     }
 
     /**
-     * On success show toast.
+     * 成功
      *
      * @param message the message
      */
@@ -74,7 +74,7 @@ public class ToastUtils {
     }
 
     /**
-     * On success show toast.
+     * 成功显示xml
      *
      * @param messageID the message id
      */
@@ -86,7 +86,7 @@ public class ToastUtils {
     }
 
     /**
-     * On success show toast.
+     * 成功显示自定义icon
      *
      * @param message the message
      * @param iconID  the icon id
@@ -98,7 +98,7 @@ public class ToastUtils {
     }
 
     /**
-     * On success show toast.
+     * 成功显示xml自定义icon
      *
      * @param messageID the message id
      * @param iconID    the icon id
@@ -111,7 +111,7 @@ public class ToastUtils {
     }
 
     /**
-     * On error show toast.
+     * 错误显示
      *
      * @param message the message
      * @param iconID  the icon id
@@ -136,7 +136,7 @@ public class ToastUtils {
     }
 
     /**
-     * On error show toast.
+     * 错误
      *
      * @param message the message
      */

@@ -1177,8 +1177,10 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 ### 18、ToastUtils：方法说明
 
 ```
-  带图标   //在Application中初始化土司
+     //在Application中初始化土司
+     //参数2是多次点击依然显示
      ToastUtils.getInstance().initToast(Context mContext);
+     ToastUtils.getInstance().initToast(Context mContext,boolean isMoreShow);
      //成功土司
      ToastUtils.onSuccessShowToast(String message);
      //成功显示xml文字

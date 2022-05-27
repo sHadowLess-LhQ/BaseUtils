@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.com.shadowless.baseutils">
-
+    <application>
+        <provider
+            android:name="cn.com.shadowless.baseutils.screen.InitProvider"
+            android:authorities="${applicationId}.autosize-init-provider"
+            android:exported="false"
+            android:multiprocess="true"/>
+    </application>
 </manifest>

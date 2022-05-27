@@ -37,6 +37,11 @@ public class ToastUtils {
     private static Context mContext;
 
     /**
+     * The constant isMoreShow.
+     */
+    private static boolean isMoreShow;
+
+    /**
      * Gets instance.
      *
      * @return the instance
@@ -59,6 +64,25 @@ public class ToastUtils {
         }
         if (null == currentToast) {
             currentToast = new Toast(mContext);
+        }
+    }
+
+    /**
+     * Init toast.
+     *
+     * @param context    the context
+     * @param isMoreShow the is more show
+     */
+    public void initToast(Context context, boolean isMoreShow) {
+        if (null == mContext) {
+            mContext = context;
+        }
+        if (isMoreShow) {
+            ToastUtils.isMoreShow = isMoreShow;
+        } else {
+            if (null == currentToast) {
+                currentToast = new Toast(mContext);
+            }
         }
     }
 
@@ -435,13 +459,14 @@ public class ToastUtils {
      * @param withIcon        the with icon
      * @param toastDrawableID the toast drawable id
      */
-    private static void showToast(String message, int iconID,
-                                  @ColorInt int textColor, int duration, boolean withIcon, int toastDrawableID) {
-
-        if (currentToast == null) {
+    private static void showToast(String message, int iconID, @ColorInt int textColor, int duration, boolean withIcon, int toastDrawableID) {
+        if (isMoreShow) {
             currentToast = new Toast(mContext);
+        } else {
+            if (currentToast == null) {
+                currentToast = new Toast(mContext);
+            }
         }
-
         @SuppressLint("InflateParams")
         View view = LayoutInflater.from(mContext).inflate(R.layout.toast_layout, null);
         RelativeLayout toast_container = view.findViewById(R.id.toast_container);
@@ -472,11 +497,9 @@ public class ToastUtils {
                 toast_container.setBackgroundDrawable(ContextCompat.getDrawable(mContext, toastDrawableID));
             }
         }
-
         toast_message.setTypeface(Typeface.create("sans-serif-condensed", Typeface.NORMAL));
         currentToast.setView(view);
         currentToast.setDuration(duration);
-
         currentToast.show();
 
     }

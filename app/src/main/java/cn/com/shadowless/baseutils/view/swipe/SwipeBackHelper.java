@@ -19,34 +19,99 @@ import androidx.annotation.NonNull;
 
 import java.lang.ref.WeakReference;
 
+
 /**
- * Created by XBeats on 2019/3/20
+ * The type Swipe back helper.
+ *
+ * @author sHadowLess
  */
 public class SwipeBackHelper {
-    private static final String TAG = "SwipeBackHelper";
 
-    private static final int STATE_ACTION_DOWN = 1; //点击事件
-    private static final int STATE_ACTION_UP = 2;  //点击结束
-    private static final int STATE_BACK_START = 3; //开始滑动，不返回前一个页面
-    private static final int STATE_BACK_FINISH = 4;  //结束滑动，不返回前一个页面
-    private static final int STATE_FORWARD_START = 5; //开始滑动，返回前一个页面
-    private static final int STATE_FORWARD_FINISH = 6;//结束滑动，返回前一个页面
+    /**
+     * 点击事件
+     */
+    private static final int STATE_ACTION_DOWN = 1;
+    /**
+     * 点击结束
+     */
+    private static final int STATE_ACTION_UP = 2;
+    /**
+     * 开始滑动，不返回前一个页面
+     */
+    private static final int STATE_BACK_START = 3;
+    /**
+     * 结束滑动，不返回前一个页面
+     */
+    private static final int STATE_BACK_FINISH = 4;
+    /**
+     * 开始滑动，返回前一个页面
+     */
+    private static final int STATE_FORWARD_START = 5;
+    /**
+     * 结束滑动，返回前一个页面
+     */
+    private static final int STATE_FORWARD_FINISH = 6;
 
+    /**
+     * The M interpolator.
+     */
     private final Interpolator mInterpolator = new DecelerateInterpolator(2f);
 
+    /**
+     * The constant EDGE_SIZE.
+     */
     private static final int EDGE_SIZE = 20;  //dp 默认拦截手势区间
+    /**
+     * The M edge size.
+     */
     private int mEdgeSize;  //px 拦截手势区间
+    /**
+     * The M is sliding.
+     */
     private boolean mIsSliding; //是否正在滑动
+    /**
+     * The M is slide anim playing.
+     */
     private boolean mIsSlideAnimPlaying; //滑动动画展示过程中
+    /**
+     * The M distance x.
+     */
     private float mDistanceX;  //px 当前滑动距离 （正数或0）
+    /**
+     * The M last point x.
+     */
     private float mLastPointX;  //记录手势在屏幕上的X轴坐标
+    /**
+     * The M enable slide back.
+     */
     private boolean mEnableSlideBack = true; //默认启动滑动返回
+    /**
+     * The M touch slop.
+     */
     private int mTouchSlop;
+    /**
+     * The M is in threshold area.
+     */
     private boolean mIsInThresholdArea;
+    /**
+     * The M current activity.
+     */
     private Activity mCurrentActivity;
+    /**
+     * The M view manager.
+     */
     private ViewManager mViewManager;
+    /**
+     * The M value animator.
+     */
     private ValueAnimator mValueAnimator;
 
+    /**
+     * Instantiates a new Swipe back helper.
+     *
+     * @param currentActivity       the current activity
+     * @param slideActivityCallback the slide activity callback
+     */
     public SwipeBackHelper(Activity currentActivity, @NonNull SlideActivityCallback slideActivityCallback) {
         mCurrentActivity = currentActivity;
         mViewManager = new ViewManager(currentActivity, slideActivityCallback);
@@ -56,6 +121,11 @@ public class SwipeBackHelper {
         mEdgeSize = (int) (EDGE_SIZE * density + 0.5f); //滑动拦截事件的区域
     }
 
+    /**
+     * Enable swipe back.
+     *
+     * @param enable the enable
+     */
     public void enableSwipeBack(boolean enable) {
         if (mEnableSlideBack == enable) {
             return;
@@ -68,6 +138,12 @@ public class SwipeBackHelper {
         }
     }
 
+    /**
+     * Process touch event boolean.
+     *
+     * @param ev the ev
+     * @return the boolean
+     */
     public boolean processTouchEvent(MotionEvent ev) {
         if (!mEnableSlideBack) { //不支持滑动返回，则手势事件交给View处理
             return false;
@@ -142,6 +218,9 @@ public class SwipeBackHelper {
         return false;
     }
 
+    /**
+     * Finish swipe immediately.
+     */
     public void finishSwipeImmediately() {
         if (mValueAnimator != null) {
             mValueAnimator.cancel();
@@ -151,7 +230,7 @@ public class SwipeBackHelper {
     /**
      * 处理事件（滑动事件除外）
      *
-     * @param status
+     * @param status the status
      */
     private void changeStatus(int status) {
         switch (status) {
@@ -198,6 +277,11 @@ public class SwipeBackHelper {
         }
     }
 
+    /**
+     * Sets translation x.
+     *
+     * @param x the x
+     */
     private void setTranslationX(float x) {
         final int width = mCurrentActivity.getResources().getDisplayMetrics().widthPixels;
         mDistanceX = x;
@@ -207,6 +291,9 @@ public class SwipeBackHelper {
         mViewManager.translateViews(mDistanceX, width);
     }
 
+    /**
+     * Start back anim.
+     */
     private void startBackAnim() {
         final int maxValue = 150;
         mValueAnimator = new ValueAnimator();
@@ -235,6 +322,9 @@ public class SwipeBackHelper {
         mValueAnimator.start();
     }
 
+    /**
+     * Start forward anim.
+     */
     private void startForwardAnim() {
         final int maxValue = 300;
         mValueAnimator = new ValueAnimator();
@@ -263,17 +353,47 @@ public class SwipeBackHelper {
         mValueAnimator.start();
     }
 
+    /**
+     * The type View manager.
+     */
     private static class ViewManager {
+        /**
+         * The M current activity.
+         */
         private Activity mCurrentActivity;
+        /**
+         * The M previous activity.
+         */
         private WeakReference<Activity> mPreviousActivity;
+        /**
+         * The M slide activity callback.
+         */
         private SlideActivityCallback mSlideActivityCallback;
 
+        /**
+         * The M current content view.
+         */
         private ViewGroup mCurrentContentView;
+        /**
+         * The M display view.
+         */
         private View mDisplayView;
+        /**
+         * The M previous display view.
+         */
         private View mPreviousDisplayView;
 
+        /**
+         * The M temporary view group.
+         */
         private TemporaryViewGroup mTemporaryViewGroup;
 
+        /**
+         * Instantiates a new View manager.
+         *
+         * @param currentActivity       the current activity
+         * @param slideActivityCallback the slide activity callback
+         */
         private ViewManager(Activity currentActivity, @NonNull SlideActivityCallback slideActivityCallback) {
             mCurrentActivity = currentActivity;
             mSlideActivityCallback = slideActivityCallback;
@@ -318,6 +438,11 @@ public class SwipeBackHelper {
             return true;
         }
 
+        /**
+         * Clear views.
+         *
+         * @param forward the forward
+         */
         private void clearViews(boolean forward) {
             if (mCurrentContentView == null) {
                 return;
@@ -342,6 +467,12 @@ public class SwipeBackHelper {
             mDisplayView = null;
         }
 
+        /**
+         * Translate views.
+         *
+         * @param x           the x
+         * @param screenWidth the screen width
+         */
         private void translateViews(float x, int screenWidth) {
             if (mCurrentContentView == null) {
                 return;
@@ -355,29 +486,46 @@ public class SwipeBackHelper {
         }
     }
 
+    /**
+     * The interface Slide back manager.
+     */
     public interface SlideBackManager {
         /**
          * 是否支持滑动返回
          *
-         * @return
+         * @return boolean boolean
          */
         boolean supportSlideBack();
 
         /**
          * 能否滑动返回至当前Activity
          *
-         * @return
+         * @return boolean boolean
          */
         boolean canBeSlideBack();
     }
 
+    /**
+     * The M on slide finish listener.
+     */
     private OnSlideFinishListener mOnSlideFinishListener;
 
+    /**
+     * Sets on slide finish listener.
+     *
+     * @param onSlideFinishListener the on slide finish listener
+     */
     public void setOnSlideFinishListener(OnSlideFinishListener onSlideFinishListener) {
         mOnSlideFinishListener = onSlideFinishListener;
     }
 
+    /**
+     * The interface On slide finish listener.
+     */
     public interface OnSlideFinishListener {
+        /**
+         * On finish.
+         */
         void onFinish();
     }
 }

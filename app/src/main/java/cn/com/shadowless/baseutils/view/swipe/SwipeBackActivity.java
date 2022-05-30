@@ -5,15 +5,15 @@ import android.view.MotionEvent;
 
 import androidx.fragment.app.FragmentActivity;
 
-import cn.com.guoguang.yjy.gg_ssprint.R;
+import cn.com.shadowless.baseutils.R;
 
 
 /**
  * Created by fhf11991 on 2016/7/25.
  */
-public class SwipeBackActivity extends FragmentActivity implements cn.com.guoguang.yjy.gg_ssprint.view.SwipeBackHelper.SlideBackManager {
+public class SwipeBackActivity extends FragmentActivity implements SwipeBackHelper.SlideBackManager {
 
-    private cn.com.guoguang.yjy.gg_ssprint.view.SwipeBackHelper mSwipeBackHelper;
+    private SwipeBackHelper mSwipeBackHelper;
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -21,12 +21,12 @@ public class SwipeBackActivity extends FragmentActivity implements cn.com.guogua
             return super.dispatchTouchEvent(ev);
         }
         if (mSwipeBackHelper == null) {
-            mSwipeBackHelper = new cn.com.guoguang.yjy.gg_ssprint.view.SwipeBackHelper(this, new SlideActivityAdapter());
-            mSwipeBackHelper.setOnSlideFinishListener(new cn.com.guoguang.yjy.gg_ssprint.view.SwipeBackHelper.OnSlideFinishListener() {
+            mSwipeBackHelper = new SwipeBackHelper(this, new SlideActivityAdapter());
+            mSwipeBackHelper.setOnSlideFinishListener(new SwipeBackHelper.OnSlideFinishListener() {
                 @Override
                 public void onFinish() {
                     SwipeBackActivity.this.finish();
-                    overridePendingTransition(android.R.anim.fade_in, R.anim.hold_on);
+                    overridePendingTransition(android.R.anim.fade_in, R.anim.swipe_anim);
                 }
             });
         }
@@ -51,11 +51,11 @@ public class SwipeBackActivity extends FragmentActivity implements cn.com.guogua
         return true;
     }
 
-    private static class SlideActivityAdapter implements cn.com.guoguang.yjy.gg_ssprint.view.SlideActivityCallback {
+    private static class SlideActivityAdapter implements SlideActivityCallback {
 
         @Override
         public Activity getPreviousActivity() {
-            return cn.com.guoguang.yjy.gg_ssprint.view.ActivityLifecycleHelper.getPreviousActivity();
+            return ActivityLifecycleHelper.getPreviousActivity();
         }
     }
 }

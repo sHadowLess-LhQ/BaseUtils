@@ -10,26 +10,59 @@ import android.widget.FrameLayout;
 
 import java.lang.ref.WeakReference;
 
+
 /**
- * Created by XBeats on 2019/3/26
+ * The type Temporary view group.
+ *
+ * @author sHadowLess
  */
 public class TemporaryViewGroup extends FrameLayout {
 
-    private static final int SHADOW_WIDTH = 50; //px 阴影宽度
+    /**
+     * The constant SHADOW_WIDTH.
+     */
+    private static final int SHADOW_WIDTH = 50;
+    /**
+     * The M shadow drawable.
+     */
     private final Drawable mShadowDrawable;
+    /**
+     * The M screen width.
+     */
     private final int mScreenWidth;
 
+    /**
+     * The M previous view.
+     */
     private WeakReference<View> mPreviousView;
+    /**
+     * The M status bar offset.
+     */
     private int mStatusBarOffset;
-    private float mDistanceX;  //px 当前滑动距离 （正数或0）
+    /**
+     * The M distance x.
+     */
+    private float mDistanceX;
 
+    /**
+     * Instantiates a new Temporary view group.
+     *
+     * @param context the context
+     */
     public TemporaryViewGroup(Context context) {
         super(context);
-        int colors[] = {0x00000000, 0x17000000, 0x43000000};//分别为开始颜色，中间夜色，结束颜色
+        int colors[] = {0x00000000, 0x17000000, 0x43000000};
         mShadowDrawable = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
         mScreenWidth = getContext().getResources().getDisplayMetrics().widthPixels;
     }
 
+    /**
+     * Add previous view.
+     *
+     * @param currentContentView  the current content view
+     * @param previousContentView the previous content view
+     * @param previousView        the previous view
+     */
     public void addPreviousView(ViewGroup currentContentView, ViewGroup previousContentView, View previousView) {
         mPreviousView = new WeakReference<>(previousView);
 
@@ -50,6 +83,12 @@ public class TemporaryViewGroup extends FrameLayout {
         previousView.setTranslationX(-(float) mScreenWidth / 3);
     }
 
+    /**
+     * Clear previous view.
+     *
+     * @param previewContentView the preview content view
+     * @param previousView       the previous view
+     */
     public void clearPreviousView(ViewGroup previewContentView, View previousView) {
         final MarginLayoutParams previousParams = (MarginLayoutParams) previousView.getLayoutParams();
         previousParams.topMargin = previousParams.topMargin - mStatusBarOffset;
@@ -59,6 +98,11 @@ public class TemporaryViewGroup extends FrameLayout {
         }
     }
 
+    /**
+     * Sets distance x.
+     *
+     * @param distanceX the distance x
+     */
     public void setDistanceX(float distanceX) {
         mDistanceX = distanceX;
 

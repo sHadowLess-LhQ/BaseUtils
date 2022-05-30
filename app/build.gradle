@@ -5,14 +5,14 @@ android {
     buildToolsVersion "30.0.3"
 
     android {
-        ndkVersion '22.1.7171670'
+        ndkVersion '21.1.6352462'
     }
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
-        versionName "1.4.0"
+        versionName "1.4.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

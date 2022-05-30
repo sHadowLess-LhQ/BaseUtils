@@ -7,4 +7,5 @@
     <color name="toastInfoColor">#3F51B5</color>
     <color name="toastWarningColor">#FFA900</color>
     <color name="toastDefaultColor">#666666</color>
+    <color name="black_p50">#7f000000</color>
 </resources>

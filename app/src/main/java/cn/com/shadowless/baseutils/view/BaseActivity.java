@@ -33,7 +33,7 @@ import io.reactivex.disposables.Disposable;
  * @param <V>  the type Value类型
  * @author sHadowLess
  */
-public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppCompatActivity implements ObservableOnSubscribe<Map<K, V>>, Observer<Map<K, V>> {
+public abstract class BaseActivity<VB extends ViewBinding, K, V> extends SwipeBackActivity implements ObservableOnSubscribe<Map<K, V>>, Observer<Map<K, V>> {
 
     /**
      * The Tag.

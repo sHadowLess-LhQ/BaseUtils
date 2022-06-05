@@ -15,7 +15,7 @@ public abstract class BasePresenter<T> {
      *
      * @return the singleton
      */
-    public T getApi() {
+    protected T getApi() {
         return NetUtils.getApi(apiName());
     }
 

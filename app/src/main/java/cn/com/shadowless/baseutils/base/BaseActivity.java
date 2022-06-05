@@ -1,4 +1,4 @@
-package cn.com.shadowless.baseutils.view;
+package cn.com.shadowless.baseutils.base;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewbinding.ViewBinding;
@@ -17,7 +18,6 @@ import java.util.Map;
 import cn.com.shadowless.baseutils.permission.RxPermissions;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
-import cn.com.shadowless.baseutils.view.swipe.SwipeBackActivity;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -33,7 +33,7 @@ import io.reactivex.disposables.Disposable;
  * @param <V>  the type Value类型
  * @author sHadowLess
  */
-public abstract class BaseActivity<VB extends ViewBinding, K, V> extends SwipeBackActivity implements ObservableOnSubscribe<Map<K, V>>, Observer<Map<K, V>> {
+public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppCompatActivity implements ObservableOnSubscribe<Map<K, V>>, Observer<Map<K, V>> {
 
     /**
      * The Tag.

@@ -1,39 +1,39 @@
-package cn.com.shadowless.baseutils.view;
+package cn.com.shadowless.baseutils.base;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.viewbinding.ViewBinding;
 
 
-import com.lxj.xpopup.core.BubbleAttachPopupView;
+import com.lxj.xpopup.core.CenterPopupView;
 
 import cn.com.shadowless.baseutils.R;
 
 /**
- * The type Base vertical bubble attach popup view.
+ * The type Base center pop view.
  *
  * @param <T> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseVerticalBubbleAttachPopupView<T extends ViewBinding> extends BubbleAttachPopupView {
+public abstract class BaseCenterPopView<T extends ViewBinding> extends CenterPopupView {
 
     /**
      * The Bind.
      */
     private T bind = null;
-
     /**
      * The Context.
      */
     private Context context = null;
 
     /**
-     * Instantiates a new Base vertical bubble attach popup view.
+     * Instantiates a new Base center pop view.
      *
      * @param context the context
      */
-    public BaseVerticalBubbleAttachPopupView(@NonNull Context context) {
+    public BaseCenterPopView(@NonNull Context context) {
         super(context);
         this.context = context;
     }
@@ -43,6 +43,7 @@ public abstract class BaseVerticalBubbleAttachPopupView<T extends ViewBinding> e
         return setLayout();
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate() {
         super.onCreate();

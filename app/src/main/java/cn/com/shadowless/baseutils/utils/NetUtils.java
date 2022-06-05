@@ -1,5 +1,7 @@
 package cn.com.shadowless.baseutils.utils;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 
 import java.io.EOFException;
@@ -12,7 +14,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.ObservableTransformer;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -149,6 +153,7 @@ public class NetUtils {
     /**
      * 获取Api对象
      *
+     * @param <T>  the type parameter
      * @param name the name
      * @return the object
      */

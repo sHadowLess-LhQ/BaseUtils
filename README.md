@@ -476,10 +476,6 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
                 .timeOutUnit()   //设置超时时间单位，不设置默认单位秒
                 .build()
                 .initRetrofit(Api.class,xx.class...); //传入需要创建的接口类
-                
-      //取出需要的接口对象实例
-      Api api = NetUtils.getApi(Api.class.getSimpleName());
-       ...
 ```
 
 ### 9、LocationUtils：调用示例
@@ -725,30 +721,7 @@ public class AddCardPopView extends BaseCenterPopView<PopAddCardViewBinding>{
      WordUtils.contain(String input, String regex)
 ```
 
-### 16、SqlUtils：方法说明
-
-```
-     //初始化数据库
-     SqlUtils.initDateBase(Context context, String dbName)
-     //写入字符串数据
-     SqlUtils.writeString(String key, String value)
-     //写入字节数组数据
-     SqlUtils.writeByteList(String key, byte[] value)
-     //获取字符串数据
-     SqlUtils.getString(String key)
-     //获取字节数组数据
-     SqlUtils.getByteList(String key)
-     //标记需要删除的数据
-     SqlUtils.deleteAndSign(String key)
-     //直接删除数据
-     SqlUtils.removeData(String key)
-     //删除标记的数据
-     SqlUtils.clearSignData()
-     //关闭数据库
-     SqlUtils.closeDb()
-```
-
-### 17、BaseAccessibilityService：直接继承
+### 16、BaseAccessibilityService：直接继承
 
 ```
 public class MyService extends BaseAccessibilityService {
@@ -1174,7 +1147,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      HelpService.isAccessibilitySettingsOn(Context mContext, Class<?> cls)
 ```
 
-### 18、ToastUtils：方法说明
+### 17、ToastUtils：方法说明
 
 ```
      //在Application中初始化土司
@@ -1231,7 +1204,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      ToastUtils.onInfoShowToast(int messageID, int iconID);
 ```
 
-### 19、LogUtils：方法说明
+### 18、LogUtils：方法说明
 
 ```
      //配置日志库
@@ -1293,11 +1266,17 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       LogUtils.wtf("12345");
 ```
 
-#### 特技
+### 19、BaseObserver：Rxjava的subscribe()处，直接new，onComplete()自动解除订阅
 
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5. Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+### 20、BasePresenter：直接继承
+
+```
+//泛型传入接口
+public class MyPresenter extends BasePresenter<Api>{
+    @Override
+    public String apiName() {
+        return Api.class.getSimpleName();
+    }
+      ...
+}
+```

@@ -1,4 +1,4 @@
-package cn.com.shadowless.baseutils.view;
+package cn.com.shadowless.baseutils.base;
 
 import android.content.Context;
 
@@ -6,17 +6,17 @@ import androidx.annotation.NonNull;
 import androidx.viewbinding.ViewBinding;
 
 
-import com.lxj.xpopup.impl.FullScreenPopupView;
+import com.lxj.xpopup.core.BubbleHorizontalAttachPopupView;
 
 import cn.com.shadowless.baseutils.R;
 
 /**
- * The type Base full screen popup view.
+ * The type Base bubble horizontal attach popup view.
  *
  * @param <T> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseFullScreenPopupView<T extends ViewBinding> extends FullScreenPopupView {
+public abstract class BaseBubbleHorizontalAttachPopupView<T extends ViewBinding> extends BubbleHorizontalAttachPopupView {
 
     /**
      * The Bind.
@@ -28,11 +28,11 @@ public abstract class BaseFullScreenPopupView<T extends ViewBinding> extends Ful
     private Context context = null;
 
     /**
-     * Instantiates a new Base full screen popup view.
+     * Instantiates a new Base bubble horizontal attach popup view.
      *
      * @param context the context
      */
-    public BaseFullScreenPopupView(@NonNull Context context) {
+    public BaseBubbleHorizontalAttachPopupView(@NonNull Context context) {
         super(context);
         this.context = context;
     }
@@ -98,4 +98,5 @@ public abstract class BaseFullScreenPopupView<T extends ViewBinding> extends Ful
      */
     @NonNull
     protected abstract T setBindView();
+
 }

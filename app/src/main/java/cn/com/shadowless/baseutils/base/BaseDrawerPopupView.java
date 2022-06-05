@@ -1,4 +1,4 @@
-package cn.com.shadowless.baseutils.view;
+package cn.com.shadowless.baseutils.base;
 
 import android.content.Context;
 
@@ -6,17 +6,17 @@ import androidx.annotation.NonNull;
 import androidx.viewbinding.ViewBinding;
 
 
-import com.lxj.xpopup.core.BubbleHorizontalAttachPopupView;
+import com.lxj.xpopup.core.DrawerPopupView;
 
 import cn.com.shadowless.baseutils.R;
 
 /**
- * The type Base bubble horizontal attach popup view.
+ * The type Base drawer popup view.
  *
  * @param <T> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseBubbleHorizontalAttachPopupView<T extends ViewBinding> extends BubbleHorizontalAttachPopupView {
+public abstract class BaseDrawerPopupView<T extends ViewBinding> extends DrawerPopupView {
 
     /**
      * The Bind.
@@ -28,11 +28,11 @@ public abstract class BaseBubbleHorizontalAttachPopupView<T extends ViewBinding>
     private Context context = null;
 
     /**
-     * Instantiates a new Base bubble horizontal attach popup view.
+     * Instantiates a new Base drawer popup view.
      *
      * @param context the context
      */
-    public BaseBubbleHorizontalAttachPopupView(@NonNull Context context) {
+    public BaseDrawerPopupView(@NonNull Context context) {
         super(context);
         this.context = context;
     }
@@ -98,5 +98,4 @@ public abstract class BaseBubbleHorizontalAttachPopupView<T extends ViewBinding>
      */
     @NonNull
     protected abstract T setBindView();
-
 }

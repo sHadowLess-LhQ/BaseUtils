@@ -1,4 +1,4 @@
-package cn.com.shadowless.baseutils.view;
+package cn.com.shadowless.baseutils.base;
 
 import android.content.Context;
 
@@ -6,17 +6,17 @@ import androidx.annotation.NonNull;
 import androidx.viewbinding.ViewBinding;
 
 
-import com.lxj.xpopup.core.AttachPopupView;
+import com.lxj.xpopup.core.HorizontalAttachPopupView;
 
 import cn.com.shadowless.baseutils.R;
 
 /**
- * The type Base vertical attach pop view.
+ * The type Base horizontal attach pop view.
  *
  * @param <T> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseVerticalAttachPopView<T extends ViewBinding> extends AttachPopupView {
+public abstract class BaseHorizontalAttachPopView<T extends ViewBinding> extends HorizontalAttachPopupView {
 
     /**
      * The Bind.
@@ -28,11 +28,11 @@ public abstract class BaseVerticalAttachPopView<T extends ViewBinding> extends A
     private Context context = null;
 
     /**
-     * Instantiates a new Base vertical attach pop view.
+     * Instantiates a new Base horizontal attach pop view.
      *
      * @param context the context
      */
-    public BaseVerticalAttachPopView(@NonNull Context context) {
+    public BaseHorizontalAttachPopView(@NonNull Context context) {
         super(context);
         this.context = context;
     }

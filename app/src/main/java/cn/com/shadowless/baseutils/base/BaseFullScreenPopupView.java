@@ -1,23 +1,22 @@
-package cn.com.shadowless.baseutils.view;
+package cn.com.shadowless.baseutils.base;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.viewbinding.ViewBinding;
 
 
-import com.lxj.xpopup.core.CenterPopupView;
+import com.lxj.xpopup.impl.FullScreenPopupView;
 
 import cn.com.shadowless.baseutils.R;
 
 /**
- * The type Base center pop view.
+ * The type Base full screen popup view.
  *
  * @param <T> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseCenterPopView<T extends ViewBinding> extends CenterPopupView {
+public abstract class BaseFullScreenPopupView<T extends ViewBinding> extends FullScreenPopupView {
 
     /**
      * The Bind.
@@ -29,11 +28,11 @@ public abstract class BaseCenterPopView<T extends ViewBinding> extends CenterPop
     private Context context = null;
 
     /**
-     * Instantiates a new Base center pop view.
+     * Instantiates a new Base full screen popup view.
      *
      * @param context the context
      */
-    public BaseCenterPopView(@NonNull Context context) {
+    public BaseFullScreenPopupView(@NonNull Context context) {
         super(context);
         this.context = context;
     }
@@ -43,7 +42,6 @@ public abstract class BaseCenterPopView<T extends ViewBinding> extends CenterPop
         return setLayout();
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate() {
         super.onCreate();

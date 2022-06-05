@@ -11,12 +11,6 @@ import cn.com.shadowless.baseutils.utils.NetUtils;
 public abstract class BasePresenter<T> {
 
     /**
-     * Instantiates a new Base presenter.
-     */
-    private BasePresenter() {
-    }
-
-    /**
      * Gets singleton.
      *
      * @return the singleton

@@ -144,15 +144,11 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
 
     @Override
     public void subscribe(@NonNull ObservableEmitter<Map<K, V>> emitter) throws Exception {
-        try {
-            Map<K, V> mData = new HashMap<>();
-            initData(mData, map -> {
-                emitter.onNext(map);
-                emitter.onComplete();
-            });
-        } catch (Exception e) {
-            emitter.onError(e);
-        }
+        Map<K, V> mData = new HashMap<>();
+        initData(mData, map -> {
+            emitter.onNext(map);
+            emitter.onComplete();
+        });
     }
 
     @Override

@@ -1,6 +1,11 @@
 package cn.com.shadowless.baseutils.base;
 
+import android.app.Activity;
+
 import androidx.annotation.NonNull;
+
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.impl.LoadingPopupView;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -12,24 +17,108 @@ import io.reactivex.disposables.Disposable;
  * @author sHadowLess
  */
 public abstract class BaseObserver<T> implements Observer<T> {
+
     /**
      * The Disposable.
      */
     private Disposable disposable = null;
+    /**
+     * The Loading popup view.
+     */
+    private LoadingPopupView loadingPopupView = null;
+
+    /**
+     * Instantiates a new Base observer.
+     */
+    public BaseObserver() {
+    }
+
+    /**
+     * Instantiates a new Base observer.
+     *
+     * @param activity the activity
+     */
+    public BaseObserver(Activity activity) {
+        loadingPopupView = new XPopup.Builder(activity).asLoading();
+    }
+
+    /**
+     * Instantiates a new Base observer.
+     *
+     * @param activity    the activity
+     * @param isViewModel the is view model
+     */
+    public BaseObserver(Activity activity, boolean isViewModel) {
+        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).asLoading();
+    }
+
+    /**
+     * Instantiates a new Base observer.
+     *
+     * @param activity    the activity
+     * @param isViewModel the is view model
+     * @param loadName    the load name
+     */
+    public BaseObserver(Activity activity, boolean isViewModel, String loadName) {
+        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).asLoading(loadName);
+    }
+
+    /**
+     * Instantiates a new Base observer.
+     *
+     * @param activity    the activity
+     * @param isViewModel the is view model
+     * @param hasDark     the has dark
+     * @param loadName    the load name
+     */
+    public BaseObserver(Activity activity, boolean isViewModel, boolean hasDark, String loadName) {
+        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).hasBlurBg(hasDark).hasShadowBg(hasDark).asLoading(loadName);
+    }
+
+    /**
+     * Instantiates a new Base observer.
+     *
+     * @param activity    the activity
+     * @param isViewModel the is view model
+     * @param hasDark     the has dark
+     * @param canCancel   the can cancel
+     * @param loadName    the load name
+     */
+    public BaseObserver(Activity activity, boolean isViewModel, boolean hasDark, boolean canCancel, String loadName) {
+        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).hasBlurBg(hasDark).hasShadowBg(hasDark).dismissOnBackPressed(canCancel).dismissOnTouchOutside(canCancel).asLoading(loadName);
+    }
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {
         disposable = d;
+        if (loadingPopupView != null) {
+            loadingPopupView.show();
+        }
     }
 
     @Override
     public abstract void onNext(@NonNull T t);
 
     @Override
-    public abstract void onError(@NonNull Throwable e);
+    public void onError(@NonNull Throwable e) {
+        onFail(e);
+        if (loadingPopupView != null) {
+            loadingPopupView.dismiss();
+        }
+    }
 
     @Override
     public void onComplete() {
+        if (loadingPopupView != null) {
+            loadingPopupView.dismiss();
+        }
         disposable.dispose();
     }
+
+    /**
+     * On fail.
+     *
+     * @param e the e
+     */
+    public abstract void onFail(@NonNull Throwable e);
 }

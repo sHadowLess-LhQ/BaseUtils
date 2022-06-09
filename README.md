@@ -1278,7 +1278,22 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       LogUtils.wtf("12345");
 ```
 
-### 19、BaseObserver：Rxjava的subscribe()处，直接new，onComplete()自动解除订阅
+### 19、BaseObserver：Rxjava的subscribe()处，直接new
+
+```
+     //无加载框构造
+     new BaseObserver()
+     //无字加载框
+     new BaseObserver(Activity activity)
+     //无字是否View实现加载框
+     new BaseObserver(Activity activity, boolean isViewModel)
+     //指定字符是否View实现加载框
+     new BaseObserver(Activity activity, boolean isViewModel, String loadName)
+     //指定字符是否View实现带背景模糊和高亮加载框
+     new BaseObserver(Activity activity, boolean isViewModel, boolean hasDark, String loadName)
+     //指定字符是否View实现且能外部取消带背景模糊和高亮加载框
+     new BaseObserver(Activity activity, boolean isViewModel, boolean hasDark, boolean canCancel, String loadName)
+```
 
 ### 20、BasePresenter：直接继承
 

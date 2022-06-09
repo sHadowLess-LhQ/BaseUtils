@@ -97,23 +97,34 @@ public abstract class BaseObserver<T> implements Observer<T> {
     }
 
     @Override
-    public abstract void onNext(@NonNull T t);
+    public void onNext(@NonNull T t) {
+        if (loadingPopupView != null) {
+            loadingPopupView.dismissWith(() -> onSuccess(t));
+        } else {
+            onSuccess(t);
+        }
+    }
 
     @Override
     public void onError(@NonNull Throwable e) {
-        onFail(e);
         if (loadingPopupView != null) {
-            loadingPopupView.dismiss();
+            loadingPopupView.dismissWith(() -> onFail(e));
+        } else {
+            onFail(e);
         }
     }
 
     @Override
     public void onComplete() {
-        if (loadingPopupView != null) {
-            loadingPopupView.dismiss();
-        }
         disposable.dispose();
     }
+
+    /**
+     * On success.
+     *
+     * @param t the t
+     */
+    public abstract void onSuccess(@NonNull T t);
 
     /**
      * On fail.

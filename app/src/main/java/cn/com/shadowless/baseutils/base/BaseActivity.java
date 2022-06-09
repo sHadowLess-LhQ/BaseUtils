@@ -133,6 +133,7 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
     @Override
     public void subscribe(@NonNull ObservableEmitter<Map<K, V>> emitter) throws Exception {
         Map<K, V> mData = new HashMap<>();
+        initListener();
         initData(mData, map -> {
             emitter.onNext(map);
             emitter.onComplete();
@@ -198,6 +199,11 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
      * @param data the 数据表
      */
     protected abstract void initView(@NonNull Map<K, V> data);
+
+    /**
+     * 初始化监听
+     */
+    protected abstract void initListener();
 
     /**
      * 获取绑定的视图

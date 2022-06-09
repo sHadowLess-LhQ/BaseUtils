@@ -145,6 +145,7 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
     @Override
     public void subscribe(@NonNull ObservableEmitter<Map<K, V>> emitter) throws Exception {
         Map<K, V> mData = new HashMap<>();
+        initListener();
         initData(mData, map -> {
             emitter.onNext(map);
             emitter.onComplete();
@@ -212,6 +213,11 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
      * @param map the 数据表
      */
     protected abstract void initView(@NonNull Map<K, V> map);
+
+    /**
+     * 初始化监听
+     */
+    protected abstract void initListener();
 
     /**
      * 内部权限提示

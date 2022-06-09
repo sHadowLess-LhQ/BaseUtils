@@ -168,6 +168,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String,String
        mData.put("data","成功");
        initDataCallBack.success(mData);
     }
+    
+    @Override
+    protected void initListener() {
+       //初始化监听
+       getBindView().test.setOnClickListener(this);
+    }
 
     @Override
     protected void initView(@NonNull Map<String, String> data) {
@@ -228,6 +234,12 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String,String
        }
        mData.put("data","成功");
        initDataCallBack.success(mData);
+    }
+    
+    @Override
+    protected void initListener() {
+       //初始化监听
+       getBindView().test.setOnClickListener(this);
     }
 
     @Override

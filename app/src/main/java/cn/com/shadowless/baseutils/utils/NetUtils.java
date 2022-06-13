@@ -129,11 +129,24 @@ public class NetUtils {
     }
 
     /**
+     * 初始化完成回调
+     */
+    public interface InitCallBack {
+        /**
+         * 完成
+         *
+         * @param apiMap the 接口表
+         */
+        void finish(Map<String, Object> apiMap);
+    }
+
+    /**
      * 初始化retrofit
      *
-     * @param cls the cls
+     * @param initCallBack the init call back
+     * @param cls          the cls
      */
-    public void initRetrofit(Class<?>... cls) {
+    public void initRetrofit(InitCallBack initCallBack, Class<?>... cls) {
         if (null == okHttpClient) {
             okHttpClient = getOkHttpClient();
         }
@@ -143,22 +156,37 @@ public class NetUtils {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
-        API_MAP = new HashMap<>(cls.length);
+        Map<String, Object> apiMap = new HashMap<>(cls.length);
         for (Class<?> cl : cls) {
             Object obj = retrofit.create(cl);
-            API_MAP.put(cl.getSimpleName(), obj);
+            apiMap.put(cl.getSimpleName(), obj);
         }
+        initCallBack.finish(apiMap);
     }
 
     /**
-     * 获取Api对象
+     * 初始化retrofit
      *
-     * @param <T>  the type parameter
-     * @param name the name
-     * @return the object
+     * @param gson         the gson
+     * @param initCallBack the init call back
+     * @param cls          the cls
      */
-    public static <T> T getApi(String name) {
-        return (T) API_MAP.get(name);
+    public void initRetrofit(Gson gson, InitCallBack initCallBack, Class<?>... cls) {
+        if (null == okHttpClient) {
+            okHttpClient = getOkHttpClient();
+        }
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(okHttpClient)
+                .build();
+        Map<String, Object> apiMap = new HashMap<>(cls.length);
+        for (Class<?> cl : cls) {
+            Object obj = retrofit.create(cl);
+            apiMap.put(cl.getSimpleName(), obj);
+        }
+        initCallBack.finish(apiMap);
     }
 
     /**

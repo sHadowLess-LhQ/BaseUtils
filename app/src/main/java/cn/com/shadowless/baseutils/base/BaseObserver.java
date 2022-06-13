@@ -68,11 +68,11 @@ public abstract class BaseObserver<T> implements Observer<T> {
      *
      * @param activity    the activity
      * @param isViewModel the is view model
-     * @param hasDark     the has dark
+     * @param hasBlurBg   the has blur bg
      * @param loadName    the load name
      */
-    public BaseObserver(Activity activity, boolean isViewModel, boolean hasDark, String loadName) {
-        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).hasBlurBg(hasDark).hasShadowBg(hasDark).asLoading(loadName);
+    public BaseObserver(Activity activity, boolean isViewModel, boolean hasBlurBg, String loadName) {
+        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).hasBlurBg(hasBlurBg).asLoading(loadName);
     }
 
     /**
@@ -80,12 +80,26 @@ public abstract class BaseObserver<T> implements Observer<T> {
      *
      * @param activity    the activity
      * @param isViewModel the is view model
-     * @param hasDark     the has dark
+     * @param hasBlurBg   the has blur bg
+     * @param hasShadow   the has shadow
+     * @param loadName    the load name
+     */
+    public BaseObserver(Activity activity, boolean isViewModel, boolean hasBlurBg, boolean hasShadow, String loadName) {
+        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).hasBlurBg(hasBlurBg).hasShadowBg(hasShadow).asLoading(loadName);
+    }
+
+    /**
+     * Instantiates a new Base observer.
+     *
+     * @param activity    the activity
+     * @param isViewModel the is view model
+     * @param hasBlurBg   the has blur bg
+     * @param hasShadow   the has shadow
      * @param canCancel   the can cancel
      * @param loadName    the load name
      */
-    public BaseObserver(Activity activity, boolean isViewModel, boolean hasDark, boolean canCancel, String loadName) {
-        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).hasBlurBg(hasDark).hasShadowBg(hasDark).dismissOnBackPressed(canCancel).dismissOnTouchOutside(canCancel).asLoading(loadName);
+    public BaseObserver(Activity activity, boolean isViewModel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, String loadName) {
+        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).hasBlurBg(hasBlurBg).hasShadowBg(hasShadow).dismissOnBackPressed(canCancel).dismissOnTouchOutside(canCancel).asLoading(loadName);
     }
 
     @Override

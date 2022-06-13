@@ -487,7 +487,14 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
                 .timeOut()       //设置超时时间，不设置默认10秒
                 .timeOutUnit()   //设置超时时间单位，不设置默认单位秒
                 .build()
-                .initRetrofit(Api.class,xx.class...); //传入需要创建的接口类
+                .initRetrofit(new Gson(),
+                  new NetUtils.InitCallBack() {
+                    @Override
+                    public void finish(Map<String, Object> apiMap) {
+                        //Presenter初始化
+                          ...
+                    }
+                },Api.class,xx.class...); //传入需要创建的接口类，默认有Gson，可自定义
 ```
 
 ### 9、LocationUtils：调用示例
@@ -1293,17 +1300,4 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseObserver(Activity activity, boolean isViewModel, boolean hasDark, String loadName)
      //指定字符是否View实现且能外部取消带背景模糊和高亮加载框
      new BaseObserver(Activity activity, boolean isViewModel, boolean hasDark, boolean canCancel, String loadName)
-```
-
-### 20、BasePresenter：直接继承
-
-```
-//泛型传入接口
-public class MyPresenter extends BasePresenter<Api>{
-    @Override
-    public String apiName() {
-        return Api.class.getSimpleName();
-    }
-      ...
-}
 ```

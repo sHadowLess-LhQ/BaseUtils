@@ -35,7 +35,7 @@ Step 1. 添加maven仓库地址和配置
      android {
       ...
        buildFeatures {
-         viewBinding = true
+         viewBinding true
           }
      }
      
@@ -1300,4 +1300,33 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseObserver(Activity activity, boolean isViewModel, boolean hasDark, String loadName)
      //指定字符是否View实现且能外部取消带背景模糊和高亮加载框
      new BaseObserver(Activity activity, boolean isViewModel, boolean hasDark, boolean canCancel, String loadName)
+```
+
+### 20、CrashConfig：调用示例
+
+```
+      CrashConfig.Builder
+                .create()
+                //当应用程序处于后台时崩溃，也会启动错误页面
+                .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
+                //当应用程序处于后台崩溃时显示默认系统错误
+                .backgroundMode(CaocConfig.BACKGROUND_MODE_CRASH)
+                //当应用程序处于后台时崩溃，默默地关闭程序
+                .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT)
+                //false表示对崩溃的拦截阻止。用它来禁用customactivityoncrash
+                .enabled(true)
+                //这将隐藏错误活动中的“错误详细信息”按钮，从而隐藏堆栈跟踪,针对框架自带程序崩溃后显示的页面有用
+                .showErrorDetails(true)
+                //是否可以重启页面,针对框架自带程序崩溃后显示的页面有用
+                .showRestartButton(true)
+                //崩溃页面显示的图标
+                .errorDrawable(R.mipmap.ic_launcher)
+                .logErrorOnRestart(true)
+                //错误页面中显示错误详细信息
+                .trackActivities(true)
+                //定义应用程序崩溃之间的最短时间，以确定我们不在崩溃循环中
+                .minTimeBetweenCrashesMs(2000)
+                //重新启动后的页面
+                .restartActivity(LoginActivity.class)
+                .apply();
 ```

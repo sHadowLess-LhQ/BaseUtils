@@ -1,4 +1,4 @@
-# BaseUtils
+#  BaseUtils
 
 #### 软件架构
 
@@ -329,60 +329,62 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
 ### 6、PreferencesUtils：方法说明
 
 ```
+     //初始化
+     PreferencesUtils.getInstance().initPreferences(Context context)
      //同步存入字符串数据
-     PreferencesUtils.putStringNow(Context context, String key, String value)
+     PreferencesUtils.putStringNow(String key, String value)
      //异步存入字符串数据
-     PreferencesUtils.putString(Context context, String key, String value)
+     PreferencesUtils.putString(String key, String value)
      //同步追加字符串集合数据
-     PreferencesUtils.addStringSetNow(Context context, String key, String value)
+     PreferencesUtils.addStringSetNow(String key, String value)
      //异步追加字符串集合数据
-     PreferencesUtils.addStringSet(Context context, String key, String value)
+     PreferencesUtils.addStringSet(String key, String value)
      //同步删除指定字符串集合数据
-     PreferencesUtils.removeStringSetNow(Context context, String key, String value)
+     PreferencesUtils.removeStringSetNow(String key, String value)
      //异步删除指定字符串集合数据
-     PreferencesUtils.removeStringSet(Context context, String key, String value)
+     PreferencesUtils.removeStringSet(String key, String value)
      //同步存入整型数据
-     PreferencesUtils.putIntNow(Context context, String key, int value)
+     PreferencesUtils.putIntNow(String key, int value)
      //异步存入整型数据
-     PreferencesUtils.putInt(Context context, String key, int value)
+     PreferencesUtils.putInt(String key, int value)
      //同步存入长整型数据
-     PreferencesUtils.putLongNow(Context context, String key, long value)
+     PreferencesUtils.putLongNow(String key, long value)
      //异步存入长整型数据
-     PreferencesUtils.putLong(Context context, String key, long value)
+     PreferencesUtils.putLong(String key, long value)
      //同步存入单精度浮点数据
-     PreferencesUtils.putFloatNow(Context context, String key, float value)
+     PreferencesUtils.putFloatNow(String key, float value)
      //异步存入单精度浮点数据
-     PreferencesUtils.putFloat(Context context, String key, float value)
+     PreferencesUtils.putFloat(String key, float value)
      //同步存入布尔类型数据
-     PreferencesUtils.putBooleanNow(Context context, String key, boolean value)
+     PreferencesUtils.putBooleanNow(String key, boolean value)
      //异步存入布尔类型数据
-     PreferencesUtils.putBoolean(Context context, String key, boolean value)
+     PreferencesUtils.putBoolean(String key, boolean value)
      //获取字符串数据
-     PreferencesUtils.getString(Context context, String key)
-     PreferencesUtils.getString(Context context, String key, String defaultValue)
+     PreferencesUtils.getString(String key)
+     PreferencesUtils.getString(String key, String defaultValue)
      //获取字符串集合
-     PreferencesUtils.getStringSet(Context context, String key)
-     PreferencesUtils.getStringSet(Context context, String key, Set<String> defaultValue)
+     PreferencesUtils.getStringSet(String key)
+     PreferencesUtils.getStringSet(String key, Set<String> defaultValue)
      //获取整型数据
-     PreferencesUtils.getInt(Context context, String key)
-     PreferencesUtils.getInt(Context context, String key, int defaultValue)
+     PreferencesUtils.getInt(String key)
+     PreferencesUtils.getInt(String key, int defaultValue)
      //获取长整型数据
-     PreferencesUtils.getLong(Context context, String key)
-     PreferencesUtils.getLong(Context context, String key, long defaultValue)
+     PreferencesUtils.getLong(String key)
+     PreferencesUtils.getLong(String key, long defaultValue)
      //获取单精度浮点数据
-     PreferencesUtils.getFloat(Context context, String key)
-     PreferencesUtils.getFloat(Context context, String key, float defaultValue)
+     PreferencesUtils.getFloat(String key)
+     PreferencesUtils.getFloat(String key, float defaultValue)
      //获取布尔类型数据
-     PreferencesUtils.getBoolean(Context context, String key)
-     PreferencesUtils.getBoolean(Context context, String key, boolean defaultValue)
+     PreferencesUtils.getBoolean(CString key)
+     PreferencesUtils.getBoolean(String key, boolean defaultValue)
      //同步清空SP
-     PreferencesUtils.clearNow(Context context)
+     PreferencesUtils.clearNow()
      //异步清空SP
-     PreferencesUtils.clear(Context context)
+     PreferencesUtils.clear()
      //同步删除指定数据
-     PreferencesUtils.removeNow(Context context, String key)
+     PreferencesUtils.removeNow(String key)
      //异步删除指定数据
-     PreferencesUtils.remove(Context context, String key)
+     PreferencesUtils.remove(String key)
 ```
 
 ### 7、RxUtils：调用示例

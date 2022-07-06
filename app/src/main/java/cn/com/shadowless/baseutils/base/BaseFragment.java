@@ -101,7 +101,6 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
         }
         mDisposable = new CompositeDisposable();
         bind = setBindView();
-        temp = null;
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
             disposable = new RxPermissions(this).requestEachCombined(permissions)

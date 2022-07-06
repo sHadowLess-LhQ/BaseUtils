@@ -95,7 +95,6 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
         }
         mDisposable = new CompositeDisposable();
         bind = setBindView();
-        temp = null;
         setContentView(bind.getRoot());
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
@@ -222,7 +221,7 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
      * @param layout   the 布局
      */
     protected void showFragment(Fragment fragment, int layout) {
-        show(fragment, layout, false, null);
+        show(fragment, layout, null);
     }
 
     /**
@@ -233,7 +232,7 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
      * @param animation the 动画
      */
     protected void showFragment(Fragment fragment, int layout, int... animation) {
-        show(fragment, layout, true, animation);
+        show(fragment, layout, animation);
     }
 
     /**
@@ -243,7 +242,7 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
      * @param layout   the 布局
      */
     protected void replaceFragment(Fragment fragment, int layout) {
-        replace(fragment, layout, false, null);
+        replace(fragment, layout, null);
     }
 
     /**
@@ -254,7 +253,7 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
      * @param animation the 动画
      */
     protected void replaceFragment(Fragment fragment, int layout, int... animation) {
-        replace(fragment, layout, true, animation);
+        replace(fragment, layout, animation);
     }
 
     /**
@@ -273,19 +272,16 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
      *
      * @param fragment  the 碎片
      * @param layout    the 布局
-     * @param anim      the 是否动画
      * @param animation the 动画
      */
-    private void show(Fragment fragment, int layout, boolean anim, int... animation) {
+    private void show(Fragment fragment, int layout, int... animation) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (currentFragment == null) {
-            currentFragment = fragment;
-        } else if (currentFragment != fragment) {
+        if (currentFragment != null) {
             transaction.hide(currentFragment);
-            currentFragment = fragment;
         }
+        currentFragment = fragment;
         if (!fragment.isAdded()) {
-            if (anim) {
+            if (animation != null && animation.length != 0) {
                 transaction.add(layout, fragment).show(fragment).setCustomAnimations(
                         animation[0],
                         animation[1],
@@ -296,7 +292,7 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
                 transaction.add(layout, fragment).show(fragment).commit();
             }
         } else {
-            if (anim) {
+            if (animation != null && animation.length != 0) {
                 transaction.show(fragment).setCustomAnimations(
                         animation[0],
                         animation[1],
@@ -314,12 +310,11 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
      *
      * @param fragment  the 碎片
      * @param layout    the 布局
-     * @param anim      the 是否动画
      * @param animation the 动画
      */
-    private void replace(Fragment fragment, int layout, boolean anim, int... animation) {
+    private void replace(Fragment fragment, int layout, int... animation) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (anim) {
+        if (animation != null && animation.length != 0) {
             transaction
                     .setCustomAnimations(
                             animation[0],

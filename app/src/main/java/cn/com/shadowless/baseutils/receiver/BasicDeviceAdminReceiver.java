@@ -15,8 +15,6 @@ import androidx.annotation.NonNull;
  */
 public class BasicDeviceAdminReceiver extends DeviceAdminReceiver {
 
-    private final String TAG = BasicDeviceAdminReceiver.class.getSimpleName();
-
     /**
      * Gets component name.
      *

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.impl.LoadingPopupView;
 
+import cn.com.shadowless.baseutils.utils.NetUtils;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -122,9 +123,9 @@ public abstract class BaseObserver<T> implements Observer<T> {
     @Override
     public void onError(@NonNull Throwable e) {
         if (loadingPopupView != null) {
-            loadingPopupView.dismissWith(() -> onFail(e));
+            loadingPopupView.dismissWith(() -> onFail(NetUtils.getExceptionMessage(e), e));
         } else {
-            onFail(e);
+            onFail(NetUtils.getExceptionMessage(e), e);
         }
     }
 
@@ -143,7 +144,8 @@ public abstract class BaseObserver<T> implements Observer<T> {
     /**
      * On fail.
      *
-     * @param e the e
+     * @param error the error
+     * @param e     the e
      */
-    public abstract void onFail(@NonNull Throwable e);
+    public abstract void onFail(@NonNull String error, Throwable e);
 }

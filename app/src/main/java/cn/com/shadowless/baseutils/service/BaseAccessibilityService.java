@@ -195,6 +195,24 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
                 //触摸手势检测结束
                 gestureDetectedEndListener(event);
                 break;
+            case AccessibilityEvent.TYPE_ANNOUNCEMENT:
+                gestureAnnouncementListener(event);
+                break;
+            case AccessibilityEvent.TYPE_ASSIST_READING_CONTEXT:
+                gestureAssistReadingContextListener(event);
+                break;
+            case AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED:
+                gestureAccessibilityFocusedListener(event);
+                break;
+            case AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED:
+                gestureAccessibilityFocusClearedListener(event);
+                break;
+            case AccessibilityEvent.TYPE_VIEW_CONTEXT_CLICKED:
+                gestureContextClickedListener(event);
+                break;
+            case AccessibilityEvent.TYPE_VIEW_TEXT_TRAVERSED_AT_MOVEMENT_GRANULARITY:
+                gestureTextTraversedAtMovementGranularityListener(event);
+                break;
             default:
                 break;
         }
@@ -215,6 +233,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
     @Override
     public boolean onUnbind(Intent intent) {
         mService = null;
+        onDisConnected();
         return super.onUnbind(intent);
     }
 
@@ -222,6 +241,11 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 服务启动
      */
     protected abstract void onConnected();
+
+    /**
+     * 服务解绑
+     */
+    protected abstract void onDisConnected();
 
     /**
      * 界面点击
@@ -357,6 +381,48 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
     protected abstract void gestureDetectedEndListener(AccessibilityEvent event);
 
     /**
+     * 公布公告
+     *
+     * @param event the event
+     */
+    protected abstract void gestureAnnouncementListener(AccessibilityEvent event);
+
+    /**
+     * 屏幕阅读
+     *
+     * @param event the event
+     */
+    protected abstract void gestureAssistReadingContextListener(AccessibilityEvent event);
+
+    /**
+     * 获取焦点
+     *
+     * @param event the event
+     */
+    protected abstract void gestureAccessibilityFocusedListener(AccessibilityEvent event);
+
+    /**
+     * 焦点清除
+     *
+     * @param event the event
+     */
+    protected abstract void gestureAccessibilityFocusClearedListener(AccessibilityEvent event);
+
+    /**
+     * 上下文点击
+     *
+     * @param event the event
+     */
+    protected abstract void gestureContextClickedListener(AccessibilityEvent event);
+
+    /**
+     * 移动粒度遍历文本
+     *
+     * @param event the event
+     */
+    protected abstract void gestureTextTraversedAtMovementGranularityListener(AccessibilityEvent event);
+
+    /**
      * 获取服务对象实例
      *
      * @return the service
@@ -378,7 +444,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
     /**
      * 延迟查找指定文本不可点击可访问节点信息
      *
-     * @param text the 文本
+     * @param text        the 文本
+     * @param milliSecond the milli second
      * @return the 可访问节点信息
      */
     public AccessibilityNodeInfo findViewByTextUnClickable(String text, int milliSecond) {
@@ -403,7 +470,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
     /**
      * 延迟查找指定文本可点击可访问节点信息
      *
-     * @param text the 文本
+     * @param text        the 文本
+     * @param milliSecond the milli second
      * @return the 可访问节点信息
      */
     public AccessibilityNodeInfo findViewByTextClickable(String text, int milliSecond) {
@@ -450,7 +518,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
     /**
      * 延迟查找指定id不可点击的可访问节点信息
      *
-     * @param id the 视图id
+     * @param id          the 视图id
+     * @param milliSecond the milli second
      * @return the 可访问节点信息
      */
     public AccessibilityNodeInfo findViewByIdUnClickable(String id, int milliSecond) {
@@ -475,7 +544,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
     /**
      * 延迟查找指定id可点击的可访问节点信息
      *
-     * @param id the 视图id
+     * @param id          the 视图id
+     * @param milliSecond the milli second
      * @return the 可访问节点信息
      */
     public AccessibilityNodeInfo findViewByIdClickable(String id, int milliSecond) {
@@ -514,6 +584,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 单击视图
      *
      * @param nodeInfo the 可访问节点信息
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performViewClick(AccessibilityNodeInfo nodeInfo) {
         while (nodeInfo != null) {
@@ -534,6 +605,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param nodeInfo    the node info
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performViewClick(AccessibilityNodeInfo nodeInfo, int milliSecond) {
         Message msg = Message.obtain(mHandler);
@@ -547,6 +619,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 长按视图
      *
      * @param nodeInfo the 可访问节点信息
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performViewLongClick(AccessibilityNodeInfo nodeInfo) {
         while (nodeInfo != null) {
@@ -567,6 +640,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param nodeInfo    the node info
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performViewLongClick(AccessibilityNodeInfo nodeInfo, int milliSecond) {
         Message msg = Message.obtain(mHandler);
@@ -578,6 +652,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
 
     /**
      * 单击返回键
+     *
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performBackClick() {
         performGlobalAction(GLOBAL_ACTION_BACK);
@@ -588,6 +664,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 延迟单击返回键
      *
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performBackClick(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(1, milliSecond);
@@ -596,6 +673,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
 
     /**
      * 分屏
+     *
+     * @return the base accessibility service
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public BaseAccessibilityService performSplitScreen() {
@@ -607,6 +686,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 延迟分屏
      *
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performSplitScreen(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(2, milliSecond);
@@ -615,6 +695,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
 
     /**
      * 截屏
+     *
+     * @return the base accessibility service
      */
     @RequiresApi(api = Build.VERSION_CODES.P)
     public BaseAccessibilityService performTakeScreenShot() {
@@ -626,6 +708,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 延迟截屏
      *
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performTakeScreenShot(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(3, milliSecond);
@@ -634,6 +717,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
 
     /**
      * 任务视图
+     *
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performRecent() {
         performGlobalAction(GLOBAL_ACTION_RECENTS);
@@ -644,6 +729,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 延迟任务视图
      *
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performRecent(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(4, milliSecond);
@@ -652,6 +738,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
 
     /**
      * 下拉二级状态栏
+     *
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performChildStatueBar() {
         performGlobalAction(GLOBAL_ACTION_QUICK_SETTINGS);
@@ -662,6 +750,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 延迟下拉二级状态栏
      *
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performChildStatueBar(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(5, milliSecond);
@@ -670,6 +759,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
 
     /**
      * 电源管理框
+     *
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performPowerDialog() {
         performGlobalAction(GLOBAL_ACTION_POWER_DIALOG);
@@ -680,6 +771,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 延迟打开电源管理框
      *
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performPowerDialog(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(6, milliSecond);
@@ -688,6 +780,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
 
     /**
      * 下拉状态栏
+     *
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performStatueBar() {
         performGlobalAction(GLOBAL_ACTION_NOTIFICATIONS);
@@ -698,6 +792,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 延迟下拉状态栏
      *
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performStatueBar(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(7, milliSecond);
@@ -706,6 +801,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
 
     /**
      * 单击home键
+     *
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performBackHomeClick() {
         performGlobalAction(GLOBAL_ACTION_HOME);
@@ -716,6 +813,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 延迟单击home键
      *
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performBackHomeClick(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(8, milliSecond);
@@ -724,6 +822,8 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
 
     /**
      * 锁屏
+     *
+     * @return the base accessibility service
      */
     @RequiresApi(api = Build.VERSION_CODES.P)
     public BaseAccessibilityService performLockScreen() {
@@ -735,6 +835,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 延迟锁屏
      *
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService performLockScreen(int milliSecond) {
         mHandler.sendEmptyMessageDelayed(9, milliSecond);
@@ -745,6 +846,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 单击指定文本视图
      *
      * @param text the text
+     * @return the base accessibility service
      */
     public BaseAccessibilityService clickViewByText(String text) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
@@ -776,6 +878,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param text        the text
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService clickViewByText(String text, int milliSecond) {
         Message msg = Message.obtain(mHandler);
@@ -789,6 +892,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 长按指定文本视图
      *
      * @param text the text
+     * @return the base accessibility service
      */
     public BaseAccessibilityService longClickViewByText(String text) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
@@ -820,6 +924,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param text        the text
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService longClickViewByText(String text, int milliSecond) {
         Message msg = Message.obtain(mHandler);
@@ -833,6 +938,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 单击指定id视图
      *
      * @param id the id
+     * @return the base accessibility service
      */
     public BaseAccessibilityService clickViewById(String id) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
@@ -864,6 +970,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param id          the id
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService clickViewById(String id, int milliSecond) {
         Message msg = Message.obtain(mHandler);
@@ -877,6 +984,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * 长按指定id视图
      *
      * @param id the id
+     * @return the base accessibility service
      */
     public BaseAccessibilityService longClickViewById(String id) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
@@ -909,6 +1017,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param id          the id
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService longClickViewById(String id, int milliSecond) {
         Message msg = Message.obtain(mHandler);
@@ -923,6 +1032,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param view the view
      * @param text the text
+     * @return the base accessibility service
      */
     public BaseAccessibilityService inputTextToEtView(String view, String text) {
         Bundle arguments = new Bundle();
@@ -937,6 +1047,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param view        the view
      * @param text        the text
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService inputTextToEtView(String view, String text, int milliSecond) {
         Message msg = Message.obtain(mHandler);
@@ -951,6 +1062,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param id   the id
      * @param text the text
+     * @return the base accessibility service
      */
     public BaseAccessibilityService inputIdToEtView(String id, String text) {
         Bundle arguments = new Bundle();
@@ -965,6 +1077,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param id          the id
      * @param text        the text
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService inputIdToEtView(String id, String text, int milliSecond) {
         Message msg = Message.obtain(mHandler);
@@ -979,6 +1092,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param x the x
      * @param y the y
+     * @return the base accessibility service
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public BaseAccessibilityService dispatchGestureClick(int x, int y) {
@@ -996,6 +1110,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param x           the x
      * @param y           the y
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService dispatchGestureClick(int x, int y, int milliSecond) {
         Message msg = Message.obtain(mHandler);
@@ -1008,8 +1123,10 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
     /**
      * 长按指定坐标
      *
-     * @param x the x
-     * @param y the y
+     * @param x     the x
+     * @param y     the y
+     * @param delay the delay
+     * @return the base accessibility service
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public BaseAccessibilityService dispatchGestureLongClick(int x, int y, int delay) {
@@ -1028,7 +1145,9 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      *
      * @param x           the x
      * @param y           the y
+     * @param delay       the delay
      * @param milliSecond the milli second
+     * @return the base accessibility service
      */
     public BaseAccessibilityService dispatchGestureLongClick(int x, int y, int delay, int milliSecond) {
         Message msg = Message.obtain(mHandler);
@@ -1045,6 +1164,7 @@ public abstract class BaseAccessibilityService extends AccessibilityService {
      * @param y             the y
      * @param swipeDuration the swipe duration
      * @param stepDuration  the step duration
+     * @return the base accessibility service
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public BaseAccessibilityService continueSwipe(List<Integer> x, List<Integer> y, int swipeDuration, int stepDuration) {

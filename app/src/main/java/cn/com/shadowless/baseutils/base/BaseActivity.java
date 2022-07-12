@@ -71,16 +71,6 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
         void success(Map<K, V> map);
     }
 
-    /**
-     * 订阅
-     */
-    private Disposable disposable = null;
-    /**
-     * 订阅
-     */
-    private Disposable temp = null;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         int customTheme = theme();
@@ -98,7 +88,7 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
         setContentView(bind.getRoot());
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
-            disposable = new RxPermissions(this).requestEachCombined(permissions)
+            mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
                     .subscribe(permission -> {
                                 if (permission.granted) {
                                     Observable.create(this).compose(RxUtils.dealThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
@@ -108,7 +98,7 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
                                     showToast(permission.name);
                                 }
                             }
-                    );
+                    ));
         } else {
             Observable.create(this).compose(RxUtils.dealThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
         }
@@ -119,9 +109,6 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
         if (null != mDisposable && mDisposable.size() != 0 && !mDisposable.isDisposed()) {
             mDisposable.clear();
             mDisposable = null;
-        }
-        if (null != disposable && !disposable.isDisposed()) {
-            disposable.dispose();
         }
         if (null != bind) {
             bind = null;
@@ -141,7 +128,7 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {
-        temp = d;
+        mDisposable.add(d);
     }
 
     @Override
@@ -156,7 +143,6 @@ public abstract class BaseActivity<VB extends ViewBinding, K, V> extends AppComp
 
     @Override
     public void onComplete() {
-        temp.dispose();
         Log.e(TAG, "onEnd: " + "Activity加载成功");
     }
 

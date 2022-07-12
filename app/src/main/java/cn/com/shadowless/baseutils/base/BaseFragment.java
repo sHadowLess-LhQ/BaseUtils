@@ -57,14 +57,6 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
      */
     protected Activity mActivity = null;
     /**
-     * 订阅
-     */
-    private Disposable disposable = null;
-    /**
-     * 订阅
-     */
-    private Disposable temp = null;
-    /**
      * 统一订阅管理
      */
     protected CompositeDisposable mDisposable = null;
@@ -103,7 +95,7 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
         bind = setBindView();
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
-            disposable = new RxPermissions(this).requestEachCombined(permissions)
+            mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
                     .subscribe(permission -> {
                                 if (permission.granted) {
                                     Observable.create(this).compose(RxUtils.dealThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
@@ -113,7 +105,7 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
                                     showToast(permission.name);
                                 }
                             }
-                    );
+                    ));
         } else {
             Observable.create(this).compose(RxUtils.dealThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
         }
@@ -122,9 +114,6 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
 
     @Override
     public void onDestroyView() {
-        if (null != disposable && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
         if (null != mDisposable && mDisposable.size() != 0 && !mDisposable.isDisposed()) {
             mDisposable.clear();
             mDisposable = null;
@@ -153,7 +142,7 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {
-        temp = d;
+        mDisposable.add(d);
     }
 
     @Override
@@ -168,7 +157,6 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
 
     @Override
     public void onComplete() {
-        temp.dispose();
         Log.e(TAG, "onEnd: " + "Fragment加载成功");
     }
 

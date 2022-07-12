@@ -112,6 +112,21 @@ public abstract class BaseObserver<T> implements Observer<T> {
      * @param canOutSideCancel the can out side cancel
      * @param hasBlurBg        the has blur bg
      * @param hasShadow        the has shadow
+     * @param loadName         the load name
+     */
+    public BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName) {
+        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).hasBlurBg(hasBlurBg).hasShadowBg(hasShadow).asLoading(loadName);
+    }
+
+    /**
+     * Instantiates a new Base observer.
+     *
+     * @param activity         the activity
+     * @param isViewModel      the is view model
+     * @param canBackCancel    the can back cancel
+     * @param canOutSideCancel the can out side cancel
+     * @param hasBlurBg        the has blur bg
+     * @param hasShadow        the has shadow
      * @param canCancel        the can cancel
      * @param loadName         the load name
      */

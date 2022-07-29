@@ -32,7 +32,7 @@ import io.reactivex.disposables.Disposable;
  * @param <T>  the type parameter
  * @author sHadowLess
  */
-public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatActivity implements ObservableOnSubscribe<T>, Observer<T> {
+public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatActivity implements ObservableOnSubscribe<T[]>, Observer<T[]> {
 
     /**
      * The Tag.
@@ -66,7 +66,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
          *
          * @param t the t
          */
-        void success(T t);
+        void success(T... t);
     }
 
     @Override
@@ -115,7 +115,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     @Override
-    public void subscribe(@NonNull ObservableEmitter<T> emitter) throws Exception {
+    public void subscribe(@NonNull ObservableEmitter<T[]> emitter) throws Exception {
         initListener();
         initData(t -> {
             emitter.onNext(t);
@@ -129,7 +129,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     @Override
-    public void onNext(@NonNull T mData) {
+    public void onNext(@NonNull T... mData) {
         initView(mData);
     }
 
@@ -179,7 +179,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
      *
      * @param data the 数据表
      */
-    protected abstract void initView(@NonNull T data);
+    protected abstract void initView(@NonNull T... data);
 
     /**
      * 初始化监听

@@ -37,7 +37,7 @@ import io.reactivex.disposables.Disposable;
  * @param <T>  the type parameter
  * @author sHadowLess
  */
-public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment implements ObservableOnSubscribe<T>, Observer<T> {
+public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment implements ObservableOnSubscribe<T[]>, Observer<T[]> {
 
     /**
      * The Tag.
@@ -71,7 +71,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
          *
          * @param t the t
          */
-        void success(T t);
+        void success(T... t);
     }
 
     @Override
@@ -128,7 +128,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     }
 
     @Override
-    public void subscribe(@NonNull ObservableEmitter<T> emitter) throws Exception {
+    public void subscribe(@NonNull ObservableEmitter<T[]> emitter) throws Exception {
         initListener();
         initData(t -> {
             emitter.onNext(t);
@@ -142,7 +142,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     }
 
     @Override
-    public void onNext(@NonNull T mData) {
+    public void onNext(@NonNull T... mData) {
         initView(mData);
     }
 
@@ -194,7 +194,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      *
      * @param t the t
      */
-    protected abstract void initView(@NonNull T t);
+    protected abstract void initView(@NonNull T... t);
 
     /**
      * 初始化监听

@@ -7,9 +7,9 @@ package cn.com.shadowless.baseutils.log;
  */
 public final class LogUtils {
 
-    private static Logger printer = new Logger();
-    private static LogConfigImpl logConfig = LogConfigImpl.getInstance();
-    private static Log2FileConfigImpl log2FileConfig = Log2FileConfigImpl.getInstance();
+    private static final Logger printer = new Logger();
+    private static final LogConfigImpl logConfig = LogConfigImpl.getInstance();
+    private static final Log2FileConfigImpl log2FileConfig = Log2FileConfigImpl.getInstance();
 
     /**
      * 选项配置

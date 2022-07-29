@@ -34,11 +34,10 @@ import io.reactivex.disposables.Disposable;
  * 基类Fragment
  *
  * @param <VB> the type 视图
- * @param <K>  the type Key值类型
- * @param <V>  the type Value值类型
+ * @param <T>  the type parameter
  * @author sHadowLess
  */
-public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragment implements ObservableOnSubscribe<Map<K, V>>, Observer<Map<K, V>> {
+public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment implements ObservableOnSubscribe<T>, Observer<T> {
 
     /**
      * The Tag.
@@ -61,20 +60,18 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
      */
     protected CompositeDisposable mDisposable = null;
 
-
     /**
      * 初始化数据回调接口
      *
-     * @param <K> the type parameter
-     * @param <V> the type parameter
+     * @param <T> the type parameter
      */
-    protected interface InitDataCallBack<K, V> {
+    protected interface InitDataCallBack<T> {
         /**
          * 成功
          *
-         * @param map the map
+         * @param t the t
          */
-        void success(Map<K, V> map);
+        void success(T t);
     }
 
     @Override
@@ -131,11 +128,10 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
     }
 
     @Override
-    public void subscribe(@NonNull ObservableEmitter<Map<K, V>> emitter) throws Exception {
-        Map<K, V> mData = new HashMap<>();
+    public void subscribe(@NonNull ObservableEmitter<T> emitter) throws Exception {
         initListener();
-        initData(mData, map -> {
-            emitter.onNext(map);
+        initData(t -> {
+            emitter.onNext(t);
             emitter.onComplete();
         });
     }
@@ -146,7 +142,7 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
     }
 
     @Override
-    public void onNext(@NonNull Map<K, V> mData) {
+    public void onNext(@NonNull T mData) {
         initView(mData);
     }
 
@@ -189,17 +185,16 @@ public abstract class BaseFragment<VB extends ViewBinding, K, V> extends Fragmen
     /**
      * 初始化数据
      *
-     * @param mData            the 数据表
      * @param initDataCallBack the 数据回调
      */
-    protected abstract void initData(@NonNull Map<K, V> mData, @NonNull InitDataCallBack<K, V> initDataCallBack);
+    protected abstract void initData(@NonNull InitDataCallBack<T> initDataCallBack);
 
     /**
      * 初始化视图
      *
-     * @param map the 数据表
+     * @param t the t
      */
-    protected abstract void initView(@NonNull Map<K, V> map);
+    protected abstract void initView(@NonNull T t);
 
     /**
      * 初始化监听

@@ -64,7 +64,6 @@ public class IpUtils {
             } else {
                 return getIp();
             }
-            return getIp();
         } catch (SocketException e) {
             LogUtils.tag(TAG).e(e);
         }
@@ -144,7 +143,7 @@ public class IpUtils {
                 }
             }
         } catch (SocketException e) {
-            e.printStackTrace();
+            LogUtils.tag(TAG).e(e);
         }
         return "unknown";
     }

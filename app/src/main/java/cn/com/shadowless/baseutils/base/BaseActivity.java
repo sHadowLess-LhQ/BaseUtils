@@ -62,11 +62,16 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
      */
     protected interface InitDataCallBack<T> {
         /**
-         * 成功
+         * 成功且带数据
          *
          * @param t the t
          */
-        void success(T... t);
+        void successWithData(@NonNull T... t);
+
+        /**
+         * 成功不带数据
+         */
+        void successWithOutData();
     }
 
     @Override
@@ -84,6 +89,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
         mDisposable = new CompositeDisposable();
         bind = setBindView();
         setContentView(bind.getRoot());
+        initListener();
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
             mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
@@ -116,10 +122,17 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
 
     @Override
     public void subscribe(@NonNull ObservableEmitter<T[]> emitter) throws Exception {
-        initListener();
-        initData(t -> {
-            emitter.onNext(t);
-            emitter.onComplete();
+        initData(new InitDataCallBack<T>() {
+            @Override
+            public void successWithData(@NonNull T... t) {
+                emitter.onNext(t);
+                emitter.onComplete();
+            }
+
+            @Override
+            public void successWithOutData() {
+                emitter.onComplete();
+            }
         });
     }
 
@@ -135,11 +148,13 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
 
     @Override
     public void onError(@NonNull Throwable e) {
+        initView();
         Log.e(TAG, "onFail: " + e);
     }
 
     @Override
     public void onComplete() {
+        initView();
         Log.e(TAG, "onEnd: " + "Activity加载成功");
     }
 
@@ -179,7 +194,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
      *
      * @param data the 数据表
      */
-    protected abstract void initView(@NonNull T... data);
+    protected abstract void initView(@Nullable T... data);
 
     /**
      * 初始化监听

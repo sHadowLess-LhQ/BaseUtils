@@ -67,11 +67,16 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      */
     protected interface InitDataCallBack<T> {
         /**
-         * 成功
+         * 成功且带数据
          *
          * @param t the t
          */
-        void success(T... t);
+        void successWithData(@NonNull T... t);
+
+        /**
+         * 成功不带数据
+         */
+        void successWithOutData();
     }
 
     @Override
@@ -106,6 +111,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
         } else {
             Observable.create(this).compose(RxUtils.dealThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
         }
+        initListener();
         return bind.getRoot();
     }
 
@@ -129,10 +135,17 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
 
     @Override
     public void subscribe(@NonNull ObservableEmitter<T[]> emitter) throws Exception {
-        initListener();
-        initData(t -> {
-            emitter.onNext(t);
-            emitter.onComplete();
+        initData(new InitDataCallBack<T>() {
+            @Override
+            public void successWithData(@NonNull T... t) {
+                emitter.onNext(t);
+                emitter.onComplete();
+            }
+
+            @Override
+            public void successWithOutData() {
+                emitter.onComplete();
+            }
         });
     }
 
@@ -148,11 +161,13 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
 
     @Override
     public void onError(@NonNull Throwable e) {
+        initView();
         Log.e(TAG, "onFail: " + e);
     }
 
     @Override
     public void onComplete() {
+        initView();
         Log.e(TAG, "onEnd: " + "Fragment加载成功");
     }
 
@@ -194,7 +209,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      *
      * @param t the t
      */
-    protected abstract void initView(@NonNull T... t);
+    protected abstract void initView(@Nullable T... t);
 
     /**
      * 初始化监听

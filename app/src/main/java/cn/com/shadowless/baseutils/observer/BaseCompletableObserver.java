@@ -17,7 +17,7 @@ import io.reactivex.disposables.Disposable;
  * @param <T> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseCompletableObserver<T> implements CompletableObserver {
+public abstract class BaseCompletableObserver implements CompletableObserver {
 
     /**
      * The Disposable.

@@ -32,7 +32,7 @@ import io.reactivex.disposables.Disposable;
  * @param <T>  the type parameter
  * @author sHadowLess
  */
-public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatActivity implements ObservableOnSubscribe<T[]>, Observer<T[]> {
+public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatActivity implements ObservableOnSubscribe<T>, Observer<T> {
 
     /**
      * The Tag.
@@ -66,7 +66,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
          *
          * @param t the t
          */
-        void successWithData(@NonNull T... t);
+        void successWithData(@NonNull T t);
 
         /**
          * 成功不带数据
@@ -121,10 +121,10 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     @Override
-    public void subscribe(@NonNull ObservableEmitter<T[]> emitter) throws Exception {
+    public void subscribe(@NonNull ObservableEmitter<T> emitter) throws Exception {
         initData(new InitDataCallBack<T>() {
             @Override
-            public void successWithData(@NonNull T... t) {
+            public void successWithData(@NonNull T t) {
                 emitter.onNext(t);
                 emitter.onComplete();
             }
@@ -142,19 +142,19 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     @Override
-    public void onNext(@NonNull T... mData) {
+    public void onNext(@NonNull T mData) {
         initView(mData);
     }
 
     @Override
     public void onError(@NonNull Throwable e) {
-        initView();
+        initView(null);
         Log.e(TAG, "onFail: " + e);
     }
 
     @Override
     public void onComplete() {
-        initView();
+        initView(null);
         Log.e(TAG, "onEnd: " + "Activity加载成功");
     }
 
@@ -194,7 +194,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
      *
      * @param data the 数据表
      */
-    protected abstract void initView(@Nullable T... data);
+    protected abstract void initView(@Nullable T data);
 
     /**
      * 初始化监听

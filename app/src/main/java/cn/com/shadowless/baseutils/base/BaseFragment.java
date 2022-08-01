@@ -37,7 +37,7 @@ import io.reactivex.disposables.Disposable;
  * @param <T>  the type parameter
  * @author sHadowLess
  */
-public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment implements ObservableOnSubscribe<T[]>, Observer<T[]> {
+public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment implements ObservableOnSubscribe<T>, Observer<T> {
 
     /**
      * The Tag.
@@ -71,7 +71,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
          *
          * @param t the t
          */
-        void successWithData(@NonNull T... t);
+        void successWithData(@NonNull T t);
 
         /**
          * 成功不带数据
@@ -134,10 +134,10 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     }
 
     @Override
-    public void subscribe(@NonNull ObservableEmitter<T[]> emitter) throws Exception {
+    public void subscribe(@NonNull ObservableEmitter<T> emitter) throws Exception {
         initData(new InitDataCallBack<T>() {
             @Override
-            public void successWithData(@NonNull T... t) {
+            public void successWithData(@NonNull T t) {
                 emitter.onNext(t);
                 emitter.onComplete();
             }
@@ -155,19 +155,19 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     }
 
     @Override
-    public void onNext(@NonNull T... mData) {
+    public void onNext(@NonNull T mData) {
         initView(mData);
     }
 
     @Override
     public void onError(@NonNull Throwable e) {
-        initView();
+        initView(null);
         Log.e(TAG, "onFail: " + e);
     }
 
     @Override
     public void onComplete() {
-        initView();
+        initView(null);
         Log.e(TAG, "onEnd: " + "Fragment加载成功");
     }
 
@@ -209,7 +209,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      *
      * @param t the t
      */
-    protected abstract void initView(@Nullable T... t);
+    protected abstract void initView(@Nullable T t);
 
     /**
      * 初始化监听

@@ -51,6 +51,8 @@ Step 1. 添加maven仓库地址和配置
 
 Step 2. 添加依赖
 
+[![](https://jitpack.io/v/com.gitee.shadowless_lhq/base-utils.svg)](https://jitpack.io/#com.gitee.shadowless_lhq/base-utils)
+
 a、克隆引入
 
 ```
@@ -129,8 +131,6 @@ c、混淆规则
 -keep class android.support.**{*;}
 ```
 
-[![](https://jitpack.io/v/com.gitee.shadowless_lhq/base-utils.svg)](https://jitpack.io/#com.gitee.shadowless_lhq/base-utils)
-
 #### 使用说明
 
 ### 1、BaseActivity：直接继承
@@ -139,7 +139,7 @@ c、混淆规则
 //创建xml后，点击编译，填入需要绑定的视图和传递数据类型
 //填入传递数据表数据类型
 //新增CompositeDisposable，可统一管理Dispose
-public class MainActivity extends BaseActivity<ActivityMainBinding,String,String> {
+public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
 
     @Nullable
     @Override
@@ -156,7 +156,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String,String
     }
 
     @Override
-    protected void initData(@NonNull Map<String, String> mData, @NonNull InitDataCallBack<String, String> initDataCallBack) {
+    protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
        【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
@@ -165,8 +165,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String,String
        }else{
         //横屏
        }
-       mData.put("data","成功");
-       initDataCallBack.success(mData);
+       //若有数据给视图绑定，使用successWithData
+       //若无数据给视图绑定，使用successWithOutData
+       initDataCallBack.successWithData("1");
+       initDataCallBack.使用successWithOutData();
     }
     
     @Override
@@ -176,7 +178,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String,String
     }
 
     @Override
-    protected void initView(@NonNull Map<String, String> data) {
+    protected void initView(@Nullable String data) {
        //初始化界面控件
        getBindView().test.setText(map.get("data"));
     }
@@ -193,7 +195,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String,String
 可根据实际使用二次封装
 
 ```
-public abstract class PrinterBaseActivity<VB extends ViewBinding,K,V> extends BaseActivity<VB,K,V> {
+public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends BaseActivity<VB, T> {
     ...
 }
 ```
@@ -204,7 +206,7 @@ public abstract class PrinterBaseActivity<VB extends ViewBinding,K,V> extends Ba
 //创建xml后，点击编译，填入需要绑定的视图
 //填入传递数据表数据类型
 //新增CompositeDisposable，可统一管理Dispose
-public class MainFragment extends BaseFragment<FragmentMainBinding,String,String> {
+public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
     
     @Nullable
     @Override
@@ -221,7 +223,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String,String
     }
 
     @Override
-    protected void initData(@NonNull Map<String, String> mData, @NonNull InitDataCallBack<String, String> initDataCallBack) {
+    protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
        【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
@@ -232,8 +234,10 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String,String
        }else{
         //横屏
        }
-       mData.put("data","成功");
-       initDataCallBack.success(mData);
+       //若有数据给视图绑定，使用successWithData
+       //若无数据给视图绑定，使用successWithOutData
+       initDataCallBack.successWithData("1");
+       initDataCallBack.使用successWithOutData();
     }
     
     @Override
@@ -243,9 +247,9 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String,String
     }
 
     @Override
-    protected void initView(@NonNull Map<String, String> map) {
+    protected void initView(@Nullable String map) {
        //初始化界面控件
-       getBindView().test.setText(map.get("data"));
+       getBindView().test.setText(map);
     }
 }
 ```

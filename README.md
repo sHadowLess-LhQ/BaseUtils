@@ -1321,7 +1321,91 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
 ```
 
-### 20、CrashConfig：调用示例
+### 20、BaseCompletableObserver：Rxjava的subscribe()处，直接new
+
+```
+     //无加载框构造
+     new BaseCompletableObserver()
+     //无字加载框
+     new BaseCompletableObserver(Activity activity)
+     //无字是否View实现加载框
+     new BaseCompletableObserver(Activity activity, boolean isViewModel)
+     //指定字符是否View实现加载框
+     new BaseCompletableObserver(Activity activity, boolean isViewModel, String loadName)
+     //指定字符是否View实现是否可返回取消加载框
+     new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel, String loadName)
+     //指定字符是否View实现是否可返回取消和外部取消加载框
+     new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, String loadName)
+     //指定字符是否View实现是否可返回取消、外部取消和高斯模糊加载框
+     new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
+     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
+     new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
+```
+
+### 21、BaseMaybeObserver：Rxjava的subscribe()处，直接new
+
+```
+     //无加载框构造
+     new BaseMaybeObserver()
+     //无字加载框
+     new BaseMaybeObserver(Activity activity)
+     //无字是否View实现加载框
+     new BaseMaybeObserver(Activity activity, boolean isViewModel)
+     //指定字符是否View实现加载框
+     new BaseMaybeObserver(Activity activity, boolean isViewModel, String loadName)
+     //指定字符是否View实现是否可返回取消加载框
+     new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, String loadName)
+     //指定字符是否View实现是否可返回取消和外部取消加载框
+     new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, String loadName)
+     //指定字符是否View实现是否可返回取消、外部取消和高斯模糊加载框
+     new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
+     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
+     new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
+```
+
+### 22、BaseSingleObserver：Rxjava的subscribe()处，直接new
+
+```
+     //无加载框构造
+     new BaseSingleObserver()
+     //无字加载框
+     new BaseSingleObserver(Activity activity)
+     //无字是否View实现加载框
+     new BaseSingleObserver(Activity activity, boolean isViewModel)
+     //指定字符是否View实现加载框
+     new BaseSingleObserver(Activity activity, boolean isViewModel, String loadName)
+     //指定字符是否View实现是否可返回取消加载框
+     new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, String loadName)
+     //指定字符是否View实现是否可返回取消和外部取消加载框
+     new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, String loadName)
+     //指定字符是否View实现是否可返回取消、外部取消和高斯模糊加载框
+     new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
+     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
+     new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
+```
+
+### 23、BaseSubscriber：Rxjava的subscribe()处，直接new
+
+```
+     //无加载框构造
+     new BaseSubscriber()
+     //无字加载框
+     new BaseSubscriber(Activity activity)
+     //无字是否View实现加载框
+     new BaseSubscriber(Activity activity, boolean isViewModel)
+     //指定字符是否View实现加载框
+     new BaseSubscriber(Activity activity, boolean isViewModel, String loadName)
+     //指定字符是否View实现是否可返回取消加载框
+     new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel, String loadName)
+     //指定字符是否View实现是否可返回取消和外部取消加载框
+     new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, String loadName)
+     //指定字符是否View实现是否可返回取消、外部取消和高斯模糊加载框
+     new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
+     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
+     new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
+```
+
+### 24、CrashConfig：调用示例
 
 ```
       CrashConfig.Builder

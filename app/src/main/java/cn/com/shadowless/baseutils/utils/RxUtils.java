@@ -1,7 +1,11 @@
 package cn.com.shadowless.baseutils.utils;
 
+import io.reactivex.CompletableTransformer;
+import io.reactivex.FlowableTransformer;
+import io.reactivex.MaybeTransformer;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Scheduler;
+import io.reactivex.SingleTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -115,51 +119,321 @@ public class RxUtils {
      * @param threadSign the 线程枚举
      * @return the observable transformer
      */
-    public static <T> ObservableTransformer<T, T> dealThread(ThreadSign threadSign) {
+    public static <T> ObservableTransformer<T, T> dealObservableThread(ThreadSign threadSign) {
         switch (threadSign) {
             case IO_TO_MAIN:
-                return setStream(Schedulers.io(), AndroidSchedulers.mainThread());
+                return setObservableStream(Schedulers.io(), AndroidSchedulers.mainThread());
             case IO_TO_IO:
-                return setStream(Schedulers.io(), Schedulers.io());
+                return setObservableStream(Schedulers.io(), Schedulers.io());
             case IO_TO_SINGLE:
-                return setStream(Schedulers.io(), Schedulers.single());
+                return setObservableStream(Schedulers.io(), Schedulers.single());
             case IO_TO_NEW_THREAD:
-                return setStream(Schedulers.io(), Schedulers.newThread());
+                return setObservableStream(Schedulers.io(), Schedulers.newThread());
             case IO_TO_COMPUTATION:
-                return setStream(Schedulers.io(), Schedulers.computation());
+                return setObservableStream(Schedulers.io(), Schedulers.computation());
             case NEW_THREAD_TO_MAIN:
-                return setStream(Schedulers.newThread(), AndroidSchedulers.mainThread());
+                return setObservableStream(Schedulers.newThread(), AndroidSchedulers.mainThread());
             case NEW_THREAD_TO_IO:
-                return setStream(Schedulers.newThread(), Schedulers.io());
+                return setObservableStream(Schedulers.newThread(), Schedulers.io());
             case NEW_THREAD_TO_SINGLE:
-                return setStream(Schedulers.newThread(), Schedulers.single());
+                return setObservableStream(Schedulers.newThread(), Schedulers.single());
             case NEW_THREAD_TO_NEW_THREAD:
-                return setStream(Schedulers.newThread(), Schedulers.newThread());
+                return setObservableStream(Schedulers.newThread(), Schedulers.newThread());
             case NEW_THREAD_TO_COMPUTATION:
-                return setStream(Schedulers.newThread(), Schedulers.computation());
+                return setObservableStream(Schedulers.newThread(), Schedulers.computation());
             case COMPUTATION_TO_MAIN:
-                return setStream(Schedulers.computation(), AndroidSchedulers.mainThread());
+                return setObservableStream(Schedulers.computation(), AndroidSchedulers.mainThread());
             case COMPUTATION_TO_IO:
-                return setStream(Schedulers.computation(), Schedulers.io());
+                return setObservableStream(Schedulers.computation(), Schedulers.io());
             case COMPUTATION_TO_SINGLE:
-                return setStream(Schedulers.computation(), Schedulers.single());
+                return setObservableStream(Schedulers.computation(), Schedulers.single());
             case COMPUTATION_TO_NEW_THREAD:
-                return setStream(Schedulers.computation(), Schedulers.newThread());
+                return setObservableStream(Schedulers.computation(), Schedulers.newThread());
             case COMPUTATION_TO_COMPUTATION:
-                return setStream(Schedulers.computation(), Schedulers.computation());
+                return setObservableStream(Schedulers.computation(), Schedulers.computation());
             case SINGLE_TO_MAIN:
-                return setStream(Schedulers.single(), AndroidSchedulers.mainThread());
+                return setObservableStream(Schedulers.single(), AndroidSchedulers.mainThread());
             case SINGLE_TO_IO:
-                return setStream(Schedulers.single(), Schedulers.io());
+                return setObservableStream(Schedulers.single(), Schedulers.io());
             case SINGLE_TO_SINGLE:
-                return setStream(Schedulers.single(), Schedulers.single());
+                return setObservableStream(Schedulers.single(), Schedulers.single());
             case SINGLE_TO_NEW_THREAD:
-                return setStream(Schedulers.single(), Schedulers.newThread());
+                return setObservableStream(Schedulers.single(), Schedulers.newThread());
             case SINGLE_TO_COMPUTATION:
-                return setStream(Schedulers.single(), Schedulers.computation());
+                return setObservableStream(Schedulers.single(), Schedulers.computation());
             default:
-                return setStream(AndroidSchedulers.mainThread(), AndroidSchedulers.mainThread());
+                return setObservableStream(AndroidSchedulers.mainThread(), AndroidSchedulers.mainThread());
         }
+    }
+
+    /**
+     * 线程转换器
+     *
+     * @param threadSign the 线程枚举
+     * @return the observable transformer
+     */
+    public static CompletableTransformer dealCompletableThread(ThreadSign threadSign) {
+        switch (threadSign) {
+            case IO_TO_MAIN:
+                return setCompletableStream(Schedulers.io(), AndroidSchedulers.mainThread());
+            case IO_TO_IO:
+                return setCompletableStream(Schedulers.io(), Schedulers.io());
+            case IO_TO_SINGLE:
+                return setCompletableStream(Schedulers.io(), Schedulers.single());
+            case IO_TO_NEW_THREAD:
+                return setCompletableStream(Schedulers.io(), Schedulers.newThread());
+            case IO_TO_COMPUTATION:
+                return setCompletableStream(Schedulers.io(), Schedulers.computation());
+            case NEW_THREAD_TO_MAIN:
+                return setCompletableStream(Schedulers.newThread(), AndroidSchedulers.mainThread());
+            case NEW_THREAD_TO_IO:
+                return setCompletableStream(Schedulers.newThread(), Schedulers.io());
+            case NEW_THREAD_TO_SINGLE:
+                return setCompletableStream(Schedulers.newThread(), Schedulers.single());
+            case NEW_THREAD_TO_NEW_THREAD:
+                return setCompletableStream(Schedulers.newThread(), Schedulers.newThread());
+            case NEW_THREAD_TO_COMPUTATION:
+                return setCompletableStream(Schedulers.newThread(), Schedulers.computation());
+            case COMPUTATION_TO_MAIN:
+                return setCompletableStream(Schedulers.computation(), AndroidSchedulers.mainThread());
+            case COMPUTATION_TO_IO:
+                return setCompletableStream(Schedulers.computation(), Schedulers.io());
+            case COMPUTATION_TO_SINGLE:
+                return setCompletableStream(Schedulers.computation(), Schedulers.single());
+            case COMPUTATION_TO_NEW_THREAD:
+                return setCompletableStream(Schedulers.computation(), Schedulers.newThread());
+            case COMPUTATION_TO_COMPUTATION:
+                return setCompletableStream(Schedulers.computation(), Schedulers.computation());
+            case SINGLE_TO_MAIN:
+                return setCompletableStream(Schedulers.single(), AndroidSchedulers.mainThread());
+            case SINGLE_TO_IO:
+                return setCompletableStream(Schedulers.single(), Schedulers.io());
+            case SINGLE_TO_SINGLE:
+                return setCompletableStream(Schedulers.single(), Schedulers.single());
+            case SINGLE_TO_NEW_THREAD:
+                return setCompletableStream(Schedulers.single(), Schedulers.newThread());
+            case SINGLE_TO_COMPUTATION:
+                return setCompletableStream(Schedulers.single(), Schedulers.computation());
+            default:
+                return setCompletableStream(AndroidSchedulers.mainThread(), AndroidSchedulers.mainThread());
+        }
+    }
+
+    /**
+     * 线程转换器
+     *
+     * @param <T>        the type parameter
+     * @param threadSign the 线程枚举
+     * @return the observable transformer
+     */
+    public static <T> MaybeTransformer<T, T> dealMaybeThread(ThreadSign threadSign) {
+        switch (threadSign) {
+            case IO_TO_MAIN:
+                return setMaybeStream(Schedulers.io(), AndroidSchedulers.mainThread());
+            case IO_TO_IO:
+                return setMaybeStream(Schedulers.io(), Schedulers.io());
+            case IO_TO_SINGLE:
+                return setMaybeStream(Schedulers.io(), Schedulers.single());
+            case IO_TO_NEW_THREAD:
+                return setMaybeStream(Schedulers.io(), Schedulers.newThread());
+            case IO_TO_COMPUTATION:
+                return setMaybeStream(Schedulers.io(), Schedulers.computation());
+            case NEW_THREAD_TO_MAIN:
+                return setMaybeStream(Schedulers.newThread(), AndroidSchedulers.mainThread());
+            case NEW_THREAD_TO_IO:
+                return setMaybeStream(Schedulers.newThread(), Schedulers.io());
+            case NEW_THREAD_TO_SINGLE:
+                return setMaybeStream(Schedulers.newThread(), Schedulers.single());
+            case NEW_THREAD_TO_NEW_THREAD:
+                return setMaybeStream(Schedulers.newThread(), Schedulers.newThread());
+            case NEW_THREAD_TO_COMPUTATION:
+                return setMaybeStream(Schedulers.newThread(), Schedulers.computation());
+            case COMPUTATION_TO_MAIN:
+                return setMaybeStream(Schedulers.computation(), AndroidSchedulers.mainThread());
+            case COMPUTATION_TO_IO:
+                return setMaybeStream(Schedulers.computation(), Schedulers.io());
+            case COMPUTATION_TO_SINGLE:
+                return setMaybeStream(Schedulers.computation(), Schedulers.single());
+            case COMPUTATION_TO_NEW_THREAD:
+                return setMaybeStream(Schedulers.computation(), Schedulers.newThread());
+            case COMPUTATION_TO_COMPUTATION:
+                return setMaybeStream(Schedulers.computation(), Schedulers.computation());
+            case SINGLE_TO_MAIN:
+                return setMaybeStream(Schedulers.single(), AndroidSchedulers.mainThread());
+            case SINGLE_TO_IO:
+                return setMaybeStream(Schedulers.single(), Schedulers.io());
+            case SINGLE_TO_SINGLE:
+                return setMaybeStream(Schedulers.single(), Schedulers.single());
+            case SINGLE_TO_NEW_THREAD:
+                return setMaybeStream(Schedulers.single(), Schedulers.newThread());
+            case SINGLE_TO_COMPUTATION:
+                return setMaybeStream(Schedulers.single(), Schedulers.computation());
+            default:
+                return setMaybeStream(AndroidSchedulers.mainThread(), AndroidSchedulers.mainThread());
+        }
+    }
+
+    /**
+     * 线程转换器
+     *
+     * @param <T>        the type parameter
+     * @param threadSign the 线程枚举
+     * @return the observable transformer
+     */
+    public static <T> SingleTransformer<T, T> dealSingleThread(ThreadSign threadSign) {
+        switch (threadSign) {
+            case IO_TO_MAIN:
+                return setSingleStream(Schedulers.io(), AndroidSchedulers.mainThread());
+            case IO_TO_IO:
+                return setSingleStream(Schedulers.io(), Schedulers.io());
+            case IO_TO_SINGLE:
+                return setSingleStream(Schedulers.io(), Schedulers.single());
+            case IO_TO_NEW_THREAD:
+                return setSingleStream(Schedulers.io(), Schedulers.newThread());
+            case IO_TO_COMPUTATION:
+                return setSingleStream(Schedulers.io(), Schedulers.computation());
+            case NEW_THREAD_TO_MAIN:
+                return setSingleStream(Schedulers.newThread(), AndroidSchedulers.mainThread());
+            case NEW_THREAD_TO_IO:
+                return setSingleStream(Schedulers.newThread(), Schedulers.io());
+            case NEW_THREAD_TO_SINGLE:
+                return setSingleStream(Schedulers.newThread(), Schedulers.single());
+            case NEW_THREAD_TO_NEW_THREAD:
+                return setSingleStream(Schedulers.newThread(), Schedulers.newThread());
+            case NEW_THREAD_TO_COMPUTATION:
+                return setSingleStream(Schedulers.newThread(), Schedulers.computation());
+            case COMPUTATION_TO_MAIN:
+                return setSingleStream(Schedulers.computation(), AndroidSchedulers.mainThread());
+            case COMPUTATION_TO_IO:
+                return setSingleStream(Schedulers.computation(), Schedulers.io());
+            case COMPUTATION_TO_SINGLE:
+                return setSingleStream(Schedulers.computation(), Schedulers.single());
+            case COMPUTATION_TO_NEW_THREAD:
+                return setSingleStream(Schedulers.computation(), Schedulers.newThread());
+            case COMPUTATION_TO_COMPUTATION:
+                return setSingleStream(Schedulers.computation(), Schedulers.computation());
+            case SINGLE_TO_MAIN:
+                return setSingleStream(Schedulers.single(), AndroidSchedulers.mainThread());
+            case SINGLE_TO_IO:
+                return setSingleStream(Schedulers.single(), Schedulers.io());
+            case SINGLE_TO_SINGLE:
+                return setSingleStream(Schedulers.single(), Schedulers.single());
+            case SINGLE_TO_NEW_THREAD:
+                return setSingleStream(Schedulers.single(), Schedulers.newThread());
+            case SINGLE_TO_COMPUTATION:
+                return setSingleStream(Schedulers.single(), Schedulers.computation());
+            default:
+                return setSingleStream(AndroidSchedulers.mainThread(), AndroidSchedulers.mainThread());
+        }
+    }
+
+    /**
+     * 线程转换器
+     *
+     * @param <T>        the type parameter
+     * @param threadSign the 线程枚举
+     * @return the observable transformer
+     */
+    public static <T> FlowableTransformer<T, T> dealFlowableThread(ThreadSign threadSign) {
+        switch (threadSign) {
+            case IO_TO_MAIN:
+                return setFlowableStream(Schedulers.io(), AndroidSchedulers.mainThread());
+            case IO_TO_IO:
+                return setFlowableStream(Schedulers.io(), Schedulers.io());
+            case IO_TO_SINGLE:
+                return setFlowableStream(Schedulers.io(), Schedulers.single());
+            case IO_TO_NEW_THREAD:
+                return setFlowableStream(Schedulers.io(), Schedulers.newThread());
+            case IO_TO_COMPUTATION:
+                return setFlowableStream(Schedulers.io(), Schedulers.computation());
+            case NEW_THREAD_TO_MAIN:
+                return setFlowableStream(Schedulers.newThread(), AndroidSchedulers.mainThread());
+            case NEW_THREAD_TO_IO:
+                return setFlowableStream(Schedulers.newThread(), Schedulers.io());
+            case NEW_THREAD_TO_SINGLE:
+                return setFlowableStream(Schedulers.newThread(), Schedulers.single());
+            case NEW_THREAD_TO_NEW_THREAD:
+                return setFlowableStream(Schedulers.newThread(), Schedulers.newThread());
+            case NEW_THREAD_TO_COMPUTATION:
+                return setFlowableStream(Schedulers.newThread(), Schedulers.computation());
+            case COMPUTATION_TO_MAIN:
+                return setFlowableStream(Schedulers.computation(), AndroidSchedulers.mainThread());
+            case COMPUTATION_TO_IO:
+                return setFlowableStream(Schedulers.computation(), Schedulers.io());
+            case COMPUTATION_TO_SINGLE:
+                return setFlowableStream(Schedulers.computation(), Schedulers.single());
+            case COMPUTATION_TO_NEW_THREAD:
+                return setFlowableStream(Schedulers.computation(), Schedulers.newThread());
+            case COMPUTATION_TO_COMPUTATION:
+                return setFlowableStream(Schedulers.computation(), Schedulers.computation());
+            case SINGLE_TO_MAIN:
+                return setFlowableStream(Schedulers.single(), AndroidSchedulers.mainThread());
+            case SINGLE_TO_IO:
+                return setFlowableStream(Schedulers.single(), Schedulers.io());
+            case SINGLE_TO_SINGLE:
+                return setFlowableStream(Schedulers.single(), Schedulers.single());
+            case SINGLE_TO_NEW_THREAD:
+                return setFlowableStream(Schedulers.single(), Schedulers.newThread());
+            case SINGLE_TO_COMPUTATION:
+                return setFlowableStream(Schedulers.single(), Schedulers.computation());
+            default:
+                return setFlowableStream(AndroidSchedulers.mainThread(), AndroidSchedulers.mainThread());
+        }
+    }
+
+    /**
+     * 设置转换流
+     *
+     * @param <T>         the type parameter
+     * @param subscribeOn the subscribe on
+     * @param observeOn   the observe on
+     * @return the flowable stream
+     */
+    private static <T> FlowableTransformer<T, T> setFlowableStream(Scheduler subscribeOn, Scheduler observeOn) {
+        return upstream -> upstream.subscribeOn(subscribeOn)
+                .unsubscribeOn(subscribeOn)
+                .observeOn(observeOn);
+    }
+
+    /**
+     * 设置转换流
+     *
+     * @param <T>         the type parameter
+     * @param subscribeOn the subscribe on
+     * @param observeOn   the observe on
+     * @return the single stream
+     */
+    private static <T> SingleTransformer<T, T> setSingleStream(Scheduler subscribeOn, Scheduler observeOn) {
+        return upstream -> upstream.subscribeOn(subscribeOn)
+                .unsubscribeOn(subscribeOn)
+                .observeOn(observeOn);
+    }
+
+    /**
+     * 设置转换流
+     *
+     * @param <T>         the type parameter
+     * @param subscribeOn the subscribe on
+     * @param observeOn   the observe on
+     * @return the maybe stream
+     */
+    private static <T> MaybeTransformer<T, T> setMaybeStream(Scheduler subscribeOn, Scheduler observeOn) {
+        return upstream -> upstream.subscribeOn(subscribeOn)
+                .unsubscribeOn(subscribeOn)
+                .observeOn(observeOn);
+    }
+
+    /**
+     * 设置转换流
+     *
+     * @param subscribeOn the subscribe on
+     * @param observeOn   the observe on
+     * @return the completable stream
+     */
+    private static CompletableTransformer setCompletableStream(Scheduler subscribeOn, Scheduler observeOn) {
+        return upstream -> upstream.subscribeOn(subscribeOn)
+                .unsubscribeOn(subscribeOn)
+                .observeOn(observeOn);
     }
 
     /**
@@ -170,7 +444,7 @@ public class RxUtils {
      * @param observeOn   the observe on
      * @return the stream
      */
-    private static <T> ObservableTransformer<T, T> setStream(Scheduler subscribeOn, Scheduler observeOn) {
+    private static <T> ObservableTransformer<T, T> setObservableStream(Scheduler subscribeOn, Scheduler observeOn) {
         return upstream -> upstream.subscribeOn(subscribeOn)
                 .unsubscribeOn(subscribeOn)
                 .observeOn(observeOn);

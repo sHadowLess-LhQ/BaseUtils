@@ -479,8 +479,17 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
          * 有序单线程到有序单线程到
          */
         SINGLE_TO_SINGLE
+        
      //返回ObservableTransformer流对象
-     RxUtils.dealThread(ThreadSign threadSign)
+     RxUtils.dealObservableThread(ThreadSign threadSign)
+     //返回dealCompletableThread流对象
+     RxUtils.dealCompletableThread(ThreadSign threadSign)
+     //返回dealMaybeThread流对象
+     RxUtils.dealMaybeThread(ThreadSign threadSign)
+     //返回dealSingleThread流对象
+     RxUtils.dealSingleThread(ThreadSign threadSign)
+     //返回dealFlowableThread流对象
+     RxUtils.dealFlowableThread(ThreadSign threadSign)
 ```
 
 ### 8、NetUtils：调用示例

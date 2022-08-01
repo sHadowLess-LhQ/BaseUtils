@@ -3,7 +3,6 @@ package cn.com.shadowless.baseutils.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.Iterator;

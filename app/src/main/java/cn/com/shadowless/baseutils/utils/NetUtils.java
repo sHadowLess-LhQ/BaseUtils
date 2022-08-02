@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import retrofit2.CallAdapter;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -26,22 +28,42 @@ public class NetUtils {
     /**
      * 根地址
      */
-    private String baseUrl;
+    private final String baseUrl;
 
     /**
      * 超时时间
      */
-    private int timeOut;
+    private final int timeOut;
 
     /**
      * 时间单位
      */
-    private TimeUnit timeOutUnit;
+    private final TimeUnit timeOutUnit;
 
     /**
      * okHttp实例
      */
     private OkHttpClient okHttpClient;
+
+    /**
+     * Retrofit实例
+     */
+    private Retrofit retrofit;
+
+    /**
+     * The Gson.
+     */
+    private Gson gson;
+
+    /**
+     * The Factory.
+     */
+    private Converter.Factory converterFactory;
+
+    /**
+     * The Call adapterFactory.
+     */
+    private CallAdapter.Factory callAdapterFactory;
 
     /**
      * 超时错误信息
@@ -72,11 +94,6 @@ public class NetUtils {
      * 错误默认信息
      */
     private static final String ERROR_DEFAULT = "请求失败，请重试";
-
-    /**
-     * The Api map.
-     */
-    private static Map<String, Object> API_MAP = null;
 
     /**
      * 错误枚举
@@ -123,63 +140,57 @@ public class NetUtils {
 
     /**
      * 初始化完成回调
+     *
+     * @param <T> the type parameter
      */
-    public interface InitCallBack {
+    public interface InitCallBack<T> {
         /**
          * 完成
          *
-         * @param apiMap the 接口表
+         * @param api the 接口
          */
-        void finish(Map<String, Object> apiMap);
+        void finish(T api);
     }
 
     /**
      * 初始化retrofit
      *
-     * @param initCallBack the init call back
-     * @param cls          the cls
+     * @return the net utils
      */
-    public void initRetrofit(InitCallBack initCallBack, Class<?>... cls) {
+    public NetUtils initRetrofit() {
         if (null == okHttpClient) {
             okHttpClient = getOkHttpClient();
         }
-        Retrofit retrofit = new Retrofit.Builder()
+        if (null == gson) {
+            gson = new Gson();
+        }
+        if (null == callAdapterFactory) {
+            callAdapterFactory = RxJava2CallAdapterFactory.create();
+        }
+        if (null == converterFactory) {
+            converterFactory = GsonConverterFactory.create(gson);
+        }
+        retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create(new Gson()))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(converterFactory)
+                .addCallAdapterFactory(callAdapterFactory)
                 .client(okHttpClient)
                 .build();
-        Map<String, Object> apiMap = new HashMap<>(cls.length);
-        for (Class<?> cl : cls) {
-            Object obj = retrofit.create(cl);
-            apiMap.put(cl.getSimpleName(), obj);
-        }
-        initCallBack.finish(apiMap);
+        return this;
     }
 
     /**
-     * 初始化retrofit
+     * 初始化接口
      *
-     * @param gson         the gson
-     * @param initCallBack the init call back
-     * @param cls          the cls
+     * @param <T>          the type 接口类型
+     * @param cls          the 接口类
+     * @param initCallBack the 回调
+     * @return the net utils
      */
-    public void initRetrofit(Gson gson, InitCallBack initCallBack, Class<?>... cls) {
-        if (null == okHttpClient) {
-            okHttpClient = getOkHttpClient();
-        }
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(okHttpClient)
-                .build();
-        Map<String, Object> apiMap = new HashMap<>(cls.length);
-        for (Class<?> cl : cls) {
-            Object obj = retrofit.create(cl);
-            apiMap.put(cl.getSimpleName(), obj);
-        }
-        initCallBack.finish(apiMap);
+    public <T> NetUtils initApi(Class<T> cls, InitCallBack<T> initCallBack) {
+        T api = retrofit.create(cls);
+        initCallBack.finish(api);
+        return this;
     }
 
     /**
@@ -240,16 +251,22 @@ public class NetUtils {
     /**
      * 构造
      *
-     * @param baseUrl      the base url
-     * @param timeOut      the time out
-     * @param timeOutUnit  the time out unit
-     * @param okHttpClient the ok http client
+     * @param baseUrl            the base url
+     * @param timeOut            the time out
+     * @param timeOutUnit        the time out unit
+     * @param okHttpClient       the ok http client
+     * @param converterFactory   the converter factory
+     * @param callAdapterFactory the call adapter factory
+     * @param gson               the gson
      */
-    public NetUtils(String baseUrl, int timeOut, TimeUnit timeOutUnit, OkHttpClient okHttpClient) {
+    public NetUtils(String baseUrl, int timeOut, TimeUnit timeOutUnit, OkHttpClient okHttpClient, Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory, Gson gson) {
         this.baseUrl = baseUrl;
         this.timeOut = timeOut;
         this.timeOutUnit = timeOutUnit;
         this.okHttpClient = okHttpClient;
+        this.converterFactory = converterFactory;
+        this.callAdapterFactory = callAdapterFactory;
+        this.gson = gson;
     }
 
     /**
@@ -281,6 +298,18 @@ public class NetUtils {
          * OkHttp对象
          */
         private OkHttpClient okHttpClient;
+        /**
+         * The Gson.
+         */
+        private Gson gson;
+        /**
+         * Gson工厂类
+         */
+        private Converter.Factory converterFactory;
+        /**
+         * RxJava适配器
+         */
+        private CallAdapter.Factory callAdapterFactory;
 
         /**
          * Base url net utils . net utils builder.
@@ -290,6 +319,17 @@ public class NetUtils {
          */
         public NetUtils.NetUtilsBuilder baseUrl(String baseUrl) {
             this.baseUrl = baseUrl;
+            return this;
+        }
+
+        /**
+         * Base url net utils . net utils builder.
+         *
+         * @param gson the gson
+         * @return the net utils . net utils builder
+         */
+        public NetUtils.NetUtilsBuilder gson(Gson gson) {
+            this.gson = gson;
             return this;
         }
 
@@ -327,12 +367,34 @@ public class NetUtils {
         }
 
         /**
+         * Converter factory net utils . net utils builder.
+         *
+         * @param converterFactory the converter factory
+         * @return the net utils . net utils builder
+         */
+        public NetUtils.NetUtilsBuilder converterFactory(Converter.Factory converterFactory) {
+            this.converterFactory = converterFactory;
+            return this;
+        }
+
+        /**
+         * Call adapter factory net utils . net utils builder.
+         *
+         * @param callAdapterFactory the call adapter factory
+         * @return the net utils . net utils builder
+         */
+        public NetUtils.NetUtilsBuilder callAdapterFactory(CallAdapter.Factory callAdapterFactory) {
+            this.callAdapterFactory = callAdapterFactory;
+            return this;
+        }
+
+        /**
          * Build net utils.
          *
          * @return the net utils
          */
         public NetUtils build() {
-            return new NetUtils(this.baseUrl, this.timeOut, this.timeOutUnit, this.okHttpClient);
+            return new NetUtils(this.baseUrl, this.timeOut, this.timeOutUnit, this.okHttpClient, this.converterFactory, this.callAdapterFactory, this.gson);
         }
     }
 }

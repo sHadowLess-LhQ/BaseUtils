@@ -69,14 +69,14 @@ b、远程仓库引入
             implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
             implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-            //【注：】使用NetUtils，请额外添加以下依赖：
+            //【注】：使用NetUtils，请额外添加以下依赖：
             //NetUtils
                 implementation 'com.squareup.okhttp3:okhttp:4.7.2'
                 implementation 'com.google.code.gson:gson:2.8.6'
                 implementation 'com.squareup.retrofit2:retrofit:2.9.0'
                 implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
                 implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
-            //【注：】使用BaseXPop，请额外添加以下依赖：
+            //【注】：使用BaseXPop，请额外添加以下依赖：
             //BaseXPop
                 implementation 'com.github.li-xiaojun:XPopup:2.7.6'
                 implementation 'com.google.android.material:material:1.6.1'
@@ -158,8 +158,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
     @Override
     protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
        //初始化数据
-       【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
-       【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
+       【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
        if(isOrientation){
         //竖屏
        }else{
@@ -180,7 +179,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
     @Override
     protected void initView(@Nullable String data) {
        //初始化界面控件
-       getBindView().test.setText(map.get("data"));
+       getBindView().test.setText(data);
     }
     
     @Override
@@ -225,8 +224,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
     @Override
     protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
        //初始化数据
-       【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调
-       【注】：若遇到mData表未清空，请手动调用mData.clear()清空。
+       【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
        if(isOrientation){
         //竖屏
         //mActivity是所依附的Activity对象
@@ -501,15 +499,20 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
                 .okHttpClient()  //设置自定义okhttp，不设置有默认
                 .timeOut()       //设置超时时间，不设置默认10秒
                 .timeOutUnit()   //设置超时时间单位，不设置默认单位秒
+                .gson(new Gson())//设置自定义Gson，不设置有默认
+                .callAdapterFactory()//设置RxJava工厂类，不设置有默认
+                .converterFactory()//设置解析工厂类，不设置有默认
                 .build()
-                .initRetrofit(new Gson(),
-                  new NetUtils.InitCallBack() {
+                .initRetrofit()  //初始化Retrofit
+                .initRetrofit(new Gson()) //传入需要创建的接口类，默认有Gson，可自定义
+                .initApi(DeviceApi.class, new NetUtils.InitCallBack<DeviceApi>() {
                     @Override
-                    public void finish(Map<String, Object> apiMap) {
-                        //Presenter初始化
-                          ...
+                    public void finish(DeviceApi api) {
+                        DevicePresenter.INSTANCE.getInstance(api);
                     }
-                },Api.class,xx.class...); //传入需要创建的接口类，默认有Gson，可自定义
+                })                        //实例化接口对象，可用于Presenter，可多次实例不同的接口
+                .initApi(DeviceApi.class, DevicePresenter.INSTANCE::getInstance)
+                   ...
 ```
 
 ### 9、LocationUtils：调用示例

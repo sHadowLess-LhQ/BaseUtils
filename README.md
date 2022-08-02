@@ -51,8 +51,6 @@ Step 1. 添加maven仓库地址和配置
 
 Step 2. 添加依赖
 
-[![](https://jitpack.io/v/com.gitee.shadowless_lhq/base-utils.svg)](https://jitpack.io/#com.gitee.shadowless_lhq/base-utils)
-
 a、克隆引入
 
 ```
@@ -63,6 +61,8 @@ a、克隆引入
 
 b、远程仓库引入
 
+[![](https://jitpack.io/v/com.gitee.shadowless_lhq/base-utils.svg)](https://jitpack.io/#com.gitee.shadowless_lhq/base-utils)
+
 ```
      dependencies {
             //主模块
@@ -71,15 +71,15 @@ b、远程仓库引入
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
             //【注：】使用NetUtils，请额外添加以下依赖：
             //NetUtils
-                implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+                implementation 'com.squareup.okhttp3:okhttp:4.7.2'
                 implementation 'com.google.code.gson:gson:2.8.6'
-                implementation 'com.squareup.retrofit2:retrofit:2.6.1'
-                implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
-                implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+                implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+                implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+                implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
             //【注：】使用BaseXPop，请额外添加以下依赖：
             //BaseXPop
                 implementation 'com.github.li-xiaojun:XPopup:2.7.6'
-                implementation 'com.google.android.material:material:1.4.0'
+                implementation 'com.google.android.material:material:1.6.1'
                 implementation 'androidx.recyclerview:recyclerview:1.2.1'
     }
 ```

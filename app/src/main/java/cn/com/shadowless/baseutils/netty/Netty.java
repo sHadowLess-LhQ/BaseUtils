@@ -99,27 +99,6 @@ public interface Netty {
     }
 
     /**
-     * 通道消息处理（接收消息）
-     */
-    interface OnChannelHandler {
-        /**
-         * On message received.
-         *
-         * @param ctx the ctx
-         * @param msg the msg
-         */
-        void onMessageReceived(ChannelHandlerContext ctx, String msg);
-
-        /**
-         * On exception caught.
-         *
-         * @param ctx the ctx
-         * @param e   the e
-         */
-        void onExceptionCaught(ChannelHandlerContext ctx, Throwable e);
-    }
-
-    /**
      * 发送消息监听
      */
     interface OnSendMessageListener {

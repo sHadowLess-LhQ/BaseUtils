@@ -105,10 +105,10 @@ public class NettyClient implements Netty {
     /**
      * 构造
      *
-     * @param onChannelHandler {@link OnChannelHandler}
-     * @param isDebug          the is debug
+     * @param isDebug  the is debug
+     * @param handlers the handlers
      */
-    public NettyClient(OnChannelHandler onChannelHandler, boolean isDebug, ChannelHandler... handlers) {
+    public NettyClient(boolean isDebug, ChannelHandler... handlers) {
         this.isDebug = isDebug;
         this.mChannelInitializer = new ChannelInitializer<SocketChannel>() {
             @Override
@@ -119,29 +119,6 @@ public class NettyClient implements Netty {
                 for (ChannelHandler channelHandler : handlers) {
                     channelPipeline.addLast(channelHandler);
                 }
-                channelPipeline
-                        .addLast(new SimpleChannelInboundHandler<String>() {
-                            @Override
-                            protected void messageReceived(ChannelHandlerContext ctx, String msg) throws Exception {
-                                if (isDebug) {
-                                    Log.d(TAG, "Received message:" + msg);
-                                }
-                                if (onChannelHandler != null) {
-                                    mMainHandler.post(() -> onChannelHandler.onMessageReceived(ctx, msg));
-                                }
-                            }
-
-                            @Override
-                            public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-                                super.exceptionCaught(ctx, cause);
-                                if (isDebug) {
-                                    Log.w(TAG, cause.getMessage());
-                                }
-                                if (onChannelHandler != null) {
-                                    mMainHandler.post(() -> onChannelHandler.onExceptionCaught(ctx, cause));
-                                }
-                            }
-                        });
             }
         };
         initHandlerThread();

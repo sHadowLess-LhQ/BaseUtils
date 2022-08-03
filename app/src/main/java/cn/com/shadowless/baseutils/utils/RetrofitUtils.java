@@ -7,8 +7,6 @@ import java.net.ConnectException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -23,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  * @author sHadowLess
  */
-public class NetUtils {
+public class RetrofitUtils {
 
     /**
      * 根地址
@@ -64,36 +62,6 @@ public class NetUtils {
      * The Call adapterFactory.
      */
     private CallAdapter.Factory callAdapterFactory;
-
-    /**
-     * 超时错误信息
-     */
-    private static final String ERROR_TIME_OUT_MESSAGE = "请求数据超时，请重试";
-
-    /**
-     * 连接错误信息
-     */
-    private static final String ERROR_CONNECT_REFUSED_MESSAGE = "无法连接服务器，请检测网络或联系管理员";
-
-    /**
-     * 故障错误信息
-     */
-    private static final String ERROR_SOCKET_CLOSED_MESSAGE = "网络故障，无法与服务器通讯";
-
-    /**
-     * 波动错误信息
-     */
-    private static final String ERROR_WAVE_MESSAGE = "网络波动，清重试";
-
-    /**
-     * 域名错误信息
-     */
-    private static final String ERROR_UN_KNOW_HOST_MESSAGE = "无法解析域名，请检查网络或联系管理员";
-
-    /**
-     * 错误默认信息
-     */
-    private static final String ERROR_DEFAULT = "请求失败，请重试";
 
     /**
      * 错误枚举
@@ -157,7 +125,7 @@ public class NetUtils {
      *
      * @return the net utils
      */
-    public NetUtils initRetrofit() {
+    public RetrofitUtils initRetrofit() {
         if (null == okHttpClient) {
             okHttpClient = getOkHttpClient();
         }
@@ -187,7 +155,7 @@ public class NetUtils {
      * @param initCallBack the 回调
      * @return the net utils
      */
-    public <T> NetUtils initApi(Class<T> cls, InitCallBack<T> initCallBack) {
+    public <T> RetrofitUtils initApi(Class<T> cls, InitCallBack<T> initCallBack) {
         T api = retrofit.create(cls);
         initCallBack.finish(api);
         return this;
@@ -234,17 +202,17 @@ public class NetUtils {
     private static String exceptionMessage(ERROR error) {
         switch (error) {
             case UN_KNOW_HOST:
-                return ERROR_UN_KNOW_HOST_MESSAGE;
+                return "无法解析域名，请检查网络或联系管理员";
             case TIMEOUT:
-                return ERROR_TIME_OUT_MESSAGE;
+                return "请求数据超时，请重试";
             case SOCKET_CLOSED:
-                return ERROR_SOCKET_CLOSED_MESSAGE;
+                return "网络故障，无法与服务器通讯";
             case CONNECT_REFUSED:
-                return ERROR_CONNECT_REFUSED_MESSAGE;
+                return "无法连接服务器，请检测网络或联系管理员";
             case WAVE:
-                return ERROR_WAVE_MESSAGE;
+                return "网络波动，清重试";
             default:
-                return ERROR_DEFAULT;
+                return "请求失败，请重试";
         }
     }
 
@@ -259,7 +227,7 @@ public class NetUtils {
      * @param callAdapterFactory the call adapter factory
      * @param gson               the gson
      */
-    public NetUtils(String baseUrl, int timeOut, TimeUnit timeOutUnit, OkHttpClient okHttpClient, Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory, Gson gson) {
+    public RetrofitUtils(String baseUrl, int timeOut, TimeUnit timeOutUnit, OkHttpClient okHttpClient, Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory, Gson gson) {
         this.baseUrl = baseUrl;
         this.timeOut = timeOut;
         this.timeOutUnit = timeOutUnit;
@@ -274,8 +242,8 @@ public class NetUtils {
      *
      * @return the net utils . net utils builder
      */
-    public static NetUtils.NetUtilsBuilder builder() {
-        return new NetUtils.NetUtilsBuilder();
+    public static RetrofitUtils.NetUtilsBuilder builder() {
+        return new RetrofitUtils.NetUtilsBuilder();
     }
 
     /**
@@ -317,7 +285,7 @@ public class NetUtils {
          * @param baseUrl the base url
          * @return the net utils . net utils builder
          */
-        public NetUtils.NetUtilsBuilder baseUrl(String baseUrl) {
+        public RetrofitUtils.NetUtilsBuilder baseUrl(String baseUrl) {
             this.baseUrl = baseUrl;
             return this;
         }
@@ -328,7 +296,7 @@ public class NetUtils {
          * @param gson the gson
          * @return the net utils . net utils builder
          */
-        public NetUtils.NetUtilsBuilder gson(Gson gson) {
+        public RetrofitUtils.NetUtilsBuilder gson(Gson gson) {
             this.gson = gson;
             return this;
         }
@@ -339,7 +307,7 @@ public class NetUtils {
          * @param timeOut the time out
          * @return the net utils . net utils builder
          */
-        public NetUtils.NetUtilsBuilder timeOut(int timeOut) {
+        public RetrofitUtils.NetUtilsBuilder timeOut(int timeOut) {
             this.timeOut = timeOut;
             return this;
         }
@@ -350,7 +318,7 @@ public class NetUtils {
          * @param timeOutUnit the time out unit
          * @return the net utils . net utils builder
          */
-        public NetUtils.NetUtilsBuilder timeOutUnit(TimeUnit timeOutUnit) {
+        public RetrofitUtils.NetUtilsBuilder timeOutUnit(TimeUnit timeOutUnit) {
             this.timeOutUnit = timeOutUnit;
             return this;
         }
@@ -361,7 +329,7 @@ public class NetUtils {
          * @param okHttpClient the ok http client
          * @return the net utils . net utils builder
          */
-        public NetUtils.NetUtilsBuilder okHttpClient(OkHttpClient okHttpClient) {
+        public RetrofitUtils.NetUtilsBuilder okHttpClient(OkHttpClient okHttpClient) {
             this.okHttpClient = okHttpClient;
             return this;
         }
@@ -372,7 +340,7 @@ public class NetUtils {
          * @param converterFactory the converter factory
          * @return the net utils . net utils builder
          */
-        public NetUtils.NetUtilsBuilder converterFactory(Converter.Factory converterFactory) {
+        public RetrofitUtils.NetUtilsBuilder converterFactory(Converter.Factory converterFactory) {
             this.converterFactory = converterFactory;
             return this;
         }
@@ -383,7 +351,7 @@ public class NetUtils {
          * @param callAdapterFactory the call adapter factory
          * @return the net utils . net utils builder
          */
-        public NetUtils.NetUtilsBuilder callAdapterFactory(CallAdapter.Factory callAdapterFactory) {
+        public RetrofitUtils.NetUtilsBuilder callAdapterFactory(CallAdapter.Factory callAdapterFactory) {
             this.callAdapterFactory = callAdapterFactory;
             return this;
         }
@@ -393,8 +361,8 @@ public class NetUtils {
          *
          * @return the net utils
          */
-        public NetUtils build() {
-            return new NetUtils(this.baseUrl, this.timeOut, this.timeOutUnit, this.okHttpClient, this.converterFactory, this.callAdapterFactory, this.gson);
+        public RetrofitUtils build() {
+            return new RetrofitUtils(this.baseUrl, this.timeOut, this.timeOutUnit, this.okHttpClient, this.converterFactory, this.callAdapterFactory, this.gson);
         }
     }
 }

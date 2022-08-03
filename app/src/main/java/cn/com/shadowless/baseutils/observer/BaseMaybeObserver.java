@@ -7,9 +7,8 @@ import androidx.annotation.NonNull;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.impl.LoadingPopupView;
 
-import cn.com.shadowless.baseutils.utils.NetUtils;
+import cn.com.shadowless.baseutils.utils.RetrofitUtils;
 import io.reactivex.MaybeObserver;
-import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -155,9 +154,9 @@ public abstract class BaseMaybeObserver<T> implements MaybeObserver<T> {
     @Override
     public void onError(@NonNull Throwable e) {
         if (loadingPopupView != null) {
-            loadingPopupView.dismissWith(() -> onFail(NetUtils.getExceptionMessage(e), e));
+            loadingPopupView.dismissWith(() -> onFail(RetrofitUtils.getExceptionMessage(e), e));
         } else {
-            onFail(NetUtils.getExceptionMessage(e), e);
+            onFail(RetrofitUtils.getExceptionMessage(e), e);
         }
     }
 

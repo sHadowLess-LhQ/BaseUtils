@@ -10,9 +10,7 @@ import com.lxj.xpopup.impl.LoadingPopupView;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
-import cn.com.shadowless.baseutils.utils.NetUtils;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import cn.com.shadowless.baseutils.utils.RetrofitUtils;
 
 /**
  * The type Base observer.
@@ -158,9 +156,9 @@ public abstract class BaseSubscriber<T> implements Subscriber<T> {
     @Override
     public void onError(@NonNull Throwable e) {
         if (loadingPopupView != null) {
-            loadingPopupView.dismissWith(() -> onFail(NetUtils.getExceptionMessage(e), e));
+            loadingPopupView.dismissWith(() -> onFail(RetrofitUtils.getExceptionMessage(e), e));
         } else {
-            onFail(NetUtils.getExceptionMessage(e), e);
+            onFail(RetrofitUtils.getExceptionMessage(e), e);
         }
     }
 

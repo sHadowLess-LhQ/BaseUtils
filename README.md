@@ -67,10 +67,10 @@ b、远程仓库引入
      dependencies {
             //主模块
             implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
-            implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
+            implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-            //【注】：使用NetUtils，请额外添加以下依赖：
-            //NetUtils
+            //【注】：使用RetrofitUtils，请额外添加以下依赖：
+            //RetrofitUtils
                 implementation 'com.squareup.okhttp3:okhttp:4.7.2'
                 implementation 'com.google.code.gson:gson:2.8.6'
                 implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -103,7 +103,7 @@ c、混淆规则
 }
 -keepclassmembers class rx.android.**{*;}
 
-//NetUtils混淆
+//RetrofitUtils混淆
 -keep class okhttp3.** { *; }
 -keep interface okhttp3.** { *; }
 -dontwarn okhttp3.**
@@ -490,10 +490,10 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      RxUtils.dealFlowableThread(ThreadSign threadSign)
 ```
 
-### 8、NetUtils：调用示例
+### 8、RetrofitUtils：调用示例
 
 ```
-      NetUtils
+      Retrofit
                 .builder()
                 .baseUrl()       //设置根地址
                 .okHttpClient()  //设置自定义okhttp，不设置有默认

@@ -615,7 +615,6 @@ public class DeviceOwnerUtils {
      * 获取电源锁
      *
      * @param activity the 主页
-     * @return the 电源锁
      */
     public void acquireWakeLock(Activity activity) {
         PowerManager pm = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);

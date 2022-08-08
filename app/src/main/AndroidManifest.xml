@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.com.shadowless.baseutils">
 
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:maxSdkVersion="22" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application>
         <provider
             android:name="cn.com.shadowless.baseutils.screen.InitProvider"

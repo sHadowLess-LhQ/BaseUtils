@@ -467,10 +467,10 @@ public class CustomDialog {
                     window.setGravity(Gravity.TOP);
                     break;
                 case LEFT:
-                    window.setGravity(Gravity.LEFT);
+                    window.setGravity(Gravity.START);
                     break;
                 case RIGHT:
-                    window.setGravity(Gravity.RIGHT);
+                    window.setGravity(Gravity.END);
                     break;
                 case BOTTOM:
                     window.setGravity(Gravity.BOTTOM);
@@ -479,22 +479,22 @@ public class CustomDialog {
                     window.setGravity(Gravity.CENTER);
                     break;
                 case UPPER_LEFT:
-                    window.setGravity(Gravity.TOP | Gravity.LEFT);
+                    window.setGravity(Gravity.TOP | Gravity.START);
                     break;
                 case UPPER_RIGHT:
-                    window.setGravity(Gravity.TOP | Gravity.RIGHT);
+                    window.setGravity(Gravity.TOP | Gravity.END);
                     break;
                 case LOWER_LEFT:
-                    window.setGravity(Gravity.BOTTOM | Gravity.LEFT);
+                    window.setGravity(Gravity.BOTTOM | Gravity.START);
                     break;
                 case LOWER_RIGHT:
-                    window.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
+                    window.setGravity(Gravity.BOTTOM | Gravity.END);
                     break;
                 case CENTER_LEFT:
-                    window.setGravity(Gravity.CENTER | Gravity.LEFT);
+                    window.setGravity(Gravity.CENTER | Gravity.START);
                     break;
                 case CENTER_RIGHT:
-                    window.setGravity(Gravity.CENTER | Gravity.RIGHT);
+                    window.setGravity(Gravity.CENTER | Gravity.END);
                     break;
                 default:
                     break;

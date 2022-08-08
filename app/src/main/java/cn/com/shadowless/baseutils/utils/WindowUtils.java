@@ -56,14 +56,10 @@ public class WindowUtils {
      */
     public static void setHalfTransparent(Activity activity) {
         Window window = activity.getWindow();
-        if (Build.VERSION.SDK_INT >= 21) {
-            View decorView = window.getDecorView();
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            decorView.setSystemUiVisibility(option);
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        } else if (Build.VERSION.SDK_INT >= 19) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+        View decorView = window.getDecorView();
+        int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+        decorView.setSystemUiVisibility(option);
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
     /**

@@ -491,11 +491,7 @@ public class ToastUtils {
         }
         //背景样式
         if (0 != toastDrawableID) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                toast_container.setBackground(ContextCompat.getDrawable(mContext, toastDrawableID));
-            } else {
-                toast_container.setBackgroundDrawable(ContextCompat.getDrawable(mContext, toastDrawableID));
-            }
+            toast_container.setBackground(ContextCompat.getDrawable(mContext, toastDrawableID));
         }
         toast_message.setTypeface(Typeface.create("sans-serif-condensed", Typeface.NORMAL));
         currentToast.setView(view);

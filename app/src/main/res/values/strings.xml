@@ -10,5 +10,4 @@
     <string name="custom_activity_on_crash_error_activity_error_details_copy">Copy to clipboard</string>
     <string name="custom_activity_on_crash_error_activity_error_details_copied">Copied to clipboard</string>
     <string name="custom_activity_on_crash_error_activity_error_details_clipboard_label">Error information</string>
-    <string name="app_description">辅助服务</string>
 </resources>

@@ -1,5 +1,6 @@
 package cn.com.shadowless.baseutils.utils;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -201,7 +202,7 @@ public class ApplicationUtils {
      */
     public static boolean isInstall(Context context, String packageName) {
         PackageManager packageManager = context.getPackageManager();
-        List<PackageInfo> packageInfos = packageManager.getInstalledPackages(0);
+        @SuppressLint("QueryPermissionsNeeded") List<PackageInfo> packageInfos = packageManager.getInstalledPackages(0);
         List<String> packageNames = new ArrayList<String>();
         for (int i = 0; i < packageInfos.size(); i++) {
             String packName = packageInfos.get(i).packageName;

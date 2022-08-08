@@ -25,6 +25,11 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
     private LoadingPopupView loadingPopupView = null;
 
     /**
+     * The Disposable.
+     */
+    private Disposable disposable = null;
+
+    /**
      * Instantiates a new Base observer.
      */
     public BaseSingleObserver() {
@@ -132,6 +137,7 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {
+        disposable = d;
         if (loadingPopupView != null) {
             loadingPopupView.show();
         }
@@ -140,9 +146,9 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
     @Override
     public void onSuccess(@NonNull T t) {
         if (loadingPopupView != null) {
-            loadingPopupView.dismissWith(() -> onNext(t));
+            loadingPopupView.dismissWith(() -> onNext(t, disposable));
         } else {
-            onNext(t);
+            onNext(t, disposable);
         }
     }
 
@@ -158,9 +164,10 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
     /**
      * On success.
      *
-     * @param t the t
+     * @param t          the t
+     * @param disposable the disposable
      */
-    public abstract void onNext(@NonNull T t);
+    public abstract void onNext(@NonNull T t, Disposable disposable);
 
     /**
      * On fail.

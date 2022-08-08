@@ -164,7 +164,7 @@ public abstract class BaseSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onComplete() {
-        subscription.cancel();
+        onFinish(subscription);
     }
 
     /**
@@ -173,6 +173,13 @@ public abstract class BaseSubscriber<T> implements Subscriber<T> {
      * @param t the t
      */
     public abstract void onSuccess(@NonNull T t);
+
+    /**
+     * On finish.
+     *
+     * @param subscription the subscription
+     */
+    public abstract void onFinish(Subscription subscription);
 
     /**
      * On fail.

@@ -14,7 +14,6 @@ import io.reactivex.disposables.Disposable;
 /**
  * The type Base observer.
  *
- * @param <T> the type parameter
  * @author sHadowLess
  */
 public abstract class BaseCompletableObserver implements CompletableObserver {
@@ -154,17 +153,18 @@ public abstract class BaseCompletableObserver implements CompletableObserver {
     @Override
     public void onComplete() {
         if (loadingPopupView != null) {
-            loadingPopupView.dismissWith(this::onSuccess);
+            loadingPopupView.dismissWith(() -> onFinish(disposable));
         } else {
-            onSuccess();
+            onFinish(disposable);
         }
-        disposable.dispose();
     }
 
     /**
      * On success.
+     *
+     * @param disposable the disposable
      */
-    public abstract void onSuccess();
+    public abstract void onFinish(Disposable disposable);
 
     /**
      * On fail.

@@ -13,8 +13,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.viewbinding.ViewBinding;
 
+import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle;
+import com.trello.rxlifecycle3.LifecycleProvider;
 
 import cn.com.shadowless.baseutils.permission.RxPermissions;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
@@ -56,6 +59,10 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      * 统一订阅管理
      */
     protected CompositeDisposable mDisposable = null;
+    /**
+     * Rx声明周期管理
+     */
+    protected LifecycleProvider<Lifecycle.Event> provider = null;
 
     /**
      * 初始化数据回调接口
@@ -90,8 +97,10 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
         } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             isOrientation = true;
         }
-        mDisposable = new CompositeDisposable();
         bind = setBindView();
+        initListener();
+        mDisposable = new CompositeDisposable();
+        provider = AndroidLifecycle.createLifecycleProvider(this);
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
             mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
@@ -108,7 +117,6 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
         } else {
             Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
         }
-        initListener();
         return bind.getRoot();
     }
 

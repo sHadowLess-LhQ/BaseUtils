@@ -4,29 +4,36 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.lifecycle.Lifecycle;
 import androidx.viewbinding.ViewBinding;
 
 
 import com.lxj.xpopup.core.PositionPopupView;
+import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle;
+import com.trello.rxlifecycle3.LifecycleProvider;
 
 import cn.com.shadowless.baseutils.R;
 
 /**
  * The type Base position popup view.
  *
- * @param <T> the type parameter
+ * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BasePositionPopupView<T extends ViewBinding> extends PositionPopupView {
+public abstract class BasePositionPopupView<VB extends ViewBinding> extends PositionPopupView {
 
     /**
      * The Bind.
      */
-    private T bind = null;
+    private VB bind = null;
     /**
      * The Context.
      */
-    private Context context = null;
+    private final Context context;
+    /**
+     * The Provider.
+     */
+    protected LifecycleProvider<Lifecycle.Event> provider;
 
     /**
      * Instantiates a new Base position popup view.
@@ -47,6 +54,7 @@ public abstract class BasePositionPopupView<T extends ViewBinding> extends Posit
     protected void onCreate() {
         super.onCreate();
         bind = setBindView();
+        provider = AndroidLifecycle.createLifecycleProvider(this);
         initView();
         if (isDefaultBackground()) {
             getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_view));
@@ -64,7 +72,7 @@ public abstract class BasePositionPopupView<T extends ViewBinding> extends Posit
      *
      * @return the bind view
      */
-    protected T getBindView() {
+    protected VB getBindView() {
         return bind;
     }
 
@@ -98,5 +106,5 @@ public abstract class BasePositionPopupView<T extends ViewBinding> extends Posit
      * @return the bind view
      */
     @NonNull
-    protected abstract T setBindView();
+    protected abstract VB setBindView();
 }

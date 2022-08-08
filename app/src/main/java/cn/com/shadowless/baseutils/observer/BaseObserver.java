@@ -162,7 +162,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     @Override
     public void onComplete() {
-        disposable.dispose();
+        onFinish(disposable);
     }
 
     /**
@@ -171,6 +171,13 @@ public abstract class BaseObserver<T> implements Observer<T> {
      * @param t the t
      */
     public abstract void onSuccess(@NonNull T t);
+
+    /**
+     * On finish.
+     *
+     * @param disposable the disposable
+     */
+    public abstract void onFinish(Disposable disposable);
 
     /**
      * On fail.

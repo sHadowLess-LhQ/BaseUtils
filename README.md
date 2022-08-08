@@ -69,6 +69,7 @@ b、远程仓库引入
             implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
             implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+            implementation 'com.trello.rxlifecycle3:rxlifecycle-android-lifecycle:3.1.0'
             //【注】：使用RetrofitUtils，请额外添加以下依赖：
             //RetrofitUtils
                 implementation 'com.squareup.okhttp3:okhttp:4.7.2'
@@ -139,6 +140,7 @@ c、混淆规则
 //创建xml后，点击编译，填入需要绑定的视图和传递数据类型
 //填入传递数据表数据类型
 //新增CompositeDisposable，可统一管理Dispose
+//新增LifecycleProvider，与CompositeDisposable切换使用
 public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
 
     @Nullable
@@ -205,6 +207,7 @@ public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends Bas
 //创建xml后，点击编译，填入需要绑定的视图
 //填入传递数据表数据类型
 //新增CompositeDisposable，可统一管理Dispose
+//新增LifecycleProvider，与CompositeDisposable切换使用
 public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
     
     @Nullable
@@ -1435,4 +1438,52 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
                 //重新启动后的页面
                 .restartActivity(LoginActivity.class)
                 .apply();
+```
+
+### 25、BaseXPop：继承并实现抽象方法，支持ViewBinding、支持LifecycleProvider
+
+```
+     //共有9种基类封装弹窗
+     //BaseBottomPopView - 底部弹出弹窗
+     //BaseBubbleHorizontalAttachPopupView - 水平弹出可依附气泡弹窗
+     //BaseCenterPopView - 居中弹窗
+     //BaseDrawerPopupView - 实现Drawer的弹窗
+     //BaseFullScreenPopupView - 全屏弹窗
+     //BaseHorizontalAttachPopView - 水平弹出可依附视图弹窗
+     //BasePositionPopupView - 自定义方向弹窗
+     //BaseVerticalAttachPopView - 垂直弹出可依附视图弹窗
+     //BaseVerticalBubbleAttachPopupView - 垂直弹出可依附气泡弹窗
+     //继承示例
+     public class TestPopView extends BaseCenterPopView<PopAddCardViewBinding>{
+
+         public AddCardPopView(@NonNull Context context) {
+           super(context);
+         }
+
+         @Override
+         protected int setLayout() {
+            return R.layout.pop_add_card_view;
+         }
+
+         @Override
+         protected void initView() {
+       
+         }
+
+         @Override
+        protected void initListener() {
+       
+        }
+
+        @Override
+        protected boolean isDefaultBackground() {
+          return true;
+        }
+
+        @NonNull
+        @Override
+        protected PopAddCardViewBinding setBindView() {
+           return PopAddCardViewBinding.bind(getPopupImplView());
+        }
+}
 ```

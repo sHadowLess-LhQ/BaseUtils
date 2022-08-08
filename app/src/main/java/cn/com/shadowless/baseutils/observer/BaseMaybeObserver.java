@@ -162,7 +162,7 @@ public abstract class BaseMaybeObserver<T> implements MaybeObserver<T> {
 
     @Override
     public void onComplete() {
-        disposable.dispose();
+        onFinish(disposable);
     }
 
     /**
@@ -171,6 +171,13 @@ public abstract class BaseMaybeObserver<T> implements MaybeObserver<T> {
      * @param t the t
      */
     public abstract void onNext(@NonNull T t);
+
+    /**
+     * On success.
+     *
+     * @param disposable the disposable
+     */
+    public abstract void onFinish(Disposable disposable);
 
     /**
      * On fail.

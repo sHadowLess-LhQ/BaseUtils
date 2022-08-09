@@ -1,5 +1,7 @@
 package cn.com.shadowless.baseutils.utils;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 
 import java.io.EOFException;
@@ -7,6 +9,8 @@ import java.net.ConnectException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -111,13 +115,27 @@ public class RetrofitUtils {
      *
      * @param <T> the type parameter
      */
-    public interface InitCallBack<T> {
+    public interface InitApiCallBack<T> {
         /**
          * 完成
          *
          * @param api the 接口
          */
-        void finish(T api);
+        void finish(@NonNull T api);
+
+
+    }
+
+    /**
+     * The interface Init apis call back.
+     */
+    public interface InitApisCallBack {
+        /**
+         * 完成
+         *
+         * @param apiMap the api map
+         */
+        void finish(@NonNull Map<String, Object> apiMap);
     }
 
     /**
@@ -155,9 +173,26 @@ public class RetrofitUtils {
      * @param initCallBack the 回调
      * @return the net utils
      */
-    public <T> RetrofitUtils initApi(Class<T> cls, InitCallBack<T> initCallBack) {
+    public <T> RetrofitUtils initApi(@NonNull Class<T> cls, @NonNull InitApiCallBack<T> initCallBack) {
         T api = retrofit.create(cls);
         initCallBack.finish(api);
+        return this;
+    }
+
+    /**
+     * 初始化接口
+     *
+     * @param initCallBack the 回调
+     * @param cls          the 接口类
+     * @return the net utils
+     */
+    public RetrofitUtils initApi(@NonNull InitApisCallBack initCallBack, @NonNull Class<?>... cls) {
+        Map<String, Object> map = new HashMap<>(cls.length);
+        for (Class<?> currentCls : cls) {
+            Object obj = retrofit.create(currentCls);
+            map.put(currentCls.getSimpleName(), obj);
+        }
+        initCallBack.finish(map);
         return this;
     }
 

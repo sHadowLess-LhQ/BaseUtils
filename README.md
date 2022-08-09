@@ -169,7 +169,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
        //若有数据给视图绑定，使用successWithData
        //若无数据给视图绑定，使用successWithOutData
        initDataCallBack.successWithData("1");
-       initDataCallBack.使用successWithOutData();
+       initDataCallBack.successWithOutData();
     }
     
     @Override
@@ -238,7 +238,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
        //若有数据给视图绑定，使用successWithData
        //若无数据给视图绑定，使用successWithOutData
        initDataCallBack.successWithData("1");
-       initDataCallBack.使用successWithOutData();
+       initDataCallBack.successWithOutData();
     }
     
     @Override
@@ -508,13 +508,12 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
                 .build()
                 .initRetrofit()  //初始化Retrofit
                 .initRetrofit(new Gson()) //传入需要创建的接口类，默认有Gson，可自定义
-                .initApi(DeviceApi.class, new NetUtils.InitCallBack<DeviceApi>() {
-                    @Override
-                    public void finish(DeviceApi api) {
-                        DevicePresenter.INSTANCE.getInstance(api);
-                    }
-                })                        //实例化接口对象，可用于Presenter，可多次实例不同的接口
-                .initApi(DeviceApi.class, DevicePresenter.INSTANCE::getInstance)
+                .initApi(DeviceApi.class, api -> {
+                     //实例化单个接口对象，可用于单个Presenter，可多次实例不同的接口
+                })
+                .initApi(apiMap -> {
+                     //实例化多个接口对象，可用于单Presenter，可多次实例不同的接口
+                }, DeviceApi.class, DeviceApi.class);
                    ...
 ```
 

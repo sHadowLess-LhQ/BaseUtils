@@ -82,6 +82,8 @@ b、远程仓库引入
                 implementation 'com.github.li-xiaojun:XPopup:2.7.6'
                 implementation 'com.google.android.material:material:1.6.1'
                 implementation 'androidx.recyclerview:recyclerview:1.2.1'
+            //【注】：使用MmKvUtils，请额外添加以下依赖
+                implementation 'com.tencent:mmkv:1.2.13'
     }
 ```
 
@@ -1485,4 +1487,77 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
            return PopAddCardViewBinding.bind(getPopupImplView());
         }
 }
+```
+
+### 26、MmKvUtils：调用示例
+
+```
+      //初始化MMKV
+      MmKvUtils.getInstance().initMmKv(Context context)
+      //初始化MMKV多进程
+      MmKvUtils.getInstance().initMmKvMultipleProcesses(Context context)
+      //初始化MMKV，指定名称，指定是否多进程
+      MmKvUtils.getInstance().initMmKv(Context context, String name, boolean isMultiple)
+      //初始化MMKV，指定路径，指定名称，指定是否多进程
+      MmKvUtils.getInstance().initMmKv(Context context, String path, String name, boolean isMultiple)
+      //放int
+      MmKvUtils.putInt(String key, int value)
+      //放String
+      MmKvUtils.putString(String key, String value)
+      //放boolean
+      MmKvUtils.putBoolean(String key, boolean value)
+      /放long
+      MmKvUtils.putLong(String key, long value)
+      //放double
+      MmKvUtils.putDouble(String key, double value)
+      //放float
+      MmKvUtils.putFloat(String key, float value)
+      //放bytes
+      MmKvUtils.putBytes(String key, byte[] value)
+      //放StringSet
+      MmKvUtils.putStringSet(String key, Set<String> value)
+      //放Parcelable
+      MmKvUtils.putParcelable(String key, Parcelable value)
+      //拿int
+      MmKvUtils.getInt(String key)
+      //拿int，有默认值
+      MmKvUtils.getIntWithDefault(String key, int value)
+      /拿String
+      MmKvUtils.getString(String key)
+      //拿String，有默认值
+      MmKvUtils.getStringWithDefault(String key, String value)
+      //拿boolean
+      MmKvUtils.getBoolean(String key)
+      //拿boolean，有默认值
+      MmKvUtils.getBooleanWithDefault(String key, boolean value)
+      //拿long
+      MmKvUtils.getLong(String key)
+      //拿long，有默认值
+      MmKvUtils.getLongWithDefault(String key, long value)
+      //拿double
+      MmKvUtils.getDouble(String key)
+      //拿double，有默认值
+      MmKvUtils.getDoubleWithDefault(String key, double value)
+      //拿float
+      MmKvUtils.getFloat(String key)
+      //拿float，有默认值
+      MmKvUtils.getFloatWithDefault(String key, float value)
+      //拿bytes
+      MmKvUtils.getBytes(String key)
+      //拿bytes，有默认值
+      MmKvUtils.getBytesWithDefault(String key, float value)
+      //拿StringSet
+      MmKvUtils.getStringSet(String key)
+      //拿StringSet，有默认值
+      MmKvUtils.getStringSetWithDefault(String key, Set<String> value)
+      //拿Parcelable
+      MmKvUtils.getParcelable(String key, Class<T> cls)
+      //拿Parcelable，有默认值
+      MmKvUtils.getParcelableWithDefault(String key, Class<T> cls, T t)
+      //查询是否有key
+      MmKvUtils.queryKey(String key)
+      //删除指定值
+      MmKvUtils.removeValue(String key)
+      //删除多个指定值
+      MmKvUtils.removeValues(String[] key)
 ```

@@ -32,6 +32,16 @@ public class PreferencesUtils {
     private static Context context;
 
     /**
+     * The constant editor.
+     */
+    private static Editor editor = null;
+
+    /**
+     * The constant settings.
+     */
+    private static SharedPreferences settings = null;
+
+    /**
      * Instantiates a new Preferences utils.
      */
     private PreferencesUtils() {
@@ -56,6 +66,8 @@ public class PreferencesUtils {
      */
     public void initPreferences(Context context) {
         PreferencesUtils.context = context;
+        settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        editor = settings.edit();
     }
 
     /**
@@ -66,8 +78,6 @@ public class PreferencesUtils {
      * @return True if the new values were successfully written to persistent storage.
      */
     public static boolean putStringNow(String key, String value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = settings.edit();
         editor.putString(key, value);
         return editor.commit();
     }
@@ -79,8 +89,6 @@ public class PreferencesUtils {
      * @param value The 存入值
      */
     public static void putString(String key, String value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = settings.edit();
         editor.putString(key, value);
         editor.apply();
     }
@@ -93,8 +101,6 @@ public class PreferencesUtils {
      * @return the boolean
      */
     private static boolean putStringSetNow(String key, Set<String> value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = settings.edit();
         editor.putStringSet(key, value);
         return editor.commit();
     }
@@ -106,8 +112,6 @@ public class PreferencesUtils {
      * @param value the 存入值
      */
     private static void putStringSet(String key, Set<String> value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = settings.edit();
         editor.putStringSet(key, value);
         editor.apply();
     }
@@ -198,7 +202,7 @@ public class PreferencesUtils {
      *
      * @param key The 索引
      * @return The preference value if it exists, or null. Throws ClassCastException if there is a preference with this name that is not a string
-     * @see #getString(Context, String, String) #getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)
+     * @see #getString(Context, String, String) #getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)
      */
     public static String getString(String key) {
         return getString(key, null);
@@ -212,7 +216,6 @@ public class PreferencesUtils {
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a string
      */
     public static String getString(String key, String defaultValue) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         return settings.getString(key, defaultValue);
     }
 
@@ -234,7 +237,6 @@ public class PreferencesUtils {
      * @return the string set
      */
     public static Set<String> getStringSet(String key, Set<String> defaultValue) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         return settings.getStringSet(key, defaultValue);
     }
 
@@ -246,8 +248,6 @@ public class PreferencesUtils {
      * @return True if the new values were successfully written to persistent storage.
      */
     public static boolean putIntNow(String key, int value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = settings.edit();
         editor.putInt(key, value);
         return editor.commit();
     }
@@ -259,8 +259,6 @@ public class PreferencesUtils {
      * @param value The 存入值
      */
     public static void putInt(String key, int value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = settings.edit();
         editor.putInt(key, value);
         editor.apply();
     }
@@ -270,7 +268,7 @@ public class PreferencesUtils {
      *
      * @param key The 索引
      * @return The preference value if it exists, or -1. Throws ClassCastException if there is a preference with this name that is not a int
-     * @see #getInt(Context, String, int) #getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)
+     * @see #getInt(Context, String, int) #getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)
      */
     public static int getInt(String key) {
         return getInt(key, -1);
@@ -284,7 +282,6 @@ public class PreferencesUtils {
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a int
      */
     public static int getInt(String key, int defaultValue) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         return settings.getInt(key, defaultValue);
     }
 
@@ -296,8 +293,6 @@ public class PreferencesUtils {
      * @return True if the new values were successfully written to persistent storage.
      */
     public static boolean putLongNow(String key, long value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = settings.edit();
         editor.putLong(key, value);
         return editor.commit();
     }
@@ -309,8 +304,6 @@ public class PreferencesUtils {
      * @param value The 存入值
      */
     public static void putLong(String key, long value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = settings.edit();
         editor.putLong(key, value);
         editor.apply();
     }
@@ -320,7 +313,7 @@ public class PreferencesUtils {
      *
      * @param key The 索引
      * @return The preference value if it exists, or -1. Throws ClassCastException if there is a preference with this name that is not a long
-     * @see #getLong(Context, String, long) #getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)
+     * @see #getLong(Context, String, long) #getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)
      */
     public static long getLong(String key) {
         return getLong(key, -1);
@@ -334,7 +327,6 @@ public class PreferencesUtils {
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a long
      */
     public static long getLong(String key, long defaultValue) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         return settings.getLong(key, defaultValue);
     }
 
@@ -346,8 +338,6 @@ public class PreferencesUtils {
      * @return True if the new values were successfully written to persistent storage.
      */
     public static boolean putFloatNow(String key, float value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = settings.edit();
         editor.putFloat(key, value);
         return editor.commit();
     }
@@ -359,8 +349,6 @@ public class PreferencesUtils {
      * @param value The 存入值
      */
     public static void putFloat(String key, float value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = settings.edit();
         editor.putFloat(key, value);
         editor.apply();
     }
@@ -370,7 +358,7 @@ public class PreferencesUtils {
      *
      * @param key The 索引
      * @return The preference value if it exists, or -1. Throws ClassCastException if there is a preference with this name that is not a float
-     * @see #getFloat(Context, String, float) #getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)
+     * @see #getFloat(Context, String, float) #getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)
      */
     public static float getFloat(String key) {
         return getFloat(key, -1);
@@ -384,7 +372,6 @@ public class PreferencesUtils {
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a float
      */
     public static float getFloat(String key, float defaultValue) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         return settings.getFloat(key, defaultValue);
     }
 
@@ -396,8 +383,6 @@ public class PreferencesUtils {
      * @return True if the new values were successfully written to persistent storage.
      */
     public static boolean putBooleanNow(String key, boolean value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = settings.edit();
         editor.putBoolean(key, value);
         return editor.commit();
     }
@@ -409,8 +394,6 @@ public class PreferencesUtils {
      * @param value The 存入值
      */
     public static void putBoolean(String key, boolean value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = settings.edit();
         editor.putBoolean(key, value);
         editor.apply();
     }
@@ -420,7 +403,7 @@ public class PreferencesUtils {
      *
      * @param key The 索引
      * @return The preference value if it exists, or false. Throws ClassCastException if there is a preference with this name that is not a boolean
-     * @see #getBoolean(Context, String, boolean) #getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)
+     * @see #getBoolean(Context, String, boolean) #getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)
      */
     public static boolean getBoolean(String key) {
         return getBoolean(key, false);
@@ -434,7 +417,6 @@ public class PreferencesUtils {
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a boolean
      */
     public static boolean getBoolean(String key, boolean defaultValue) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         return settings.getBoolean(key, defaultValue);
     }
 
@@ -444,8 +426,6 @@ public class PreferencesUtils {
      * @return the boolean
      */
     public static boolean clearNow() {
-        SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = preferences.edit();
         editor.clear();
         return editor.commit();
     }
@@ -454,8 +434,6 @@ public class PreferencesUtils {
      * 清空SP
      */
     public static void clear() {
-        SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = preferences.edit();
         editor.clear();
         editor.apply();
     }
@@ -467,8 +445,6 @@ public class PreferencesUtils {
      * @return the 是否删除
      */
     public static boolean removeNow(String key) {
-        SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = preferences.edit();
         editor.remove(key);
         return editor.commit();
     }
@@ -479,8 +455,6 @@ public class PreferencesUtils {
      * @param key the 索引
      */
     public static void remove(String key) {
-        SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        Editor editor = preferences.edit();
         editor.remove(key);
         editor.apply();
     }

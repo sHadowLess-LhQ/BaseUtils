@@ -150,6 +150,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
             @Override
             public void successWithOutData() {
                 initView(null);
+                emitter.onComplete();
             }
         });
     }

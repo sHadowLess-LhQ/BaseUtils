@@ -138,6 +138,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
             @Override
             public void successWithOutData() {
                 initView(null);
+                emitter.onComplete();
             }
         });
     }

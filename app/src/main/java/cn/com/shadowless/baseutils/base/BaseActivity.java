@@ -137,8 +137,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
 
             @Override
             public void successWithOutData() {
-                emitter.onNext(null);
-                emitter.onComplete();
+                initView(null);
             }
         });
     }
@@ -149,12 +148,8 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     @Override
-    public void onNext(@NonNull T mData) {
-        if (mData != null) {
-            initView(mData);
-        } else {
-            initView(null);
-        }
+    public void onNext(@Nullable T mData) {
+        initView(mData);
     }
 
     @Override

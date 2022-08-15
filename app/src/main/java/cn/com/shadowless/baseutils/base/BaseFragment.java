@@ -149,8 +149,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
 
             @Override
             public void successWithOutData() {
-                emitter.onNext(null);
-                emitter.onComplete();
+                initView(null);
             }
         });
     }
@@ -162,11 +161,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
 
     @Override
     public void onNext(@NonNull T mData) {
-        if (mData != null) {
-            initView(mData);
-        } else {
-            initView(null);
-        }
+        initView(mData);
     }
 
     @Override

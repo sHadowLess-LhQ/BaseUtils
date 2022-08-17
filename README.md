@@ -78,6 +78,7 @@ b、远程仓库引入
                 implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
                 implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
             //【注】：使用BaseXPop，请额外添加以下依赖：
+            //【注】：使用observer包下的订阅者，请额外添加以下依赖：
             //BaseXPop
                 implementation 'com.github.li-xiaojun:XPopup:2.7.6'
                 implementation 'com.google.android.material:material:1.6.1'
@@ -1314,6 +1315,8 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseObserver()
      //无字加载框
      new BaseObserver(Activity activity)
+     //自定义LoadingPopView
+     new BaseObserver(Activity activity, LoadingPopupView loadingPopupView)
      //无字是否View实现加载框
      new BaseObserver(Activity activity, boolean isViewModel)
      //指定字符是否View实现加载框
@@ -1326,6 +1329,8 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
      //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
      new BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
+     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊、背景透明和动画完成关闭加载框
+     new BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
 ### 20、BaseCompletableObserver：Rxjava的subscribe()处，直接new
@@ -1335,6 +1340,8 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseCompletableObserver()
      //无字加载框
      new BaseCompletableObserver(Activity activity)
+     //自定义LoadingPopView
+     new BaseCompletableObserver(Activity activity, LoadingPopupView loadingPopupView)
      //无字是否View实现加载框
      new BaseCompletableObserver(Activity activity, boolean isViewModel)
      //指定字符是否View实现加载框
@@ -1347,6 +1354,8 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
      //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
      new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
+     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊、背景透明和动画完成关闭加载框
+     new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
 ### 21、BaseMaybeObserver：Rxjava的subscribe()处，直接new
@@ -1356,6 +1365,8 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseMaybeObserver()
      //无字加载框
      new BaseMaybeObserver(Activity activity)
+     //自定义LoadingPopView
+     new BaseMaybeObserver(Activity activity, LoadingPopupView loadingPopupView)
      //无字是否View实现加载框
      new BaseMaybeObserver(Activity activity, boolean isViewModel)
      //指定字符是否View实现加载框
@@ -1368,6 +1379,8 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
      //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
      new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
+     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊、背景透明和动画完成关闭加载框
+     new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
 ### 22、BaseSingleObserver：Rxjava的subscribe()处，直接new
@@ -1377,6 +1390,8 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseSingleObserver()
      //无字加载框
      new BaseSingleObserver(Activity activity)
+     //自定义LoadingPopView
+     new BaseSingleObserver(Activity activity, LoadingPopupView loadingPopupView)
      //无字是否View实现加载框
      new BaseSingleObserver(Activity activity, boolean isViewModel)
      //指定字符是否View实现加载框
@@ -1389,6 +1404,8 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
      //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
      new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
+     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊、背景透明和动画完成关闭加载框
+     new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
 ### 23、BaseSubscriber：Rxjava的subscribe()处，直接new
@@ -1398,6 +1415,8 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseSubscriber()
      //无字加载框
      new BaseSubscriber(Activity activity)
+     //自定义LoadingPopView
+     new BaseSubscriber(Activity activity, LoadingPopupView loadingPopupView)
      //无字是否View实现加载框
      new BaseSubscriber(Activity activity, boolean isViewModel)
      //指定字符是否View实现加载框
@@ -1410,6 +1429,8 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
      //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
      new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
+     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊、背景透明和动画完成关闭加载框
+     new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
 ### 24、CrashConfig：调用示例

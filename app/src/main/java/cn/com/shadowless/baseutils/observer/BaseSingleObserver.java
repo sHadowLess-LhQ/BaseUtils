@@ -30,6 +30,11 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
     private Disposable disposable = null;
 
     /**
+     * The Is smart dismiss.
+     */
+    private boolean isSmartDismiss = false;
+
+    /**
      * Instantiates a new Base observer.
      */
     public BaseSingleObserver() {
@@ -42,6 +47,16 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
      */
     public BaseSingleObserver(Activity activity) {
         loadingPopupView = new XPopup.Builder(activity).asLoading();
+    }
+
+    /**
+     * Instantiates a new Base observer.
+     *
+     * @param activity         the activity
+     * @param loadingPopupView the loading popup view
+     */
+    public BaseSingleObserver(Activity activity, LoadingPopupView loadingPopupView) {
+        this.loadingPopupView = loadingPopupView;
     }
 
     /**
@@ -135,6 +150,23 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
         loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).hasBlurBg(hasBlurBg).hasShadowBg(hasShadow).dismissOnBackPressed(canCancel).dismissOnTouchOutside(canCancel).asLoading(loadName);
     }
 
+    /**
+     * Instantiates a new Base observer.
+     *
+     * @param activity         the activity
+     * @param isViewModel      the is view model
+     * @param canBackCancel    the can back cancel
+     * @param canOutSideCancel the can out side cancel
+     * @param hasBlurBg        the has blur bg
+     * @param hasShadow        the has shadow
+     * @param canCancel        the can cancel
+     * @param loadName         the load name
+     */
+    public BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName) {
+        this.isSmartDismiss = isSmartDismiss;
+        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).hasBlurBg(hasBlurBg).hasShadowBg(hasShadow).dismissOnBackPressed(canCancel).dismissOnTouchOutside(canCancel).asLoading(loadName);
+    }
+
     @Override
     public void onSubscribe(@NonNull Disposable d) {
         disposable = d;
@@ -146,7 +178,12 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
     @Override
     public void onSuccess(@NonNull T t) {
         if (loadingPopupView != null) {
-            loadingPopupView.dismissWith(() -> onNext(t, disposable));
+            if (isSmartDismiss) {
+                loadingPopupView.smartDismiss();
+                onNext(t, disposable);
+            } else {
+                loadingPopupView.dismissWith(() -> onNext(t, disposable));
+            }
         } else {
             onNext(t, disposable);
         }
@@ -155,7 +192,12 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
     @Override
     public void onError(@NonNull Throwable e) {
         if (loadingPopupView != null) {
-            loadingPopupView.dismissWith(() -> onFail(RetrofitUtils.getExceptionMessage(e), e));
+            if (isSmartDismiss) {
+                loadingPopupView.smartDismiss();
+                onFail(RetrofitUtils.getExceptionMessage(e), e);
+            } else {
+                loadingPopupView.dismissWith(() -> onFail(RetrofitUtils.getExceptionMessage(e), e));
+            }
         } else {
             onFail(RetrofitUtils.getExceptionMessage(e), e);
         }

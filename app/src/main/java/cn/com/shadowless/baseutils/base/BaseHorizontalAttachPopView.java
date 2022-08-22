@@ -31,6 +31,10 @@ public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding> extend
      */
     private final Context context;
     /**
+     * The Layout id.
+     */
+    private final int layoutId;
+    /**
      * The Provider.
      */
     protected LifecycleProvider<Lifecycle.Event> provider;
@@ -40,14 +44,15 @@ public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding> extend
      *
      * @param context the context
      */
-    public BaseHorizontalAttachPopView(@NonNull Context context) {
+    public BaseHorizontalAttachPopView(@NonNull Context context, int layoutId) {
         super(context);
         this.context = context;
+        this.layoutId = layoutId;
     }
 
     @Override
     protected int getImplLayoutId() {
-        return setLayout();
+        return layoutId;
     }
 
     @Override

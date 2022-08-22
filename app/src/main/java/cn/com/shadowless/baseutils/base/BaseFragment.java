@@ -75,12 +75,12 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
          *
          * @param t the t
          */
-        void successWithData(@NonNull T t);
+        void initViewWithData(@NonNull T t);
 
         /**
          * 成功不带数据
          */
-        void successWithOutData();
+        void initViewWithOutData();
     }
 
     @Override
@@ -92,31 +92,10 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            isOrientation = false;
-        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            isOrientation = true;
-        }
+        initOrientation();
         bind = setBindView();
         initListener();
-        mDisposable = new CompositeDisposable();
-        provider = AndroidLifecycle.createLifecycleProvider(this);
-        String[] permissions = permissionName();
-        if (null != permissions && permissions.length != 0) {
-            mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
-                    .subscribe(permission -> {
-                                if (permission.granted) {
-                                    Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
-                                } else if (permission.shouldShowRequestPermissionRationale) {
-                                    showToast(permission.name);
-                                } else {
-                                    showToast(permission.name);
-                                }
-                            }
-                    ));
-        } else {
-            Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
-        }
+        initPermissions();
         return bind.getRoot();
     }
 
@@ -142,13 +121,13 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     public void subscribe(@NonNull ObservableEmitter<T> emitter) throws Exception {
         initData(new InitDataCallBack<T>() {
             @Override
-            public void successWithData(@NonNull T t) {
+            public void initViewWithData(@NonNull T t) {
                 emitter.onNext(t);
                 emitter.onComplete();
             }
 
             @Override
-            public void successWithOutData() {
+            public void initViewWithOutData() {
                 initView(null);
                 emitter.onComplete();
             }
@@ -168,12 +147,12 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     @Override
     public void onError(@NonNull Throwable e) {
         initView(null);
-        Log.e(TAG, "onFail: " + e);
+        Log.e(TAG, "onError: " + e);
     }
 
     @Override
     public void onComplete() {
-        Log.e(TAG, "onEnd: " + "Fragment加载成功");
+        Log.e(TAG, "onComplete: " + "Fragment加载完成");
     }
 
     /**
@@ -220,6 +199,41 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      * 初始化监听
      */
     protected abstract void initListener();
+
+    /**
+     * 初始化方向变量
+     */
+    private void initOrientation() {
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            isOrientation = false;
+        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            isOrientation = true;
+        }
+    }
+
+    /**
+     * 初始化权限
+     */
+    private void initPermissions() {
+        mDisposable = new CompositeDisposable();
+        provider = AndroidLifecycle.createLifecycleProvider(this);
+        String[] permissions = permissionName();
+        if (null != permissions && permissions.length != 0) {
+            mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
+                    .subscribe(permission -> {
+                                if (permission.granted) {
+                                    Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
+                                } else if (permission.shouldShowRequestPermissionRationale) {
+                                    showToast(permission.name);
+                                } else {
+                                    showToast(permission.name);
+                                }
+                            }
+                    ));
+        } else {
+            Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
+        }
+    }
 
     /**
      * 内部权限提示

@@ -141,7 +141,7 @@ c、混淆规则
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图和传递数据类型
-//填入传递数据表数据类型
+//填入传递数据类型
 //新增CompositeDisposable，可统一管理Dispose
 //新增LifecycleProvider，与CompositeDisposable切换使用
 public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
@@ -171,8 +171,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
        }
        //若有数据给视图绑定，使用successWithData
        //若无数据给视图绑定，使用successWithOutData
-       initDataCallBack.successWithData("1");
-       initDataCallBack.successWithOutData();
+       initDataCallBack.initViewWithData("1");
+       initDataCallBack.initViewWithOutData();
     }
     
     @Override
@@ -208,7 +208,7 @@ public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends Bas
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图
-//填入传递数据表数据类型
+//填入传递数据类型
 //新增CompositeDisposable，可统一管理Dispose
 //新增LifecycleProvider，与CompositeDisposable切换使用
 public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
@@ -240,8 +240,8 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
        }
        //若有数据给视图绑定，使用successWithData
        //若无数据给视图绑定，使用successWithOutData
-       initDataCallBack.successWithData("1");
-       initDataCallBack.successWithOutData();
+       initDataCallBack.initViewWithData("1");
+       initDataCallBack.initViewWithOutData();
     }
     
     @Override
@@ -1478,15 +1478,10 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      //继承示例
      public class TestPopView extends BaseCenterPopView<PopAddCardViewBinding>{
 
-         public AddCardPopView(@NonNull Context context) {
-           super(context);
+         public TestPopView(@NonNull Context context, int layoutId) {
+            super(context, layoutId);
          }
-
-         @Override
-         protected int setLayout() {
-            return R.layout.pop_add_card_view;
-         }
-
+         
          @Override
          protected void initView() {
        

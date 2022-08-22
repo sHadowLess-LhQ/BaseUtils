@@ -30,7 +30,7 @@ import io.reactivex.disposables.Disposable;
  * 基类Activity
  *
  * @param <VB> the type 视图
- * @param <T>  the type parameter
+ * @param <T>  the type 传递数据类型
  * @author sHadowLess
  */
 public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatActivity implements ObservableOnSubscribe<T>, Observer<T> {
@@ -56,7 +56,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
      */
     protected CompositeDisposable mDisposable = null;
     /**
-     * Rx声明周期管理
+     * Rx生命周期管理
      */
     protected LifecycleProvider<Lifecycle.Event> provider = null;
 
@@ -71,47 +71,22 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
          *
          * @param t the t
          */
-        void successWithData(@NonNull T t);
+        void initViewWithData(@NonNull T t);
 
         /**
          * 成功不带数据
          */
-        void successWithOutData();
+        void initViewWithOutData();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        int customTheme = theme();
-        if (0 != customTheme) {
-            setTheme(customTheme);
-        }
+        initTheme();
         super.onCreate(savedInstanceState);
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            isOrientation = false;
-        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            isOrientation = true;
-        }
-        bind = setBindView();
-        setContentView(bind.getRoot());
+        initOrientation();
+        initBindView();
         initListener();
-        mDisposable = new CompositeDisposable();
-        provider = AndroidLifecycle.createLifecycleProvider(this);
-        String[] permissions = permissionName();
-        if (null != permissions && permissions.length != 0) {
-            mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
-                    .subscribe(permission -> {
-                                if (permission.granted) {
-                                    Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
-                                } else if (permission.shouldShowRequestPermissionRationale) {
-                                    showToast(permission.name);
-                                } else {
-                                    showToast(permission.name);
-                                }
-                            }
-                    ));
-        } else {
-            Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
-        }
+        initPermissions();
     }
 
     @Override
@@ -130,13 +105,13 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     public void subscribe(@NonNull ObservableEmitter<T> emitter) throws Exception {
         initData(new InitDataCallBack<T>() {
             @Override
-            public void successWithData(@NonNull T t) {
+            public void initViewWithData(@NonNull T t) {
                 emitter.onNext(t);
                 emitter.onComplete();
             }
 
             @Override
-            public void successWithOutData() {
+            public void initViewWithOutData() {
                 initView(null);
                 emitter.onComplete();
             }
@@ -149,19 +124,19 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     @Override
-    public void onNext(@Nullable T mData) {
+    public void onNext(@NonNull T mData) {
         initView(mData);
     }
 
     @Override
     public void onError(@NonNull Throwable e) {
         initView(null);
-        Log.e(TAG, "onFail: " + e);
+        Log.e(TAG, "onError: ", e);
     }
 
     @Override
     public void onComplete() {
-        Log.e(TAG, "onEnd: " + "Activity加载成功");
+        Log.e(TAG, "onComplete: " + "Activity加载完成");
     }
 
     /**
@@ -181,12 +156,11 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     protected abstract VB setBindView();
 
     /**
-     * Sets theme.
+     * 设置主题
      *
      * @return the theme
      */
     protected abstract int theme();
-
 
     /**
      * 初始化数据
@@ -257,6 +231,59 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
      */
     protected void replaceFragment(Fragment fragment, int layout, int... animation) {
         replace(fragment, layout, animation);
+    }
+
+    /**
+     * 初始化主题
+     */
+    private void initTheme() {
+        int customTheme = theme();
+        if (0 != customTheme) {
+            setTheme(customTheme);
+        }
+    }
+
+    /**
+     * 初始化视图
+     */
+    private void initBindView() {
+        bind = setBindView();
+        setContentView(bind.getRoot());
+    }
+
+    /**
+     * 初始化方向变量
+     */
+    private void initOrientation() {
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            isOrientation = false;
+        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            isOrientation = true;
+        }
+    }
+
+    /**
+     * 初始化权限
+     */
+    private void initPermissions() {
+        mDisposable = new CompositeDisposable();
+        provider = AndroidLifecycle.createLifecycleProvider(this);
+        String[] permissions = permissionName();
+        if (null != permissions && permissions.length != 0) {
+            mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
+                    .subscribe(permission -> {
+                                if (permission.granted) {
+                                    Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
+                                } else if (permission.shouldShowRequestPermissionRationale) {
+                                    showToast(permission.name);
+                                } else {
+                                    showToast(permission.name);
+                                }
+                            }
+                    ));
+        } else {
+            Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
+        }
     }
 
     /**

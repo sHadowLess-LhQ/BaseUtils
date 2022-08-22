@@ -32,7 +32,10 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
      * The Context.
      */
     private final Context context;
-
+    /**
+     * The Layout id.
+     */
+    private final int layoutId;
     /**
      * The Provider.
      */
@@ -43,14 +46,15 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
      *
      * @param context the context
      */
-    public BaseCenterPopView(@NonNull Context context) {
+    public BaseCenterPopView(@NonNull Context context, int layoutId) {
         super(context);
         this.context = context;
+        this.layoutId = layoutId;
     }
 
     @Override
     protected int getImplLayoutId() {
-        return setLayout();
+        return layoutId;
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -80,13 +84,6 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
     protected VB getBindView() {
         return bind;
     }
-
-    /**
-     * Sets layout.
-     *
-     * @return the layout
-     */
-    protected abstract int setLayout();
 
     /**
      * Init view.

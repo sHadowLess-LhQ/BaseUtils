@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewbinding.ViewBinding;
 
+import com.alibaba.android.arouter.facade.Postcard;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle;
 import com.trello.rxlifecycle3.LifecycleProvider;
 
@@ -92,6 +94,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ARouter.getInstance().inject(this);
         initOrientation();
         bind = setBindView();
         initListener();
@@ -244,5 +247,15 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
         String tip = "应用无法使用，请开启%s权限";
         Toast.makeText(mActivity, String.format(tip, name), Toast.LENGTH_SHORT).show();
         ApplicationUtils.startApplicationInfo(mActivity);
+    }
+
+    /**
+     * 跳转
+     *
+     * @param path the 路由路径
+     * @return the postcard
+     */
+    protected Postcard jump(String path) {
+        return ARouter.getInstance().build(path);
     }
 }

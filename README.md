@@ -34,6 +34,18 @@ Step 1. 添加maven仓库地址和配置
      //新AndroidStudio版本
      android {
       ...
+      
+      defaultConfig{
+        ...
+        
+         javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+        
+      }
+      
        buildFeatures {
          viewBinding true
           }
@@ -43,10 +55,39 @@ Step 1. 添加maven仓库地址和配置
      //旧AndroidStudio版本
      android {
       ...
+      
+      defaultConfig{
+        ...
+        
+         javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+        
+      }
+      
        viewBinding {
          enable = true
           }
      }
+```
+
+```
+     buildscript {
+        repositories {
+        google()
+        mavenCentral()
+      }
+        dependencies {
+          classpath "com.android.tools.build:gradle:7.0.2"
+          classpath "com.alibaba:arouter-register:1.0.2"
+        }
+      }
+
+      task clean(type: Delete) {
+          delete rootProject.buildDir
+      }
 ```
 
 Step 2. 添加依赖
@@ -70,6 +111,8 @@ b、远程仓库引入
             implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
             implementation 'com.trello.rxlifecycle3:rxlifecycle-android-lifecycle:3.1.0'
+            implementation 'com.alibaba:arouter-api:1.5.2'
+            annotationProcessor 'com.alibaba:arouter-compiler:1.5.2'
             //【注】：使用RetrofitUtils，请额外添加以下依赖：
             //RetrofitUtils
                 implementation 'com.squareup.okhttp3:okhttp:4.7.2'
@@ -133,6 +176,13 @@ c、混淆规则
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 -keep class android.support.**{*;}
+
+//ARouter混淆
+-keep public class com.alibaba.android.arouter.routes.**{*;}
+-keep public class com.alibaba.android.arouter.facade.**{*;}
+-keep class * implements com.alibaba.android.arouter.facade.template.ISyringe{*;}
+-keep interface * implements com.alibaba.android.arouter.facade.template.IProvider
+-keep class * implements com.alibaba.android.arouter.facade.template.IProvider
 ```
 
 #### 使用说明
@@ -144,7 +194,15 @@ c、混淆规则
 //填入传递数据类型
 //新增CompositeDisposable，可统一管理Dispose
 //新增LifecycleProvider，与CompositeDisposable切换使用
+//新增ARouter，添加注解，可使用jump()方法传入路由路径，获取Postcard
+//jump()方法的Postcard默认路由超时为两秒，为了简单解决多次连续跳转路由失败，不需要请重新设置以覆盖
+@Router(path = "/xxx/xxx",name = "xxx")
 public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
+
+    //ARouter跳转参数获取，一定要public，name最好声明
+    //用法请参考ARouter的使用
+    @Autowired(name = "key1")
+    public String s;
 
     @Nullable
     @Override
@@ -185,6 +243,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
     protected void initView(@Nullable String data) {
        //初始化界面控件
        getBindView().test.setText(data);
+       //正常路由
+       jump("/xxx/xxx").navigation();
+       //路由碎片
+       Fragment fragment = (Fragment)jump("/xxx/xxx").navigation();
+       //显示碎片
+       showFragment(fragment，R.id.test);
+       showFragment(fragment，R.id.test,R.anim.left_in,R.anim.left.out,R.anim.right_in,R.anim.right_out);
+       //替换碎片
+       replaceFragment(fragment，R.id.test);
+       replaceFragment(fragment，R.id.test,R.anim.left_in,R.anim.left.out,R.anim.right_in,R.anim.right_out);
     }
     
     @Override
@@ -211,7 +279,15 @@ public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends Bas
 //填入传递数据类型
 //新增CompositeDisposable，可统一管理Dispose
 //新增LifecycleProvider，与CompositeDisposable切换使用
+//新增ARouter，添加注解，可使用jump()方法传入路由路径，获取Postcard
+//jump()方法的Postcard默认路由超时为两秒，为了简单解决多次连续跳转路由失败，不需要请重新设置以覆盖
+@Router(path = "/xxx/xxx",name = "xxx")
 public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
+    
+    //ARouter跳转参数获取，一定要public，name最好声明
+    //剩余用法请参考ARouter的使用
+    @Autowired(name = "key1")
+    public String s;
     
     @Nullable
     @Override
@@ -254,6 +330,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
     protected void initView(@Nullable String map) {
        //初始化界面控件
        getBindView().test.setText(map);
+       jump("/xxx/xxx").navigation();
     }
 }
 ```

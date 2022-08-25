@@ -13,6 +13,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewbinding.ViewBinding;
 
+import com.alibaba.android.arouter.facade.Postcard;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle;
 import com.trello.rxlifecycle3.LifecycleProvider;
 
@@ -83,6 +85,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     protected void onCreate(Bundle savedInstanceState) {
         initTheme();
         super.onCreate(savedInstanceState);
+        ARouter.getInstance().inject(this);
         initOrientation();
         initBindView();
         initListener();
@@ -189,6 +192,16 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     @NonNull
     protected VB getBindView() {
         return bind;
+    }
+
+    /**
+     * 跳转
+     *
+     * @param path the 路由路径
+     * @return the postcard
+     */
+    protected Postcard jump(String path) {
+        return ARouter.getInstance().build(path).setTimeout(2);
     }
 
     /**

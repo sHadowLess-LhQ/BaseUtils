@@ -115,19 +115,19 @@ b、远程仓库引入
             annotationProcessor 'com.alibaba:arouter-compiler:1.5.2'
             //【注】：使用RetrofitUtils，请额外添加以下依赖：
             //RetrofitUtils
-                implementation 'com.squareup.okhttp3:okhttp:4.7.2'
-                implementation 'com.google.code.gson:gson:2.8.6'
-                implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-                implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-                implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+            implementation 'com.squareup.okhttp3:okhttp:4.7.2'
+            implementation 'com.google.code.gson:gson:2.8.6'
+            implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+            implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+            implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
             //【注】：使用BaseXPop，请额外添加以下依赖：
             //【注】：使用observer包下的订阅者，请额外添加以下依赖：
             //BaseXPop
-                implementation 'com.github.li-xiaojun:XPopup:2.7.6'
-                implementation 'com.google.android.material:material:1.6.1'
-                implementation 'androidx.recyclerview:recyclerview:1.2.1'
+            implementation 'com.github.li-xiaojun:XPopup:2.7.6'
+            implementation 'com.google.android.material:material:1.6.1'
+            implementation 'androidx.recyclerview:recyclerview:1.2.1'
             //【注】：使用MmKvUtils，请额外添加以下依赖
-                implementation 'com.tencent:mmkv:1.2.13'
+            implementation 'com.tencent:mmkv:1.2.13'
     }
 ```
 
@@ -227,8 +227,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
        }else{
         //横屏
        }
-       //若有数据给视图绑定，使用successWithData
-       //若无数据给视图绑定，使用successWithOutData
+       //若有数据给视图绑定，使用initViewWithData
+       //若无数据给视图绑定，使用initViewWithOutData
        initDataCallBack.initViewWithData("1");
        initDataCallBack.initViewWithOutData();
     }
@@ -314,8 +314,8 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
        }else{
         //横屏
        }
-       //若有数据给视图绑定，使用successWithData
-       //若无数据给视图绑定，使用successWithOutData
+       //若有数据给视图绑定，使用initViewWithData
+       //若无数据给视图绑定，使用initViewWithOutData
        initDataCallBack.initViewWithData("1");
        initDataCallBack.initViewWithOutData();
     }

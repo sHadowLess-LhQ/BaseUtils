@@ -143,6 +143,13 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     /**
+     * 设置主题
+     *
+     * @return the theme
+     */
+    protected abstract int theme();
+
+    /**
      * 需要申请的权限
      *
      * @return the 权限组
@@ -159,11 +166,9 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     protected abstract VB setBindView();
 
     /**
-     * 设置主题
-     *
-     * @return the theme
+     * 初始化监听
      */
-    protected abstract int theme();
+    protected abstract void initListener();
 
     /**
      * 初始化数据
@@ -178,11 +183,6 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
      * @param data the 数据表
      */
     protected abstract void initView(@Nullable T data);
-
-    /**
-     * 初始化监听
-     */
-    protected abstract void initListener();
 
     /**
      * 获取绑定的视图

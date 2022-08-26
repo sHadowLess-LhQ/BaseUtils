@@ -185,23 +185,23 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     protected abstract VB setBindView();
 
     /**
+     * 初始化监听
+     */
+    protected abstract void initListener();
+
+    /**
      * 初始化数据
      *
-     * @param initDataCallBack the 数据回调
+     * @param initDataCallBack the  回调
      */
     protected abstract void initData(@NonNull InitDataCallBack<T> initDataCallBack);
 
     /**
      * 初始化视图
      *
-     * @param t the t
+     * @param data the 数据表
      */
-    protected abstract void initView(@Nullable T t);
-
-    /**
-     * 初始化监听
-     */
-    protected abstract void initListener();
+    protected abstract void initView(@Nullable T data);
 
     /**
      * 初始化方向变量

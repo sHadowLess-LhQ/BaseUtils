@@ -475,7 +475,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
 ### 7、RxUtils：调用示例
 
 ```
-     //具体枚举
+     //具体参数
      /**
          * 默认
          */
@@ -562,15 +562,15 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
         SINGLE_TO_SINGLE
         
      //返回ObservableTransformer流对象
-     RxUtils.dealObservableThread(ThreadSign threadSign)
+     RxUtils.dealObservableThread(int threadSign)
      //返回dealCompletableThread流对象
-     RxUtils.dealCompletableThread(ThreadSign threadSign)
+     RxUtils.dealCompletableThread(int threadSign)
      //返回dealMaybeThread流对象
-     RxUtils.dealMaybeThread(ThreadSign threadSign)
+     RxUtils.dealMaybeThread(int threadSign)
      //返回dealSingleThread流对象
-     RxUtils.dealSingleThread(ThreadSign threadSign)
+     RxUtils.dealSingleThread(int threadSign)
      //返回dealFlowableThread流对象
-     RxUtils.dealFlowableThread(ThreadSign threadSign)
+     RxUtils.dealFlowableThread(int threadSign)
 ```
 
 ### 8、RetrofitUtils：调用示例

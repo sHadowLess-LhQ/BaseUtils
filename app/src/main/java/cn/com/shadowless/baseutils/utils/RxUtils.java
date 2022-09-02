@@ -23,94 +23,89 @@ public class RxUtils {
     }
 
     /**
-     * 线程枚举
+     * 默认
      */
-    public enum ThreadSign {
-        /**
-         * 默认
-         */
-        DEFAULT,
-        /**
-         * 非密集计算线程到主线程
-         */
-        IO_TO_MAIN,
-        /**
-         * 非密集计算线程到非密集计算线程
-         */
-        IO_TO_IO,
-        /**
-         * 非密集计算线程到新线程
-         */
-        IO_TO_NEW_THREAD,
-        /**
-         * 非密集计算线程到密集计算线程
-         */
-        IO_TO_COMPUTATION,
-        /**
-         * 非密集计算线程到有序单线程
-         */
-        IO_TO_SINGLE,
-        /**
-         * 新线程到主线程
-         */
-        NEW_THREAD_TO_MAIN,
-        /**
-         * 新线程到非密集计算线程
-         */
-        NEW_THREAD_TO_IO,
-        /**
-         * 新线程到新线程
-         */
-        NEW_THREAD_TO_NEW_THREAD,
-        /**
-         * 新线程到密集计算线程
-         */
-        NEW_THREAD_TO_COMPUTATION,
-        /**
-         * 新线程到有序单线程
-         */
-        NEW_THREAD_TO_SINGLE,
-        /**
-         * 密集计算线程到主线程
-         */
-        COMPUTATION_TO_MAIN,
-        /**
-         * 密集计算线程到非密集计算线程到
-         */
-        COMPUTATION_TO_IO,
-        /**
-         * 密集计算线程到新线程
-         */
-        COMPUTATION_TO_NEW_THREAD,
-        /**
-         * 密集计算线程到密集计算线程到
-         */
-        COMPUTATION_TO_COMPUTATION,
-        /**
-         * 密集计算线程到有序单线程
-         */
-        COMPUTATION_TO_SINGLE,
-        /**
-         * 有序单线程到主线程
-         */
-        SINGLE_TO_MAIN,
-        /**
-         * 有序单线程到非密集计算线程
-         */
-        SINGLE_TO_IO,
-        /**
-         * 有序单线程到新线程
-         */
-        SINGLE_TO_NEW_THREAD,
-        /**
-         * 有序单线程到密集计算线程
-         */
-        SINGLE_TO_COMPUTATION,
-        /**
-         * 有序单线程到有序单线程到
-         */
-        SINGLE_TO_SINGLE
-    }
+    public final static int DEFAULT = 0;
+    /**
+     * 非密集计算线程到主线程
+     */
+    public final static int IO_TO_MAIN = 1;
+    /**
+     * 非密集计算线程到非密集计算线程
+     */
+    public final static int IO_TO_IO = 2;
+    /**
+     * 非密集计算线程到新线程
+     */
+    public final static int IO_TO_NEW_THREAD = 3;
+    /**
+     * 非密集计算线程到密集计算线程
+     */
+    public final static int IO_TO_COMPUTATION = 4;
+    /**
+     * 非密集计算线程到有序单线程
+     */
+    public final static int IO_TO_SINGLE = 5;
+    /**
+     * 新线程到主线程
+     */
+    public final static int NEW_THREAD_TO_MAIN = 6;
+    /**
+     * 新线程到非密集计算线程
+     */
+    public final static int NEW_THREAD_TO_IO = 7;
+    /**
+     * 新线程到新线程
+     */
+    public final static int NEW_THREAD_TO_NEW_THREAD = 8;
+    /**
+     * 新线程到密集计算线程
+     */
+    public final static int NEW_THREAD_TO_COMPUTATION = 9;
+    /**
+     * 新线程到有序单线程
+     */
+    public final static int NEW_THREAD_TO_SINGLE = 10;
+    /**
+     * 密集计算线程到主线程
+     */
+    public final static int COMPUTATION_TO_MAIN = 11;
+    /**
+     * 密集计算线程到非密集计算线程到
+     */
+    public final static int COMPUTATION_TO_IO = 12;
+    /**
+     * 密集计算线程到新线程
+     */
+    public final static int COMPUTATION_TO_NEW_THREAD = 13;
+    /**
+     * 密集计算线程到密集计算线程到
+     */
+    public final static int COMPUTATION_TO_COMPUTATION = 14;
+    /**
+     * 密集计算线程到有序单线程
+     */
+    public final static int COMPUTATION_TO_SINGLE = 15;
+    /**
+     * 有序单线程到主线程
+     */
+    public final static int SINGLE_TO_MAIN = 16;
+    /**
+     * 有序单线程到非密集计算线程
+     */
+    public final static int SINGLE_TO_IO = 17;
+    /**
+     * 有序单线程到新线程
+     */
+    public final static int SINGLE_TO_NEW_THREAD = 18;
+    /**
+     * 有序单线程到密集计算线程
+     */
+    public final static int SINGLE_TO_COMPUTATION = 19;
+    /**
+     * 有序单线程到有序单线程到
+     */
+    public final static int SINGLE_TO_SINGLE = 20;
 
     /**
      * 线程转换器
@@ -119,7 +114,7 @@ public class RxUtils {
      * @param threadSign the 线程枚举
      * @return the observable transformer
      */
-    public static <T> ObservableTransformer<T, T> dealObservableThread(ThreadSign threadSign) {
+    public static <T> ObservableTransformer<T, T> dealObservableThread(int threadSign) {
         switch (threadSign) {
             case IO_TO_MAIN:
                 return setObservableStream(Schedulers.io(), AndroidSchedulers.mainThread());
@@ -172,7 +167,7 @@ public class RxUtils {
      * @param threadSign the 线程枚举
      * @return the observable transformer
      */
-    public static CompletableTransformer dealCompletableThread(ThreadSign threadSign) {
+    public static CompletableTransformer dealCompletableThread(int threadSign) {
         switch (threadSign) {
             case IO_TO_MAIN:
                 return setCompletableStream(Schedulers.io(), AndroidSchedulers.mainThread());
@@ -226,7 +221,7 @@ public class RxUtils {
      * @param threadSign the 线程枚举
      * @return the observable transformer
      */
-    public static <T> MaybeTransformer<T, T> dealMaybeThread(ThreadSign threadSign) {
+    public static <T> MaybeTransformer<T, T> dealMaybeThread(int threadSign) {
         switch (threadSign) {
             case IO_TO_MAIN:
                 return setMaybeStream(Schedulers.io(), AndroidSchedulers.mainThread());
@@ -280,7 +275,7 @@ public class RxUtils {
      * @param threadSign the 线程枚举
      * @return the observable transformer
      */
-    public static <T> SingleTransformer<T, T> dealSingleThread(ThreadSign threadSign) {
+    public static <T> SingleTransformer<T, T> dealSingleThread(int threadSign) {
         switch (threadSign) {
             case IO_TO_MAIN:
                 return setSingleStream(Schedulers.io(), AndroidSchedulers.mainThread());
@@ -334,7 +329,7 @@ public class RxUtils {
      * @param threadSign the 线程枚举
      * @return the observable transformer
      */
-    public static <T> FlowableTransformer<T, T> dealFlowableThread(ThreadSign threadSign) {
+    public static <T> FlowableTransformer<T, T> dealFlowableThread(int threadSign) {
         switch (threadSign) {
             case IO_TO_MAIN:
                 return setFlowableStream(Schedulers.io(), AndroidSchedulers.mainThread());

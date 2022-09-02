@@ -225,7 +225,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
             mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
+                                    Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.DEFAULT)).subscribe(this);
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {
@@ -234,7 +234,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
                             }
                     ));
         } else {
-            Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
+            Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.DEFAULT)).subscribe(this);
         }
     }
 

@@ -217,12 +217,33 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     /**
      * 显示碎片
      *
+     * @param fragment the 碎片
+     * @param layout   the 布局
+     */
+    protected void showFragment(Object fragment, int layout) {
+        show((Fragment) fragment, layout, null);
+    }
+
+    /**
+     * 显示碎片
+     *
      * @param fragment  the 碎片
      * @param layout    the 布局
      * @param animation the 动画
      */
     protected void showFragment(Fragment fragment, int layout, int... animation) {
         show(fragment, layout, animation);
+    }
+
+    /**
+     * 显示碎片
+     *
+     * @param fragment  the 碎片
+     * @param layout    the 布局
+     * @param animation the 动画
+     */
+    protected void showFragment(Object fragment, int layout, int... animation) {
+        show((Fragment) fragment, layout, animation);
     }
 
     /**
@@ -238,12 +259,33 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     /**
      * 替换碎片
      *
+     * @param fragment the 碎片
+     * @param layout   the 布局
+     */
+    protected void replaceFragment(Object fragment, int layout) {
+        replace((Fragment) fragment, layout, null);
+    }
+
+    /**
+     * 替换碎片
+     *
      * @param fragment  the 碎片
      * @param layout    the 布局
      * @param animation the 动画
      */
     protected void replaceFragment(Fragment fragment, int layout, int... animation) {
         replace(fragment, layout, animation);
+    }
+
+    /**
+     * 替换碎片
+     *
+     * @param fragment  the 碎片
+     * @param layout    the 布局
+     * @param animation the 动画
+     */
+    protected void replaceFragment(Object fragment, int layout, int... animation) {
+        replace((Fragment) fragment, layout, animation);
     }
 
     /**
@@ -286,7 +328,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
             mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
+                                    Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.DEFAULT)).subscribe(this);
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {
@@ -295,7 +337,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
                             }
                     ));
         } else {
-            Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.ThreadSign.DEFAULT)).subscribe(this);
+            Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.DEFAULT)).subscribe(this);
         }
     }
 

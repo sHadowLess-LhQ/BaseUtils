@@ -98,7 +98,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
         initOrientation();
         bind = setBindView();
         initListener();
-        initPermissions();
+        initPermissions(RxUtils.IO_TO_MAIN);
         return bind.getRoot();
     }
 
@@ -126,12 +126,10 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
             @Override
             public void initViewWithData(@NonNull T t) {
                 emitter.onNext(t);
-                emitter.onComplete();
             }
 
             @Override
             public void initViewWithOutData() {
-                initView(null);
                 emitter.onComplete();
             }
         });
@@ -150,12 +148,13 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     @Override
     public void onError(@NonNull Throwable e) {
         initView(null);
-        Log.e(TAG, "onError: " + e);
+        Log.e(TAG, "onError: ", e);
     }
 
     @Override
     public void onComplete() {
-        Log.e(TAG, "onComplete: " + "Fragment加载完成");
+        initView(null);
+        Log.e(TAG, "onComplete: " + "Activity加载完成");
     }
 
     /**
@@ -217,7 +216,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     /**
      * 初始化权限
      */
-    private void initPermissions() {
+    protected void initPermissions(int threadMod) {
         mDisposable = new CompositeDisposable();
         provider = AndroidLifecycle.createLifecycleProvider(this);
         String[] permissions = permissionName();
@@ -225,7 +224,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
             mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.DEFAULT)).subscribe(this);
+                                    Observable.create(this).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {
@@ -234,7 +233,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
                             }
                     ));
         } else {
-            Observable.create(this).compose(RxUtils.dealObservableThread(RxUtils.DEFAULT)).subscribe(this);
+            Observable.create(this).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
         }
     }
 

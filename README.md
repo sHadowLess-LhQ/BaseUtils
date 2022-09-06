@@ -220,6 +220,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
 
     @Override
     protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
+       //默认在IO线程，需要更改，请重写initPermissions()方法，向父类super传递新的RxUtils线程值
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
        if(isOrientation){
@@ -241,6 +242,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
 
     @Override
     protected void initView(@Nullable String data) {
+       //默认在主线程
        //初始化界面控件
        getBindView().test.setText(data);
        //正常路由
@@ -305,6 +307,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
 
     @Override
     protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
+       //默认在IO线程，需要更改，请重写initPermissions()方法，向父类super传递新的RxUtils线程值
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
        if(isOrientation){
@@ -328,6 +331,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
 
     @Override
     protected void initView(@Nullable String map) {
+       //默认在主线程
        //初始化界面控件
        getBindView().test.setText(map);
        jump("/xxx/xxx").navigation();

@@ -580,7 +580,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
 ### 8、RetrofitUtils：调用示例
 
 ```
-      Retrofit
+      RetrofitUtils
                 .builder()
                 .baseUrl()       //设置根地址
                 .okHttpClient()  //设置自定义okhttp，不设置有默认

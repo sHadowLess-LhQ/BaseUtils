@@ -32,6 +32,11 @@ Step 1. 添加maven仓库地址和配置
 ```
      //主项目的build.gradle中加入
      //新AndroidStudio版本
+     plugins{
+       ...
+        id 'com.alibaba.arouter'
+     }
+     
      android {
       ...
       
@@ -53,6 +58,9 @@ Step 1. 添加maven仓库地址和配置
      
      //主项目的build.gradle中加入
      //旧AndroidStudio版本
+      ...
+     apply plugin 'com.alibaba.arouter'
+     
      android {
       ...
       
@@ -194,8 +202,7 @@ c、混淆规则
 //填入传递数据类型
 //新增CompositeDisposable，可统一管理Dispose
 //新增LifecycleProvider，与CompositeDisposable切换使用
-//新增ARouter，添加注解，可使用jump()方法传入路由路径，获取Postcard
-//jump()方法的Postcard默认路由超时为两秒，为了简单解决多次连续跳转路由失败，不需要请重新设置以覆盖
+//新增ARouter
 @Router(path = "/xxx/xxx",name = "xxx")
 public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
 
@@ -246,9 +253,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
        //初始化界面控件
        getBindView().test.setText(data);
        //正常路由
-       jump("/xxx/xxx").navigation();
+       RouterUtils.jump("/xxx/xxx").navigation();
        //路由碎片
-       Fragment fragment = (Fragment)jump("/xxx/xxx").navigation();
+       Fragment fragment = (Fragment)RouterUtils.jump("/xxx/xxx").navigation();
        //显示碎片
        showFragment(fragment，R.id.test);
        showFragment(fragment，R.id.test,R.anim.left_in,R.anim.left.out,R.anim.right_in,R.anim.right_out);
@@ -281,8 +288,7 @@ public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends Bas
 //填入传递数据类型
 //新增CompositeDisposable，可统一管理Dispose
 //新增LifecycleProvider，与CompositeDisposable切换使用
-//新增ARouter，添加注解，可使用jump()方法传入路由路径，获取Postcard
-//jump()方法的Postcard默认路由超时为两秒，为了简单解决多次连续跳转路由失败，不需要请重新设置以覆盖
+//新增ARouter
 @Router(path = "/xxx/xxx",name = "xxx")
 public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
     
@@ -334,7 +340,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
        //默认在主线程
        //初始化界面控件
        getBindView().test.setText(map);
-       jump("/xxx/xxx").navigation();
+       RouterUtils.jump("/xxx/xxx").navigation();
     }
 }
 ```
@@ -1657,4 +1663,36 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       MmKvUtils.removeValue(String key)
       //删除多个指定值
       MmKvUtils.removeValues(String[] key)
+```
+
+***
+
+### 27、RouterUtils
+
+```
+     //默认跳转超时是2秒
+     //获取Postcard跳转配置
+     RouterUtils.getDefaultPostcard(String path)
+     //获取自定义超时Postcard跳转配置
+     RouterUtils.getDefaultPostcard(String path, int timeOut)
+     //指定路由跳转（走Application的Context）
+     RouterUtils.jump(String path)
+     //指定路径超时跳转（走Application的Context）
+     RouterUtils.jump(String path, int timeOut)
+     //指定上下文、路由跳转
+     RouterUtils.jump(String path, Context context)
+     //指定上下文、路由和超时跳转
+     RouterUtils.jump(String path, Context context, int timeOut)
+     //指定上下文、路由和路由回调跳转
+     RouterUtils.jump(String path, Context context, NavigationCallback callback)
+     //指定上下文、路由、超时和路由回调跳转
+     RouterUtils.jump(String path, Context context, int timeOut, NavigationCallback callback)
+     //指定上下文、路由和请求返回值跳转
+     RouterUtils.jump(String path, Activity context, int requestCode)
+     //指定上下文、路由、超时和请求返回值跳转
+     RouterUtils.jump(String path, Activity context, int timeOut, int requestCode)
+     //指定上下文、路由、超时和请求返回值跳转
+     RouterUtils.jump(String path, Activity context, int requestCode, NavigationCallback callback)
+      //指定上下文、路由、超时、请求返回值和回调跳转
+     RouterUtils.jump(String path, Activity context, int timeOut, int requestCode, NavigationCallback callback)
 ```

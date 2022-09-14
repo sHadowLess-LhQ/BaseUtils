@@ -247,14 +247,4 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
         Toast.makeText(mActivity, String.format(tip, name), Toast.LENGTH_SHORT).show();
         ApplicationUtils.startApplicationInfo(mActivity);
     }
-
-    /**
-     * 跳转
-     *
-     * @param path the 路由路径
-     * @return the postcard
-     */
-    protected Postcard jump(String path) {
-        return ARouter.getInstance().build(path);
-    }
 }

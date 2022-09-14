@@ -194,16 +194,6 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     /**
-     * 跳转
-     *
-     * @param path the 路由路径
-     * @return the postcard
-     */
-    protected Postcard jump(String path) {
-        return ARouter.getInstance().build(path).setTimeout(2);
-    }
-
-    /**
      * 显示碎片
      *
      * @param fragment the 碎片

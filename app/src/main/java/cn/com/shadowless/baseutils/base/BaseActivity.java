@@ -46,10 +46,6 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
      */
     private VB bind = null;
     /**
-     * 当前碎片
-     */
-    private Fragment currentFragment = null;
-    /**
      * 屏幕方向标志
      */
     protected boolean isOrientation = false;
@@ -194,90 +190,6 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     /**
-     * 显示碎片
-     *
-     * @param fragment the 碎片
-     * @param layout   the 布局
-     */
-    protected void showFragment(Fragment fragment, int layout) {
-        show(fragment, layout, null);
-    }
-
-    /**
-     * 显示碎片
-     *
-     * @param fragment the 碎片
-     * @param layout   the 布局
-     */
-    protected void showFragment(Object fragment, int layout) {
-        show((Fragment) fragment, layout, null);
-    }
-
-    /**
-     * 显示碎片
-     *
-     * @param fragment  the 碎片
-     * @param layout    the 布局
-     * @param animation the 动画
-     */
-    protected void showFragment(Fragment fragment, int layout, int... animation) {
-        show(fragment, layout, animation);
-    }
-
-    /**
-     * 显示碎片
-     *
-     * @param fragment  the 碎片
-     * @param layout    the 布局
-     * @param animation the 动画
-     */
-    protected void showFragment(Object fragment, int layout, int... animation) {
-        show((Fragment) fragment, layout, animation);
-    }
-
-    /**
-     * 替换碎片
-     *
-     * @param fragment the 碎片
-     * @param layout   the 布局
-     */
-    protected void replaceFragment(Fragment fragment, int layout) {
-        replace(fragment, layout, null);
-    }
-
-    /**
-     * 替换碎片
-     *
-     * @param fragment the 碎片
-     * @param layout   the 布局
-     */
-    protected void replaceFragment(Object fragment, int layout) {
-        replace((Fragment) fragment, layout, null);
-    }
-
-    /**
-     * 替换碎片
-     *
-     * @param fragment  the 碎片
-     * @param layout    the 布局
-     * @param animation the 动画
-     */
-    protected void replaceFragment(Fragment fragment, int layout, int... animation) {
-        replace(fragment, layout, animation);
-    }
-
-    /**
-     * 替换碎片
-     *
-     * @param fragment  the 碎片
-     * @param layout    the 布局
-     * @param animation the 动画
-     */
-    protected void replaceFragment(Object fragment, int layout, int... animation) {
-        replace((Fragment) fragment, layout, animation);
-    }
-
-    /**
      * 初始化主题
      */
     private void initTheme() {
@@ -339,69 +251,5 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
         String tip = "应用无法使用，请开启%s权限";
         Toast.makeText(this, String.format(tip, name), Toast.LENGTH_SHORT).show();
         ApplicationUtils.startApplicationInfo(this);
-    }
-
-    /**
-     * 显示
-     *
-     * @param fragment  the 碎片
-     * @param layout    the 布局
-     * @param animation the 动画
-     */
-    private void show(Fragment fragment, int layout, int... animation) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (currentFragment != null) {
-            transaction.hide(currentFragment);
-        }
-        currentFragment = fragment;
-        if (!fragment.isAdded()) {
-            if (animation != null && animation.length != 0) {
-                transaction.add(layout, fragment).show(fragment).setCustomAnimations(
-                        animation[0],
-                        animation[1],
-                        animation[2],
-                        animation[3]
-                ).commit();
-            } else {
-                transaction.add(layout, fragment).show(fragment).commit();
-            }
-        } else {
-            if (animation != null && animation.length != 0) {
-                transaction.show(fragment).setCustomAnimations(
-                        animation[0],
-                        animation[1],
-                        animation[2],
-                        animation[3]
-                ).commit();
-            } else {
-                transaction.show(fragment).commit();
-            }
-        }
-    }
-
-    /**
-     * 替换
-     *
-     * @param fragment  the 碎片
-     * @param layout    the 布局
-     * @param animation the 动画
-     */
-    private void replace(Fragment fragment, int layout, int... animation) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (animation != null && animation.length != 0) {
-            transaction
-                    .setCustomAnimations(
-                            animation[0],
-                            animation[1],
-                            animation[2],
-                            animation[3]
-                    )
-                    .replace(layout, fragment)
-                    .commit();
-        } else {
-            transaction
-                    .replace(layout, fragment)
-                    .commit();
-        }
     }
 }

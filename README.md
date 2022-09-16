@@ -1696,3 +1696,23 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       //指定上下文、路由、超时、请求返回值和回调跳转
      RouterUtils.jump(String path, Activity context, int timeOut, int requestCode, NavigationCallback callback)
 ```
+
+***
+
+### 28、FragmentUtils
+
+```
+     //碎片工具类，可配合ARouter使用
+     //显示碎片
+     FragmentUtils.showFragment(FragmentManager manager, Fragment fragment, int layout)
+     FragmentUtils.showFragment(FragmentManager manager, Object fragment, int layout)
+     //显示带动画碎片
+     FragmentUtils.showFragment(FragmentManager manager, Fragment fragment, int layout, int... animation)
+     FragmentUtils.showFragment(FragmentManager manager, Object fragment, int layout, int... animation)
+     //替换碎片
+     FragmentUtils.replaceFragment(FragmentManager manager, Fragment fragment, int layout)
+     FragmentUtils.replaceFragment(FragmentManager manager, Object fragment, int layout)
+     //替换带动画碎片
+     FragmentUtils.replaceFragment(FragmentManager manager, Fragment fragment, int layout, int... animation)
+     FragmentUtils.replaceFragment(FragmentManager manager, Object fragment, int layout, int... animation)
+```

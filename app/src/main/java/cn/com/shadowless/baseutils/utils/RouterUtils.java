@@ -51,9 +51,10 @@ public class RouterUtils {
      * 跳转
      *
      * @param path the 路径
+     * @return the object
      */
-    public static void jump(String path) {
-        ARouter.getInstance().build(path).setTimeout(DEFAULT_TIMEOUT).navigation();
+    public static Object jump(String path) {
+        return ARouter.getInstance().build(path).setTimeout(DEFAULT_TIMEOUT).navigation();
     }
 
     /**
@@ -61,9 +62,10 @@ public class RouterUtils {
      *
      * @param path    the 路径
      * @param timeOut the 超时
+     * @return the object
      */
-    public static void jump(String path, int timeOut) {
-        ARouter.getInstance().build(path).setTimeout(timeOut).navigation();
+    public static Object jump(String path, int timeOut) {
+       return ARouter.getInstance().build(path).setTimeout(timeOut).navigation();
     }
 
     /**
@@ -71,9 +73,10 @@ public class RouterUtils {
      *
      * @param path    the 路径
      * @param context the 上下文
+     * @return the object
      */
-    public static void jump(String path, Context context) {
-        ARouter.getInstance().build(path).setTimeout(DEFAULT_TIMEOUT).navigation(context);
+    public static Object jump(String path, Context context) {
+       return ARouter.getInstance().build(path).setTimeout(DEFAULT_TIMEOUT).navigation(context);
     }
 
     /**
@@ -82,9 +85,10 @@ public class RouterUtils {
      * @param path    the 路径
      * @param context the 上下文
      * @param timeOut the 超时
+     * @return the object
      */
-    public static void jump(String path, Context context, int timeOut) {
-        ARouter.getInstance().build(path).setTimeout(timeOut).navigation(context);
+    public static Object jump(String path, Context context, int timeOut) {
+       return ARouter.getInstance().build(path).setTimeout(timeOut).navigation(context);
     }
 
     /**
@@ -93,9 +97,10 @@ public class RouterUtils {
      * @param path     the 路径
      * @param context  the 上下文
      * @param callback the 回调
+     * @return the object
      */
-    public static void jump(String path, Context context, NavigationCallback callback) {
-        ARouter.getInstance().build(path).setTimeout(DEFAULT_TIMEOUT).navigation(context, callback);
+    public static Object jump(String path, Context context, NavigationCallback callback) {
+        return ARouter.getInstance().build(path).setTimeout(DEFAULT_TIMEOUT).navigation(context, callback);
     }
 
     /**
@@ -105,9 +110,10 @@ public class RouterUtils {
      * @param context  the 上下文
      * @param timeOut  the 超时
      * @param callback the 回调
+     * @return the object
      */
-    public static void jump(String path, Context context, int timeOut, NavigationCallback callback) {
-        ARouter.getInstance().build(path).setTimeout(timeOut).navigation(context, callback);
+    public static Object jump(String path, Context context, int timeOut, NavigationCallback callback) {
+        return ARouter.getInstance().build(path).setTimeout(timeOut).navigation(context, callback);
     }
 
     /**

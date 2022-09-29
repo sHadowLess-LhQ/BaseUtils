@@ -3,6 +3,7 @@ package cn.com.shadowless.baseutils.utils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -32,21 +33,31 @@ public class WindowUtils {
     public static void hideStatusBar(Activity activity) {
         Window window = activity.getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色
             View decorView = window.getDecorView();
-            //两个 flag 要结合使用，表示让应用的主体内容占用系统状态栏的空间
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             decorView.setSystemUiVisibility(option);
             window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             window.setStatusBarColor(android.graphics.Color.TRANSPARENT);
-            //导航栏颜色也可以正常设置
         } else {
             WindowManager.LayoutParams attributes = window.getAttributes();
             int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_FULLSCREEN;
             attributes.flags |= flagTranslucentStatus;
             window.setAttributes(attributes);
         }
+    }
+
+    /**
+     * 设置状态栏透明
+     *
+     * @param activity the activity
+     */
+    public static void setTranslucentStatus(Activity activity) {
+        Window window = activity.getWindow();
+        View decorView = window.getDecorView();
+        int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+        decorView.setSystemUiVisibility(option);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(Color.TRANSPARENT);
     }
 
     /**
@@ -87,9 +98,9 @@ public class WindowUtils {
     }
 
     /**
-     * Hide soft input.
+     * 隐藏虚拟键盘
      *
-     * @param context the context
+     * @param context the 上下文
      * @param view    the view
      */
     public static void hideSoftInput(Context context, View view) {

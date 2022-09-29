@@ -34,6 +34,7 @@ Step 1. 添加maven仓库地址和配置
      //新AndroidStudio版本
      plugins{
        ...
+        //若使用RouterUtils，请添加
         id 'com.alibaba.arouter'
      }
      
@@ -42,7 +43,8 @@ Step 1. 添加maven仓库地址和配置
       
       defaultConfig{
         ...
-        
+         
+         //若使用RouterUtils，请添加
          javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [AROUTER_MODULE_NAME: project.getName()]
@@ -59,6 +61,7 @@ Step 1. 添加maven仓库地址和配置
      //主项目的build.gradle中加入
      //旧AndroidStudio版本
       ...
+     //若使用RouterUtils，请添加
      apply plugin 'com.alibaba.arouter'
      
      android {
@@ -67,6 +70,7 @@ Step 1. 添加maven仓库地址和配置
       defaultConfig{
         ...
         
+         //若使用RouterUtils，请添加
          javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [AROUTER_MODULE_NAME: project.getName()]
@@ -89,6 +93,7 @@ Step 1. 添加maven仓库地址和配置
       }
         dependencies {
           classpath "com.android.tools.build:gradle:7.0.2"
+          //若使用RouterUtils，请添加
           classpath "com.alibaba:arouter-register:1.0.2"
         }
       }
@@ -119,6 +124,8 @@ b、远程仓库引入
             implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
             implementation 'com.trello.rxlifecycle3:rxlifecycle-android-lifecycle:3.1.0'
+            //【注】：使用RouterUtils，请额外添加以下依赖：
+            //RouterUtils
             implementation 'com.alibaba:arouter-api:1.5.2'
             annotationProcessor 'com.alibaba:arouter-compiler:1.5.2'
             //【注】：使用RetrofitUtils，请额外添加以下依赖：

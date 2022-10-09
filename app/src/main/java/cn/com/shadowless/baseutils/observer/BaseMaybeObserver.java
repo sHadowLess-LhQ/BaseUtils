@@ -198,12 +198,9 @@ public abstract class BaseMaybeObserver<T> implements MaybeObserver<T> {
         if (loadingPopupView != null) {
             if (isSmartDismiss) {
                 loadingPopupView.smartDismiss();
-                onFinish();
             } else {
-                loadingPopupView.dismissWith(this::onFinish);
+                loadingPopupView.dismiss();
             }
-        } else {
-            onFinish();
         }
         disposable.dispose();
     }
@@ -214,13 +211,6 @@ public abstract class BaseMaybeObserver<T> implements MaybeObserver<T> {
      * @param t the t
      */
     public abstract void onNext(@NonNull T t);
-
-    /**
-     * On success.
-     *
-     * @param disposable the disposable
-     */
-    public abstract void onFinish();
 
     /**
      * On fail.

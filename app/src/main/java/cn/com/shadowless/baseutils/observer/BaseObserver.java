@@ -197,12 +197,9 @@ public abstract class BaseObserver<T> implements Observer<T> {
         if (loadingPopupView != null) {
             if (isSmartDismiss) {
                 loadingPopupView.smartDismiss();
-                onFinish();
             } else {
-                loadingPopupView.dismissWith(this::onFinish);
+                loadingPopupView.dismiss();
             }
-        } else {
-            onFinish();
         }
         disposable.dispose();
     }
@@ -213,13 +210,6 @@ public abstract class BaseObserver<T> implements Observer<T> {
      * @param t the t
      */
     public abstract void onSuccess(@NonNull T t);
-
-    /**
-     * On finish.
-     *
-     * @param disposable the disposable
-     */
-    public abstract void onFinish();
 
     /**
      * On fail.

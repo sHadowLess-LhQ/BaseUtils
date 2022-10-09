@@ -192,7 +192,6 @@ public abstract class BaseLifeObserver<T> implements Observer<T> {
         if (loadingPopupView != null) {
             if (isSmartDismiss) {
                 loadingPopupView.smartDismiss();
-                onFinish();
             } else {
                 loadingPopupView.dismiss();
             }
@@ -205,11 +204,6 @@ public abstract class BaseLifeObserver<T> implements Observer<T> {
      * @param t the t
      */
     public abstract void onSuccess(@NonNull T t);
-
-    /**
-     * On finish.
-     */
-    public abstract void onFinish();
 
     /**
      * On fail.

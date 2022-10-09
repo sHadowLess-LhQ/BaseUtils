@@ -197,8 +197,6 @@ public abstract class BaseLifeCompletableObserver implements CompletableObserver
 
     /**
      * On success.
-     *
-     * @param disposable the disposable
      */
     public abstract void onFinish();
 

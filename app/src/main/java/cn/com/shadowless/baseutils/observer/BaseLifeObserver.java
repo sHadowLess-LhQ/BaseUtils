@@ -194,10 +194,8 @@ public abstract class BaseLifeObserver<T> implements Observer<T> {
                 loadingPopupView.smartDismiss();
                 onFinish();
             } else {
-                loadingPopupView.dismissWith(this::onFinish);
+                loadingPopupView.dismiss();
             }
-        } else {
-            onFinish();
         }
     }
 
@@ -210,8 +208,6 @@ public abstract class BaseLifeObserver<T> implements Observer<T> {
 
     /**
      * On finish.
-     *
-     * @param disposable the disposable
      */
     public abstract void onFinish();
 

@@ -158,6 +158,7 @@ public abstract class BaseMaybeObserver<T> implements MaybeObserver<T> {
      * @param hasBlurBg        the has blur bg
      * @param hasShadow        the has shadow
      * @param canCancel        the can cancel
+     * @param isSmartDismiss   the is smart dismiss
      * @param loadName         the load name
      */
     public BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName) {
@@ -197,13 +198,14 @@ public abstract class BaseMaybeObserver<T> implements MaybeObserver<T> {
         if (loadingPopupView != null) {
             if (isSmartDismiss) {
                 loadingPopupView.smartDismiss();
-                onFinish(disposable);
+                onFinish();
             } else {
-                loadingPopupView.dismissWith(() -> onFinish(disposable));
+                loadingPopupView.dismissWith(this::onFinish);
             }
         } else {
-            onFinish(disposable);
+            onFinish();
         }
+        disposable.dispose();
     }
 
     /**
@@ -218,7 +220,7 @@ public abstract class BaseMaybeObserver<T> implements MaybeObserver<T> {
      *
      * @param disposable the disposable
      */
-    public abstract void onFinish(Disposable disposable);
+    public abstract void onFinish();
 
     /**
      * On fail.

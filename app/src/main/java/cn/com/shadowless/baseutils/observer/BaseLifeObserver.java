@@ -17,12 +17,8 @@ import io.reactivex.disposables.Disposable;
  * @param <T> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseObserver<T> implements Observer<T> {
+public abstract class BaseLifeObserver<T> implements Observer<T> {
 
-    /**
-     * The Disposable.
-     */
-    private Disposable disposable = null;
     /**
      * The Loading popup view.
      */
@@ -35,7 +31,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
     /**
      * Instantiates a new Base observer.
      */
-    public BaseObserver() {
+    public BaseLifeObserver() {
     }
 
     /**
@@ -43,7 +39,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
      *
      * @param activity the activity
      */
-    public BaseObserver(Activity activity) {
+    public BaseLifeObserver(Activity activity) {
         loadingPopupView = new XPopup.Builder(activity).asLoading();
     }
 
@@ -53,7 +49,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
      * @param activity         the activity
      * @param loadingPopupView the loading popup view
      */
-    public BaseObserver(Activity activity, LoadingPopupView loadingPopupView) {
+    public BaseLifeObserver(Activity activity, LoadingPopupView loadingPopupView) {
         this.loadingPopupView = loadingPopupView;
     }
 
@@ -63,7 +59,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
      * @param activity    the activity
      * @param isViewModel the is view model
      */
-    public BaseObserver(Activity activity, boolean isViewModel) {
+    public BaseLifeObserver(Activity activity, boolean isViewModel) {
         loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).asLoading();
     }
 
@@ -74,7 +70,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
      * @param isViewModel the is view model
      * @param loadName    the load name
      */
-    public BaseObserver(Activity activity, boolean isViewModel, String loadName) {
+    public BaseLifeObserver(Activity activity, boolean isViewModel, String loadName) {
         loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).asLoading(loadName);
     }
 
@@ -86,7 +82,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
      * @param canBackCancel the can back cancel
      * @param loadName      the load name
      */
-    public BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, String loadName) {
+    public BaseLifeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, String loadName) {
         loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).asLoading(loadName);
     }
 
@@ -99,7 +95,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
      * @param canOutSideCancel the can out side cancel
      * @param loadName         the load name
      */
-    public BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, String loadName) {
+    public BaseLifeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, String loadName) {
         loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).asLoading(loadName);
     }
 
@@ -113,7 +109,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
      * @param hasBlurBg        the has blur bg
      * @param loadName         the load name
      */
-    public BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, String loadName) {
+    public BaseLifeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, String loadName) {
         loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).hasBlurBg(hasBlurBg).asLoading(loadName);
     }
 
@@ -128,7 +124,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
      * @param hasShadow        the has shadow
      * @param loadName         the load name
      */
-    public BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName) {
+    public BaseLifeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName) {
         loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).hasBlurBg(hasBlurBg).hasShadowBg(hasShadow).asLoading(loadName);
     }
 
@@ -144,7 +140,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
      * @param canCancel        the can cancel
      * @param loadName         the load name
      */
-    public BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, String loadName) {
+    public BaseLifeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, String loadName) {
         loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).hasBlurBg(hasBlurBg).hasShadowBg(hasShadow).dismissOnBackPressed(canCancel).dismissOnTouchOutside(canCancel).asLoading(loadName);
     }
 
@@ -160,14 +156,13 @@ public abstract class BaseObserver<T> implements Observer<T> {
      * @param canCancel        the can cancel
      * @param loadName         the load name
      */
-    public BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName) {
+    public BaseLifeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName) {
         this.isSmartDismiss = isSmartDismiss;
         loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).hasBlurBg(hasBlurBg).hasShadowBg(hasShadow).dismissOnBackPressed(canCancel).dismissOnTouchOutside(canCancel).asLoading(loadName);
     }
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {
-        disposable = d;
         if (loadingPopupView != null) {
             loadingPopupView.show();
         }
@@ -204,7 +199,6 @@ public abstract class BaseObserver<T> implements Observer<T> {
         } else {
             onFinish();
         }
-        disposable.dispose();
     }
 
     /**

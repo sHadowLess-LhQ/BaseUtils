@@ -191,21 +191,20 @@ public abstract class BaseCompletableObserver implements CompletableObserver {
         if (loadingPopupView != null) {
             if (isSmartDismiss) {
                 loadingPopupView.smartDismiss();
-                onFinish(disposable);
+                onFinish();
             } else {
-                loadingPopupView.dismissWith(() -> onFinish(disposable));
+                loadingPopupView.dismissWith(this::onFinish);
             }
         } else {
-            onFinish(disposable);
+            onFinish();
         }
+        disposable.dispose();
     }
 
     /**
      * On success.
-     *
-     * @param disposable the disposable
      */
-    public abstract void onFinish(Disposable disposable);
+    public abstract void onFinish();
 
     /**
      * On fail.

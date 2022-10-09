@@ -160,6 +160,7 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
      * @param hasBlurBg        the has blur bg
      * @param hasShadow        the has shadow
      * @param canCancel        the can cancel
+     * @param isSmartDismiss   the is smart dismiss
      * @param loadName         the load name
      */
     public BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName) {
@@ -180,13 +181,14 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
         if (loadingPopupView != null) {
             if (isSmartDismiss) {
                 loadingPopupView.smartDismiss();
-                onNext(t, disposable);
+                onNext(t);
             } else {
-                loadingPopupView.dismissWith(() -> onNext(t, disposable));
+                loadingPopupView.dismissWith(() -> onNext(t));
             }
         } else {
-            onNext(t, disposable);
+            onNext(t);
         }
+        disposable.dispose();
     }
 
     @Override
@@ -206,10 +208,9 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
     /**
      * On success.
      *
-     * @param t          the t
-     * @param disposable the disposable
+     * @param t the t
      */
-    public abstract void onNext(@NonNull T t, Disposable disposable);
+    public abstract void onNext(@NonNull T t);
 
     /**
      * On fail.

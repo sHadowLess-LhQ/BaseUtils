@@ -1402,7 +1402,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       LogUtils.wtf("12345");
 ```
 
-### 19、BaseObserver：Rxjava的subscribe()处，直接new
+### 19、BaseObserver或BaseLifeObserver：subscribe()处实例化，其中BaseLifeObserver请配合lifecycle使用
 
 ```
      //无加载框构造
@@ -1427,7 +1427,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 20、BaseCompletableObserver：Rxjava的subscribe()处，直接new
+### 20、BaseCompletableObserver或BaseLifeCompletableObserver：subscribe()处实例化，其中BaseCompletableObserver请配合lifecycle使用
 
 ```
      //无加载框构造
@@ -1452,7 +1452,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 21、BaseMaybeObserver：Rxjava的subscribe()处，直接new
+### 21、BaseMaybeObserver或BaseLifeMaybeObserver：subscribe()处实例化，其中BaseLifeMaybeObserve请配合lifecycle使用
 
 ```
      //无加载框构造
@@ -1477,7 +1477,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 22、BaseSingleObserver：Rxjava的subscribe()处，直接new
+### 22、BaseSingleObserver或BaseLifeSingleObserver：subscribe()处实例化，其中BaseLifeSingleObserver请配合lifecycle使用
 
 ```
      //无加载框构造
@@ -1502,7 +1502,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 23、BaseSubscriber：Rxjava的subscribe()处，直接new
+### 23、BaseSubscriber或BaseLifeSubscriber：subscribe()处实例化，其中BaseLifeSubscriber请配合lifecycle使用
 
 ```
      //无加载框构造

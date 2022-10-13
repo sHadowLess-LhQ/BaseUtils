@@ -1,4 +1,4 @@
-#  BaseUtils
+# BaseUtils
 
 #### 软件架构
 
@@ -1722,4 +1722,129 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      //替换带动画碎片
      FragmentUtils.replaceFragment(FragmentManager manager, Fragment fragment, int layout, int... animation)
      FragmentUtils.replaceFragment(FragmentManager manager, Object fragment, int layout, int... animation)
+```
+
+### 29、ViewAnimatorUtils
+
+```
+     ViewAnimatorUtils
+        //设置动画的视图/视图组
+        .animate(View... view)
+        //设置动画预设参数
+        .property(String propertyName, float... values)
+        //移动视图Y轴
+        .translationY(float... y)
+        //移动视图X轴
+        .translationX(float... x)
+        //设置视图透明度
+        .alpha(float... alpha)
+        //拉伸视图X轴
+        .scaleX(float... scaleX)
+        //拉伸视图Y轴
+        .scaleY(float... scaleY)
+        //整体拉伸视图
+        .scale(float... scale)
+        //X中轴旋转视图
+        .pivotX(float pivotX)
+        //Y中轴旋转视图
+        .pivotY(float pivotY)
+        //X轴旋转视图
+        .rotationX(float... rotationX)
+        //Y轴旋转视图
+        .rotationY(float... rotationY)
+        //整体旋转视图
+        .rotation(float... rotation)
+        //背景颜色渐变
+        .backgroundColor(int... colors)
+        //文字颜色渐变
+        .textColor(int... colors)
+        //监听动画
+        .custom(final AnimationListener.Update update, float... values)
+        //设置动画过程视图高度
+        .height(float... height)
+        //设置动画过程视图宽度
+        .width(float... width)
+        //创建动画集合
+        .createAnimatorSet()
+        //并行动画的视图
+        .andAnimate(View... views)
+        //之后动画的视图
+        .thenAnimate(View... views)
+        //动画持续时间
+        .duration(@IntRange(from = 1) long duration)
+        //开始延迟动画
+        .startDelay(@IntRange(from = 0) long startDelay)
+        //动画重复次数
+        .repeatCount(@IntRange(from = -1) int repeatCount)
+        //动画重复模式
+        .repeatMode(@ViewAnimatorUtils.RepeatMode int repeatMode)
+        //动画开始回调
+        .onStart(AnimationListener.Start startListener)
+        //动画停止回调
+        .onStop(AnimationListener.Stop stopListener)
+        //动画终止回调
+        .interpolator(Interpolator interpolator)
+        //设置单个插值器
+        .singleInterpolator(Interpolator interpolator)
+        //加速
+        .accelerate()
+        //减速
+        .decelerate()
+        //弹入弹出
+        .bounce()
+        //弹入
+        .bounceIn()
+        //弹出
+        .bounceOut()
+        //淡入
+        .fadeIn()
+        //淡出
+        .fadeOut()
+        //闪出
+        .flash()
+        //水平反转
+        .flipHorizontal()
+        //垂直反转
+        .flipVertical()
+        //脉冲
+        .pulse()
+        //转入
+        .rollIn()
+        //转出
+        .rollOut()
+        //粘性
+        .rubber()
+        //震动
+        .shake()
+        //弹出
+        .standUp()
+        //涌动
+        .swing()
+        .tada()
+        //波动
+        .wave()
+        //摆动
+        .wobble()
+        //放大
+        .zoomIn()
+        //缩小
+        .zoomOut()
+        //落下
+        .fall()
+        //报纸
+        .newsPaper()
+        //狭小
+        .slit()
+        //左侧滑进
+        .slideLeftIn()
+        //右侧滑进
+        .slideRightIn()
+        //顶部滑进
+        .slideTopIn()
+        //底部滑进
+        .slideBottomIn()
+        //SVG路径
+        .path(Path path)
+        //开始动画
+        .start();
 ```

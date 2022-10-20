@@ -1,4 +1,4 @@
-# BaseUtils
+#  BaseUtils
 
 #### 软件架构
 
@@ -1533,11 +1533,11 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       CrashConfig.Builder
                 .create()
                 //当应用程序处于后台时崩溃，也会启动错误页面
-                .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
+                .backgroundMode(CrashConfig.BACKGROUND_MODE_SHOW_CUSTOM)
                 //当应用程序处于后台崩溃时显示默认系统错误
-                .backgroundMode(CaocConfig.BACKGROUND_MODE_CRASH)
+                .backgroundMode(CrashConfig.BACKGROUND_MODE_CRASH)
                 //当应用程序处于后台时崩溃，默默地关闭程序
-                .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT)
+                .backgroundMode(CrashConfig.BACKGROUND_MODE_SILENT)
                 //false表示对崩溃的拦截阻止。用它来禁用customactivityoncrash
                 .enabled(true)
                 //这将隐藏错误活动中的“错误详细信息”按钮，从而隐藏堆栈跟踪,针对框架自带程序崩溃后显示的页面有用
@@ -1768,7 +1768,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
         .createAnimatorSet()
         //并行动画的视图
         .andAnimate(View... views)
-        //之后动画的视图
+        //顺序动画的视图
         .thenAnimate(View... views)
         //动画持续时间
         .duration(@IntRange(from = 1) long duration)

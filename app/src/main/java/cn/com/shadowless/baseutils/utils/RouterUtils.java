@@ -46,6 +46,17 @@ public class RouterUtils {
     }
 
     /**
+     * 获取碎片
+     *
+     * @param <T>  the type parameter
+     * @param path the 路径
+     * @return the fragment
+     */
+    public static <T extends Fragment> T getFragment(Navigator path) {
+        return path.createFragment();
+    }
+
+    /**
      * 显示碎片
      *
      * @param fragmentManager the fragment manager
@@ -62,10 +73,56 @@ public class RouterUtils {
      * @param fragmentManager the fragment manager
      * @param path            the 路径
      * @param layout          the 布局
+     */
+    public static void showRouterFragment(FragmentManager fragmentManager, Navigator path, int layout) {
+        FragmentUtils.showFragment(fragmentManager, getFragment(path), layout);
+    }
+
+    /**
+     * 显示碎片
+     *
+     * @param fragmentManager the fragment manager
+     * @param path            the 路径
+     * @param layout          the 布局
+     */
+    public static void showRouterFragment(FragmentManager fragmentManager, Fragment path, int layout) {
+        FragmentUtils.showFragment(fragmentManager, path, layout);
+    }
+
+    /**
+     * 显示碎片
+     *
+     * @param fragmentManager the fragment manager
+     * @param path            the 路径
+     * @param layout          the 布局
      * @param anim            the 动画
      */
     public static void showRouterFragment(FragmentManager fragmentManager, String path, int layout, int... anim) {
         FragmentUtils.showFragment(fragmentManager, getFragment(path), layout, anim);
+    }
+
+    /**
+     * 显示碎片
+     *
+     * @param fragmentManager the fragment manager
+     * @param path            the 路径
+     * @param layout          the 布局
+     * @param anim            the 动画
+     */
+    public static void showRouterFragment(FragmentManager fragmentManager, Navigator path, int layout, int... anim) {
+        FragmentUtils.showFragment(fragmentManager, getFragment(path), layout, anim);
+    }
+
+    /**
+     * 显示碎片
+     *
+     * @param fragmentManager the fragment manager
+     * @param path            the 路径
+     * @param layout          the 布局
+     * @param anim            the 动画
+     */
+    public static void showRouterFragment(FragmentManager fragmentManager, Fragment path, int layout, int... anim) {
+        FragmentUtils.showFragment(fragmentManager, path, layout, anim);
     }
 
     /**
@@ -85,10 +142,56 @@ public class RouterUtils {
      * @param fragmentManager the fragment manager
      * @param path            the 路径
      * @param layout          the 布局
+     */
+    public static void replaceRouterFragment(FragmentManager fragmentManager, Navigator path, int layout) {
+        FragmentUtils.replaceFragment(fragmentManager, getFragment(path), layout);
+    }
+
+    /**
+     * 替换碎片
+     *
+     * @param fragmentManager the fragment manager
+     * @param path            the 路径
+     * @param layout          the 布局
+     */
+    public static void replaceRouterFragment(FragmentManager fragmentManager, Fragment path, int layout) {
+        FragmentUtils.replaceFragment(fragmentManager, path, layout);
+    }
+
+    /**
+     * 替换碎片
+     *
+     * @param fragmentManager the fragment manager
+     * @param path            the 路径
+     * @param layout          the 布局
      * @param anim            the 动画
      */
     public static void replaceRouterFragment(FragmentManager fragmentManager, String path, int layout, int... anim) {
         FragmentUtils.replaceFragment(fragmentManager, getFragment(path), layout, anim);
+    }
+
+    /**
+     * 替换碎片
+     *
+     * @param fragmentManager the fragment manager
+     * @param path            the 路径
+     * @param layout          the 布局
+     * @param anim            the 动画
+     */
+    public static void replaceRouterFragment(FragmentManager fragmentManager, Navigator path, int layout, int... anim) {
+        FragmentUtils.replaceFragment(fragmentManager, getFragment(path), layout, anim);
+    }
+
+    /**
+     * 替换碎片
+     *
+     * @param fragmentManager the fragment manager
+     * @param path            the 路径
+     * @param layout          the 布局
+     * @param anim            the 动画
+     */
+    public static void replaceRouterFragment(FragmentManager fragmentManager, Fragment path, int layout, int... anim) {
+        FragmentUtils.replaceFragment(fragmentManager, path, layout, anim);
     }
 
     /**

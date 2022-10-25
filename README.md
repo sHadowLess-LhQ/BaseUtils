@@ -1669,18 +1669,26 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 ### 27、RouterUtils
 
 ```
-     //获取Navigator
+     //获取指定路由的Navigator
      RouterUtils.getNavigator(String path)
      //获取碎片
      RouterUtils.<T>getFragment(String path)
      //路由显示碎片
      RouterUtils.showRouterFragment(FragmentManager fragmentManager, String path, int layout)
+     RouterUtils.showRouterFragment(FragmentManager fragmentManager, Navigator path, int layout)
+     RouterUtils.showRouterFragment(FragmentManager fragmentManager, Fragment path, int layout)
      //路由显示带动画碎片
      RouterUtils.showRouterFragment(FragmentManager fragmentManager, String path, int layout, int... anim)
+     RouterUtils.showRouterFragment(FragmentManager fragmentManager, Navigator path, int layout, int... anim)
+     RouterUtils.showRouterFragment(FragmentManager fragmentManager, Fragment path, int layout, int... anim)
      //路由替换碎片
      RouterUtils.replaceRouterFragment(FragmentManager fragmentManager, String path, int layout)
+     RouterUtils.replaceRouterFragment(FragmentManager fragmentManager, Navigator path, int layout)
+     RouterUtils.replaceRouterFragment(FragmentManager fragmentManager, Fragment path, int layout)
      //路由替换带动画碎片
      RouterUtils.replaceRouterFragment(FragmentManager fragmentManager, String path, int layout, int... anim)
+     RouterUtils.replaceRouterFragment(FragmentManager fragmentManager, Navigator path, int layout, int... anim)
+     RouterUtils.replaceRouterFragment(FragmentManager fragmentManager, Fragment path, int layout, int... anim)
      //指定路由跳转（走Application的Context）
      RouterUtils.jump(String path)
      //指定路径超时跳转（走Application的Context）

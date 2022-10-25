@@ -33,11 +33,21 @@ public abstract class BasePositionPopupView<VB extends ViewBinding> extends Posi
     /**
      * The Layout id.
      */
-    private final int layoutId;
+    private int layoutId;
     /**
      * The Provider.
      */
     protected LifecycleProvider<Lifecycle.Event> provider;
+
+    /**
+     * Instantiates a new Base position popup view.
+     *
+     * @param context the context
+     */
+    public BasePositionPopupView(@NonNull Context context) {
+        super(context);
+        this.context = context;
+    }
 
     /**
      * Instantiates a new Base position popup view.
@@ -71,6 +81,15 @@ public abstract class BasePositionPopupView<VB extends ViewBinding> extends Posi
     protected void onShow() {
         super.onShow();
         initListener();
+    }
+
+    /**
+     * Sets layout id.
+     *
+     * @param layoutId the layout id
+     */
+    public void setLayoutId(int layoutId) {
+        this.layoutId = layoutId;
     }
 
     /**

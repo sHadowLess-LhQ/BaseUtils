@@ -33,7 +33,7 @@ public abstract class BaseFullScreenPopupView<VB extends ViewBinding> extends Fu
     /**
      * The Layout id.
      */
-    private final int layoutId;
+    private int layoutId;
     /**
      * The Provider.
      */
@@ -43,6 +43,17 @@ public abstract class BaseFullScreenPopupView<VB extends ViewBinding> extends Fu
      * Instantiates a new Base full screen popup view.
      *
      * @param context the context
+     */
+    public BaseFullScreenPopupView(@NonNull Context context) {
+        super(context);
+        this.context = context;
+    }
+
+    /**
+     * Instantiates a new Base full screen popup view.
+     *
+     * @param context  the context
+     * @param layoutId the layout id
      */
     public BaseFullScreenPopupView(@NonNull Context context, int layoutId) {
         super(context);
@@ -70,6 +81,15 @@ public abstract class BaseFullScreenPopupView<VB extends ViewBinding> extends Fu
     protected void onShow() {
         super.onShow();
         initListener();
+    }
+
+    /**
+     * Sets layout id.
+     *
+     * @param layoutId the layout id
+     */
+    public void setLayoutId(int layoutId) {
+        this.layoutId = layoutId;
     }
 
     /**

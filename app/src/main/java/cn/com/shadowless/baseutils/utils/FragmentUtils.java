@@ -36,17 +36,6 @@ public class FragmentUtils {
     /**
      * 显示碎片
      *
-     * @param manager  the manager
-     * @param fragment the 碎片
-     * @param layout   the 布局
-     */
-    public static void showFragment(FragmentManager manager, Object fragment, int layout) {
-        show(manager, (Fragment) fragment, layout, null);
-    }
-
-    /**
-     * 显示碎片
-     *
      * @param manager   the manager
      * @param fragment  the 碎片
      * @param layout    the 布局
@@ -54,18 +43,6 @@ public class FragmentUtils {
      */
     public static void showFragment(FragmentManager manager, Fragment fragment, int layout, int... animation) {
         show(manager, fragment, layout, animation);
-    }
-
-    /**
-     * 显示碎片
-     *
-     * @param manager   the manager
-     * @param fragment  the 碎片
-     * @param layout    the 布局
-     * @param animation the 动画
-     */
-    public static void showFragment(FragmentManager manager, Object fragment, int layout, int... animation) {
-        show(manager, (Fragment) fragment, layout, animation);
     }
 
     /**
@@ -82,17 +59,6 @@ public class FragmentUtils {
     /**
      * 替换碎片
      *
-     * @param manager  the manager
-     * @param fragment the 碎片
-     * @param layout   the 布局
-     */
-    public static void replaceFragment(FragmentManager manager, Object fragment, int layout) {
-        replace(manager, (Fragment) fragment, layout, null);
-    }
-
-    /**
-     * 替换碎片
-     *
      * @param manager   the manager
      * @param fragment  the 碎片
      * @param layout    the 布局
@@ -100,18 +66,6 @@ public class FragmentUtils {
      */
     public static void replaceFragment(FragmentManager manager, Fragment fragment, int layout, int... animation) {
         replace(manager, fragment, layout, animation);
-    }
-
-    /**
-     * 替换碎片
-     *
-     * @param manager   the manager
-     * @param fragment  the 碎片
-     * @param layout    the 布局
-     * @param animation the 动画
-     */
-    public static void replaceFragment(FragmentManager manager, Object fragment, int layout, int... animation) {
-        replace(manager, (Fragment) fragment, layout, animation);
     }
 
     /**

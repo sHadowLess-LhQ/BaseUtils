@@ -34,25 +34,12 @@ Step 1. 添加maven仓库地址和配置
      //新AndroidStudio版本
      plugins{
        ...
-        //若使用RouterUtils，请添加
-        id 'com.alibaba.arouter'
+        //若使用RouterUtils，请在主model添加
+        id 'therouter'
      }
      
      android {
       ...
-      
-      defaultConfig{
-        ...
-         
-         //若使用RouterUtils，请添加
-         javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
-            }
-        }
-        
-      }
-      
        buildFeatures {
          viewBinding true
           }
@@ -62,23 +49,10 @@ Step 1. 添加maven仓库地址和配置
      //旧AndroidStudio版本
       ...
      //若使用RouterUtils，请添加
-     apply plugin 'com.alibaba.arouter'
+     apply plugin 'therouter'
      
      android {
       ...
-      
-      defaultConfig{
-        ...
-        
-         //若使用RouterUtils，请添加
-         javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
-            }
-        }
-        
-      }
-      
        viewBinding {
          enable = true
           }
@@ -94,7 +68,7 @@ Step 1. 添加maven仓库地址和配置
         dependencies {
           classpath "com.android.tools.build:gradle:7.0.2"
           //若使用RouterUtils，请添加
-          classpath "com.alibaba:arouter-register:1.0.2"
+          classpath 'cn.therouter:plugin:1.1.1'
         }
       }
 
@@ -126,8 +100,8 @@ b、远程仓库引入
             implementation 'com.trello.rxlifecycle3:rxlifecycle-android-lifecycle:3.1.0'
             //【注】：使用RouterUtils，请额外添加以下依赖：
             //RouterUtils
-            implementation 'com.alibaba:arouter-api:1.5.2'
-            annotationProcessor 'com.alibaba:arouter-compiler:1.5.2'
+            implementation "cn.therouter:router:1.1.1"
+            annotationProcessor "cn.therouter:apt:1.1.1"
             //【注】：使用RetrofitUtils，请额外添加以下依赖：
             //RetrofitUtils
             implementation 'com.squareup.okhttp3:okhttp:4.7.2'
@@ -192,12 +166,24 @@ c、混淆规则
 -keep public class com.tencent.bugly.**{*;}
 -keep class android.support.**{*;}
 
-//ARouter混淆
--keep public class com.alibaba.android.arouter.routes.**{*;}
--keep public class com.alibaba.android.arouter.facade.**{*;}
--keep class * implements com.alibaba.android.arouter.facade.template.ISyringe{*;}
--keep interface * implements com.alibaba.android.arouter.facade.template.IProvider
--keep class * implements com.alibaba.android.arouter.facade.template.IProvider
+//TheRouter混淆
+-keep class androidx.annotation.Keep
+-keep @androidx.annotation.Keep class * {*;}
+-keepclassmembers class * {
+    @androidx.annotation.Keep *;
+}
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <methods>;
+}
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <fields>;
+}
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <init>(...);
+}
+-keepclasseswithmembers class * {
+    @com.therouter.router.Autowired <fields>;
+}
 ```
 
 #### 使用说明
@@ -209,12 +195,13 @@ c、混淆规则
 //填入传递数据类型
 //新增CompositeDisposable，可统一管理Dispose
 //新增LifecycleProvider，与CompositeDisposable切换使用
-//新增ARouter
-@Router(path = "/xxx/xxx",name = "xxx")
+//更换ARouter为TheRouter
+//更多用法请参考TheRouter
+@Router(path = "xxx")
 public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
 
-    //ARouter跳转参数获取，一定要public，name最好声明
-    //用法请参考ARouter的使用
+    //ARouter跳转参数获取，一定要public，name最好声明，不声明默认使用变量名为key
+    //用法请参考TheRouter的使用
     @Autowired(name = "key1")
     public String s;
 
@@ -234,6 +221,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
 
     @Override
     protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
+       //携参路由，需要页面参数注入
+       TheRouter.inject(this);
        //默认在IO线程，需要更改，请重写initPermissions()方法，向父类super传递新的RxUtils线程值
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
@@ -295,12 +284,13 @@ public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends Bas
 //填入传递数据类型
 //新增CompositeDisposable，可统一管理Dispose
 //新增LifecycleProvider，与CompositeDisposable切换使用
-//新增ARouter
-@Router(path = "/xxx/xxx",name = "xxx")
+//更换ARouter为TheRouter
+//更多用法请参考TheRouter
+@Router(path = "xxx")
 public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
     
-    //ARouter跳转参数获取，一定要public，name最好声明
-    //剩余用法请参考ARouter的使用
+    //ARouter跳转参数获取，一定要public，name最好声明，不声明默认使用变量名为key
+    //用法请参考TheRouter的使用
     @Autowired(name = "key1")
     public String s;
     
@@ -320,6 +310,8 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
 
     @Override
     protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
+       //携参路由，需要页面参数注入
+       TheRouter.inject(this);
        //默认在IO线程，需要更改，请重写initPermissions()方法，向父类super传递新的RxUtils线程值
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
@@ -1677,31 +1669,30 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 ### 27、RouterUtils
 
 ```
-     //默认跳转超时是2秒
-     //获取Postcard跳转配置
-     RouterUtils.getDefaultPostcard(String path)
-     //获取自定义超时Postcard跳转配置
-     RouterUtils.getDefaultPostcard(String path, int timeOut)
+     //获取Navigator
+     RouterUtils.getNavigator(String path)
+     //获取碎片
+     RouterUtils.<T>getFragment(String path)
+     //路由显示碎片
+     RouterUtils.showRouterFragment(FragmentManager fragmentManager, String path, int layout)
+     //路由显示带动画碎片
+     RouterUtils.showRouterFragment(FragmentManager fragmentManager, String path, int layout, int... anim)
+     //路由替换碎片
+     RouterUtils.replaceRouterFragment(FragmentManager fragmentManager, String path, int layout)
+     //路由替换带动画碎片
+     RouterUtils.replaceRouterFragment(FragmentManager fragmentManager, String path, int layout, int... anim)
      //指定路由跳转（走Application的Context）
      RouterUtils.jump(String path)
      //指定路径超时跳转（走Application的Context）
      RouterUtils.jump(String path, int timeOut)
      //指定上下文、路由跳转
      RouterUtils.jump(String path, Context context)
-     //指定上下文、路由和超时跳转
-     RouterUtils.jump(String path, Context context, int timeOut)
      //指定上下文、路由和路由回调跳转
      RouterUtils.jump(String path, Context context, NavigationCallback callback)
-     //指定上下文、路由、超时和路由回调跳转
-     RouterUtils.jump(String path, Context context, int timeOut, NavigationCallback callback)
      //指定上下文、路由和请求返回值跳转
      RouterUtils.jump(String path, Activity context, int requestCode)
      //指定上下文、路由、超时和请求返回值跳转
-     RouterUtils.jump(String path, Activity context, int timeOut, int requestCode)
-     //指定上下文、路由、超时和请求返回值跳转
      RouterUtils.jump(String path, Activity context, int requestCode, NavigationCallback callback)
-      //指定上下文、路由、超时、请求返回值和回调跳转
-     RouterUtils.jump(String path, Activity context, int timeOut, int requestCode, NavigationCallback callback)
 ```
 
 ***
@@ -1712,16 +1703,12 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      //碎片工具类，可配合ARouter使用
      //显示碎片
      FragmentUtils.showFragment(FragmentManager manager, Fragment fragment, int layout)
-     FragmentUtils.showFragment(FragmentManager manager, Object fragment, int layout)
      //显示带动画碎片
      FragmentUtils.showFragment(FragmentManager manager, Fragment fragment, int layout, int... animation)
-     FragmentUtils.showFragment(FragmentManager manager, Object fragment, int layout, int... animation)
      //替换碎片
      FragmentUtils.replaceFragment(FragmentManager manager, Fragment fragment, int layout)
-     FragmentUtils.replaceFragment(FragmentManager manager, Object fragment, int layout)
      //替换带动画碎片
      FragmentUtils.replaceFragment(FragmentManager manager, Fragment fragment, int layout, int... animation)
-     FragmentUtils.replaceFragment(FragmentManager manager, Object fragment, int layout, int... animation)
 ```
 
 ### 29、ViewAnimatorUtils

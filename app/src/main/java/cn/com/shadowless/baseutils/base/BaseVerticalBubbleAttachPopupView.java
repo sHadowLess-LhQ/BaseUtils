@@ -34,7 +34,7 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> 
     /**
      * The Layout id.
      */
-    private final int layoutId;
+    private int layoutId;
     /**
      * The Provider.
      */
@@ -44,6 +44,17 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> 
      * Instantiates a new Base vertical bubble attach popup view.
      *
      * @param context the context
+     */
+    public BaseVerticalBubbleAttachPopupView(@NonNull Context context) {
+        super(context);
+        this.context = context;
+    }
+
+    /**
+     * Instantiates a new Base vertical bubble attach popup view.
+     *
+     * @param context  the context
+     * @param layoutId the layout id
      */
     public BaseVerticalBubbleAttachPopupView(@NonNull Context context, int layoutId) {
         super(context);
@@ -71,6 +82,15 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> 
     protected void onShow() {
         super.onShow();
         initListener();
+    }
+
+    /**
+     * Sets layout id.
+     *
+     * @param layoutId the layout id
+     */
+    public void setLayoutId(int layoutId) {
+        this.layoutId = layoutId;
     }
 
     /**

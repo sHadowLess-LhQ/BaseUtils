@@ -3,9 +3,12 @@ package cn.com.shadowless.baseutils.utils;
 import android.app.Activity;
 import android.content.Context;
 
-import com.alibaba.android.arouter.facade.Postcard;
-import com.alibaba.android.arouter.facade.callback.NavigationCallback;
-import com.alibaba.android.arouter.launcher.ARouter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.therouter.TheRouter;
+import com.therouter.router.Navigator;
+import com.therouter.router.interceptor.NavigationCallback;
 
 /**
  * 路由工具类
@@ -22,50 +25,79 @@ public class RouterUtils {
     }
 
     /**
-     * 默认跳转超时时间
-     */
-    public static final int DEFAULT_TIMEOUT = 2;
-
-    /**
      * 获取跳转配置
      *
      * @param path the path
      * @return the postcard
      */
-    public static Postcard getDefaultPostcard(String path) {
-        return ARouter.getInstance().build(path).setTimeout(DEFAULT_TIMEOUT);
+    public static Navigator getNavigator(String path) {
+        return TheRouter.build(path);
     }
 
     /**
-     * 获取跳转配置
+     * 获取碎片
      *
-     * @param path    the 路径
-     * @param timeOut the 超时
-     * @return the default postcard
+     * @param <T>  the type parameter
+     * @param path the 路径
+     * @return the fragment
      */
-    public static Postcard getDefaultPostcard(String path, int timeOut) {
-        return ARouter.getInstance().build(path).setTimeout(timeOut);
+    public static <T extends Fragment> T getFragment(String path) {
+        return TheRouter.build(path).createFragment();
+    }
+
+    /**
+     * 显示碎片
+     *
+     * @param fragmentManager the fragment manager
+     * @param path            the 路径
+     * @param layout          the 布局
+     */
+    public static void showRouterFragment(FragmentManager fragmentManager, String path, int layout) {
+        FragmentUtils.showFragment(fragmentManager, getFragment(path), layout);
+    }
+
+    /**
+     * 显示碎片
+     *
+     * @param fragmentManager the fragment manager
+     * @param path            the 路径
+     * @param layout          the 布局
+     * @param anim            the 动画
+     */
+    public static void showRouterFragment(FragmentManager fragmentManager, String path, int layout, int... anim) {
+        FragmentUtils.showFragment(fragmentManager, getFragment(path), layout, anim);
+    }
+
+    /**
+     * 替换碎片
+     *
+     * @param fragmentManager the fragment manager
+     * @param path            the 路径
+     * @param layout          the 布局
+     */
+    public static void replaceRouterFragment(FragmentManager fragmentManager, String path, int layout) {
+        FragmentUtils.replaceFragment(fragmentManager, getFragment(path), layout);
+    }
+
+    /**
+     * 替换碎片
+     *
+     * @param fragmentManager the fragment manager
+     * @param path            the 路径
+     * @param layout          the 布局
+     * @param anim            the 动画
+     */
+    public static void replaceRouterFragment(FragmentManager fragmentManager, String path, int layout, int... anim) {
+        FragmentUtils.replaceFragment(fragmentManager, getFragment(path), layout, anim);
     }
 
     /**
      * 跳转
      *
      * @param path the 路径
-     * @return the object
      */
-    public static Object jump(String path) {
-        return ARouter.getInstance().build(path).setTimeout(DEFAULT_TIMEOUT).navigation();
-    }
-
-    /**
-     * 跳转
-     *
-     * @param path    the 路径
-     * @param timeOut the 超时
-     * @return the object
-     */
-    public static Object jump(String path, int timeOut) {
-       return ARouter.getInstance().build(path).setTimeout(timeOut).navigation();
+    public static void jump(String path) {
+        TheRouter.build(path).navigation();
     }
 
     /**
@@ -73,22 +105,9 @@ public class RouterUtils {
      *
      * @param path    the 路径
      * @param context the 上下文
-     * @return the object
      */
-    public static Object jump(String path, Context context) {
-       return ARouter.getInstance().build(path).setTimeout(DEFAULT_TIMEOUT).navigation(context);
-    }
-
-    /**
-     * 跳转
-     *
-     * @param path    the 路径
-     * @param context the 上下文
-     * @param timeOut the 超时
-     * @return the object
-     */
-    public static Object jump(String path, Context context, int timeOut) {
-       return ARouter.getInstance().build(path).setTimeout(timeOut).navigation(context);
+    public static void jump(String path, Context context) {
+        TheRouter.build(path).navigation(context);
     }
 
     /**
@@ -97,23 +116,9 @@ public class RouterUtils {
      * @param path     the 路径
      * @param context  the 上下文
      * @param callback the 回调
-     * @return the object
      */
-    public static Object jump(String path, Context context, NavigationCallback callback) {
-        return ARouter.getInstance().build(path).setTimeout(DEFAULT_TIMEOUT).navigation(context, callback);
-    }
-
-    /**
-     * 跳转
-     *
-     * @param path     the 路径
-     * @param context  the 上下文
-     * @param timeOut  the 超时
-     * @param callback the 回调
-     * @return the object
-     */
-    public static Object jump(String path, Context context, int timeOut, NavigationCallback callback) {
-        return ARouter.getInstance().build(path).setTimeout(timeOut).navigation(context, callback);
+    public static void jump(String path, Context context, NavigationCallback callback) {
+        TheRouter.build(path).navigation(context, callback);
     }
 
     /**
@@ -124,19 +129,7 @@ public class RouterUtils {
      * @param requestCode the 请求数据参数
      */
     public static void jump(String path, Activity context, int requestCode) {
-        ARouter.getInstance().build(path).setTimeout(DEFAULT_TIMEOUT).navigation(context, requestCode);
-    }
-
-    /**
-     * 跳转
-     *
-     * @param path        the 路径
-     * @param context     the 上下文
-     * @param timeOut     the 超时
-     * @param requestCode the 请求数据参数
-     */
-    public static void jump(String path, Activity context, int timeOut, int requestCode) {
-        ARouter.getInstance().build(path).setTimeout(timeOut).navigation(context, requestCode);
+        TheRouter.build(path).navigation(context, requestCode);
     }
 
     /**
@@ -148,19 +141,6 @@ public class RouterUtils {
      * @param callback    the 回调
      */
     public static void jump(String path, Activity context, int requestCode, NavigationCallback callback) {
-        ARouter.getInstance().build(path).setTimeout(DEFAULT_TIMEOUT).navigation(context, requestCode, callback);
-    }
-
-    /**
-     * 跳转
-     *
-     * @param path        the 路径
-     * @param context     the 上下文
-     * @param timeOut     the 超时
-     * @param requestCode the 请求数据参数
-     * @param callback    the 回调
-     */
-    public static void jump(String path, Activity context, int timeOut, int requestCode, NavigationCallback callback) {
-        ARouter.getInstance().build(path).setTimeout(timeOut).navigation(context, requestCode, callback);
+        TheRouter.build(path).navigation(context, requestCode, callback);
     }
 }

@@ -15,34 +15,45 @@ import com.trello.rxlifecycle3.LifecycleProvider;
 import cn.com.shadowless.baseutils.R;
 
 /**
- * The type Base bottom pop view.
+ * 底部弹窗
  *
- * @param <VB> the type parameter
+ * @param <VB> the type 绑定视图
  * @author sHadowLess
  */
 public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPopupView {
 
     /**
-     * The Bind.
+     * 绑定视图
      */
     private VB bind = null;
     /**
-     * The Context.
+     * 上下文
      */
     private final Context context;
     /**
-     * The Layout id.
+     * 视图编号
      */
-    private final int layoutId;
+    private int layoutId;
     /**
-     * The Provider.
+     * 生命周期
      */
     protected LifecycleProvider<Lifecycle.Event> provider;
 
     /**
-     * Instantiates a new Base bottom pop view.
+     * 构造
      *
-     * @param context the context
+     * @param context the 上下文
+     */
+    public BaseBottomPopView(@NonNull Context context) {
+        super(context);
+        this.context = context;
+    }
+
+    /**
+     * 构造
+     *
+     * @param context  the 上下文
+     * @param layoutId the 布局编号
      */
     public BaseBottomPopView(@NonNull Context context, int layoutId) {
         super(context);
@@ -73,7 +84,16 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     }
 
     /**
-     * Gets bind view.
+     * 设置布局编号
+     *
+     * @param layoutId the layout id
+     */
+    public void setLayoutId(int layoutId) {
+        this.layoutId = layoutId;
+    }
+
+    /**
+     * 获取绑定视图控件
      *
      * @return the bind view
      */
@@ -82,24 +102,24 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     }
 
     /**
-     * Init view.
+     * 初始化视图
      */
     protected abstract void initView();
 
     /**
-     * Init listener.
+     * 初始化监听
      */
     protected abstract void initListener();
 
     /**
-     * Is default background boolean.
+     * 是否默认背景颜色
      *
      * @return the boolean
      */
     protected abstract boolean isDefaultBackground();
 
     /**
-     * Sets bind view.
+     * 设置绑定视图
      *
      * @return the bind view
      */

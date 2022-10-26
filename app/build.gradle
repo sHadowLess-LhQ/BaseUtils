@@ -80,5 +80,4 @@ dependencies {
 
     //TheRouter
     api "cn.therouter:router:1.1.1"
-    annotationProcessor "cn.therouter:apt:1.1.1"
 }

@@ -94,29 +94,24 @@ b、远程仓库引入
 ```
      dependencies {
             //主模块
-            implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
-            implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
-            implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-            implementation 'com.trello.rxlifecycle3:rxlifecycle-android-lifecycle:3.1.0'
-            //【注】：使用RouterUtils，请额外添加以下依赖：
-            //RouterUtils
-            implementation "cn.therouter:router:1.1.1"
+            implementation 'com.gitee.shadowless_lhq:base-utils:Tag', {
+               //【注】：使用RouterUtils，请删除以下远程依赖排除：
+               exclude group: 'cn.therouter', module: 'router'
+               //【注】：使用RetrofitUtils，请删除以下远程依赖排除：
+               exclude group: 'com.google.code.gson', module: 'gson'
+               exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+               exclude group: 'com.squareup.retrofit2', module: 'retrofit'
+               exclude group: 'com.squareup.retrofit2', module: 'converter-gson'
+               exclude group: 'com.squareup.retrofit2', module: 'adapter-rxjava2'
+               //【注】：使用BaseXPop，请删除以下远程依赖排除：
+               //【注】：使用observer包下的订阅者，也请删除以下远程依赖排除：
+               exclude group: 'com.github.li-xiaojun', module: 'XPopup'
+               exclude group: 'androidx.recyclerview', module: 'recyclerview'
+               //【注】：使用MmKvUtils，请删除以下远程依赖排除:
+               exclude group: 'com.tencent', module: 'mmkv'
+            }
+            //【注】：使用RouterUtils进行携参跳转，请声明以下注解处理器：
             annotationProcessor "cn.therouter:apt:1.1.1"
-            //【注】：使用RetrofitUtils，请额外添加以下依赖：
-            //RetrofitUtils
-            implementation 'com.squareup.okhttp3:okhttp:4.7.2'
-            implementation 'com.google.code.gson:gson:2.8.6'
-            implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-            implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-            implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
-            //【注】：使用BaseXPop，请额外添加以下依赖：
-            //【注】：使用observer包下的订阅者，请额外添加以下依赖：
-            //BaseXPop
-            implementation 'com.github.li-xiaojun:XPopup:2.7.6'
-            implementation 'com.google.android.material:material:1.6.1'
-            implementation 'androidx.recyclerview:recyclerview:1.2.1'
-            //【注】：使用MmKvUtils，请额外添加以下依赖
-            implementation 'com.tencent:mmkv:1.2.13'
     }
 ```
 

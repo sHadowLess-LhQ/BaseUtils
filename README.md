@@ -95,19 +95,23 @@ b、远程仓库引入
      dependencies {
             //主模块
             implementation 'com.gitee.shadowless_lhq:base-utils:Tag', {
-               //【注】：使用RouterUtils，请删除以下远程依赖排除：
+               //【注】：使用RxUtils、BaseActivity和BaseFragment，请删除以下排除：
+               exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
+               exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
+               exclude group: 'com.trello.rxlifecycle3', module: 'rxlifecycle-android-lifecycle'
+               //【注】：使用RouterUtils，请删除以下排除：
                exclude group: 'cn.therouter', module: 'router'
-               //【注】：使用RetrofitUtils，请删除以下远程依赖排除：
+               //【注】：使用RetrofitUtils，请删除以下排除：
                exclude group: 'com.google.code.gson', module: 'gson'
                exclude group: 'com.squareup.okhttp3', module: 'okhttp'
                exclude group: 'com.squareup.retrofit2', module: 'retrofit'
                exclude group: 'com.squareup.retrofit2', module: 'converter-gson'
                exclude group: 'com.squareup.retrofit2', module: 'adapter-rxjava2'
-               //【注】：使用BaseXPop，请删除以下远程依赖排除：
-               //【注】：使用observer包下的订阅者，也请删除以下远程依赖排除：
+               //【注】：使用BaseXPop，请删除以下排除：
+               //【注】：使用observer包下的观察者，也请删除以下排除：
                exclude group: 'com.github.li-xiaojun', module: 'XPopup'
                exclude group: 'androidx.recyclerview', module: 'recyclerview'
-               //【注】：使用MmKvUtils，请删除以下远程依赖排除:
+               //【注】：使用MmKvUtils，请删除以下排除:
                exclude group: 'com.tencent', module: 'mmkv'
             }
             //【注】：使用RouterUtils进行携参跳转，请声明以下注解处理器：

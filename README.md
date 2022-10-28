@@ -4,6 +4,10 @@
 
 个人自用项目快速搭建框架
 
+#### 引用说明
+
+<br/>
+
 #### 安装教程
 
 Step 1. 添加maven仓库地址和配置
@@ -248,15 +252,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
        //初始化界面控件
        getBindView().test.setText(data);
        //正常路由
-       RouterUtils.jump("/xxx/xxx").navigation();
-       //路由碎片
-       Fragment fragment = (Fragment)RouterUtils.jump("/xxx/xxx").navigation();
-       //显示碎片
-       showFragment(fragment，R.id.test);
-       showFragment(fragment，R.id.test,R.anim.left_in,R.anim.left.out,R.anim.right_in,R.anim.right_out);
-       //替换碎片
-       replaceFragment(fragment，R.id.test);
-       replaceFragment(fragment，R.id.test,R.anim.left_in,R.anim.left.out,R.anim.right_in,R.anim.right_out);
+       RouterUtils.jump("xxx").navigation();
     }
     
     @Override
@@ -338,7 +334,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
        //默认在主线程
        //初始化界面控件
        getBindView().test.setText(map);
-       RouterUtils.jump("/xxx/xxx").navigation();
+       RouterUtils.jump("xxx").navigation();
     }
 }
 ```

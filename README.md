@@ -4,10 +4,6 @@
 
 个人自用项目快速搭建框架
 
-#### 引用说明
-
-<br/>
-
 #### 安装教程
 
 Step 1. 添加maven仓库地址和配置
@@ -1837,4 +1833,71 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
         .path(Path path)
         //开始动画
         .start();
+```
+
+### 30、ScreenRecordUtils
+
+```
+     RecordConfig recordConfig = RecordConfig
+                    .builder()
+                    //设置Activity级的实例，不可为空
+                    .activity(this)
+                    //设置视频的宽度，默认720
+                    .videoWidth(1080)
+                    //设置视频高度，默认1280
+                    .videoHeight(1920)
+                    //设置视频文件名称，不可为空
+                    .fileName("xxx")
+                    //设置视频保存路径，不可为空
+                    .savePath(Constants.PATH_SCREEN_VIDEO)
+                    //设置是否录制音频，默认不录制
+                    .isRecordAudio(true)
+                    //设置音频编码，仅在录制音频开启生效
+                    .audioEncoder()
+                    //设置音频源，仅在录制音频开启生效
+                    .audioSource()
+                    //设置视频输出格式
+                    .outputFormat()
+                    //设置视频源
+                    .videoSource()
+                    //设置视频编码
+                    .videoEncoder()
+                    //设置视频帧数
+                    .videoFrameRate()
+                    //编码比特率
+                    .videoEncodingBitRate()
+                    .build();
+            screenRecordUtils = new ScreenRecordUtils(recordConfig, new ScreenRecordUtils.OnVideoRecordListener() {
+                @Override
+                public void onBeforeRecord() {
+                   //准备录制前
+                }
+
+                @Override
+                public void onStartRecord() {
+                   //开始录制
+                }
+
+                @Override
+                public void onCancelRecord() {
+                   //停止录制
+                }
+
+                @Override
+                public void onEndRecord() {
+                   //录制结束
+                }
+            });
+     //开始录制
+     screenRecordUtils.startRecord();
+     //停止录制
+     screenRecordUtils.cancelRecord();
+     //是否正在录制
+     screenRecordUtils.isRecording();
+     //恢复录制
+     screenRecordUtils.resume();
+     //暂停录制
+     screenRecordUtils.pause();
+     //在重写onActivityResult()，并回传三个参数
+     screenRecordUtils.onActivityResult(int requestCode, int resultCode, @NotNull Intent data);
 ```

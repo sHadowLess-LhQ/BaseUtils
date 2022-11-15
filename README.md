@@ -1840,7 +1840,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 ```
      RecordConfig recordConfig = RecordConfig
                     .builder()
-                    //设置Activity级的实例，不可为空
+                    //设置Activity级实例，不可为空
                     .activity(this)
                     //设置视频的宽度，默认720
                     .videoWidth(1080)
@@ -1852,19 +1852,19 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
                     .savePath(Constants.PATH_SCREEN_VIDEO)
                     //设置是否录制音频，默认不录制
                     .isRecordAudio(true)
-                    //设置音频编码，仅在录制音频开启生效
+                    //设置音频编码，仅在录制音频开启生效，有默认设置
                     .audioEncoder()
-                    //设置音频源，仅在录制音频开启生效
+                    //设置音频源，仅在录制音频开启生效，有默认设置
                     .audioSource()
-                    //设置视频输出格式
+                    //设置视频输出格式，有默认设置
                     .outputFormat()
-                    //设置视频源
+                    //设置视频源，有默认设置
                     .videoSource()
-                    //设置视频编码
+                    //设置视频编码，有默认设置
                     .videoEncoder()
-                    //设置视频帧数
+                    //设置视频帧数，有默认设置
                     .videoFrameRate()
-                    //编码比特率
+                    //编码比特率，有默认设置
                     .videoEncodingBitRate()
                     .build();
             screenRecordUtils = new ScreenRecordUtils(recordConfig, new ScreenRecordUtils.OnVideoRecordListener() {

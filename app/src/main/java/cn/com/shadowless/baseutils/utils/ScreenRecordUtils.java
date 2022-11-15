@@ -32,51 +32,51 @@ import cn.com.shadowless.baseutils.record.RecordConfig;
 public class ScreenRecordUtils {
 
     /**
-     * The Media projection manager.
+     * 媒体项目管理
      */
     private MediaProjectionManager mediaProjectionManager;
     /**
-     * The Media recorder.
+     * 媒体录制
      */
     private MediaRecorder mediaRecorder;
     /**
-     * The Media projection.
+     * 媒体投影
      */
     private MediaProjection mediaProjection;
     /**
-     * The Virtual display.
+     * 虚拟显示
      */
     private VirtualDisplay virtualDisplay;
     /**
-     * The Display metrics.
+     * 显示参数
      */
     private DisplayMetrics displayMetrics;
     /**
-     * The Save file.
+     * 保存临时文件
      */
     private File saveTempFile;
     /**
-     * The Is recording.
+     * 是否正在录制
      */
     private boolean isRecording;
     /**
-     * The Listener.
+     * 录制监听
      */
     private final OnVideoRecordListener listener;
     /**
-     * The Record config.
+     * 录屏参数
      */
     private final RecordConfig recordConfig;
     /**
-     * The constant REQUEST_CODE.
+     * 请求码
      */
-    private static final int REQUEST_CODE = 1024;
+    private final int REQUEST_CODE = 1024;
 
     /**
-     * Instantiates a new Screen record utils.
+     * 构造
      *
-     * @param recordConfig the record config
-     * @param listener     the listener
+     * @param recordConfig the 录屏参数
+     * @param listener     the 录制监听
      */
     public ScreenRecordUtils(RecordConfig recordConfig, OnVideoRecordListener listener) {
         this.listener = listener;
@@ -84,16 +84,16 @@ public class ScreenRecordUtils {
     }
 
     /**
-     * Is recording boolean.
+     * 返回是否正在录制
      *
-     * @return the boolean
+     * @return the 结果
      */
     public boolean isRecording() {
         return this.isRecording;
     }
 
     /**
-     * Start record.
+     * 开始录制
      */
     public void startRecord() {
         if (getMediaProjectionManager() == null) {
@@ -115,7 +115,7 @@ public class ScreenRecordUtils {
     }
 
     /**
-     * Resume.
+     * 恢复
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void resume() {
@@ -125,7 +125,7 @@ public class ScreenRecordUtils {
     }
 
     /**
-     * Pause.
+     * 停止
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void pause() {
@@ -135,7 +135,7 @@ public class ScreenRecordUtils {
     }
 
     /**
-     * Cancel record.
+     * 取消录制
      */
     public void cancelRecord() {
         stopRecord();
@@ -143,10 +143,10 @@ public class ScreenRecordUtils {
     }
 
     /**
-     * On activity result.
+     * 请求回调
      *
-     * @param requestCode the request code
-     * @param resultCode  the result code
+     * @param requestCode the 请求码
+     * @param resultCode  the 结果码
      * @param data        the data
      */
     public void onActivityResult(int requestCode, int resultCode, @NotNull Intent data) {
@@ -173,7 +173,7 @@ public class ScreenRecordUtils {
     }
 
     /**
-     * Stop record.
+     * 停止录制
      */
     private void stopRecord() {
         stop();
@@ -184,7 +184,7 @@ public class ScreenRecordUtils {
     }
 
     /**
-     * Gets media projection manager.
+     * 获取媒体项目管理
      *
      * @return the media projection manager
      */
@@ -196,7 +196,7 @@ public class ScreenRecordUtils {
     }
 
     /**
-     * Gets display metrics.
+     * 获取显示参数
      *
      * @return the display metrics
      */
@@ -209,14 +209,14 @@ public class ScreenRecordUtils {
     }
 
     /**
-     * Show toast.
+     * 显示土司
      */
     private void showToast() {
         Toast.makeText(recordConfig.getActivity(), "当前设备暂不支持录屏", Toast.LENGTH_SHORT).show();
     }
 
     /**
-     * Stop.
+     * 停止
      */
     private void stop() {
         if (isRecording) {
@@ -238,10 +238,11 @@ public class ScreenRecordUtils {
     }
 
     /**
-     * Init recorder boolean.
+     * 初始化录制
      *
-     * @return the boolean
+     * @return the 结果
      */
+    @RequiresApi(api = Build.VERSION_CODES.S)
     private boolean initRecorder() {
         boolean result = true;
         File file = new File(recordConfig.getSavePath());
@@ -280,9 +281,9 @@ public class ScreenRecordUtils {
 
 
     /**
-     * Refresh video.
+     * 刷新保存的文件
      *
-     * @param file the file
+     * @param file the 文件
      */
     private void refreshVideo(File file) {
         if (file.length() > 5000) {
@@ -295,26 +296,26 @@ public class ScreenRecordUtils {
     }
 
     /**
-     * The interface On video record listener.
+     * 录制监听
      */
     public interface OnVideoRecordListener {
         /**
-         * On before record.
+         * 开始录制前
          */
         void onBeforeRecord();
 
         /**
-         * On start record.
+         * 开始录制
          */
         void onStartRecord();
 
         /**
-         * On cancel record.
+         * 取消录制
          */
         void onCancelRecord();
 
         /**
-         * On end record.
+         * 结束录制
          */
         void onEndRecord();
     }

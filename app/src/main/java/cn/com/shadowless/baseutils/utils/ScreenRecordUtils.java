@@ -62,15 +62,30 @@ public class ScreenRecordUtils {
     /**
      * 录制监听
      */
-    private final OnVideoRecordListener listener;
+    private OnVideoRecordListener listener;
     /**
      * 录屏参数
      */
-    private final RecordConfig recordConfig;
+    private RecordConfig recordConfig;
     /**
      * 请求码
      */
     private final int REQUEST_CODE = 1024;
+
+    /**
+     * 构造
+     */
+    public ScreenRecordUtils() {
+    }
+
+    /**
+     * 构造
+     *
+     * @param listener the 录制监听
+     */
+    public ScreenRecordUtils(OnVideoRecordListener listener) {
+        this.listener = listener;
+    }
 
     /**
      * 构造
@@ -81,6 +96,24 @@ public class ScreenRecordUtils {
     public ScreenRecordUtils(RecordConfig recordConfig, OnVideoRecordListener listener) {
         this.listener = listener;
         this.recordConfig = recordConfig;
+    }
+
+    /**
+     * 设置录屏参数
+     *
+     * @param recordConfig the record config
+     */
+    public void setRecordConfig(RecordConfig recordConfig) {
+        this.recordConfig = recordConfig;
+    }
+
+    /**
+     * 设置录屏监听
+     *
+     * @param listener the listener
+     */
+    public void setOnVideoRecordListener(OnVideoRecordListener listener) {
+        this.listener = listener;
     }
 
     /**

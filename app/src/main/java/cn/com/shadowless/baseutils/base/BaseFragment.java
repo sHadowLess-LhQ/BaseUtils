@@ -95,7 +95,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
         initOrientation();
         bind = setBindView();
         initListener();
-        initPermissions(RxUtils.IO_TO_MAIN);
+        initPermissions(initDataThreadMod());
         return bind.getRoot();
     }
 
@@ -200,17 +200,6 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     protected abstract void initView(@Nullable T data);
 
     /**
-     * 初始化方向变量
-     */
-    private void initOrientation() {
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            isOrientation = false;
-        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            isOrientation = true;
-        }
-    }
-
-    /**
      * 初始化权限
      */
     protected void initPermissions(int threadMod) {
@@ -231,6 +220,26 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
                     ));
         } else {
             Observable.create(this).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
+        }
+    }
+
+    /**
+     * 初始化数据所在线程
+     *
+     * @return the 线程模式
+     */
+    protected int initDataThreadMod() {
+        return RxUtils.IO_TO_MAIN;
+    }
+
+    /**
+     * 初始化方向变量
+     */
+    private void initOrientation() {
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            isOrientation = false;
+        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            isOrientation = true;
         }
     }
 

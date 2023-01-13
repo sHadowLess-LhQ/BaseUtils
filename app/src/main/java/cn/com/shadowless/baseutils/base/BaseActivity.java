@@ -14,6 +14,7 @@ import androidx.viewbinding.ViewBinding;
 import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle;
 import com.trello.rxlifecycle3.LifecycleProvider;
 
+import cn.com.shadowless.baseutils.R;
 import cn.com.shadowless.baseutils.permission.RxPermissions;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
@@ -75,12 +76,12 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        initTheme();
+        setTheme(initTheme());
         super.onCreate(savedInstanceState);
         initOrientation();
         initBindView();
         initListener();
-        initPermissions(RxUtils.IO_TO_MAIN);
+        initPermissions(initDataThreadMod());
     }
 
     @Override
@@ -133,13 +134,6 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     /**
-     * 设置主题
-     *
-     * @return the theme
-     */
-    protected abstract int theme();
-
-    /**
      * 需要申请的权限
      *
      * @return the 权限组
@@ -186,11 +180,45 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
 
     /**
      * 初始化主题
+     *
+     * @return the int
      */
-    private void initTheme() {
-        int customTheme = theme();
-        if (0 != customTheme) {
-            setTheme(customTheme);
+    protected int initTheme() {
+        return R.style.MyAppTheme;
+    }
+
+    /**
+     * 初始化数据所在线程
+     *
+     * @return the 线程模式
+     */
+    protected int initDataThreadMod() {
+        return RxUtils.IO_TO_MAIN;
+    }
+
+    /**
+     * 初始化权限
+     *
+     * @param threadMod the 线程模式
+     */
+    private void initPermissions(int threadMod) {
+        mDisposable = new CompositeDisposable();
+        provider = AndroidLifecycle.createLifecycleProvider(this);
+        String[] permissions = permissionName();
+        if (null != permissions && permissions.length != 0) {
+            mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
+                    .subscribe(permission -> {
+                                if (permission.granted) {
+                                    Observable.create(this).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
+                                } else if (permission.shouldShowRequestPermissionRationale) {
+                                    showToast(permission.name);
+                                } else {
+                                    showToast(permission.name);
+                                }
+                            }
+                    ));
+        } else {
+            Observable.create(this).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
         }
     }
 
@@ -210,30 +238,6 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
             isOrientation = false;
         } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             isOrientation = true;
-        }
-    }
-
-    /**
-     * 初始化权限
-     */
-    protected void initPermissions(int threadMod) {
-        mDisposable = new CompositeDisposable();
-        provider = AndroidLifecycle.createLifecycleProvider(this);
-        String[] permissions = permissionName();
-        if (null != permissions && permissions.length != 0) {
-            mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
-                    .subscribe(permission -> {
-                                if (permission.granted) {
-                                    Observable.create(this).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
-                                } else if (permission.shouldShowRequestPermissionRationale) {
-                                    showToast(permission.name);
-                                } else {
-                                    showToast(permission.name);
-                                }
-                            }
-                    ));
-        } else {
-            Observable.create(this).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
         }
     }
 

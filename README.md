@@ -95,10 +95,6 @@ b、远程仓库引入
      dependencies {
             //主模块
             implementation 'com.gitee.shadowless_lhq:base-utils:Tag', {
-               //【注】：使用RxUtils、BaseActivity和BaseFragment，请删除以下排除：
-               exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
-               exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
-               exclude group: 'com.trello.rxlifecycle3', module: 'rxlifecycle-android-lifecycle'
                //【注】：使用RouterUtils，请删除以下排除：
                exclude group: 'cn.therouter', module: 'router'
                //【注】：使用RetrofitUtils，请删除以下排除：
@@ -115,6 +111,29 @@ b、远程仓库引入
                exclude group: 'com.tencent', module: 'mmkv'
             }
             //【注】：使用RouterUtils进行携参跳转，请声明以下注解处理器：
+            annotationProcessor "cn.therouter:apt:1.1.1"
+            
+            //若自动引入失效，请手动引入依赖
+            implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
+            implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+            implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+            implementation 'com.trello.rxlifecycle3:rxlifecycle-android-lifecycle:3.1.0'
+            
+            //BaseXPop
+            implementation 'com.github.li-xiaojun:XPopup:2.7.6'
+          
+            //NetUtils
+            implementation 'com.squareup.okhttp3:okhttp:4.7.2'
+            implementation 'com.google.code.gson:gson:2.8.9'
+            implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+            implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+            implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+        
+            //MMKVUtils
+            implementation 'com.tencent:mmkv:1.2.13'
+        
+            //TheRouter
+            implementation "cn.therouter:router:1.1.1"
             annotationProcessor "cn.therouter:apt:1.1.1"
     }
 ```
@@ -187,7 +206,7 @@ c、混淆规则
 
 #### 使用说明
 
-### 1、BaseActivity：直接继承
+### 1、BaseActivity
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图和传递数据类型
@@ -195,6 +214,8 @@ c、混淆规则
 //新增CompositeDisposable，可统一管理Dispose
 //新增LifecycleProvider，与CompositeDisposable切换使用
 //更换ARouter为TheRouter
+//设置Activity主题，请重写initTheme()方法
+//设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
 //更多用法请参考TheRouter
 @Router(path = "xxx")
 public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
@@ -250,13 +271,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
        //正常路由
        RouterUtils.jump("xxx").navigation();
     }
-    
-    @Override
-    protected int theme() {
-       //动态设置Activity主题
-       //0为不设置
-       return 0;
-    }
 }
 ```
 
@@ -268,13 +282,14 @@ public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends Bas
 }
 ```
 
-### 2、BaseFragment：直接继承
+### 2、BaseFragment
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图
 //填入传递数据类型
 //新增CompositeDisposable，可统一管理Dispose
 //新增LifecycleProvider，与CompositeDisposable切换使用
+//设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
 //更换ARouter为TheRouter
 //更多用法请参考TheRouter
 @Router(path = "xxx")
@@ -343,7 +358,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
 }
 ```
 
-### 3、CustomDialog：调用示例
+### 3、CustomDialog
 
 ```
      CustomDialog custom = CustomDialog
@@ -366,7 +381,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
         custom.dismiss();         //关闭
 ```
 
-### 4、CustomWindow：调用示例
+### 4、CustomWindow
 
 ```
      CustomWindow custom = CustomWindow
@@ -387,7 +402,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
         custom.remove();       //移除
 ```
 
-### 5、CustomPopWindow：调用示例
+### 5、CustomPopWindow
 
 ```
      CustomPopWindow custom = CustomPopWindow
@@ -411,7 +426,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
         custom.dismiss();             //关闭
 ```
 
-### 6、PreferencesUtils：方法说明
+### 6、PreferencesUtils
 
 ```
      //初始化
@@ -472,7 +487,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      PreferencesUtils.remove(String key)
 ```
 
-### 7、RxUtils：调用示例
+### 7、RxUtils
 
 ```
      //具体参数
@@ -573,7 +588,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      RxUtils.dealFlowableThread(int threadSign)
 ```
 
-### 8、RetrofitUtils：调用示例
+### 8、RetrofitUtils
 
 ```
       RetrofitUtils
@@ -597,7 +612,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
                    ...
 ```
 
-### 9、LocationUtils：调用示例
+### 9、LocationUtils
 
 ```
      LocationUtils.builder()
@@ -629,7 +644,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
                 });
 ```
 
-### 10、ApplicationUtils：方法说明
+### 10、ApplicationUtils
 
 ```
      //通过包名打开应用
@@ -724,7 +739,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      DeviceUtils.lockScreen(Context context, int flag) //仅API 26以上有效
 ```
 
-### 12、FileUtils：方法说明
+### 12、FileUtils
 
 ```
      //获取内部存储data文件夹
@@ -773,7 +788,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      FileUtils.getNetFileSizeDescription(long size)
 ```
 
-### 13、WindowUtils：方法说明
+### 13、WindowUtils
 
 ```
      //隐藏状态栏
@@ -788,59 +803,60 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      WindowUtils.hideSoftInput(Context context, View view)
 ```
 
-### 14、BasePopView：直接继承
+### 14、BasePopView
 
 ```
-//创建xml后，点击编译，填入需要绑定的视图
-//支持ViewBinding
-//封装基类很多，详细源码查看
-public class AddCardPopView extends BaseCenterPopView<PopAddCardViewBinding>{
+     //创建xml后，点击编译，填入需要绑定的视图
+     //支持ViewBinding
+     //支持LifecycleProvider
+     //共有9种基类封装弹窗
+     //BaseBottomPopView - 底部弹出弹窗
+     //BaseBubbleHorizontalAttachPopupView - 水平弹出可依附气泡弹窗
+     //BaseCenterPopView - 居中弹窗
+     //BaseDrawerPopupView - 实现Drawer的弹窗
+     //BaseFullScreenPopupView - 全屏弹窗
+     //BaseHorizontalAttachPopView - 水平弹出可依附视图弹窗
+     //BasePositionPopupView - 自定义方向弹窗
+     //BaseVerticalAttachPopView - 垂直弹出可依附视图弹窗
+     //BaseVerticalBubbleAttachPopupView - 垂直弹出可依附气泡弹窗
+     //继承示例
+     public class TestPopView extends BaseCenterPopView<PopAddCardViewBinding>{
 
-    public AddCardPopView(@NonNull Context context) {
-        super(context);
-    }
+         public TestPopView(@NonNull Context context, int layoutId) {
+            super(context, layoutId);
+         }
+         
+         @Override
+         protected void initView() {
+       
+         }
 
-    @Override
-    protected int setLayout() {
-        return R.layout.pop_add_card_view;
-    }
+         @Override
+        protected void initListener() {
+       
+        }
 
-    @Override
-    protected void initView() {
-      //初始化控件
-      getBindView().popAddCardBtn.setText("设置");
-    }
+        @Override
+        protected boolean isDefaultBackground() {
+          return true;
+        }
 
-    @Override
-    protected void initListener() {
-      //初始化控件事件监听
-      getBindView().popAddCardBtn.setOnClickListener(this);
-    }
-    
-    @Override
-    protected boolean isDefaultBackground() {
-      //为true使用默认背景样式
-      //为false不使用
-      return false;
-    }
-
-    @NonNull
-    @Override
-    protected PopAddCardViewBinding setBindView() {
-        //回传ViewBinding绑定的视图
-        return PopAddCardViewBinding.bind(getPopupImplView());
-    }
-}
+        @NonNull
+        @Override
+        protected PopAddCardViewBinding setBindView() {
+           return PopAddCardViewBinding.bind(getPopupImplView());
+        }
+      }
 ```
 
-### 15、WordUtils：方法说明
+### 15、WordUtils
 
 ```
      //比较字符串
      WordUtils.contain(String input, String regex)
 ```
 
-### 16、BaseAccessibilityService：直接继承
+### 16、BaseAccessibilityService
 
 ```
 public class MyService extends BaseAccessibilityService {
@@ -1323,7 +1339,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      ToastUtils.onInfoShowToast(int messageID, int iconID);
 ```
 
-### 18、LogUtils：方法说明
+### 18、LogUtils
 
 ```
      //配置日志库
@@ -1385,7 +1401,9 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       LogUtils.wtf("12345");
 ```
 
-### 19、BaseObserver或BaseLifeObserver：subscribe()处实例化，其中BaseLifeObserver请配合lifecycle使用
+### 19、BaseObserver/BaseLifeObserver
+
+【注】：BaseLifeObserver请配合lifecycle使用
 
 ```
      //无加载框构造
@@ -1410,7 +1428,9 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 20、BaseCompletableObserver或BaseLifeCompletableObserver：subscribe()处实例化，其中BaseCompletableObserver请配合lifecycle使用
+### 20、BaseCompletableObserver/BaseLifeCompletableObserver
+
+【注】：BaseCompletableObserver请配合lifecycle使用
 
 ```
      //无加载框构造
@@ -1435,7 +1455,9 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 21、BaseMaybeObserver或BaseLifeMaybeObserver：subscribe()处实例化，其中BaseLifeMaybeObserve请配合lifecycle使用
+### 21、BaseMaybeObserver/BaseLifeMaybeObserver
+
+【注】：BaseLifeMaybeObserve请配合lifecycle使用
 
 ```
      //无加载框构造
@@ -1460,7 +1482,9 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 22、BaseSingleObserver或BaseLifeSingleObserver：subscribe()处实例化，其中BaseLifeSingleObserver请配合lifecycle使用
+### 22、BaseSingleObserver/BaseLifeSingleObserver
+
+【注】：BaseLifeSingleObserver请配合lifecycle使用
 
 ```
      //无加载框构造
@@ -1485,7 +1509,9 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 23、BaseSubscriber或BaseLifeSubscriber：subscribe()处实例化，其中BaseLifeSubscriber请配合lifecycle使用
+### 23、BaseSubscriber/BaseLifeSubscriber
+
+【注】：BaseLifeSubscriber请配合lifecycle使用
 
 ```
      //无加载框构造
@@ -1510,7 +1536,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 24、CrashConfig：调用示例
+### 24、CrashConfig
 
 ```
       CrashConfig.Builder
@@ -1539,50 +1565,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
                 .apply();
 ```
 
-### 25、BaseXPop：继承并实现抽象方法，支持ViewBinding、支持LifecycleProvider
-
-```
-     //共有9种基类封装弹窗
-     //BaseBottomPopView - 底部弹出弹窗
-     //BaseBubbleHorizontalAttachPopupView - 水平弹出可依附气泡弹窗
-     //BaseCenterPopView - 居中弹窗
-     //BaseDrawerPopupView - 实现Drawer的弹窗
-     //BaseFullScreenPopupView - 全屏弹窗
-     //BaseHorizontalAttachPopView - 水平弹出可依附视图弹窗
-     //BasePositionPopupView - 自定义方向弹窗
-     //BaseVerticalAttachPopView - 垂直弹出可依附视图弹窗
-     //BaseVerticalBubbleAttachPopupView - 垂直弹出可依附气泡弹窗
-     //继承示例
-     public class TestPopView extends BaseCenterPopView<PopAddCardViewBinding>{
-
-         public TestPopView(@NonNull Context context, int layoutId) {
-            super(context, layoutId);
-         }
-         
-         @Override
-         protected void initView() {
-       
-         }
-
-         @Override
-        protected void initListener() {
-       
-        }
-
-        @Override
-        protected boolean isDefaultBackground() {
-          return true;
-        }
-
-        @NonNull
-        @Override
-        protected PopAddCardViewBinding setBindView() {
-           return PopAddCardViewBinding.bind(getPopupImplView());
-        }
-}
-```
-
-### 26、MmKvUtils：调用示例
+### 25、MmKvUtils：调用示例
 
 ```
       //初始化MMKV
@@ -1655,9 +1638,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       MmKvUtils.removeValues(String[] key)
 ```
 
-***
-
-### 27、RouterUtils
+### 26、RouterUtils
 
 ```
      //获取指定路由的Navigator
@@ -1696,7 +1677,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 
 ***
 
-### 28、FragmentUtils
+### 27、FragmentUtils
 
 ```
      //碎片工具类，可配合ARouter使用
@@ -1710,7 +1691,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      FragmentUtils.replaceFragment(FragmentManager manager, Fragment fragment, int layout, int... animation)
 ```
 
-### 29、ViewAnimatorUtils
+### 28、ViewAnimatorUtils
 
 ```
      ViewAnimatorUtils
@@ -1835,7 +1816,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
         .start();
 ```
 
-### 30、ScreenRecordUtils
+### 29、ScreenRecordUtils
 
 ```
      RecordConfig recordConfig = RecordConfig

@@ -94,35 +94,17 @@ b、远程仓库引入
 ```
      dependencies {
             //主模块
-            implementation 'com.gitee.shadowless_lhq:base-utils:Tag', {
-               //【注】：使用RouterUtils，请删除以下排除：
-               exclude group: 'cn.therouter', module: 'router'
-               //【注】：使用RetrofitUtils，请删除以下排除：
-               exclude group: 'com.google.code.gson', module: 'gson'
-               exclude group: 'com.squareup.okhttp3', module: 'okhttp'
-               exclude group: 'com.squareup.retrofit2', module: 'retrofit'
-               exclude group: 'com.squareup.retrofit2', module: 'converter-gson'
-               exclude group: 'com.squareup.retrofit2', module: 'adapter-rxjava2'
-               //【注】：使用BaseXPop，请删除以下排除：
-               //【注】：使用observer包下的观察者，也请删除以下排除：
-               exclude group: 'com.github.li-xiaojun', module: 'XPopup'
-               exclude group: 'androidx.recyclerview', module: 'recyclerview'
-               //【注】：使用MmKvUtils，请删除以下排除:
-               exclude group: 'com.tencent', module: 'mmkv'
-            }
-            //【注】：使用RouterUtils进行携参跳转，请声明以下注解处理器：
-            annotationProcessor "cn.therouter:apt:1.1.1"
-            
-            //若自动引入失效，请手动引入依赖
             implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
             implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
             implementation 'com.trello.rxlifecycle3:rxlifecycle-android-lifecycle:3.1.0'
             
             //BaseXPop
+            //【注】：使用BaseXPop，请引入以下依赖
             implementation 'com.github.li-xiaojun:XPopup:2.7.6'
           
-            //NetUtils
+            //使用RetrofitUtils
+            //【注】：使用RetrofitUtils，请引入以下依赖
             implementation 'com.squareup.okhttp3:okhttp:4.7.2'
             implementation 'com.google.code.gson:gson:2.8.9'
             implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -130,9 +112,12 @@ b、远程仓库引入
             implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
         
             //MMKVUtils
+            //【注】：使用MmKvUtils，请引入以下依赖
             implementation 'com.tencent:mmkv:1.2.13'
         
             //TheRouter
+            //【注】：使用RouterUtils，请引入以下依赖：
+            //【注】：使用RouterUtils进行携参跳转，请声明以下注解处理器
             implementation "cn.therouter:router:1.1.1"
             annotationProcessor "cn.therouter:apt:1.1.1"
     }

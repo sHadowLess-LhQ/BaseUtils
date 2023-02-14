@@ -31,10 +31,6 @@ public abstract class BasePositionPopupView<VB extends ViewBinding> extends Posi
      */
     private final Context context;
     /**
-     * The Layout id.
-     */
-    private int layoutId;
-    /**
      * The Provider.
      */
     protected LifecycleProvider<Lifecycle.Event> provider;
@@ -49,21 +45,9 @@ public abstract class BasePositionPopupView<VB extends ViewBinding> extends Posi
         this.context = context;
     }
 
-    /**
-     * Instantiates a new Base position popup view.
-     *
-     * @param context  the context
-     * @param layoutId the layout id
-     */
-    public BasePositionPopupView(@NonNull Context context, int layoutId) {
-        super(context);
-        this.context = context;
-        this.layoutId = layoutId;
-    }
-
     @Override
     protected int getImplLayoutId() {
-        return layoutId;
+        return setLayoutId();
     }
 
     @Override
@@ -84,15 +68,6 @@ public abstract class BasePositionPopupView<VB extends ViewBinding> extends Posi
     }
 
     /**
-     * Sets layout id.
-     *
-     * @param layoutId the layout id
-     */
-    public void setLayoutId(int layoutId) {
-        this.layoutId = layoutId;
-    }
-
-    /**
      * Gets bind view.
      *
      * @return the bind view
@@ -100,6 +75,28 @@ public abstract class BasePositionPopupView<VB extends ViewBinding> extends Posi
     protected VB getBindView() {
         return bind;
     }
+
+    /**
+     * Sets bind view.
+     *
+     * @return the bind view
+     */
+    @NonNull
+    protected abstract VB setBindView();
+
+    /**
+     * Sets layout id.
+     *
+     * @return the layout id
+     */
+    protected abstract int setLayoutId();
+
+    /**
+     * Is default background boolean.
+     *
+     * @return the boolean
+     */
+    protected abstract boolean isDefaultBackground();
 
     /**
      * Init view.
@@ -110,19 +107,4 @@ public abstract class BasePositionPopupView<VB extends ViewBinding> extends Posi
      * Init listener.
      */
     protected abstract void initListener();
-
-    /**
-     * Is default background boolean.
-     *
-     * @return the boolean
-     */
-    protected abstract boolean isDefaultBackground();
-
-    /**
-     * Sets bind view.
-     *
-     * @return the bind view
-     */
-    @NonNull
-    protected abstract VB setBindView();
 }

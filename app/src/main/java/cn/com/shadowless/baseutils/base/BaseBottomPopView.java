@@ -1,6 +1,7 @@
 package cn.com.shadowless.baseutils.base;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -31,10 +32,6 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
      */
     private final Context context;
     /**
-     * 视图编号
-     */
-    private int layoutId;
-    /**
      * 生命周期
      */
     protected LifecycleProvider<Lifecycle.Event> provider;
@@ -49,21 +46,14 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
         this.context = context;
     }
 
-    /**
-     * 构造
-     *
-     * @param context  the 上下文
-     * @param layoutId the 布局编号
-     */
-    public BaseBottomPopView(@NonNull Context context, int layoutId) {
-        super(context);
-        this.context = context;
-        this.layoutId = layoutId;
+    @Override
+    protected int getImplLayoutId() {
+        return setLayoutId();
     }
 
     @Override
-    protected int getImplLayoutId() {
-        return layoutId;
+    public View getPopupImplView() {
+        return bind.getRoot();
     }
 
     @Override
@@ -84,15 +74,6 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     }
 
     /**
-     * 设置布局编号
-     *
-     * @param layoutId the layout id
-     */
-    public void setLayoutId(int layoutId) {
-        this.layoutId = layoutId;
-    }
-
-    /**
      * 获取绑定视图控件
      *
      * @return the bind view
@@ -102,14 +83,11 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     }
 
     /**
-     * 初始化视图
+     * 设置布局编号
+     *
+     * @return the layout id
      */
-    protected abstract void initView();
-
-    /**
-     * 初始化监听
-     */
-    protected abstract void initListener();
+    protected abstract int setLayoutId();
 
     /**
      * 是否默认背景颜色
@@ -125,4 +103,14 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
      */
     @NonNull
     protected abstract VB setBindView();
+
+    /**
+     * 初始化视图
+     */
+    protected abstract void initView();
+
+    /**
+     * 初始化监听
+     */
+    protected abstract void initListener();
 }

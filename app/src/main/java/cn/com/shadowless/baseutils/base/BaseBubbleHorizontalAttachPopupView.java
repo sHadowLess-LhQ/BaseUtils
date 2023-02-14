@@ -31,10 +31,6 @@ public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding
      */
     private final Context context;
     /**
-     * 布局编号
-     */
-    private int layoutId;
-    /**
      * 生命周期
      */
     protected LifecycleProvider<Lifecycle.Event> provider;
@@ -49,21 +45,9 @@ public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding
         this.context = context;
     }
 
-    /**
-     * 构造
-     *
-     * @param context  the 上下文
-     * @param layoutId the 布局编号
-     */
-    public BaseBubbleHorizontalAttachPopupView(@NonNull Context context, int layoutId) {
-        super(context);
-        this.context = context;
-        this.layoutId = layoutId;
-    }
-
     @Override
     protected int getImplLayoutId() {
-        return layoutId;
+        return setLayoutId();
     }
 
     @Override
@@ -84,15 +68,6 @@ public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding
     }
 
     /**
-     * 设置布局编号
-     *
-     * @param layoutId the layout id
-     */
-    public void setLayoutId(int layoutId) {
-        this.layoutId = layoutId;
-    }
-
-    /**
      * 获取绑定视图
      *
      * @return the bind view
@@ -100,6 +75,28 @@ public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding
     protected VB getBindView() {
         return bind;
     }
+
+    /**
+     * 设置视图绑定
+     *
+     * @return the bind view
+     */
+    @NonNull
+    protected abstract VB setBindView();
+
+    /**
+     * 设置布局编号
+     *
+     * @return the layout id
+     */
+    protected abstract int setLayoutId();
+
+    /**
+     * 是否默认弹窗背景
+     *
+     * @return the boolean
+     */
+    protected abstract boolean isDefaultBackground();
 
     /**
      * 初始化视图控件
@@ -110,20 +107,5 @@ public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding
      * 初始化监听
      */
     protected abstract void initListener();
-
-    /**
-     * 是否默认弹窗背景
-     *
-     * @return the boolean
-     */
-    protected abstract boolean isDefaultBackground();
-
-    /**
-     * 设置视图绑定
-     *
-     * @return the bind view
-     */
-    @NonNull
-    protected abstract VB setBindView();
 
 }

@@ -33,10 +33,6 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
      */
     private final Context context;
     /**
-     * 布局编号
-     */
-    private int layoutId;
-    /**
      * 生命周期
      */
     protected LifecycleProvider<Lifecycle.Event> provider;
@@ -51,21 +47,9 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
         this.context = context;
     }
 
-    /**
-     * 构造
-     *
-     * @param context  the 上下文
-     * @param layoutId the 布局编号
-     */
-    public BaseCenterPopView(@NonNull Context context, int layoutId) {
-        super(context);
-        this.context = context;
-        this.layoutId = layoutId;
-    }
-
     @Override
     protected int getImplLayoutId() {
-        return layoutId;
+        return setLayoutId();
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -86,14 +70,6 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
         initListener();
     }
 
-    /**
-     * 设置布局编号
-     *
-     * @param layoutId the layout id
-     */
-    public void setLayoutId(int layoutId) {
-        this.layoutId = layoutId;
-    }
 
     /**
      * 获取视图绑定
@@ -106,14 +82,19 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
     }
 
     /**
-     * 初始化视图控件
+     * 设置绑定视图
+     *
+     * @return the bind view
      */
-    protected abstract void initView();
+    @NonNull
+    protected abstract VB setBindView();
 
     /**
-     * 初始化监听
+     * 设置布局编号
+     *
+     * @return the layout id
      */
-    protected abstract void initListener();
+    protected abstract int setLayoutId();
 
     /**
      * 是否使用默认背景
@@ -122,11 +103,14 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
      */
     protected abstract boolean isDefaultBackground();
 
+
     /**
-     * 设置绑定视图
-     *
-     * @return the bind view
+     * 初始化视图控件
      */
-    @NonNull
-    protected abstract VB setBindView();
+    protected abstract void initView();
+
+    /**
+     * 初始化监听
+     */
+    protected abstract void initListener();
 }

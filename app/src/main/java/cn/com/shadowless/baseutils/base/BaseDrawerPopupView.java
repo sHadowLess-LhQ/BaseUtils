@@ -31,10 +31,6 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
      */
     private final Context context;
     /**
-     * The Layout id.
-     */
-    private int layoutId;
-    /**
      * The Provider.
      */
     protected LifecycleProvider<Lifecycle.Event> provider;
@@ -49,21 +45,9 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
         this.context = context;
     }
 
-    /**
-     * Instantiates a new Base drawer popup view.
-     *
-     * @param context  the context
-     * @param layoutId the layout id
-     */
-    public BaseDrawerPopupView(@NonNull Context context, int layoutId) {
-        super(context);
-        this.context = context;
-        this.layoutId = layoutId;
-    }
-
     @Override
     protected int getImplLayoutId() {
-        return layoutId;
+        return setLayoutId();
     }
 
     @Override
@@ -83,14 +67,6 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
         initListener();
     }
 
-    /**
-     * Sets layout id.
-     *
-     * @param layoutId the layout id
-     */
-    public void setLayoutId(int layoutId) {
-        this.layoutId = layoutId;
-    }
 
     /**
      * Gets bind view.
@@ -102,14 +78,19 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
     }
 
     /**
-     * Init view.
+     * Sets bind view.
+     *
+     * @return the bind view
      */
-    protected abstract void initView();
+    @NonNull
+    protected abstract VB setBindView();
 
     /**
-     * Init listener.
+     * Sets layout id.
+     *
+     * @return the layout id
      */
-    protected abstract void initListener();
+    protected abstract int setLayoutId();
 
     /**
      * Is default background boolean.
@@ -119,10 +100,12 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
     protected abstract boolean isDefaultBackground();
 
     /**
-     * Sets bind view.
-     *
-     * @return the bind view
+     * Init view.
      */
-    @NonNull
-    protected abstract VB setBindView();
+    protected abstract void initView();
+
+    /**
+     * Init listener.
+     */
+    protected abstract void initListener();
 }

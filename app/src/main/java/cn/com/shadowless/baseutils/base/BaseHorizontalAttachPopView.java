@@ -31,10 +31,6 @@ public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding> extend
      */
     private final Context context;
     /**
-     * The Layout id.
-     */
-    private int layoutId;
-    /**
      * The Provider.
      */
     protected LifecycleProvider<Lifecycle.Event> provider;
@@ -49,21 +45,9 @@ public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding> extend
         this.context = context;
     }
 
-    /**
-     * Instantiates a new Base horizontal attach pop view.
-     *
-     * @param context  the context
-     * @param layoutId the layout id
-     */
-    public BaseHorizontalAttachPopView(@NonNull Context context, int layoutId) {
-        super(context);
-        this.context = context;
-        this.layoutId = layoutId;
-    }
-
     @Override
     protected int getImplLayoutId() {
-        return layoutId;
+        return setLayoutId();
     }
 
     @Override
@@ -83,14 +67,6 @@ public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding> extend
         initListener();
     }
 
-    /**
-     * Sets layout id.
-     *
-     * @param layoutId the layout id
-     */
-    public void setLayoutId(int layoutId) {
-        this.layoutId = layoutId;
-    }
 
     /**
      * Gets bind view.
@@ -102,11 +78,26 @@ public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding> extend
     }
 
     /**
+     * Sets bind view.
+     *
+     * @return the bind view
+     */
+    @NonNull
+    protected abstract VB setBindView();
+
+    /**
      * Sets layout.
      *
      * @return the layout
      */
-    protected abstract int setLayout();
+    protected abstract int setLayoutId();
+
+    /**
+     * Is default background boolean.
+     *
+     * @return the boolean
+     */
+    protected abstract boolean isDefaultBackground();
 
     /**
      * Init view.
@@ -118,18 +109,5 @@ public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding> extend
      */
     protected abstract void initListener();
 
-    /**
-     * Is default background boolean.
-     *
-     * @return the boolean
-     */
-    protected abstract boolean isDefaultBackground();
 
-    /**
-     * Sets bind view.
-     *
-     * @return the bind view
-     */
-    @NonNull
-    protected abstract VB setBindView();
 }

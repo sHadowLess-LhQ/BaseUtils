@@ -807,30 +807,35 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      //继承示例
      public class TestPopView extends BaseCenterPopView<PopAddCardViewBinding>{
 
-         public TestPopView(@NonNull Context context, int layoutId) {
-            super(context, layoutId);
+         public TestPopView(@NonNull Context context) {
+            super(context);
          }
          
+         @NonNull
+         @Override
+         protected PopAddCardViewBinding setBindView() {
+            return PopAddCardViewBinding.bind(getPopupImplView());
+         }
+         
+         @Override
+         protected void setLayoutId() {
+             return R.layout.pop_addCard_view;
+         }
+         
+         @Override
+         protected boolean isDefaultBackground() {
+            return true;
+         }
+        
          @Override
          protected void initView() {
        
          }
 
          @Override
-        protected void initListener() {
+         protected void initListener() {
        
-        }
-
-        @Override
-        protected boolean isDefaultBackground() {
-          return true;
-        }
-
-        @NonNull
-        @Override
-        protected PopAddCardViewBinding setBindView() {
-           return PopAddCardViewBinding.bind(getPopupImplView());
-        }
+         }
       }
 ```
 
@@ -1267,7 +1272,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      HelpService.isAccessibilitySettingsOn(Context mContext, Class<?> cls)
 ```
 
-### 17、ToastUtils：方法说明
+### 17、ToastUtils
 
 ```
      //在Application中初始化土司
@@ -1550,7 +1555,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
                 .apply();
 ```
 
-### 25、MmKvUtils：调用示例
+### 25、MmKvUtils
 
 ```
       //初始化MMKV

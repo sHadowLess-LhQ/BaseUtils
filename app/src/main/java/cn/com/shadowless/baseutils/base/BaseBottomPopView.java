@@ -52,11 +52,6 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     }
 
     @Override
-    public View getPopupImplView() {
-        return bind.getRoot();
-    }
-
-    @Override
     protected void onCreate() {
         super.onCreate();
         bind = setBindView();

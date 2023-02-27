@@ -57,7 +57,7 @@ public abstract class BaseFullScreenPopupView<VB extends ViewBinding> extends Fu
         provider = AndroidLifecycle.createLifecycleProvider(this);
         initView();
         if (isDefaultBackground()) {
-            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_view));
+            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_full_view));
         }
     }
 

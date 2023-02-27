@@ -6,10 +6,14 @@ import android.os.Environment;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.text.DecimalFormat;
 
 /**
@@ -233,6 +237,38 @@ public class FileUtils {
     }
 
     /**
+     * 创建文件夹
+     *
+     * @param filePath the 文件路径
+     * @return the 是否创建成功
+     * @throws IOException the io exception
+     */
+    public static boolean createFolder(String filePath) throws IOException {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            return file.mkdirs();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 创建文件
+     *
+     * @param filePath the file 文件路径
+     * @return the 是否创建成功
+     * @throws IOException the io exception
+     */
+    public static boolean createFile(String filePath) throws IOException {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            return file.createNewFile();
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 删除文件
      *
      * @param filePath the 文件路径
@@ -257,6 +293,72 @@ public class FileUtils {
         DecimalFormat format = new DecimalFormat("###.0");
         double i = (size / (1024.0 * 1024.0));
         return format.format(i) + "MB";
+    }
+
+    /**
+     * 写入文件到内部存储应用file文件夹
+     *
+     * @param context  the 上下文
+     * @param fileName the 文件名
+     * @param mode     the 写入模式
+     * @param data     the 数据
+     * @return the 是否成功
+     */
+    public static boolean writeFileToData(Context context, String fileName, int mode, byte[] data) {
+        try {
+            FileOutputStream out = getAppFileOutPut(context, fileName, mode);
+            FileDescriptor fd = out.getFD();
+            out.write(data);
+            out.flush();
+            fd.sync();
+            out.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * 写入文件到SD卡
+     *
+     * @param dirPath    the 目标文件夹
+     * @param fileName   the 文件名
+     * @param data       the 数据
+     * @param len        the 长度
+     * @param isContinue the 是否续写
+     * @return the 是否成功
+     */
+    public static boolean writeFileToSdCard(String dirPath, String fileName, byte[] data, int len, boolean isContinue) {
+        try {
+            File dirs = new File(dirPath);
+            if (!dirs.exists()) {
+                dirs.mkdirs();
+            }
+            File file = new File(dirPath, fileName);
+            if (isContinue) {
+                if (file.length() == 0) {
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(data, 0, len);
+                    fos.flush();
+                    fos.close();
+                } else {
+                    RandomAccessFile raf = new RandomAccessFile(file, "rw");
+                    raf.seek(file.length());
+                    raf.write(data, 0, len);
+                    raf.close();
+                }
+            } else {
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(data, 0, len);
+                fos.flush();
+                fos.close();
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

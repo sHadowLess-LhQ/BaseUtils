@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewbinding.ViewBinding;
@@ -60,7 +59,7 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
         provider = AndroidLifecycle.createLifecycleProvider(this);
         initView();
         if (isDefaultBackground()) {
-            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_view));
+            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_all_view));
         }
     }
 

@@ -771,6 +771,16 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      FileUtils.getDeviceScreenShotDir()
      //kb转mb
      FileUtils.getNetFileSizeDescription(long size)
+     //创建文件夹
+     FileUtils.createFolder(String filePath)
+     //创建文件
+     FileUtils.createFile(String filePath)
+     //删除文件
+     FileUtils.deleteFile(String filePath)
+     //写入文件到内部存储应用file文件夹
+     FileUtils.writeFileToData(Context context, String fileName, int mode, byte[] data) 
+     //写入文件到SD卡
+     FileUtils.writeFileToSdCard(String dirPath, String fileName, byte[] data, int len, boolean isContinue)
 ```
 
 ### 13、WindowUtils

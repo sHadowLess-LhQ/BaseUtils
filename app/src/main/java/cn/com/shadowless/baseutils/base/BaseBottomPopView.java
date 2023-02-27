@@ -1,7 +1,6 @@
 package cn.com.shadowless.baseutils.base;
 
 import android.content.Context;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -58,7 +57,7 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
         provider = AndroidLifecycle.createLifecycleProvider(this);
         initView();
         if (isDefaultBackground()) {
-            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_view));
+            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_bottom_view));
         }
     }
 

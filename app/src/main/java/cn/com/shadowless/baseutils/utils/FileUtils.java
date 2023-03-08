@@ -271,16 +271,26 @@ public class FileUtils {
     /**
      * 删除文件
      *
-     * @param filePath the 文件路径
-     * @return the 是否删除成功
+     * @param file        the file
+     * @param isDelFolder the is del folder
+     * @return the boolean
      */
-    public static boolean deleteFile(String filePath) {
-        File file = new File(filePath);
-        if (file.exists()) {
-            return file.delete();
-        } else {
+    public static Boolean deleteFile(File file, boolean isDelFolder) {
+        if (file == null || !file.exists()) {
             return false;
         }
+        File[] files = file.listFiles();
+        for (File f : files) {
+            if (f.isDirectory()) {
+                deleteFile(f, isDelFolder);
+            } else {
+                f.delete();
+            }
+        }
+        if (isDelFolder) {
+            file.delete();
+        }
+        return true;
     }
 
     /**
@@ -305,13 +315,11 @@ public class FileUtils {
      * @return the 是否成功
      */
     public static boolean writeFileToData(Context context, String fileName, int mode, byte[] data) {
-        try {
-            FileOutputStream out = getAppFileOutPut(context, fileName, mode);
+        try (FileOutputStream out = getAppFileOutPut(context, fileName, mode)) {
             FileDescriptor fd = out.getFD();
             out.write(data);
             out.flush();
             fd.sync();
-            out.close();
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -328,32 +336,16 @@ public class FileUtils {
      * @param len        the 长度
      * @param isContinue the 是否续写
      * @return the 是否成功
+     * @throws IOException the io exception
      */
     public static boolean writeFileToSdCard(String dirPath, String fileName, byte[] data, int len, boolean isContinue) {
-        try {
-            File dirs = new File(dirPath);
-            if (!dirs.exists()) {
-                dirs.mkdirs();
-            }
-            File file = new File(dirPath, fileName);
-            if (isContinue) {
-                if (file.length() == 0) {
-                    FileOutputStream fos = new FileOutputStream(file);
-                    fos.write(data, 0, len);
-                    fos.flush();
-                    fos.close();
-                } else {
-                    RandomAccessFile raf = new RandomAccessFile(file, "rw");
-                    raf.seek(file.length());
-                    raf.write(data, 0, len);
-                    raf.close();
-                }
-            } else {
-                FileOutputStream fos = new FileOutputStream(file);
-                fos.write(data, 0, len);
-                fos.flush();
-                fos.close();
-            }
+        File dirs = new File(dirPath);
+        if (!dirs.exists()) {
+            dirs.mkdirs();
+        }
+        try (FileOutputStream fos = new FileOutputStream(new File(dirPath, fileName), isContinue)) {
+            fos.write(data, 0, len);
+            fos.flush();
             return true;
         } catch (IOException e) {
             e.printStackTrace();

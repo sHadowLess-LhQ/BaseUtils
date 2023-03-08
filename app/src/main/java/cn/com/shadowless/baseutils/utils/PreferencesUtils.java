@@ -127,11 +127,10 @@ public class PreferencesUtils {
         Set<String> strings = getStringSet(key);
         if (null != strings) {
             strings = new HashSet<>(strings);
-            strings.add(value);
         } else {
             strings = new HashSet<>();
-            strings.add(value);
         }
+        strings.add(value);
         return putStringSetNow(key, strings);
     }
 
@@ -145,11 +144,10 @@ public class PreferencesUtils {
         Set<String> strings = getStringSet(key);
         if (null != strings) {
             strings = new HashSet<>(strings);
-            strings.add(value);
         } else {
             strings = new HashSet<>();
-            strings.add(value);
         }
+        strings.add(value);
         putStringSet(key, strings);
     }
 

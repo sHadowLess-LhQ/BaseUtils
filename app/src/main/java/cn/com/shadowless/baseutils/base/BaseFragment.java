@@ -48,21 +48,17 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      */
     private VB bind = null;
     /**
-     * 屏幕方向标志
-     */
-    protected boolean isOrientation = false;
-    /**
      * 依附的activity
      */
-    protected Activity mActivity = null;
+    private Activity mActivity = null;
     /**
      * 统一订阅管理
      */
-    protected CompositeDisposable mDisposable = null;
+    private CompositeDisposable mDisposable = null;
     /**
      * Rx声明周期管理
      */
-    protected LifecycleProvider<Lifecycle.Event> provider = null;
+    private LifecycleProvider<Lifecycle.Event> provider = null;
 
     /**
      * 初始化数据回调接口
@@ -92,7 +88,6 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        initOrientation();
         bind = setBindView();
         initListener();
         initPermissions(initDataThreadMod());
@@ -155,16 +150,6 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     }
 
     /**
-     * 获取绑定的视图
-     *
-     * @return the 视图
-     */
-    @NonNull
-    protected VB getBindView() {
-        return bind;
-    }
-
-    /**
      * 需要申请的权限
      *
      * @return the 权限组
@@ -201,6 +186,8 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
 
     /**
      * 初始化权限
+     *
+     * @param threadMod the thread mod
      */
     protected void initPermissions(int threadMod) {
         mDisposable = new CompositeDisposable();
@@ -233,14 +220,40 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     }
 
     /**
-     * 初始化方向变量
+     * 获取绑定视图
+     *
+     * @return the bind
      */
-    private void initOrientation() {
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            isOrientation = false;
-        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            isOrientation = true;
-        }
+    @NonNull
+    public VB getBindView() {
+        return bind;
+    }
+
+    /**
+     * 获取绑定的activity
+     *
+     * @return the bind activity
+     */
+    protected Activity getBindActivity() {
+        return mActivity;
+    }
+
+    /**
+     * 获取rxjava统一管理
+     *
+     * @return the disposable
+     */
+    protected CompositeDisposable getDisposable() {
+        return mDisposable;
+    }
+
+    /**
+     * 获取生命周期提供器
+     *
+     * @return the provider
+     */
+    protected LifecycleProvider<Lifecycle.Event> getLifecycleProvider() {
+        return provider;
     }
 
     /**
@@ -251,6 +264,6 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     private void showToast(String name) {
         String tip = "应用无法使用，请开启%s权限";
         Toast.makeText(mActivity, String.format(tip, name), Toast.LENGTH_SHORT).show();
-        ApplicationUtils.startApplicationInfo(mActivity);
+        ApplicationUtils.startApplicationInfo(getBindActivity());
     }
 }

@@ -196,8 +196,8 @@ c、混淆规则
 ```
 //创建xml后，点击编译，填入需要绑定的视图和传递数据类型
 //填入传递数据类型
-//新增CompositeDisposable，可统一管理Dispose
-//新增LifecycleProvider，与CompositeDisposable切换使用
+//新增CompositeDisposable，使用getDisposable()获取
+//新增LifecycleProvider，使用getLifecycleProvider()获取
 //更换ARouter为TheRouter
 //设置Activity主题，请重写initTheme()方法
 //设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
@@ -228,14 +228,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
     protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
        //携参路由，需要页面参数注入
        TheRouter.inject(this);
-       //默认在IO线程，需要更改，请重写initPermissions()方法，向父类super传递新的RxUtils线程值
+       //默认在IO线程，需要更改，请重写initDataThreadMod()方法，传递新的RxUtils线程值
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
-       if(isOrientation){
-        //竖屏
-       }else{
-        //横屏
-       }
        //若有数据给视图绑定，使用initViewWithData
        //若无数据给视图绑定，使用initViewWithOutData
        initDataCallBack.initViewWithData("1");
@@ -272,8 +267,8 @@ public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends Bas
 ```
 //创建xml后，点击编译，填入需要绑定的视图
 //填入传递数据类型
-//新增CompositeDisposable，可统一管理Dispose
-//新增LifecycleProvider，与CompositeDisposable切换使用
+//新增CompositeDisposable，使用getDisposable()获取
+//新增LifecycleProvider，使用getLifecycleProvider()获取
 //设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
 //更换ARouter为TheRouter
 //更多用法请参考TheRouter
@@ -306,13 +301,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
        //默认在IO线程，需要更改，请重写initPermissions()方法，向父类super传递新的RxUtils线程值
        //初始化数据
        【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
-       if(isOrientation){
-        //竖屏
-        //mActivity是所依附的Activity对象
-        Toast.makeText(mActivity, "可用Activity对象", Toast.LENGTH_SHORT).show();
-       }else{
-        //横屏
-       }
+       Toast.makeText(getBindActivity(), "可用Activity对象", Toast.LENGTH_SHORT).show();
        //若有数据给视图绑定，使用initViewWithData
        //若无数据给视图绑定，使用initViewWithOutData
        initDataCallBack.initViewWithData("1");
@@ -343,75 +332,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
 }
 ```
 
-### 3、CustomDialog
-
-```
-     CustomDialog custom = CustomDialog
-                .builder()
-                .context()        //传入上下文
-                .dialogView()     //传入自定义View，但和layout两者选其一调用
-                .layout()         //传入xml，但和dialogView两者选其一调用
-                .isClearLayer()   //是否去除蒙层，默认不去除
-                .isSetAnim()      //是否添加动画和设置动画值，默认不设置
-                .isSystemDialog() //是否设置为系统级提示框，默认不设置
-                .isTitle()        //是否去除标题栏，默认不去除
-                .isWindowSize()   //是否设置提示框大小，和设置宽、高，默认不设置
-                .cancel()         //是否外部触碰取消提示框，默认不取消
-                .location()       //设置提示框显示位置，传入CustomDialog.location枚举，具体枚举进入源码查看
-                .build();
-        custom.initDialog();      //初始化Dialog
-        custom.initDialog(R.style.AlertDialog_AppCompat); //指定风格初始化Dialog
-        custom.show();            //显示
-        custom.isShow();          //是否正在显示
-        custom.dismiss();         //关闭
-```
-
-### 4、CustomWindow
-
-```
-     CustomWindow custom = CustomWindow
-                .builder()
-                .context()     //传入上下文
-                .view()        //传入自定义View，和.layout()两者选其一调用
-                .layout()      //传入xml，和.view()两者选其一调用
-                .isAnimation() //是否设置动画和设置窗口动画，默认不设置
-                .isSystem()    //是否设置为系统级窗口，默认不设置
-                .width()       //设置窗口宽度
-                .height()      //设置窗口高度
-                .windowFlag()  //设置窗口标识
-                .location()    //设置窗口显示位置，传入Gravity的静态位置常量
-                .build();
-        custom.initWindow();   //初始化Window
-        custom.show();         //显示
-        custom.isShowing();    //是否正在显示
-        custom.remove();       //移除
-```
-
-### 5、CustomPopWindow
-
-```
-     CustomPopWindow custom = CustomPopWindow
-                .builder()
-                .context()    //传入上下文
-                .layout()     //传入xml，和.popView()两者选其一调用
-                .popView()    //传入自定义popView，和.layout()两者选其一调用
-                .isSetAnim()  //是否设置动画，默认不设置，和.anim()同步使用
-                .anim()       //设置窗口动画，和.isAnimation()同步使用
-                .background() //设置背景色，默认透明
-                .isSystemPopWindow()  //是否设置为系统级窗口，默认不设置
-                .width()      //设置宽
-                .height()     //设置高
-                .build();
-        custom.initPopWindow()        //初始化PopWinodw
-        custom.showDropDown(view);    //显示
-        custom.showDropDown(view,1,1);//显示
-        custom.showDropDown(view,1,1, Gravity.CENTER); //显示
-        custom.showLocation(view,1,1, Gravity.CENTER); //显示
-        custom.isShowing();              //是否显示
-        custom.dismiss();             //关闭
-```
-
-### 6、PreferencesUtils
+### 3、PreferencesUtils
 
 ```
      //初始化
@@ -472,7 +393,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      PreferencesUtils.remove(String key)
 ```
 
-### 7、RxUtils
+### 4、RxUtils
 
 ```
      //具体参数
@@ -573,7 +494,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      RxUtils.dealFlowableThread(int threadSign)
 ```
 
-### 8、RetrofitUtils
+### 5、RetrofitUtils
 
 ```
       RetrofitUtils
@@ -597,7 +518,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
                    ...
 ```
 
-### 9、LocationUtils
+### 6、LocationUtils
 
 ```
      LocationUtils.builder()
@@ -629,7 +550,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
                 });
 ```
 
-### 10、ApplicationUtils
+### 7、ApplicationUtils
 
 ```
      //通过包名打开应用
@@ -658,7 +579,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      ApplicationUtils.isInstall(Context context, String packageName)
 ```
 
-### 11、DeviceUtils
+### 8、DeviceUtils
 
 【注】：使用前，请在MF清单文件中，给BasicDeviceAdminReceiver注册广播，并在res/xml资源中新建声明文件，也可以使用库中默认的配置文件，如下示例
 
@@ -724,7 +645,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      DeviceUtils.lockScreen(Context context, int flag) //仅API 26以上有效
 ```
 
-### 12、FileUtils
+### 9、FileUtils
 
 ```
      //获取内部存储data文件夹
@@ -776,14 +697,14 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      //创建文件
      FileUtils.createFile(String filePath)
      //删除文件
-     FileUtils.deleteFile(String filePath)
+     FileUtils.deleteFile(File file, boolean isDelFolder)
      //写入文件到内部存储应用file文件夹
      FileUtils.writeFileToData(Context context, String fileName, int mode, byte[] data) 
      //写入文件到SD卡
      FileUtils.writeFileToSdCard(String dirPath, String fileName, byte[] data, int len, boolean isContinue)
 ```
 
-### 13、WindowUtils
+### 10、WindowUtils
 
 ```
      //隐藏状态栏
@@ -798,7 +719,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      WindowUtils.hideSoftInput(Context context, View view)
 ```
 
-### 14、BasePopView
+### 11、BasePopView
 
 ```
      //创建xml后，点击编译，填入需要绑定的视图
@@ -849,14 +770,14 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
       }
 ```
 
-### 15、WordUtils
+### 12、WordUtils
 
 ```
      //比较字符串
      WordUtils.contain(String input, String regex)
 ```
 
-### 16、BaseAccessibilityService
+### 13、BaseAccessibilityService
 
 ```
 public class MyService extends BaseAccessibilityService {
@@ -1282,7 +1203,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      HelpService.isAccessibilitySettingsOn(Context mContext, Class<?> cls)
 ```
 
-### 17、ToastUtils
+### 14、ToastUtils
 
 ```
      //在Application中初始化土司
@@ -1339,7 +1260,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      ToastUtils.onInfoShowToast(int messageID, int iconID);
 ```
 
-### 18、LogUtils
+### 15、LogUtils
 
 ```
      //配置日志库
@@ -1401,7 +1322,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       LogUtils.wtf("12345");
 ```
 
-### 19、BaseObserver/BaseLifeObserver
+### 16、BaseObserver/BaseLifeObserver
 
 【注】：BaseLifeObserver请配合lifecycle使用
 
@@ -1428,7 +1349,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 20、BaseCompletableObserver/BaseLifeCompletableObserver
+### 17、BaseCompletableObserver/BaseLifeCompletableObserver
 
 【注】：BaseCompletableObserver请配合lifecycle使用
 
@@ -1455,7 +1376,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 21、BaseMaybeObserver/BaseLifeMaybeObserver
+### 18、BaseMaybeObserver/BaseLifeMaybeObserver
 
 【注】：BaseLifeMaybeObserve请配合lifecycle使用
 
@@ -1482,7 +1403,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 22、BaseSingleObserver/BaseLifeSingleObserver
+### 19、BaseSingleObserver/BaseLifeSingleObserver
 
 【注】：BaseLifeSingleObserver请配合lifecycle使用
 
@@ -1509,7 +1430,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 23、BaseSubscriber/BaseLifeSubscriber
+### 20、BaseSubscriber/BaseLifeSubscriber
 
 【注】：BaseLifeSubscriber请配合lifecycle使用
 
@@ -1536,7 +1457,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
 ```
 
-### 24、CrashConfig
+### 21、CrashConfig
 
 ```
       CrashConfig.Builder
@@ -1565,7 +1486,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
                 .apply();
 ```
 
-### 25、MmKvUtils
+### 22、MmKvUtils
 
 ```
       //初始化MMKV
@@ -1638,7 +1559,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       MmKvUtils.removeValues(String[] key)
 ```
 
-### 26、RouterUtils
+### 23、RouterUtils
 
 ```
      //获取指定路由的Navigator
@@ -1677,7 +1598,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 
 ***
 
-### 27、FragmentUtils
+### 24、FragmentUtils
 
 ```
      //碎片工具类，可配合ARouter使用
@@ -1691,7 +1612,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      FragmentUtils.replaceFragment(FragmentManager manager, Fragment fragment, int layout, int... animation)
 ```
 
-### 28、ViewAnimatorUtils
+### 25、ViewAnimatorUtils
 
 ```
      ViewAnimatorUtils
@@ -1816,7 +1737,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
         .start();
 ```
 
-### 29、ScreenRecordUtils
+### 26、ScreenRecordUtils
 
 ```
      RecordConfig recordConfig = RecordConfig

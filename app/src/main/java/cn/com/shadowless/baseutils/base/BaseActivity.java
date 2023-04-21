@@ -43,17 +43,13 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
      */
     private VB bind = null;
     /**
-     * 屏幕方向标志
-     */
-    protected boolean isOrientation = false;
-    /**
      * 统一订阅管理
      */
-    protected CompositeDisposable mDisposable = null;
+    private CompositeDisposable mDisposable = null;
     /**
      * Rx生命周期管理
      */
-    protected LifecycleProvider<Lifecycle.Event> provider = null;
+    private LifecycleProvider<Lifecycle.Event> provider = null;
 
     /**
      * 初始化数据回调接口
@@ -78,7 +74,6 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(initTheme());
         super.onCreate(savedInstanceState);
-        initOrientation();
         initBindView();
         initListener();
         initPermissions(initDataThreadMod());
@@ -179,6 +174,24 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     /**
+     * 获取rxjava管理
+     *
+     * @return the disposable
+     */
+    protected CompositeDisposable getDisposable() {
+        return mDisposable;
+    }
+
+    /**
+     * 获取生命周期提供器
+     *
+     * @return the provider
+     */
+    protected LifecycleProvider<Lifecycle.Event> getLifecycleProvider() {
+        return provider;
+    }
+
+    /**
      * 初始化主题
      *
      * @return the int
@@ -228,17 +241,6 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     private void initBindView() {
         bind = setBindView();
         setContentView(bind.getRoot());
-    }
-
-    /**
-     * 初始化方向变量
-     */
-    private void initOrientation() {
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            isOrientation = false;
-        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            isOrientation = true;
-        }
     }
 
     /**

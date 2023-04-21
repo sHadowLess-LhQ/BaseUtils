@@ -243,7 +243,7 @@ public class FileUtils {
      * @return the 是否创建成功
      * @throws IOException the io exception
      */
-    public static boolean createFolder(String filePath) throws IOException {
+    public static boolean createFolder(String filePath) {
         File file = new File(filePath);
         if (!file.exists()) {
             return file.mkdirs();
@@ -299,10 +299,8 @@ public class FileUtils {
      * @param size the 字节
      * @return the 文件MB单位大小字符串
      */
-    public static String getNetFileSizeDescription(long size) {
-        DecimalFormat format = new DecimalFormat("###.0");
-        double i = (size / (1024.0 * 1024.0));
-        return format.format(i) + "MB";
+    public static double getFileLengthToMb(long size) {
+        return (size / (1024.0 * 1024.0));
     }
 
     /**

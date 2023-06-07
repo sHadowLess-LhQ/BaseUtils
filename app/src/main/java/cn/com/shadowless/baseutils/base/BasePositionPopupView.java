@@ -1,6 +1,7 @@
 package cn.com.shadowless.baseutils.base;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -53,7 +54,7 @@ public abstract class BasePositionPopupView<VB extends ViewBinding> extends Posi
     @Override
     protected void onCreate() {
         super.onCreate();
-        bind = setBindView();
+        bind = setBindView(getPopupImplView());
         provider = AndroidLifecycle.createLifecycleProvider(this);
         initView();
         if (isDefaultBackground()) {
@@ -77,34 +78,35 @@ public abstract class BasePositionPopupView<VB extends ViewBinding> extends Posi
     }
 
     /**
-     * Sets bind view.
-     *
-     * @return the bind view
-     */
-    @NonNull
-    protected abstract VB setBindView();
-
-    /**
-     * Sets layout id.
+     * 设置布局编号
      *
      * @return the layout id
      */
     protected abstract int setLayoutId();
 
     /**
-     * Is default background boolean.
+     * 设置绑定视图
+     *
+     * @param v the v
+     * @return the bind view
+     */
+    @NonNull
+    protected abstract VB setBindView(View v);
+
+    /**
+     * 是否默认背景颜色
      *
      * @return the boolean
      */
     protected abstract boolean isDefaultBackground();
 
     /**
-     * Init view.
+     * 初始化视图
      */
     protected abstract void initView();
 
     /**
-     * Init listener.
+     * 初始化监听
      */
     protected abstract void initListener();
 }

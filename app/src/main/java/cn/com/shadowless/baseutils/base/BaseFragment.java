@@ -173,9 +173,9 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     /**
      * 初始化数据
      *
-     * @param initDataCallBack the  回调
+     * @param callBack the  回调
      */
-    protected abstract void initData(@NonNull InitDataCallBack<T> initDataCallBack);
+    protected abstract void initData(@NonNull InitDataCallBack<T> callBack);
 
     /**
      * 初始化视图

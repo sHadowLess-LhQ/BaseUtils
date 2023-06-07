@@ -57,13 +57,13 @@ public final class DefaultErrorActivity extends AppCompatActivity {
         }
         a.recycle();
 
-        setContentView(R.layout.customactivityoncrash_default_error_activity);
+        setContentView(R.layout.custom_activity_on_crash_default_error_activity);
 
         //Close/restart button logic:
         //If a class if set, use restart.
         //Else, use close and just finish the app.
         //It is recommended that you follow this logic if implementing a custom error activity.
-        Button restartButton = findViewById(R.id.customactivityoncrash_error_activity_restart_button);
+        Button restartButton = findViewById(R.id.custom_activity_on_crash_error_activity_restart_button);
 
         final CrashConfig config = CustomActivityOnCrash.getConfigFromIntent(getIntent());
 
@@ -80,7 +80,7 @@ public final class DefaultErrorActivity extends AppCompatActivity {
             restartButton.setOnClickListener(v -> CustomActivityOnCrash.closeApplication(DefaultErrorActivity.this, config));
         }
 
-        Button moreInfoButton = findViewById(R.id.customactivityoncrash_error_activity_more_info_button);
+        Button moreInfoButton = findViewById(R.id.custom_activity_on_crash_error_activity_more_info_button);
 
         if (config.isShowErrorDetails()) {
             moreInfoButton.setOnClickListener(v -> {
@@ -94,7 +94,7 @@ public final class DefaultErrorActivity extends AppCompatActivity {
                         .show();
                 TextView textView = dialog.findViewById(android.R.id.message);
                 if (textView != null) {
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.customactivityoncrash_error_activity_error_details_text_size));
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.custom_activity_on_crash_error_activity_error_details_text_size));
                 }
             });
         } else {
@@ -102,7 +102,7 @@ public final class DefaultErrorActivity extends AppCompatActivity {
         }
 
         Integer defaultErrorActivityDrawableId = config.getErrorDrawable();
-        ImageView errorImageView = findViewById(R.id.customactivityoncrash_error_activity_image);
+        ImageView errorImageView = findViewById(R.id.custom_activity_on_crash_error_activity_image);
 
         if (defaultErrorActivityDrawableId != null) {
             errorImageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), defaultErrorActivityDrawableId, getTheme()));

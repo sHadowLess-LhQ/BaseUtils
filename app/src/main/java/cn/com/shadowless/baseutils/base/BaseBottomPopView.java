@@ -1,12 +1,13 @@
 package cn.com.shadowless.baseutils.base;
 
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewbinding.ViewBinding;
-
 
 import com.lxj.xpopup.core.BottomPopupView;
 import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle;
@@ -53,7 +54,7 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     @Override
     protected void onCreate() {
         super.onCreate();
-        bind = setBindView();
+        bind = setBindView(getPopupImplView());
         provider = AndroidLifecycle.createLifecycleProvider(this);
         initView();
         if (isDefaultBackground()) {
@@ -84,19 +85,20 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     protected abstract int setLayoutId();
 
     /**
+     * 设置绑定视图
+     *
+     * @param v the v
+     * @return the bind view
+     */
+    @NonNull
+    protected abstract VB setBindView(View v);
+
+    /**
      * 是否默认背景颜色
      *
      * @return the boolean
      */
     protected abstract boolean isDefaultBackground();
-
-    /**
-     * 设置绑定视图
-     *
-     * @return the bind view
-     */
-    @NonNull
-    protected abstract VB setBindView();
 
     /**
      * 初始化视图

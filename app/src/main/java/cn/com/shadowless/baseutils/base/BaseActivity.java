@@ -152,9 +152,9 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     /**
      * 初始化数据
      *
-     * @param initDataCallBack the  回调
+     * @param callBack the call back
      */
-    protected abstract void initData(@NonNull InitDataCallBack<T> initDataCallBack);
+    protected abstract void initData(@NonNull InitDataCallBack<T> callBack);
 
     /**
      * 初始化视图

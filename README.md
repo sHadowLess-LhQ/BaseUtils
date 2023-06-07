@@ -735,6 +735,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      //BasePositionPopupView - 自定义方向弹窗
      //BaseVerticalAttachPopView - 垂直弹出可依附视图弹窗
      //BaseVerticalBubbleAttachPopupView - 垂直弹出可依附气泡弹窗
+     //【注】：内部使用Fragment，需要设置isViewMode为true
      //继承示例
      public class TestPopView extends BaseCenterPopView<PopAddCardViewBinding>{
 
@@ -744,8 +745,8 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
          
          @NonNull
          @Override
-         protected PopAddCardViewBinding setBindView() {
-            return PopAddCardViewBinding.bind(getPopupImplView());
+         protected PopAddCardViewBinding setBindView(View v) {
+            return PopAddCardViewBinding.bind(v);
          }
          
          @Override
@@ -755,7 +756,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
          
          @Override
          protected boolean isDefaultBackground() {
-            return true;
+            return false;
          }
         
          @Override
@@ -1208,56 +1209,56 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 ```
      //在Application中初始化土司
      //参数2是多次点击依然显示
-     ToastUtils.getInstance().initToast(Context mContext);
-     ToastUtils.getInstance().initToast(Context mContext,boolean isMoreShow);
+     ToastUtils.INSTANCE.initToast(Context mContext);
+     ToastUtils.INSTANCE.initToast(Context mContext,boolean isMoreShow);
      //成功土司
-     ToastUtils.onSuccessShowToast(String message);
+     ToastUtils.INSTANCE.onSuccessShowToast(String message);
      //成功显示xml文字
-     ToastUtils.onSuccessShowToast(int messageID);
+     ToastUtils.INSTANCE.onSuccessShowToast(int messageID);
      //成功显示自定义icon
-     ToastUtils.onSuccessShowToast(String message, int iconID);
+     ToastUtils.INSTANCE.onSuccessShowToast(String message, int iconID);
      //成功显示xml自定义icon
-     ToastUtils.onSuccessShowToast(int messageID, int iconID);
+     ToastUtils.INSTANCE.onSuccessShowToast(int messageID, int iconID);
      //错误土司
-     ToastUtils.onErrorShowToast(String message);
+     ToastUtils.INSTANCE.onErrorShowToast(String message);
      //错误显示xml文字
-     ToastUtils.onErrorShowToast(int messageID);
+     ToastUtils.INSTANCE.onErrorShowToast(int messageID);
      //错误显示自定义icon
-     ToastUtils.onErrorShowToast(String message, int iconID);
+     ToastUtils.INSTANCE.onErrorShowToast(String message, int iconID);
      //错误显示xml自定义icon
-     ToastUtils.onErrorShowToast(int messageID, int iconID);
+     ToastUtils.INSTANCE.onErrorShowToast(int messageID, int iconID);
      //默认土司
-     ToastUtils.onDefaultShowToast(String message);
+     ToastUtils.INSTANCE.onDefaultShowToast(String message);
      //默认显示xml文字
-     ToastUtils.onDefaultShowToast(int messageID);
+     ToastUtilsv.onDefaultShowToast(int messageID);
      //默认显示自定义icon
-     ToastUtils.onDefaultShowToast(String message, int iconID);
+     ToastUtils.INSTANCE.onDefaultShowToast(String message, int iconID);
      //默认显示xml自定义icon
-     ToastUtils.onDefaultShowToast(int messageID, int iconID);
+     ToastUtils.INSTANCE.onDefaultShowToast(int messageID, int iconID);
      //默认带图标土司
-     ToastUtils.onDefaultWithoutIconShowToast(String message);
+     ToastUtilsv.onDefaultWithoutIconShowToast(String message);
      //默认带图标显示xml文字
-     ToastUtils.onDefaultWithoutIconShowToast(int messageID);
+     ToastUtils.INSTANCE.onDefaultWithoutIconShowToast(int messageID);
      //默认带图标显示自定义icon
-     ToastUtils.onDefaultWithoutIconShowToast(String message, int iconID);
+     ToastUtils.INSTANCE.onDefaultWithoutIconShowToast(String message, int iconID);
      //默认带图标显示xml自定义icon
-     ToastUtils.onDefaultWithoutIconShowToast(int messageID, int iconID);
+     ToastUtils.INSTANCE.onDefaultWithoutIconShowToast(int messageID, int iconID);
      //警告土司
-     ToastUtils.onWarnShowToast(String message);
+     ToastUtils.INSTANCE.onWarnShowToast(String message);
      //警告显示xml文字
-     ToastUtils.onWarnShowToast(int messageID);
+     ToastUtils.INSTANCE.onWarnShowToast(int messageID);
      //警告显示自定义icon
-     ToastUtils.onWarnShowToast(String message, int iconID);
+     ToastUtils.INSTANCE.onWarnShowToast(String message, int iconID);
      //警告显示xml自定义icon
-     ToastUtils.onWarnShowToast(int messageID, int iconID);
+     ToastUtils.INSTANCE.onWarnShowToast(int messageID, int iconID);
      //信息土司
-     ToastUtils.onInfoShowToast(String message);
+     ToastUtils.INSTANCE.onInfoShowToast(String message);
      //信息显示xml文字
-     ToastUtils.onInfoShowToast(int messageID);
+     ToastUtils.INSTANCE.onInfoShowToast(int messageID);
      //信息显示自定义icon
-     ToastUtils.onInfoShowToast(String message, int iconID);
+     ToastUtils.INSTANCE.onInfoShowToast(String message, int iconID);
      //信息显示xml自定义icon
-     ToastUtils.onInfoShowToast(int messageID, int iconID);
+     ToastUtils.INSTANCE.onInfoShowToast(int messageID, int iconID);
 ```
 
 ### 15、LogUtils

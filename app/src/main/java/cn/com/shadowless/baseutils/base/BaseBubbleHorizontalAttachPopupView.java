@@ -1,6 +1,7 @@
 package cn.com.shadowless.baseutils.base;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -53,7 +54,7 @@ public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding
     @Override
     protected void onCreate() {
         super.onCreate();
-        bind = setBindView();
+        bind = setBindView(getPopupImplView());
         provider = AndroidLifecycle.createLifecycleProvider(this);
         initView();
         if (isDefaultBackground()) {
@@ -77,14 +78,6 @@ public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding
     }
 
     /**
-     * 设置视图绑定
-     *
-     * @return the bind view
-     */
-    @NonNull
-    protected abstract VB setBindView();
-
-    /**
      * 设置布局编号
      *
      * @return the layout id
@@ -92,14 +85,23 @@ public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding
     protected abstract int setLayoutId();
 
     /**
-     * 是否默认弹窗背景
+     * 设置绑定视图
+     *
+     * @param v the v
+     * @return the bind view
+     */
+    @NonNull
+    protected abstract VB setBindView(View v);
+
+    /**
+     * 是否默认背景颜色
      *
      * @return the boolean
      */
     protected abstract boolean isDefaultBackground();
 
     /**
-     * 初始化视图控件
+     * 初始化视图
      */
     protected abstract void initView();
 

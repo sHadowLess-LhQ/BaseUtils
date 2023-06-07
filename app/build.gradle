@@ -3,7 +3,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.gitee.shadowless_lhq'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     android {
@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 1
         versionName "1.7.9"
 

@@ -38,129 +38,28 @@ public abstract class BaseLifeSingleObserver<T> implements SingleObserver<T> {
     /**
      * Instantiates a new Base observer.
      *
-     * @param activity the activity
-     */
-    public BaseLifeSingleObserver(Activity activity) {
-        loadingPopupView = new XPopup.Builder(activity).asLoading();
-    }
-
-    /**
-     * Instantiates a new Base observer.
-     *
-     * @param activity         the activity
      * @param loadingPopupView the loading popup view
      */
-    public BaseLifeSingleObserver(Activity activity, LoadingPopupView loadingPopupView) {
+    public BaseLifeSingleObserver(LoadingPopupView loadingPopupView, boolean isSmartDismiss) {
+        this.isSmartDismiss = isSmartDismiss;
         this.loadingPopupView = loadingPopupView;
     }
 
     /**
-     * Instantiates a new Base observer.
+     * Instantiates a new Base life observer.
      *
-     * @param activity    the activity
-     * @param isViewModel the is view model
+     * @param activity the activity
+     * @param config   the config
      */
-    public BaseLifeSingleObserver(Activity activity, boolean isViewModel) {
-        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).asLoading();
-    }
-
-    /**
-     * Instantiates a new Base observer.
-     *
-     * @param activity    the activity
-     * @param isViewModel the is view model
-     * @param loadName    the load name
-     */
-    public BaseLifeSingleObserver(Activity activity, boolean isViewModel, String loadName) {
-        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).asLoading(loadName);
-    }
-
-    /**
-     * Instantiates a new Base observer.
-     *
-     * @param activity      the activity
-     * @param isViewModel   the is view model
-     * @param canBackCancel the can back cancel
-     * @param loadName      the load name
-     */
-    public BaseLifeSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, String loadName) {
-        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).asLoading(loadName);
-    }
-
-    /**
-     * Instantiates a new Base observer.
-     *
-     * @param activity         the activity
-     * @param isViewModel      the is view model
-     * @param canBackCancel    the can back cancel
-     * @param canOutSideCancel the can out side cancel
-     * @param loadName         the load name
-     */
-    public BaseLifeSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, String loadName) {
-        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).asLoading(loadName);
-    }
-
-    /**
-     * Instantiates a new Base observer.
-     *
-     * @param activity         the activity
-     * @param isViewModel      the is view model
-     * @param canBackCancel    the can back cancel
-     * @param canOutSideCancel the can out side cancel
-     * @param hasBlurBg        the has blur bg
-     * @param loadName         the load name
-     */
-    public BaseLifeSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, String loadName) {
-        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).hasBlurBg(hasBlurBg).asLoading(loadName);
-    }
-
-    /**
-     * Instantiates a new Base observer.
-     *
-     * @param activity         the activity
-     * @param isViewModel      the is view model
-     * @param canBackCancel    the can back cancel
-     * @param canOutSideCancel the can out side cancel
-     * @param hasBlurBg        the has blur bg
-     * @param hasShadow        the has shadow
-     * @param loadName         the load name
-     */
-    public BaseLifeSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName) {
-        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).hasBlurBg(hasBlurBg).hasShadowBg(hasShadow).asLoading(loadName);
-    }
-
-    /**
-     * Instantiates a new Base observer.
-     *
-     * @param activity         the activity
-     * @param isViewModel      the is view model
-     * @param canBackCancel    the can back cancel
-     * @param canOutSideCancel the can out side cancel
-     * @param hasBlurBg        the has blur bg
-     * @param hasShadow        the has shadow
-     * @param canCancel        the can cancel
-     * @param loadName         the load name
-     */
-    public BaseLifeSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, String loadName) {
-        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).hasBlurBg(hasBlurBg).hasShadowBg(hasShadow).dismissOnBackPressed(canCancel).dismissOnTouchOutside(canCancel).asLoading(loadName);
-    }
-
-    /**
-     * Instantiates a new Base observer.
-     *
-     * @param activity         the activity
-     * @param isViewModel      the is view model
-     * @param canBackCancel    the can back cancel
-     * @param canOutSideCancel the can out side cancel
-     * @param hasBlurBg        the has blur bg
-     * @param hasShadow        the has shadow
-     * @param canCancel        the can cancel
-     * @param isSmartDismiss   the is smart dismiss
-     * @param loadName         the load name
-     */
-    public BaseLifeSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName) {
-        this.isSmartDismiss = isSmartDismiss;
-        loadingPopupView = new XPopup.Builder(activity).isViewMode(isViewModel).dismissOnBackPressed(canBackCancel).dismissOnTouchOutside(canOutSideCancel).hasBlurBg(hasBlurBg).hasShadowBg(hasShadow).dismissOnBackPressed(canCancel).dismissOnTouchOutside(canCancel).asLoading(loadName);
+    public BaseLifeSingleObserver(Activity activity, LoadingConfig config) {
+        this.isSmartDismiss = config.isSmartDismiss();
+        loadingPopupView = new XPopup.Builder(activity)
+                .isViewMode(config.isViewModel())
+                .dismissOnBackPressed(config.isCanBackCancel())
+                .dismissOnTouchOutside(config.isCanOutSideCancel())
+                .hasBlurBg(config.isHasBlurBg())
+                .hasShadowBg(config.isHasShadow())
+                .asLoading(config.getLoadName());
     }
 
     @Override

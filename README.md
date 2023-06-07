@@ -1328,26 +1328,12 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 【注】：BaseLifeObserver请配合lifecycle使用
 
 ```
-     //无加载框构造
+     //无加载框
      new BaseObserver()
-     //无字加载框
-     new BaseObserver(Activity activity)
-     //自定义LoadingPopView
-     new BaseObserver(Activity activity, LoadingPopupView loadingPopupView)
-     //无字是否View实现加载框
-     new BaseObserver(Activity activity, boolean isViewModel)
-     //指定字符是否View实现加载框
-     new BaseObserver(Activity activity, boolean isViewModel, String loadName)
-     //指定字符是否View实现是否可返回取消加载框
-     new BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, String loadName)
-     //指定字符是否View实现是否可返回取消和外部取消加载框
-     new BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, String loadName)
-     //指定字符是否View实现是否可返回取消、外部取消和高斯模糊加载框
-     new BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
-     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
-     new BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
-     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊、背景透明和动画完成关闭加载框
-     new BaseObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
+     //自定义LoadingPopView/是否智能关闭
+     new BaseObserver(LoadingPopupView loadingPopupView, boolean isSmartDismiss)
+     //配置LoadingPopView
+     new BaseObserver(Activity activity, LoadingConfig config)
 ```
 
 ### 17、BaseCompletableObserver/BaseLifeCompletableObserver
@@ -1355,26 +1341,12 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 【注】：BaseCompletableObserver请配合lifecycle使用
 
 ```
-     //无加载框构造
+     //无加载框
      new BaseCompletableObserver()
-     //无字加载框
-     new BaseCompletableObserver(Activity activity)
-     //自定义LoadingPopView
-     new BaseCompletableObserver(Activity activity, LoadingPopupView loadingPopupView)
-     //无字是否View实现加载框
-     new BaseCompletableObserver(Activity activity, boolean isViewModel)
-     //指定字符是否View实现加载框
-     new BaseCompletableObserver(Activity activity, boolean isViewModel, String loadName)
-     //指定字符是否View实现是否可返回取消加载框
-     new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel, String loadName)
-     //指定字符是否View实现是否可返回取消和外部取消加载框
-     new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, String loadName)
-     //指定字符是否View实现是否可返回取消、外部取消和高斯模糊加载框
-     new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
-     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
-     new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
-     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊、背景透明和动画完成关闭加载框
-     new BaseCompletableObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
+     //自定义LoadingPopView/是否智能关闭
+     new BaseCompletableObserver(LoadingPopupView loadingPopupView, boolean isSmartDismiss)
+     //配置LoadingPopView
+     new BaseCompletableObserver(Activity activity, LoadingConfig config)
 ```
 
 ### 18、BaseMaybeObserver/BaseLifeMaybeObserver
@@ -1382,26 +1354,12 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 【注】：BaseLifeMaybeObserve请配合lifecycle使用
 
 ```
-     //无加载框构造
+     //无加载框
      new BaseMaybeObserver()
-     //无字加载框
-     new BaseMaybeObserver(Activity activity)
-     //自定义LoadingPopView
-     new BaseMaybeObserver(Activity activity, LoadingPopupView loadingPopupView)
-     //无字是否View实现加载框
-     new BaseMaybeObserver(Activity activity, boolean isViewModel)
-     //指定字符是否View实现加载框
-     new BaseMaybeObserver(Activity activity, boolean isViewModel, String loadName)
-     //指定字符是否View实现是否可返回取消加载框
-     new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, String loadName)
-     //指定字符是否View实现是否可返回取消和外部取消加载框
-     new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, String loadName)
-     //指定字符是否View实现是否可返回取消、外部取消和高斯模糊加载框
-     new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
-     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
-     new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
-     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊、背景透明和动画完成关闭加载框
-     new BaseMaybeObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
+     //自定义LoadingPopView/是否智能关闭
+     new BaseMaybeObserver(LoadingPopupView loadingPopupView, boolean isSmartDismiss)
+     //配置LoadingPopView
+     new BaseMaybeObserver(Activity activity, LoadingConfig config)
 ```
 
 ### 19、BaseSingleObserver/BaseLifeSingleObserver
@@ -1409,26 +1367,12 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 【注】：BaseLifeSingleObserver请配合lifecycle使用
 
 ```
-     //无加载框构造
+     //无加载框
      new BaseSingleObserver()
-     //无字加载框
-     new BaseSingleObserver(Activity activity)
-     //自定义LoadingPopView
-     new BaseSingleObserver(Activity activity, LoadingPopupView loadingPopupView)
-     //无字是否View实现加载框
-     new BaseSingleObserver(Activity activity, boolean isViewModel)
-     //指定字符是否View实现加载框
-     new BaseSingleObserver(Activity activity, boolean isViewModel, String loadName)
-     //指定字符是否View实现是否可返回取消加载框
-     new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, String loadName)
-     //指定字符是否View实现是否可返回取消和外部取消加载框
-     new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, String loadName)
-     //指定字符是否View实现是否可返回取消、外部取消和高斯模糊加载框
-     new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
-     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
-     new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
-     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊、背景透明和动画完成关闭加载框
-     new BaseSingleObserver(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
+     //自定义LoadingPopView/是否智能关闭
+     new BaseSingleObserver(LoadingPopupView loadingPopupView, boolean isSmartDismiss)
+     //配置LoadingPopView
+     new BaseSingleObserver(Activity activity, LoadingConfig config)
 ```
 
 ### 20、BaseSubscriber/BaseLifeSubscriber
@@ -1436,26 +1380,12 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 【注】：BaseLifeSubscriber请配合lifecycle使用
 
 ```
-     //无加载框构造
+     //无加载框
      new BaseSubscriber()
-     //无字加载框
-     new BaseSubscriber(Activity activity)
-     //自定义LoadingPopView
-     new BaseSubscriber(Activity activity, LoadingPopupView loadingPopupView)
-     //无字是否View实现加载框
-     new BaseSubscriber(Activity activity, boolean isViewModel)
-     //指定字符是否View实现加载框
-     new BaseSubscriber(Activity activity, boolean isViewModel, String loadName)
-     //指定字符是否View实现是否可返回取消加载框
-     new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel, String loadName)
-     //指定字符是否View实现是否可返回取消和外部取消加载框
-     new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, String loadName)
-     //指定字符是否View实现是否可返回取消、外部取消和高斯模糊加载框
-     new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, String loadName)
-     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊和背景透明加载框
-     new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel,boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, String loadName)
-     //指定字符是否View实现是否可高斯模糊、外部取消、高斯模糊、背景透明和动画完成关闭加载框
-     new BaseSubscriber(Activity activity, boolean isViewModel, boolean canBackCancel, boolean canOutSideCancel, boolean hasBlurBg, boolean hasShadow, boolean canCancel, boolean isSmartDismiss, String loadName)
+     //自定义LoadingPopView/是否智能关闭
+     new BaseSubscriber(LoadingPopupView loadingPopupView, boolean isSmartDismiss)
+     //配置LoadingPopView
+     new BaseSubscriber(Activity activity, LoadingConfig config)
 ```
 
 ### 21、CrashConfig

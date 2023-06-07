@@ -128,6 +128,7 @@ public class ScreenRecordUtils {
     /**
      * 开始录制
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void startRecord() {
         if (getMediaProjectionManager() == null) {
             showToast();
@@ -170,6 +171,7 @@ public class ScreenRecordUtils {
     /**
      * 取消录制
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void cancelRecord() {
         stopRecord();
         listener.onCancelRecord();
@@ -182,6 +184,7 @@ public class ScreenRecordUtils {
      * @param resultCode  the 结果码
      * @param data        the data
      */
+    @RequiresApi(api = Build.VERSION_CODES.S)
     public void onActivityResult(int requestCode, int resultCode, @NotNull Intent data) {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == -1) {
@@ -208,6 +211,7 @@ public class ScreenRecordUtils {
     /**
      * 停止录制
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void stopRecord() {
         stop();
         File temp = new File(recordConfig.getSavePath(), recordConfig.getFileName() + ".mp4");
@@ -221,6 +225,7 @@ public class ScreenRecordUtils {
      *
      * @return the media projection manager
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private MediaProjectionManager getMediaProjectionManager() {
         if (mediaProjectionManager == null) {
             mediaProjectionManager = (MediaProjectionManager) recordConfig.getActivity().getSystemService(Context.MEDIA_PROJECTION_SERVICE);
@@ -251,6 +256,7 @@ public class ScreenRecordUtils {
     /**
      * 停止
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void stop() {
         if (isRecording) {
             isRecording = false;

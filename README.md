@@ -1762,3 +1762,48 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      //在重写onActivityResult()，并回传三个参数
      screenRecordUtils.onActivityResult(int requestCode, int resultCode, @NotNull Intent data);
 ```
+
+### 27、BaseApplication
+
+```
+      //支持应用前后台判断
+      //已接入MyActivityManager，可直接使用
+      //已接入MyApplicationManager，可直接使用
+      public class MyApplication extends BaseApplication {
+      
+          @Override
+          protected void init() {
+             //初始化
+          }
+          
+      }
+      
+      //判断应用在前/后台
+      //true为前台
+      //false为后台
+      MyApplication.isAppForeground()
+```
+
+### 28、MyActivityManager
+
+```
+      //使用BaseApplicatio可直接使用
+      //单独使用，需要在ActivityLifecycleCallbacks回调中的onActivityResumed设置
+      //支持弱引用，获取到的Activity已做弱引用处理
+      //设置当前正在显示的Activity
+      MyActivityManager.INSTANCE.setCurrentActivity(Activity activity);
+      //获取当前正在显示的Activity
+      MyActivityManager.INSTANCE.getCurrentActivity();
+```
+
+### 29、MyApplicationManager
+
+```
+      //使用BaseApplicatio可直接使用
+      //单独使用，需要在Application的onCreate设置
+      //支持弱引用，获取到的Context已做弱引用处理
+      //设置当前Context
+      MyApplicationManager.INSTANCE.setCurrentContext(Context context);
+      //获取当前Cotext
+      MyApplicationManager.INSTANCE.getCurrentContext();
+```

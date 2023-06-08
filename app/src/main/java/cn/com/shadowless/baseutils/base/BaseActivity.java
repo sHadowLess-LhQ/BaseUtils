@@ -292,7 +292,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
      */
     private void showToast(String name) {
         String tip = "应用无法使用，请开启%s权限";
-        Toast.makeText(this, String.format(tip, name), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, String.format(tip, name), Toast.LENGTH_LONG).show();
         ApplicationUtils.startApplicationInfo(this);
     }
 }

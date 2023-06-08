@@ -1784,7 +1784,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       MyApplication.isAppForeground()
 ```
 
-### 28、MyActivityManager
+### 28、ActivityManager
 
 ```
       //使用BaseApplicatio可直接使用
@@ -1796,7 +1796,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       MyActivityManager.INSTANCE.getCurrentActivity();
 ```
 
-### 29、MyApplicationManager
+### 29、ContextManager
 
 ```
       //使用BaseApplicatio可直接使用

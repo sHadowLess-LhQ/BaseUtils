@@ -14,6 +14,7 @@ import com.trello.rxlifecycle3.LifecycleTransformer;
 import com.trello.rxlifecycle3.RxLifecycle;
 
 import cn.com.shadowless.baseutils.R;
+import cn.com.shadowless.baseutils.utils.ClickUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
@@ -24,7 +25,7 @@ import io.reactivex.subjects.BehaviorSubject;
  * @param <VB> the type 绑定视图
  * @author sHadowLess
  */
-public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPopupView implements LifecycleProvider<Lifecycle.Event> {
+public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPopupView implements LifecycleProvider<Lifecycle.Event>, View.OnClickListener {
 
     /**
      * 绑定视图
@@ -88,6 +89,13 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
         initListener();
     }
 
+    @Override
+    public void onClick(View v) {
+        if (!ClickUtils.isFastClick()) {
+            click(v);
+        }
+    }
+
     /**
      * 获取绑定视图控件
      *
@@ -129,5 +137,12 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
      * 初始化监听
      */
     protected abstract void initListener();
+
+    /**
+     * 点击
+     *
+     * @param v the v
+     */
+    protected abstract void click(@NonNull View v);
 
 }

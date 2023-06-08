@@ -15,6 +15,7 @@ import com.trello.rxlifecycle3.LifecycleTransformer;
 import com.trello.rxlifecycle3.RxLifecycle;
 
 import cn.com.shadowless.baseutils.R;
+import cn.com.shadowless.baseutils.utils.ClickUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
@@ -25,7 +26,7 @@ import io.reactivex.subjects.BehaviorSubject;
  * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BasePositionPopupView<VB extends ViewBinding> extends PositionPopupView implements LifecycleProvider<Lifecycle.Event>{
+public abstract class BasePositionPopupView<VB extends ViewBinding> extends PositionPopupView implements LifecycleProvider<Lifecycle.Event>, View.OnClickListener{
 
     /**
      * 绑定视图
@@ -89,6 +90,13 @@ public abstract class BasePositionPopupView<VB extends ViewBinding> extends Posi
         initListener();
     }
 
+    @Override
+    public void onClick(View v) {
+        if (!ClickUtils.isFastClick()) {
+            click(v);
+        }
+    }
+
     /**
      * 获取绑定视图控件
      *
@@ -130,4 +138,11 @@ public abstract class BasePositionPopupView<VB extends ViewBinding> extends Posi
      * 初始化监听
      */
     protected abstract void initListener();
+
+    /**
+     * 点击
+     *
+     * @param v the v
+     */
+    protected abstract void click(@NonNull View v);
 }

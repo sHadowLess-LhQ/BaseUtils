@@ -23,6 +23,7 @@ import com.trello.rxlifecycle3.android.RxLifecycleAndroid;
 
 import cn.com.shadowless.baseutils.permission.RxPermissions;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
+import cn.com.shadowless.baseutils.utils.ClickUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -39,7 +40,7 @@ import io.reactivex.subjects.BehaviorSubject;
  * @param <T>  the type parameter
  * @author sHadowLess
  */
-public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment implements LifecycleProvider<FragmentEvent>, ObservableOnSubscribe<T>, Observer<T> {
+public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment implements LifecycleProvider<FragmentEvent>, ObservableOnSubscribe<T>, Observer<T>, View.OnClickListener {
 
     /**
      * The Tag.
@@ -54,7 +55,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      */
     private Activity mActivity = null;
     /**
-     * The Lifecycle subject.
+     * 行为订阅
      */
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
 
@@ -210,6 +211,13 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
         Log.e(TAG, "onComplete: " + "Activity加载完成");
     }
 
+    @Override
+    public void onClick(View v) {
+        if (!ClickUtils.isFastClick()) {
+            click(v);
+        }
+    }
+
     /**
      * 需要申请的权限
      *
@@ -244,6 +252,13 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      * @param data the 数据表
      */
     protected abstract void initView(@Nullable T data);
+
+    /**
+     * 点击
+     *
+     * @param v the v
+     */
+    protected abstract void click(@NonNull View v);
 
     /**
      * 初始化权限

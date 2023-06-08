@@ -3,6 +3,7 @@ package cn.com.shadowless.baseutils.base;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.CheckResult;
@@ -20,6 +21,7 @@ import com.trello.rxlifecycle3.android.RxLifecycleAndroid;
 import cn.com.shadowless.baseutils.R;
 import cn.com.shadowless.baseutils.permission.RxPermissions;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
+import cn.com.shadowless.baseutils.utils.ClickUtils;
 import cn.com.shadowless.baseutils.utils.RxUtils;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -35,7 +37,7 @@ import io.reactivex.subjects.BehaviorSubject;
  * @param <T>  the type 传递数据类型
  * @author sHadowLess
  */
-public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatActivity implements LifecycleProvider<ActivityEvent>, ObservableOnSubscribe<T>, Observer<T> {
+public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatActivity implements LifecycleProvider<ActivityEvent>, ObservableOnSubscribe<T>, Observer<T>, View.OnClickListener {
 
     /**
      * The Tag.
@@ -48,7 +50,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     private VB bind = null;
 
     /**
-     * The Lifecycle subject.
+     * 行为订阅
      */
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
@@ -172,6 +174,13 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
         Log.e(TAG, "onComplete: " + "Activity加载完成");
     }
 
+    @Override
+    public void onClick(View v) {
+        if (!ClickUtils.isFastClick()) {
+            click(v);
+        }
+    }
+
     /**
      * 需要申请的权限
      *
@@ -206,6 +215,13 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
      * @param data the 数据表
      */
     protected abstract void initView(@Nullable T data);
+
+    /**
+     * 点击
+     *
+     * @param v the v
+     */
+    protected abstract void click(@NonNull View v);
 
     /**
      * 获取绑定的视图

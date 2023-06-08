@@ -99,9 +99,9 @@ b、远程仓库引入
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
             implementation 'com.trello.rxlifecycle3:rxlifecycle-android-lifecycle:3.1.0'
             
-            //BaseXPop
+            //BasePopView
             //【注】：使用BaseXPop，请引入以下依赖
-            implementation 'com.github.li-xiaojun:XPopup:2.7.6'
+            implementation 'com.github.li-xiaojun:XPopup:2.9.4'
           
             //使用RetrofitUtils
             //【注】：使用RetrofitUtils，请引入以下依赖
@@ -195,6 +195,7 @@ c、混淆规则
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图和传递数据类型
+//click监听已做快速点击处理
 //填入传递数据类型
 //更换ARouter为TheRouter
 //设置Activity主题，请重写initTheme()方法
@@ -249,6 +250,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
        //正常路由
        RouterUtils.jump("xxx").navigation();
     }
+    
+    @Override
+    protected void click(View v) {
+        
+    }
 }
 ```
 
@@ -264,6 +270,7 @@ public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends Bas
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图
+//click监听已做快速点击处理
 //填入传递数据类型Pop
 //设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
 //更换ARouter为TheRouter
@@ -316,6 +323,11 @@ public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
        //初始化界面控件
        getBindView().test.setText(map);
        RouterUtils.jump("xxx").navigation();
+    }
+    
+    @Override
+    protected void click(View v) {
+        
     }
 }
 ```
@@ -735,6 +747,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      //创建xml后，点击编译，填入需要绑定的视图
      //支持ViewBinding
      //支持LifecycleProvider
+     //click监听已做快速点击处理
      //共有9种基类封装弹窗
      //BaseBottomPopView - 底部弹出弹窗
      //BaseBubbleHorizontalAttachPopupView - 水平弹出可依附气泡弹窗
@@ -777,6 +790,11 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
          @Override
          protected void initListener() {
        
+         }
+         
+         @Override
+         protected void click(View v) {
+              
          }
       }
 ```

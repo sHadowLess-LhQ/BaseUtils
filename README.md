@@ -196,8 +196,6 @@ c、混淆规则
 ```
 //创建xml后，点击编译，填入需要绑定的视图和传递数据类型
 //填入传递数据类型
-//新增CompositeDisposable，使用getDisposable()获取
-//新增LifecycleProvider，使用getLifecycleProvider()获取
 //更换ARouter为TheRouter
 //设置Activity主题，请重写initTheme()方法
 //设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
@@ -266,9 +264,7 @@ public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends Bas
 
 ```
 //创建xml后，点击编译，填入需要绑定的视图
-//填入传递数据类型
-//新增CompositeDisposable，使用getDisposable()获取
-//新增LifecycleProvider，使用getLifecycleProvider()获取
+//填入传递数据类型Pop
 //设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
 //更换ARouter为TheRouter
 //更多用法请参考TheRouter
@@ -481,7 +477,21 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
          * 有序单线程到有序单线程到
          */
         SINGLE_TO_SINGLE
-        
+    
+     //绑定生命周期订阅
+     RxUtils.bindLifecycle(@NonNull Observable<Lifecycle.Event> lifecycle)
+     //绑定View的生命周期
+     RxUtils.bindViewTransformer(View view)
+     //绑定View指定的生命周期
+     RxUtils.bindViewTransformer(View view, Lifecycle.Event event)
+     //绑定Activity的生命周期
+     RxUtils.bindActivityTransformer(Activity activity)
+     //绑定Activity指定的生命周期
+     RxUtils.bindActivityTransformer(Activity activity, ActivityEvent event)
+     //绑定Fragment的生命周期
+     RxUtils.bindFragmentTransformer(Fragment fragment)
+     //绑定Fragment指定的生命周期
+     RxUtils.bindFragmentTransformer(Fragment fragment, FragmentEvent event)
      //返回ObservableTransformer流对象
      RxUtils.dealObservableThread(int threadSign)
      //返回dealCompletableThread流对象

@@ -2,7 +2,6 @@ package cn.com.shadowless.baseutils.base;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,14 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.viewbinding.ViewBinding;
 
-import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle;
 import com.trello.rxlifecycle3.LifecycleProvider;
+import com.trello.rxlifecycle3.LifecycleTransformer;
+import com.trello.rxlifecycle3.RxLifecycle;
+import com.trello.rxlifecycle3.android.FragmentEvent;
+import com.trello.rxlifecycle3.android.RxLifecycleAndroid;
 
 import cn.com.shadowless.baseutils.permission.RxPermissions;
 import cn.com.shadowless.baseutils.utils.ApplicationUtils;
@@ -26,8 +28,8 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.subjects.BehaviorSubject;
 
 
 /**
@@ -37,7 +39,7 @@ import io.reactivex.disposables.Disposable;
  * @param <T>  the type parameter
  * @author sHadowLess
  */
-public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment implements ObservableOnSubscribe<T>, Observer<T> {
+public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment implements LifecycleProvider<FragmentEvent>, ObservableOnSubscribe<T>, Observer<T> {
 
     /**
      * The Tag.
@@ -52,13 +54,9 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      */
     private Activity mActivity = null;
     /**
-     * 统一订阅管理
+     * The Lifecycle subject.
      */
-    private CompositeDisposable mDisposable = null;
-    /**
-     * Rx声明周期管理
-     */
-    private LifecycleProvider<Lifecycle.Event> provider = null;
+    private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
 
     /**
      * 初始化数据回调接口
@@ -79,9 +77,74 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
         void initViewWithOutData();
     }
 
+
+    @Override
+    @NonNull
+    @CheckResult
+    public final Observable<FragmentEvent> lifecycle() {
+        return lifecycleSubject.hide();
+    }
+
+    @Override
+    @NonNull
+    @CheckResult
+    public final <LT> LifecycleTransformer<LT> bindUntilEvent(@NonNull FragmentEvent event) {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
+    }
+
+    @Override
+    @NonNull
+    @CheckResult
+    public final <LT> LifecycleTransformer<LT> bindToLifecycle() {
+        return RxLifecycleAndroid.bindFragment(lifecycleSubject);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        lifecycleSubject.onNext(FragmentEvent.CREATE);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        lifecycleSubject.onNext(FragmentEvent.CREATE_VIEW);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        lifecycleSubject.onNext(FragmentEvent.START);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        lifecycleSubject.onNext(FragmentEvent.RESUME);
+    }
+
+    @Override
+    public void onPause() {
+        lifecycleSubject.onNext(FragmentEvent.PAUSE);
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        lifecycleSubject.onNext(FragmentEvent.STOP);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        lifecycleSubject.onNext(FragmentEvent.DESTROY);
+        super.onDestroy();
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        lifecycleSubject.onNext(FragmentEvent.ATTACH);
         this.mActivity = (Activity) context;
     }
 
@@ -96,10 +159,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
 
     @Override
     public void onDestroyView() {
-        if (null != mDisposable && mDisposable.size() != 0 && !mDisposable.isDisposed()) {
-            mDisposable.clear();
-            mDisposable = null;
-        }
+        lifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW);
         if (bind != null) {
             bind = null;
         }
@@ -108,6 +168,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
 
     @Override
     public void onDetach() {
+        lifecycleSubject.onNext(FragmentEvent.DETACH);
         mActivity = null;
         super.onDetach();
     }
@@ -129,7 +190,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {
-        mDisposable.add(d);
+
     }
 
     @Override
@@ -190,23 +251,23 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      * @param threadMod the thread mod
      */
     protected void initPermissions(int threadMod) {
-        mDisposable = new CompositeDisposable();
-        provider = AndroidLifecycle.createLifecycleProvider(this);
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
-            mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
+            new RxPermissions(this)
+                    .requestEachCombined(permissions)
+                    .compose(RxUtils.bindFragmentTransformer(this))
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    Observable.create(this).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
+                                    Observable.create(this).compose(RxUtils.bindFragmentTransformer(this)).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {
                                     showToast(permission.name);
                                 }
                             }
-                    ));
+                    );
         } else {
-            Observable.create(this).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
+            Observable.create(this).compose(RxUtils.bindFragmentTransformer(this)).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
         }
     }
 
@@ -236,24 +297,6 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      */
     protected Activity getBindActivity() {
         return mActivity;
-    }
-
-    /**
-     * 获取rxjava统一管理
-     *
-     * @return the disposable
-     */
-    protected CompositeDisposable getDisposable() {
-        return mDisposable;
-    }
-
-    /**
-     * 获取生命周期提供器
-     *
-     * @return the provider
-     */
-    protected LifecycleProvider<Lifecycle.Event> getLifecycleProvider() {
-        return provider;
     }
 
     /**

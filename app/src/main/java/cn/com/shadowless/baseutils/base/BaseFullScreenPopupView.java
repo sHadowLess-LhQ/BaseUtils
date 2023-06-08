@@ -10,10 +10,14 @@ import androidx.viewbinding.ViewBinding;
 
 
 import com.lxj.xpopup.impl.FullScreenPopupView;
-import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle;
 import com.trello.rxlifecycle3.LifecycleProvider;
+import com.trello.rxlifecycle3.LifecycleTransformer;
+import com.trello.rxlifecycle3.RxLifecycle;
 
 import cn.com.shadowless.baseutils.R;
+import cn.com.shadowless.baseutils.utils.RxUtils;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * The type Base full screen popup view.
@@ -21,29 +25,47 @@ import cn.com.shadowless.baseutils.R;
  * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseFullScreenPopupView<VB extends ViewBinding> extends FullScreenPopupView {
+public abstract class BaseFullScreenPopupView<VB extends ViewBinding> extends FullScreenPopupView implements LifecycleProvider<Lifecycle.Event>{
 
     /**
-     * The Bind.
+     * 绑定视图
      */
     private VB bind = null;
     /**
-     * The Context.
+     * 上下文
      */
     private final Context context;
     /**
-     * The Provider.
+     * 订阅行为
      */
-    protected LifecycleProvider<Lifecycle.Event> provider;
+    private final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
 
     /**
-     * Instantiates a new Base full screen popup view.
+     * 构造
      *
-     * @param context the context
+     * @param context the 上下文
      */
     public BaseFullScreenPopupView(@NonNull Context context) {
         super(context);
         this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public Observable<Lifecycle.Event> lifecycle() {
+        return lifecycleSubject.hide();
+    }
+
+    @NonNull
+    @Override
+    public <T> LifecycleTransformer<T> bindUntilEvent(@NonNull Lifecycle.Event event) {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
+    }
+
+    @NonNull
+    @Override
+    public <T> LifecycleTransformer<T> bindToLifecycle() {
+        return RxUtils.bindLifecycle(lifecycleSubject);
     }
 
     @Override
@@ -55,10 +77,9 @@ public abstract class BaseFullScreenPopupView<VB extends ViewBinding> extends Fu
     protected void onCreate() {
         super.onCreate();
         bind = setBindView(getPopupImplView());
-        provider = AndroidLifecycle.createLifecycleProvider(this);
         initView();
         if (isDefaultBackground()) {
-            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_full_view));
+            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_bottom_view));
         }
     }
 
@@ -68,9 +89,8 @@ public abstract class BaseFullScreenPopupView<VB extends ViewBinding> extends Fu
         initListener();
     }
 
-
     /**
-     * Gets bind view.
+     * 获取绑定视图控件
      *
      * @return the bind view
      */

@@ -1,7 +1,6 @@
 package cn.com.shadowless.baseutils.base;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -10,10 +9,14 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.BottomPopupView;
-import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle;
 import com.trello.rxlifecycle3.LifecycleProvider;
+import com.trello.rxlifecycle3.LifecycleTransformer;
+import com.trello.rxlifecycle3.RxLifecycle;
 
 import cn.com.shadowless.baseutils.R;
+import cn.com.shadowless.baseutils.utils.RxUtils;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * 底部弹窗
@@ -21,7 +24,7 @@ import cn.com.shadowless.baseutils.R;
  * @param <VB> the type 绑定视图
  * @author sHadowLess
  */
-public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPopupView {
+public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPopupView implements LifecycleProvider<Lifecycle.Event> {
 
     /**
      * 绑定视图
@@ -32,9 +35,9 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
      */
     private final Context context;
     /**
-     * 生命周期
+     * 订阅行为
      */
-    protected LifecycleProvider<Lifecycle.Event> provider;
+    private final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
 
     /**
      * 构造
@@ -46,6 +49,24 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
         this.context = context;
     }
 
+    @NonNull
+    @Override
+    public Observable<Lifecycle.Event> lifecycle() {
+        return lifecycleSubject.hide();
+    }
+
+    @NonNull
+    @Override
+    public <T> LifecycleTransformer<T> bindUntilEvent(@NonNull Lifecycle.Event event) {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
+    }
+
+    @NonNull
+    @Override
+    public <T> LifecycleTransformer<T> bindToLifecycle() {
+        return RxUtils.bindLifecycle(lifecycleSubject);
+    }
+
     @Override
     protected int getImplLayoutId() {
         return setLayoutId();
@@ -55,7 +76,6 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     protected void onCreate() {
         super.onCreate();
         bind = setBindView(getPopupImplView());
-        provider = AndroidLifecycle.createLifecycleProvider(this);
         initView();
         if (isDefaultBackground()) {
             getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_bottom_view));
@@ -109,4 +129,5 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
      * 初始化监听
      */
     protected abstract void initListener();
+
 }

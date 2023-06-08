@@ -1,18 +1,21 @@
 package cn.com.shadowless.baseutils.base;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.widget.Toast;
 
+import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Lifecycle;
 import androidx.viewbinding.ViewBinding;
 
-import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle;
 import com.trello.rxlifecycle3.LifecycleProvider;
+import com.trello.rxlifecycle3.LifecycleTransformer;
+import com.trello.rxlifecycle3.RxLifecycle;
+import com.trello.rxlifecycle3.android.ActivityEvent;
+import com.trello.rxlifecycle3.android.RxLifecycleAndroid;
 
 import cn.com.shadowless.baseutils.R;
 import cn.com.shadowless.baseutils.permission.RxPermissions;
@@ -22,8 +25,8 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * 基类Activity
@@ -32,24 +35,22 @@ import io.reactivex.disposables.Disposable;
  * @param <T>  the type 传递数据类型
  * @author sHadowLess
  */
-public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatActivity implements ObservableOnSubscribe<T>, Observer<T> {
+public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatActivity implements LifecycleProvider<ActivityEvent>, ObservableOnSubscribe<T>, Observer<T> {
 
     /**
      * The Tag.
      */
     private final String TAG = BaseActivity.class.getSimpleName();
+
     /**
      * 视图绑定
      */
     private VB bind = null;
+
     /**
-     * 统一订阅管理
+     * The Lifecycle subject.
      */
-    private CompositeDisposable mDisposable = null;
-    /**
-     * Rx生命周期管理
-     */
-    private LifecycleProvider<Lifecycle.Event> provider = null;
+    private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
     /**
      * 初始化数据回调接口
@@ -71,9 +72,55 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     @Override
+    @NonNull
+    @CheckResult
+    public final Observable<ActivityEvent> lifecycle() {
+        return this.lifecycleSubject.hide();
+    }
+
+    @Override
+    @NonNull
+    @CheckResult
+    public final <LT> LifecycleTransformer<LT> bindUntilEvent(@NonNull ActivityEvent event) {
+        return RxLifecycle.bindUntilEvent(this.lifecycleSubject, event);
+    }
+
+    @Override
+    @NonNull
+    @CheckResult
+    public final <LT> LifecycleTransformer<LT> bindToLifecycle() {
+        return RxLifecycleAndroid.bindActivity(this.lifecycleSubject);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.lifecycleSubject.onNext(ActivityEvent.START);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.lifecycleSubject.onNext(ActivityEvent.RESUME);
+    }
+
+    @Override
+    protected void onPause() {
+        this.lifecycleSubject.onNext(ActivityEvent.PAUSE);
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        this.lifecycleSubject.onNext(ActivityEvent.STOP);
+        super.onStop();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(initTheme());
         super.onCreate(savedInstanceState);
+        this.lifecycleSubject.onNext(ActivityEvent.CREATE);
         initBindView();
         initListener();
         initPermissions(initDataThreadMod());
@@ -81,10 +128,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
 
     @Override
     protected void onDestroy() {
-        if (null != mDisposable && mDisposable.size() != 0 && !mDisposable.isDisposed()) {
-            mDisposable.clear();
-            mDisposable = null;
-        }
+        this.lifecycleSubject.onNext(ActivityEvent.DESTROY);
         if (null != bind) {
             bind = null;
         }
@@ -108,7 +152,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {
-        mDisposable.add(d);
+
     }
 
     @Override
@@ -174,24 +218,6 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     /**
-     * 获取rxjava管理
-     *
-     * @return the disposable
-     */
-    protected CompositeDisposable getDisposable() {
-        return mDisposable;
-    }
-
-    /**
-     * 获取生命周期提供器
-     *
-     * @return the provider
-     */
-    protected LifecycleProvider<Lifecycle.Event> getLifecycleProvider() {
-        return provider;
-    }
-
-    /**
      * 初始化主题
      *
      * @return the int
@@ -215,23 +241,23 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
      * @param threadMod the 线程模式
      */
     private void initPermissions(int threadMod) {
-        mDisposable = new CompositeDisposable();
-        provider = AndroidLifecycle.createLifecycleProvider(this);
         String[] permissions = permissionName();
         if (null != permissions && permissions.length != 0) {
-            mDisposable.add(new RxPermissions(this).requestEachCombined(permissions)
+            new RxPermissions(this)
+                    .requestEachCombined(permissions)
+                    .compose(RxUtils.bindActivityTransformer(this))
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    Observable.create(this).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
+                                    Observable.create(this).compose(RxUtils.bindActivityTransformer(this)).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {
                                     showToast(permission.name);
                                 }
                             }
-                    ));
+                    );
         } else {
-            Observable.create(this).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
+            Observable.create(this).compose(RxUtils.bindActivityTransformer(this)).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
         }
     }
 

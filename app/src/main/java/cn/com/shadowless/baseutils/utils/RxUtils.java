@@ -1,12 +1,29 @@
 package cn.com.shadowless.baseutils.utils;
 
+import android.app.Activity;
+import android.view.View;
+
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+
+import com.trello.rxlifecycle3.LifecycleProvider;
+import com.trello.rxlifecycle3.LifecycleTransformer;
+import com.trello.rxlifecycle3.OutsideLifecycleException;
+import com.trello.rxlifecycle3.RxLifecycle;
+import com.trello.rxlifecycle3.android.ActivityEvent;
+import com.trello.rxlifecycle3.android.FragmentEvent;
+
 import io.reactivex.CompletableTransformer;
 import io.reactivex.FlowableTransformer;
 import io.reactivex.MaybeTransformer;
+import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Scheduler;
 import io.reactivex.SingleTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -374,6 +391,156 @@ public class RxUtils {
             default:
                 return setFlowableStream(AndroidSchedulers.mainThread(), AndroidSchedulers.mainThread());
         }
+    }
+
+
+    /**
+     * The constant LIFECYCLE.
+     */
+    private static final Function<Lifecycle.Event, Lifecycle.Event> LIFECYCLE = event -> {
+        switch (event) {
+            case ON_CREATE:
+                return Lifecycle.Event.ON_DESTROY;
+            case ON_START:
+                return Lifecycle.Event.ON_STOP;
+            case ON_RESUME:
+                return Lifecycle.Event.ON_PAUSE;
+            case ON_PAUSE:
+                return Lifecycle.Event.ON_STOP;
+            case ON_STOP:
+                return Lifecycle.Event.ON_DESTROY;
+            case ON_DESTROY:
+                throw new OutsideLifecycleException("Cannot bind to lifecycle when outside of it.");
+            default:
+                throw new UnsupportedOperationException("Binding to " + event + " not yet implemented");
+        }
+    };
+
+    /**
+     * 绑定生命周期订阅
+     *
+     * @param <T>       the type parameter
+     * @param lifecycle the lifecycle
+     * @return the lifecycle transformer
+     */
+    @NonNull
+    @CheckResult
+    public static <T> LifecycleTransformer<T> bindLifecycle(@NonNull Observable<Lifecycle.Event> lifecycle) {
+        return RxLifecycle.bind(lifecycle, LIFECYCLE);
+    }
+
+    /**
+     * Gets base popup view provider.
+     *
+     * @param <T>  the type parameter
+     * @param view the view
+     * @return the base popup view provider
+     */
+    private static <T> LifecycleProvider<T> getViewProvider(View view) {
+        LifecycleProvider<T> provider = null;
+        if (view instanceof LifecycleProvider) {
+            provider = (LifecycleProvider<T>) view;
+        }
+        return provider;
+    }
+
+    /**
+     * 获取Activity的生命周期提供者
+     *
+     * @param <T>      the type parameter
+     * @param activity the activity
+     * @return the activity provider
+     */
+    private static <T> LifecycleProvider<T> getActivityProvider(Activity activity) {
+        LifecycleProvider<T> provider = null;
+        if (activity instanceof LifecycleProvider) {
+            provider = (LifecycleProvider<T>) activity;
+        }
+        return provider;
+    }
+
+    /**
+     * 获取Fragment的生命周期提供者
+     *
+     * @param <T>      the type parameter
+     * @param fragment the fragment
+     * @return the fragment provider
+     */
+    private static <T> LifecycleProvider<T> getFragmentProvider(Fragment fragment) {
+        LifecycleProvider<T> provider = null;
+        if (fragment instanceof LifecycleProvider) {
+            provider = (LifecycleProvider<T>) fragment;
+        }
+        return provider;
+    }
+
+    /**
+     * 绑定View的生命周期
+     *
+     * @param <T>  the type parameter
+     * @param view the view
+     * @return the lifecycle transformer
+     */
+    public static <T> LifecycleTransformer<T> bindViewTransformer(View view) {
+        return getViewProvider(view).bindToLifecycle();
+    }
+
+    /**
+     * 绑定Activity的生命周期
+     *
+     * @param <T>   the type parameter
+     * @param view  the view
+     * @param event the event
+     * @return the lifecycle transformer
+     */
+    public static <T> LifecycleTransformer<T> bindViewTransformer(View view, Lifecycle.Event event) {
+        return getViewProvider(view).bindUntilEvent(event);
+    }
+
+    /**
+     * 绑定Activity的生命周期
+     *
+     * @param <T>      the type parameter
+     * @param activity the activity
+     * @return the lifecycle transformer
+     */
+    public static <T> LifecycleTransformer<T> bindActivityTransformer(Activity activity) {
+        return getActivityProvider(activity).bindToLifecycle();
+    }
+
+    /**
+     * 绑定Activity的生命周期
+     *
+     * @param <T>      the type parameter
+     * @param activity the activity
+     * @param event    the event
+     * @return the lifecycle transformer
+     */
+    public static <T> LifecycleTransformer<T> bindActivityTransformer(Activity activity, ActivityEvent event) {
+        return getActivityProvider(activity).bindUntilEvent(event);
+    }
+
+    /**
+     * 绑定Fragment的生命周期
+     *
+     * @param <T>      the type parameter
+     * @param fragment the fragment
+     * @return the lifecycle transformer
+     */
+    public static <T> LifecycleTransformer<T> bindFragmentTransformer(Fragment fragment) {
+        return getFragmentProvider(fragment).bindToLifecycle();
+    }
+
+    /**
+     * 绑定Fragment的生命周期
+     *
+     * @param <T>      the type parameter
+     * @param fragment the fragment
+     * @param event    the event
+     * @return the lifecycle transformer
+     */
+    public static <T> LifecycleTransformer<T> bindFragmentTransformer(Fragment fragment, FragmentEvent event) {
+        return getFragmentProvider(fragment).bindUntilEvent(event);
     }
 
     /**

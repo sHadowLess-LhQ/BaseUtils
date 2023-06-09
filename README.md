@@ -97,7 +97,7 @@ b、远程仓库引入
             implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
             implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-            implementation 'com.trello.rxlifecycle3:rxlifecycle-android-lifecycle:3.1.0'
+            implementation 'com.trello.rxlifecycle3:rxlifecycle-android:3.1.0'
             
             //BasePopView
             //【注】：使用BaseXPop，请引入以下依赖

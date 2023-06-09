@@ -82,6 +82,7 @@ Step 2. 添加依赖
 a、克隆引入
 
 ```
+     //引入app模块
      //删除model中build.gradle的
      apply plugin: 'com.github.dcendents.android-maven'
      group = 'com.gitee.shadowless_lhq'

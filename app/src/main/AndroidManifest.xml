@@ -7,11 +7,6 @@
         android:maxSdkVersion="22" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application>
-        <provider
-            android:name="cn.com.shadowless.baseutils.screen.InitProvider"
-            android:authorities="${applicationId}.autosize-init-provider"
-            android:exported="false"
-            android:multiprocess="true" />
 
         <activity
             android:name=".crash.activity.DefaultErrorActivity"

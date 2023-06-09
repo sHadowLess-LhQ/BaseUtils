@@ -4,7 +4,7 @@
     android:id="@+id/toast_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/toast_success_shape"
+    android:background="@drawable/bg_toast_success_shape"
     android:minHeight="40dp"
     android:paddingBottom="4dp"
     android:paddingLeft="16dp"

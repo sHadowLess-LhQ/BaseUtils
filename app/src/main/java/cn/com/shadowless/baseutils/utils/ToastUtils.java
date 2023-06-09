@@ -81,7 +81,7 @@ public enum ToastUtils {
     public void onSuccessShowToast(String message) {
         showToast(message, R.mipmap.toast_success,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_success_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_success_shape);
     }
 
     /**
@@ -93,7 +93,7 @@ public enum ToastUtils {
         String message = mContext.getResources().getString(messageID);
         showToast(message, R.mipmap.toast_success,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_success_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_success_shape);
     }
 
     /**
@@ -105,7 +105,7 @@ public enum ToastUtils {
     public void onSuccessShowToast(String message, int iconID) {
         showToast(message, iconID,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_success_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_success_shape);
     }
 
     /**
@@ -118,7 +118,7 @@ public enum ToastUtils {
         String message = mContext.getResources().getString(messageID);
         showToast(message, iconID,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_success_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_success_shape);
     }
 
     /**
@@ -130,7 +130,7 @@ public enum ToastUtils {
     public void onErrorShowToast(String message, int iconID) {
         showToast(message, iconID,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_error_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_error_shape);
     }
 
     /**
@@ -143,7 +143,7 @@ public enum ToastUtils {
         String message = mContext.getResources().getString(messageID);
         showToast(message, iconID,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_error_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_error_shape);
     }
 
     /**
@@ -154,7 +154,7 @@ public enum ToastUtils {
     public void onErrorShowToast(String message) {
         showToast(message, R.mipmap.toast_error,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_error_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_error_shape);
     }
 
     /**
@@ -166,7 +166,7 @@ public enum ToastUtils {
         String message = mContext.getResources().getString(messageID);
         showToast(message, R.mipmap.toast_error,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_error_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_error_shape);
     }
 
     /**
@@ -178,7 +178,7 @@ public enum ToastUtils {
         String message = mContext.getResources().getString(messageID);
         showToast(message, R.mipmap.toast_default,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_default_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_default_shape);
     }
 
     /**
@@ -189,7 +189,7 @@ public enum ToastUtils {
     public void onDefaultShowToast(String message) {
         showToast(message, R.mipmap.toast_default,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_default_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_default_shape);
     }
 
     /**
@@ -202,7 +202,7 @@ public enum ToastUtils {
         String message = mContext.getResources().getString(messageID);
         showToast(message, iconID,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_default_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_default_shape);
     }
 
     /**
@@ -214,7 +214,7 @@ public enum ToastUtils {
     public void onDefaultShowToast(String message, int iconID) {
         showToast(message, iconID,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_default_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_default_shape);
     }
 
     /**
@@ -226,7 +226,7 @@ public enum ToastUtils {
         String message = mContext.getResources().getString(messageID);
         showToast(message, 0,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, false, R.drawable.toast_default_shape);
+                Toast.LENGTH_SHORT, false, R.drawable.bg_toast_default_shape);
     }
 
     /**
@@ -237,7 +237,7 @@ public enum ToastUtils {
     public void onDefaultWithoutIconShowToast(String message) {
         showToast(message, 0,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, false, R.drawable.toast_default_shape);
+                Toast.LENGTH_SHORT, false, R.drawable.bg_toast_default_shape);
     }
 
     /**
@@ -249,7 +249,7 @@ public enum ToastUtils {
         String message = mContext.getResources().getString(messageID);
         showToast(message, R.mipmap.toast_warn,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_warn_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_warn_shape);
     }
 
     /**
@@ -260,7 +260,7 @@ public enum ToastUtils {
     public void onWarnShowToast(String message) {
         showToast(message, R.mipmap.toast_warn,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_warn_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_warn_shape);
     }
 
     /**
@@ -273,7 +273,7 @@ public enum ToastUtils {
         String message = mContext.getResources().getString(messageID);
         showToast(message, iconID,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_warn_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_warn_shape);
     }
 
     /**
@@ -285,7 +285,7 @@ public enum ToastUtils {
     public void onWarnShowToast(String message, int iconID) {
         showToast(message, iconID,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_warn_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_warn_shape);
     }
 
     /**
@@ -297,7 +297,7 @@ public enum ToastUtils {
         String message = mContext.getResources().getString(messageID);
         showToast(message, R.mipmap.toast_info,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_info_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_info_shape);
     }
 
     /**
@@ -308,7 +308,7 @@ public enum ToastUtils {
     public void onInfoShowToast(String message) {
         showToast(message, R.mipmap.toast_info,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_info_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_info_shape);
     }
 
     /**
@@ -321,7 +321,7 @@ public enum ToastUtils {
         String message = mContext.getResources().getString(messageID);
         showToast(message, iconID,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_info_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_info_shape);
     }
 
     /**
@@ -333,7 +333,7 @@ public enum ToastUtils {
     public void onInfoShowToast(String message, int iconID) {
         showToast(message, iconID,
                 ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_info_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_info_shape);
     }
 
 
@@ -345,7 +345,7 @@ public enum ToastUtils {
      */
     public void onShowToast(String message, int iconID) {
         onShowToast(message, iconID, ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_default_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_default_shape);
     }
 
     /**
@@ -356,7 +356,7 @@ public enum ToastUtils {
      */
     public void onShowToast(int message, int iconID) {
         onShowToast(message, iconID, ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, true, R.drawable.toast_default_shape);
+                Toast.LENGTH_SHORT, true, R.drawable.bg_toast_default_shape);
     }
 
     /**
@@ -390,7 +390,7 @@ public enum ToastUtils {
      */
     public void onShowToast(String message) {
         onShowToast(message, 0, ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, false, R.drawable.toast_default_shape);
+                Toast.LENGTH_SHORT, false, R.drawable.bg_toast_default_shape);
     }
 
     /**
@@ -400,7 +400,7 @@ public enum ToastUtils {
      */
     public void onShowToast(int message) {
         onShowToast(message, 0, ContextCompat.getColor(mContext, R.color.toastDefaultTextColor),
-                Toast.LENGTH_SHORT, false, R.drawable.toast_default_shape);
+                Toast.LENGTH_SHORT, false, R.drawable.bg_toast_default_shape);
     }
 
 

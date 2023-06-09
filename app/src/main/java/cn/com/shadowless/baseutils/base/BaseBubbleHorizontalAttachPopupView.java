@@ -80,7 +80,7 @@ public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding
         bind = setBindView(getPopupImplView());
         initView();
         if (isDefaultBackground()) {
-            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_bottom_view));
+            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_radius_shape));
         }
     }
 

@@ -8,7 +8,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewbinding.ViewBinding;
 
-
 import com.lxj.xpopup.core.AttachPopupView;
 import com.trello.rxlifecycle3.LifecycleProvider;
 import com.trello.rxlifecycle3.LifecycleTransformer;
@@ -21,12 +20,12 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
 /**
- * The type Base vertical attach pop view.
+ * 垂直依附弹窗
  *
  * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseVerticalAttachPopView<VB extends ViewBinding> extends AttachPopupView implements LifecycleProvider<Lifecycle.Event>, View.OnClickListener{
+public abstract class BaseVerticalAttachPopView<VB extends ViewBinding> extends AttachPopupView implements LifecycleProvider<Lifecycle.Event>, View.OnClickListener {
 
     /**
      * 绑定视图
@@ -36,6 +35,7 @@ public abstract class BaseVerticalAttachPopView<VB extends ViewBinding> extends 
      * 上下文
      */
     private final Context context;
+
     /**
      * 订阅行为
      */
@@ -49,6 +49,17 @@ public abstract class BaseVerticalAttachPopView<VB extends ViewBinding> extends 
     public BaseVerticalAttachPopView(@NonNull Context context) {
         super(context);
         this.context = context;
+    }
+
+    /**
+     * 构造
+     *
+     * @param context the 上下文
+     */
+    public BaseVerticalAttachPopView(@NonNull Context context, Lifecycle lifecycle) {
+        super(context);
+        this.context = context;
+        lifecycle.addObserver(this);
     }
 
     @NonNull
@@ -75,12 +86,42 @@ public abstract class BaseVerticalAttachPopView<VB extends ViewBinding> extends 
     }
 
     @Override
+    protected void init() {
+        this.lifecycleSubject.onNext(Lifecycle.Event.ON_CREATE);
+        super.init();
+    }
+
+    @Override
+    protected void doAfterShow() {
+        this.lifecycleSubject.onNext(Lifecycle.Event.ON_RESUME);
+        super.doAfterShow();
+    }
+
+    @Override
+    public void dismiss() {
+        this.lifecycleSubject.onNext(Lifecycle.Event.ON_PAUSE);
+        super.dismiss();
+    }
+
+    @Override
+    protected void doAfterDismiss() {
+        this.lifecycleSubject.onNext(Lifecycle.Event.ON_STOP);
+        super.doAfterDismiss();
+    }
+
+    @Override
+    public void destroy() {
+        this.lifecycleSubject.onNext(Lifecycle.Event.ON_DESTROY);
+        super.destroy();
+    }
+
+    @Override
     protected void onCreate() {
         super.onCreate();
         bind = setBindView(getPopupImplView());
         initView();
         if (isDefaultBackground()) {
-            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_radius_shape));
+            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_bottom_shape));
         }
     }
 
@@ -145,4 +186,5 @@ public abstract class BaseVerticalAttachPopView<VB extends ViewBinding> extends 
      * @param v the v
      */
     protected abstract void click(@NonNull View v);
+
 }

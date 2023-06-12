@@ -35,6 +35,7 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
      * 上下文
      */
     private final Context context;
+
     /**
      * 订阅行为
      */
@@ -48,6 +49,17 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     public BaseBottomPopView(@NonNull Context context) {
         super(context);
         this.context = context;
+    }
+
+    /**
+     * 构造
+     *
+     * @param context the 上下文
+     */
+    public BaseBottomPopView(@NonNull Context context, Lifecycle lifecycle) {
+        super(context);
+        this.context = context;
+        lifecycle.addObserver(this);
     }
 
     @NonNull
@@ -71,6 +83,36 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     @Override
     protected int getImplLayoutId() {
         return setLayoutId();
+    }
+
+    @Override
+    protected void init() {
+        this.lifecycleSubject.onNext(Lifecycle.Event.ON_CREATE);
+        super.init();
+    }
+
+    @Override
+    protected void doAfterShow() {
+        this.lifecycleSubject.onNext(Lifecycle.Event.ON_RESUME);
+        super.doAfterShow();
+    }
+
+    @Override
+    public void dismiss() {
+        this.lifecycleSubject.onNext(Lifecycle.Event.ON_PAUSE);
+        super.dismiss();
+    }
+
+    @Override
+    protected void doAfterDismiss() {
+        this.lifecycleSubject.onNext(Lifecycle.Event.ON_STOP);
+        super.doAfterDismiss();
+    }
+
+    @Override
+    public void destroy() {
+        this.lifecycleSubject.onNext(Lifecycle.Event.ON_DESTROY);
+        super.destroy();
     }
 
     @Override

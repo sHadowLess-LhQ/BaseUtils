@@ -1,12 +1,13 @@
 package cn.com.shadowless.baseutils.utils;
 
 import android.app.Activity;
-import android.view.View;
 
 import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.trello.rxlifecycle3.LifecycleProvider;
 import com.trello.rxlifecycle3.LifecycleTransformer;
@@ -417,6 +418,77 @@ public class RxUtils {
     };
 
     /**
+     * The interface Full lifecycle observer.
+     */
+    private interface FullLifecycleObserver extends LifecycleObserver {
+
+        /**
+         * On create.
+         *
+         * @param owner the owner
+         */
+        void onCreate(LifecycleOwner owner);
+
+        /**
+         * On start.
+         *
+         * @param owner the owner
+         */
+        void onStart(LifecycleOwner owner);
+
+        /**
+         * On resume.
+         *
+         * @param owner the owner
+         */
+        void onResume(LifecycleOwner owner);
+
+        /**
+         * On pause.
+         *
+         * @param owner the owner
+         */
+        void onPause(LifecycleOwner owner);
+
+        /**
+         * On stop.
+         *
+         * @param owner the owner
+         */
+        void onStop(LifecycleOwner owner);
+
+        /**
+         * On destroy.
+         *
+         * @param owner the owner
+         */
+        void onDestroy(LifecycleOwner owner);
+    }
+
+    /**
+     * The interface Rx lifecycle observer.
+     */
+    public interface RxLifecycleObserver extends FullLifecycleObserver{
+        @Override
+        void onCreate(LifecycleOwner owner);
+
+        @Override
+        void onStart(LifecycleOwner owner);
+
+        @Override
+        void onResume(LifecycleOwner owner);
+
+        @Override
+        void onPause(LifecycleOwner owner);
+
+        @Override
+        void onStop(LifecycleOwner owner);
+
+        @Override
+        void onDestroy(LifecycleOwner owner);
+    }
+
+    /**
      * 绑定生命周期订阅
      *
      * @param <T>       the type parameter
@@ -432,14 +504,14 @@ public class RxUtils {
     /**
      * Gets base popup view provider.
      *
-     * @param <T>  the type parameter
-     * @param view the view
+     * @param <T> the type parameter
+     * @param obj the obj
      * @return the base popup view provider
      */
-    private static <T> LifecycleProvider<T> getViewProvider(View view) {
+    private static <T> LifecycleProvider<T> getProvider(Object obj) {
         LifecycleProvider<T> provider = null;
-        if (view instanceof LifecycleProvider) {
-            provider = (LifecycleProvider<T>) view;
+        if (obj instanceof LifecycleProvider) {
+            provider = (LifecycleProvider<T>) obj;
         }
         return provider;
     }
@@ -477,24 +549,24 @@ public class RxUtils {
     /**
      * 绑定View的生命周期
      *
-     * @param <T>  the type parameter
-     * @param view the view
+     * @param <T> the type parameter
+     * @param obj the obj
      * @return the lifecycle transformer
      */
-    public static <T> LifecycleTransformer<T> bindViewTransformer(View view) {
-        return getViewProvider(view).bindToLifecycle();
+    public static <T> LifecycleTransformer<T> bindViewTransformer(Object obj) {
+        return getProvider(obj).bindToLifecycle();
     }
 
     /**
      * 绑定Activity的生命周期
      *
      * @param <T>   the type parameter
-     * @param view  the view
+     * @param obj   the obj
      * @param event the event
      * @return the lifecycle transformer
      */
-    public static <T> LifecycleTransformer<T> bindViewTransformer(View view, Lifecycle.Event event) {
-        return getViewProvider(view).bindUntilEvent(event);
+    public static <T> LifecycleTransformer<T> bindViewTransformer(Object obj, Lifecycle.Event event) {
+        return getProvider(obj).bindUntilEvent(event);
     }
 
     /**

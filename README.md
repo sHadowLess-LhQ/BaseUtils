@@ -195,150 +195,150 @@ c、混淆规则
 ### 1、BaseActivity
 
 ```
-//创建xml后，点击编译，填入需要绑定的视图和传递数据类型
-//click监听已做快速点击处理
-//填入传递数据类型
-//更换ARouter为TheRouter
-//设置Activity主题，请重写initTheme()方法
-//设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
-//更多用法请参考TheRouter
-@Router(path = "xxx")
-public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
-
-    //ARouter跳转参数获取，一定要public，name最好声明，不声明默认使用变量名为key
-    //用法请参考TheRouter的使用
-    @Autowired(name = "key1")
-    public String s;
-
-    @Nullable
-    @Override
-    protected String[] permissionName() {
-       //设置需要获取的权限，无需申请可传null或空数组
-       return null;
-    }
-
-    @NonNull
-    @Override
-    protected ActivityMainBinding setBindView() {
-       //回传ViewBinding绑定的视图
-       return ActivityMainBinding.inflate(getLayoutInflater());
-    }
-
-    @Override
-    protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
-       //携参路由，需要页面参数注入
-       TheRouter.inject(this);
-       //默认在IO线程，需要更改，请重写initDataThreadMod()方法，传递新的RxUtils线程值
-       //初始化数据
-       【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
-       //若有数据给视图绑定，使用initViewWithData
-       //若无数据给视图绑定，使用initViewWithOutData
-       initDataCallBack.initViewWithData("1");
-       initDataCallBack.initViewWithOutData();
-    }
-    
-    @Override
-    protected void initListener() {
-       //初始化监听
-       getBindView().test.setOnClickListener(this);
-    }
-
-    @Override
-    protected void initView(@Nullable String data) {
-       //默认在主线程
-       //初始化界面控件
-       getBindView().test.setText(data);
-       //正常路由
-       RouterUtils.jump("xxx").navigation();
-    }
-    
-    @Override
-    protected void click(View v) {
-        
-    }
-}
+      //创建xml后，点击编译，填入需要绑定的视图和传递数据类型
+      //click监听已做快速点击处理
+      //填入传递数据类型
+      //更换ARouter为TheRouter
+      //设置Activity主题，请重写initTheme()方法
+      //设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
+      //更多用法请参考TheRouter
+      @Router(path = "xxx")
+      public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
+      
+          //ARouter跳转参数获取，一定要public，name最好声明，不声明默认使用变量名为key
+          //用法请参考TheRouter的使用
+          @Autowired(name = "key1")
+          public String s;
+      
+          @Nullable
+          @Override
+          protected String[] permissionName() {
+             //设置需要获取的权限，无需申请可传null或空数组
+             return null;
+          }
+      
+          @NonNull
+          @Override
+          protected ActivityMainBinding setBindView() {
+             //回传ViewBinding绑定的视图
+             return ActivityMainBinding.inflate(getLayoutInflater());
+          }
+      
+          @Override
+          protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
+             //携参路由，需要页面参数注入
+             TheRouter.inject(this);
+             //默认在IO线程，需要更改，请重写initDataThreadMod()方法，传递新的RxUtils线程值
+             //初始化数据
+             【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
+             //若有数据给视图绑定，使用initViewWithData
+             //若无数据给视图绑定，使用initViewWithOutData
+             initDataCallBack.initViewWithData("1");
+             initDataCallBack.initViewWithOutData();
+          }
+          
+          @Override
+          protected void initListener() {
+             //初始化监听
+             getBindView().test.setOnClickListener(this);
+          }
+      
+          @Override
+          protected void initView(@Nullable String data) {
+             //默认在主线程
+             //初始化界面控件
+             getBindView().test.setText(data);
+             //正常路由
+             RouterUtils.jump("xxx").navigation();
+          }
+          
+          @Override
+          protected void click(View v) {
+              
+          }
+      }
 ```
 
 可根据实际使用二次封装
 
 ```
-public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends BaseActivity<VB, T> {
-    ...
-}
+      public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends BaseActivity<VB, T> {
+          ...
+      }
 ```
 
 ### 2、BaseFragment
 
 ```
-//创建xml后，点击编译，填入需要绑定的视图
-//click监听已做快速点击处理
-//填入传递数据类型Pop
-//设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
-//更换ARouter为TheRouter
-//更多用法请参考TheRouter
-@Router(path = "xxx")
-public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
-    
-    //ARouter跳转参数获取，一定要public，name最好声明，不声明默认使用变量名为key
-    //用法请参考TheRouter的使用
-    @Autowired(name = "key1")
-    public String s;
-    
-    @Nullable
-    @Override
-    protected String[] permissionName() {
-       //设置需要获取的权限，无需申请可传null或空数组
-       return null;
-    }
-
-    @NonNull
-    @Override
-    protected FragmentMainBinding setBindView() {
-        //回传ViewBinding绑定的视图
-        return FragmentMainBinding.inflate(getLayoutInflater());
-    }
-
-    @Override
-    protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
-       //携参路由，需要页面参数注入
-       TheRouter.inject(this);
-       //默认在IO线程，需要更改，请重写initPermissions()方法，向父类super传递新的RxUtils线程值
-       //初始化数据
-       【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
-       Toast.makeText(getBindActivity(), "可用Activity对象", Toast.LENGTH_SHORT).show();
-       //若有数据给视图绑定，使用initViewWithData
-       //若无数据给视图绑定，使用initViewWithOutData
-       initDataCallBack.initViewWithData("1");
-       initDataCallBack.initViewWithOutData();
-    }
-    
-    @Override
-    protected void initListener() {
-       //初始化监听
-       getBindView().test.setOnClickListener(this);
-    }
-
-    @Override
-    protected void initView(@Nullable String map) {
-       //默认在主线程
-       //初始化界面控件
-       getBindView().test.setText(map);
-       RouterUtils.jump("xxx").navigation();
-    }
-    
-    @Override
-    protected void click(View v) {
-        
-    }
-}
+      //创建xml后，点击编译，填入需要绑定的视图
+      //click监听已做快速点击处理
+      //填入传递数据类型Pop
+      //设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
+      //更换ARouter为TheRouter
+      //更多用法请参考TheRouter
+      @Router(path = "xxx")
+      public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
+          
+          //ARouter跳转参数获取，一定要public，name最好声明，不声明默认使用变量名为key
+          //用法请参考TheRouter的使用
+          @Autowired(name = "key1")
+          public String s;
+          
+          @Nullable
+          @Override
+          protected String[] permissionName() {
+             //设置需要获取的权限，无需申请可传null或空数组
+             return null;
+          }
+      
+          @NonNull
+          @Override
+          protected FragmentMainBinding setBindView() {
+              //回传ViewBinding绑定的视图
+              return FragmentMainBinding.inflate(getLayoutInflater());
+          }
+      
+          @Override
+          protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
+             //携参路由，需要页面参数注入
+             TheRouter.inject(this);
+             //默认在IO线程，需要更改，请重写initPermissions()方法，向父类super传递新的RxUtils线程值
+             //初始化数据
+             【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
+             Toast.makeText(getBindActivity(), "可用Activity对象", Toast.LENGTH_SHORT).show();
+             //若有数据给视图绑定，使用initViewWithData
+             //若无数据给视图绑定，使用initViewWithOutData
+             initDataCallBack.initViewWithData("1");
+             initDataCallBack.initViewWithOutData();
+          }
+          
+          @Override
+          protected void initListener() {
+             //初始化监听
+             getBindView().test.setOnClickListener(this);
+          }
+      
+          @Override
+          protected void initView(@Nullable String map) {
+             //默认在主线程
+             //初始化界面控件
+             getBindView().test.setText(map);
+             RouterUtils.jump("xxx").navigation();
+          }
+          
+          @Override
+          protected void click(View v) {
+              
+          }
+      }
 ```
 
 可根据实际使用二次封装
 
 ```
-public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends BaseFragment<VB,K,V> {
-     ...
-}
+      public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends BaseFragment<VB,K,V> {
+           ...
+      }
 ```
 
 ### 3、PreferencesUtils
@@ -748,6 +748,7 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
      //创建xml后，点击编译，填入需要绑定的视图
      //支持ViewBinding
      //支持LifecycleProvider
+     //支持监听Activity的声明周期
      //click监听已做快速点击处理
      //共有9种基类封装弹窗
      //BaseBottomPopView - 底部弹出弹窗
@@ -765,6 +766,11 @@ public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends Ba
 
          public TestPopView(@NonNull Context context) {
             super(context);
+         }
+         
+      
+         public TestPopView(@NonNull Context context, Lifecycle lifecycle) {
+              super(context, lifecycle);
          }
          
          @NonNull
@@ -1807,4 +1813,96 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       MyApplicationManager.INSTANCE.setCurrentContext(Context context);
       //获取当前Cotext
       MyApplicationManager.INSTANCE.getCurrentContext();
+```
+
+### 30、BaseDialog
+
+```
+      //创建xml后，点击编译，填入需要绑定的视图
+      //支持ViewBinding
+      //支持LifecycleProvider
+      //支持监听Activity的声明周期
+      //click监听已做快速点击处理
+      //继承示例
+      public class TestDialog extends BaseDialog<PopTestBinding> {
+      
+            public TestDialog(@NonNull Context context) {
+                super(context);
+            }
+        
+            public TestDialog(@NonNull Context context, Lifecycle lifecycle) {
+                super(context, lifecycle);
+            }
+        
+            public v(@NonNull Context context, int themeResId) {
+                super(context, themeResId);
+            }
+        
+            public TestDialog(@NonNull Context context, int themeResId, Lifecycle lifecycle) {
+                super(context, themeResId, lifecycle);
+            }
+        
+            @NonNull
+            @Override
+            protected PopTestBinding setBindView() {
+                return PopTestBinding.inflate(getLayoutInflater());
+            }
+        
+            @Override
+            protected int[] dialogParams() {
+                //按照顺序传入指定的X/Y/宽/高数值
+                return new int[0];
+            }
+        
+            @Override
+            protected int dialogPosition() {
+                //传入Gravity的位置
+                return 0;
+            }
+        
+            @Override
+            protected boolean clearPadding() {
+                //是否清除边框
+                return false;
+            }
+        
+            @Override
+            protected boolean cancelOutside() {
+                //是否允许外部取消
+                return false;
+            }
+        
+            @Override
+            protected boolean isDrag() {
+                //是否允许拖动
+                return false;
+            }
+        
+            @Override
+            protected boolean hasShadow() {
+                //是否拥有阴影
+                return false;
+            }
+        
+            @Override
+            protected int setFlag() {
+                //设置Dialog的窗体标识
+                return 0;
+            }
+        
+            @Override
+            protected void initView() {
+               
+            }
+        
+            @Override
+            protected void initListener() {
+        
+            }
+        
+            @Override
+            protected void click(@NonNull View v) {
+        
+            }
+      }
 ```

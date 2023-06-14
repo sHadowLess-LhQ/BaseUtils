@@ -493,18 +493,14 @@ c、混淆规则
     
      //绑定生命周期订阅
      RxUtils.bindLifecycle(@NonNull Observable<Lifecycle.Event> lifecycle)
-     //绑定View的生命周期
-     RxUtils.bindViewTransformer(View view)
-     //绑定View指定的生命周期
-     RxUtils.bindViewTransformer(View view, Lifecycle.Event event)
-     //绑定Activity的生命周期
-     RxUtils.bindActivityTransformer(Activity activity)
+     //绑定的生命周期
+     RxUtils.bindTransformer(Object obj)
+     //绑定指定的生命周期
+     RxUtils.bindTransformer(Object obj, Lifecycle.Event event)
      //绑定Activity指定的生命周期
-     RxUtils.bindActivityTransformer(Activity activity, ActivityEvent event)
-     //绑定Fragment的生命周期
-     RxUtils.bindFragmentTransformer(Fragment fragment)
+     RxUtils.bindActivityTransformer(Object obj, ActivityEvent event)
      //绑定Fragment指定的生命周期
-     RxUtils.bindFragmentTransformer(Fragment fragment, FragmentEvent event)
+     RxUtils.bindFragmentTransformer(Object obj, FragmentEvent event)
      //返回ObservableTransformer流对象
      RxUtils.dealObservableThread(int threadSign)
      //返回dealCompletableThread流对象

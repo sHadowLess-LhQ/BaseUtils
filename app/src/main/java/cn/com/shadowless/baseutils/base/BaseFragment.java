@@ -43,17 +43,15 @@ import io.reactivex.subjects.BehaviorSubject;
 public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment implements LifecycleProvider<FragmentEvent>, ObservableOnSubscribe<T>, Observer<T>, View.OnClickListener {
 
     /**
-     * The Tag.
-     */
-    private final String TAG = BaseFragment.class.getSimpleName();
-    /**
      * 视图绑定
      */
     private VB bind = null;
+
     /**
      * 依附的activity
      */
     private Activity mActivity = null;
+
     /**
      * 行为订阅
      */
@@ -202,13 +200,11 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     @Override
     public void onError(@NonNull Throwable e) {
         initView(null);
-        Log.e(TAG, "onError: ", e);
     }
 
     @Override
     public void onComplete() {
         initView(null);
-        Log.e(TAG, "onComplete: " + "Activity加载完成");
     }
 
     @Override
@@ -270,10 +266,10 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
         if (null != permissions && permissions.length != 0) {
             new RxPermissions(this)
                     .requestEachCombined(permissions)
-                    .compose(RxUtils.bindFragmentTransformer(this))
+                    .compose(RxUtils.bindTransformer(this))
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    Observable.create(this).compose(RxUtils.bindFragmentTransformer(this)).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
+                                    Observable.create(this).compose(RxUtils.bindTransformer(this)).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {
@@ -282,7 +278,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
                             }
                     );
         } else {
-            Observable.create(this).compose(RxUtils.bindFragmentTransformer(this)).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
+            Observable.create(this).compose(RxUtils.bindTransformer(this)).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
         }
     }
 
@@ -310,7 +306,7 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
      *
      * @return the bind activity
      */
-    protected Activity getBindActivity() {
+    protected Activity getAttachActivity() {
         return mActivity;
     }
 
@@ -322,6 +318,6 @@ public abstract class BaseFragment<VB extends ViewBinding, T> extends Fragment i
     private void showToast(String name) {
         String tip = "应用无法使用，请开启%s权限";
         Toast.makeText(mActivity, String.format(tip, name), Toast.LENGTH_LONG).show();
-        ApplicationUtils.startApplicationInfo(getBindActivity());
+        ApplicationUtils.startApplicationInfo(getAttachActivity());
     }
 }

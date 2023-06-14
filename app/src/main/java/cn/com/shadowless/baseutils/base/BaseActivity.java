@@ -39,11 +39,6 @@ import io.reactivex.subjects.BehaviorSubject;
 public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatActivity implements LifecycleProvider<ActivityEvent>, ObservableOnSubscribe<T>, Observer<T>, View.OnClickListener {
 
     /**
-     * The Tag.
-     */
-    private final String TAG = BaseActivity.class.getSimpleName();
-
-    /**
      * 视图绑定
      */
     private VB bind = null;
@@ -100,6 +95,16 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setTheme(initTheme());
+        super.onCreate(savedInstanceState);
+        this.lifecycleSubject.onNext(ActivityEvent.CREATE);
+        initBindView();
+        initListener();
+        initPermissions(initDataThreadMod());
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         this.lifecycleSubject.onNext(ActivityEvent.RESUME);
@@ -115,16 +120,6 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     protected void onStop() {
         this.lifecycleSubject.onNext(ActivityEvent.STOP);
         super.onStop();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setTheme(initTheme());
-        super.onCreate(savedInstanceState);
-        this.lifecycleSubject.onNext(ActivityEvent.CREATE);
-        initBindView();
-        initListener();
-        initPermissions(initDataThreadMod());
     }
 
     @Override
@@ -164,13 +159,11 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
     @Override
     public void onError(@NonNull Throwable e) {
         initView(null);
-        Log.e(TAG, "onError: ", e);
     }
 
     @Override
     public void onComplete() {
         initView(null);
-        Log.e(TAG, "onComplete: " + "Activity加载完成");
     }
 
     @Override
@@ -260,10 +253,10 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
         if (null != permissions && permissions.length != 0) {
             new RxPermissions(this)
                     .requestEachCombined(permissions)
-                    .compose(RxUtils.bindActivityTransformer(this))
+                    .compose(RxUtils.bindTransformer(this))
                     .subscribe(permission -> {
                                 if (permission.granted) {
-                                    Observable.create(this).compose(RxUtils.bindActivityTransformer(this)).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
+                                    Observable.create(this).compose(RxUtils.bindTransformer(this)).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     showToast(permission.name);
                                 } else {
@@ -272,7 +265,7 @@ public abstract class BaseActivity<VB extends ViewBinding, T> extends AppCompatA
                             }
                     );
         } else {
-            Observable.create(this).compose(RxUtils.bindActivityTransformer(this)).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
+            Observable.create(this).compose(RxUtils.bindTransformer(this)).compose(RxUtils.dealObservableThread(threadMod)).subscribe(this);
         }
     }
 

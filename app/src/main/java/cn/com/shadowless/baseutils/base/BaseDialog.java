@@ -51,12 +51,17 @@ public abstract class BaseDialog<VB extends ViewBinding> extends Dialog implemen
     /**
      * 绑定视图
      */
-    private VB bind = null;
+    private VB bind;
 
     /**
      * 订阅行为
      */
     private final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
+
+    /**
+     * 被契约者生命周期
+     */
+    private Lifecycle attacheLifecycle;
 
     /**
      * 普通dialog构造
@@ -71,11 +76,13 @@ public abstract class BaseDialog<VB extends ViewBinding> extends Dialog implemen
     /**
      * 普通dialog构造
      *
-     * @param context the context
+     * @param context   the context
+     * @param lifecycle the lifecycle
      */
     public BaseDialog(@NonNull Context context, Lifecycle lifecycle) {
         super(context);
         this.context = context;
+        this.attacheLifecycle = lifecycle;
         lifecycle.addObserver(this);
     }
 
@@ -95,10 +102,12 @@ public abstract class BaseDialog<VB extends ViewBinding> extends Dialog implemen
      *
      * @param context    the context
      * @param themeResId the theme res id
+     * @param lifecycle  the lifecycle
      */
     public BaseDialog(@NonNull Context context, int themeResId, Lifecycle lifecycle) {
         super(context, themeResId);
         this.context = context;
+        this.attacheLifecycle = lifecycle;
         lifecycle.addObserver(this);
     }
 
@@ -156,6 +165,7 @@ public abstract class BaseDialog<VB extends ViewBinding> extends Dialog implemen
 
     @Override
     public void dismiss() {
+        this.attacheLifecycle.removeObserver(this);
         this.lifecycleSubject.onNext(Lifecycle.Event.ON_DESTROY);
         super.dismiss();
     }

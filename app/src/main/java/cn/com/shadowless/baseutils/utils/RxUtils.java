@@ -517,43 +517,13 @@ public class RxUtils {
     }
 
     /**
-     * 获取Activity的生命周期提供者
-     *
-     * @param <T>      the type parameter
-     * @param activity the activity
-     * @return the activity provider
-     */
-    private static <T> LifecycleProvider<T> getActivityProvider(Activity activity) {
-        LifecycleProvider<T> provider = null;
-        if (activity instanceof LifecycleProvider) {
-            provider = (LifecycleProvider<T>) activity;
-        }
-        return provider;
-    }
-
-    /**
-     * 获取Fragment的生命周期提供者
-     *
-     * @param <T>      the type parameter
-     * @param fragment the fragment
-     * @return the fragment provider
-     */
-    private static <T> LifecycleProvider<T> getFragmentProvider(Fragment fragment) {
-        LifecycleProvider<T> provider = null;
-        if (fragment instanceof LifecycleProvider) {
-            provider = (LifecycleProvider<T>) fragment;
-        }
-        return provider;
-    }
-
-    /**
      * 绑定View的生命周期
      *
      * @param <T> the type parameter
      * @param obj the obj
      * @return the lifecycle transformer
      */
-    public static <T> LifecycleTransformer<T> bindViewTransformer(Object obj) {
+    public static <T> LifecycleTransformer<T> bindTransformer(Object obj) {
         return getProvider(obj).bindToLifecycle();
     }
 
@@ -565,54 +535,32 @@ public class RxUtils {
      * @param event the event
      * @return the lifecycle transformer
      */
-    public static <T> LifecycleTransformer<T> bindViewTransformer(Object obj, Lifecycle.Event event) {
+    public static <T> LifecycleTransformer<T> bindTransformer(Object obj, Lifecycle.Event event) {
         return getProvider(obj).bindUntilEvent(event);
     }
 
     /**
      * 绑定Activity的生命周期
      *
-     * @param <T>      the type parameter
-     * @param activity the activity
+     * @param <T>   the type parameter
+     * @param obj   the obj
+     * @param event the event
      * @return the lifecycle transformer
      */
-    public static <T> LifecycleTransformer<T> bindActivityTransformer(Activity activity) {
-        return getActivityProvider(activity).bindToLifecycle();
-    }
-
-    /**
-     * 绑定Activity的生命周期
-     *
-     * @param <T>      the type parameter
-     * @param activity the activity
-     * @param event    the event
-     * @return the lifecycle transformer
-     */
-    public static <T> LifecycleTransformer<T> bindActivityTransformer(Activity activity, ActivityEvent event) {
-        return getActivityProvider(activity).bindUntilEvent(event);
+    public static <T> LifecycleTransformer<T> bindActivityTransformer(Object obj, ActivityEvent event) {
+        return getProvider(obj).bindUntilEvent(event);
     }
 
     /**
      * 绑定Fragment的生命周期
      *
-     * @param <T>      the type parameter
-     * @param fragment the fragment
+     * @param <T>   the type parameter
+     * @param obj   the obj
+     * @param event the event
      * @return the lifecycle transformer
      */
-    public static <T> LifecycleTransformer<T> bindFragmentTransformer(Fragment fragment) {
-        return getFragmentProvider(fragment).bindToLifecycle();
-    }
-
-    /**
-     * 绑定Fragment的生命周期
-     *
-     * @param <T>      the type parameter
-     * @param fragment the fragment
-     * @param event    the event
-     * @return the lifecycle transformer
-     */
-    public static <T> LifecycleTransformer<T> bindFragmentTransformer(Fragment fragment, FragmentEvent event) {
-        return getFragmentProvider(fragment).bindUntilEvent(event);
+    public static <T> LifecycleTransformer<T> bindFragmentTransformer(Object obj, FragmentEvent event) {
+        return getProvider(obj).bindUntilEvent(event);
     }
 
     /**

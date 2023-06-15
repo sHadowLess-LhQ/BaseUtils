@@ -122,7 +122,7 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
         bind = setBindView(getPopupImplView());
         initView();
         if (isDefaultBackground()) {
-            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_bottom_shape));
+            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_radius_shape));
         }
     }
 

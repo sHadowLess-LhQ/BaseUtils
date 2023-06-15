@@ -122,7 +122,7 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
         bind = setBindView(getPopupImplView());
         initView();
         if (isDefaultBackground()) {
-            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_bottom_shape));
+            getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_full_shape));
         }
     }
 

@@ -540,33 +540,59 @@ c、混淆规则
 ### 6、LocationUtils
 
 ```
-     LocationUtils.builder()
-                .mContext(context)  //设置上下文
-                .minTime(30000)     //设置最短更新时间（单位毫秒），不设置默认30000
-                .minDistance(10)    //设置最短更新距离，不设置默认10
+      LocationUtils locationUtils = LocationUtils.builder()
+                .context(Context context)     //设置上下文
+                .minTime(int time)            //设置最短更新时间（单位秒），默认3秒
+                .minDistance(int distance)    //设置最短更新距离，默认10
+                .retryCount(int retryCount)   //设置立即获取位置信息重试次数，默认5次
                 .locationListener(new LocationListener() {
                     @Override
                     public void onLocationChanged(@NonNull Location location) {
-                        //位置回调，不设置有默认
+                           //自定义位置监听，不设置有默认监听
                     }
                 })
-                .build()
-                .getLocation(new LocationUtils.AddressCallback() {
+                .addressCallback(new LocationUtils.AddressCallback() {
                     @Override
                     public void onGetAddress(Address address) {
-                      String countryName = address.getCountryName();//国家
-                      String adminArea = address.getAdminArea();    //省
-                      String locality = address.getLocality();      //市
-                      String subLocality = address.getSubLocality();//区
-                      String featureName = address.getFeatureName();//街道
+                        String countryName = address.getCountryName();//国家
+                        String adminArea = address.getAdminArea();    //省
+                        String locality = address.getLocality();      //市
+                        String subLocality = address.getSubLocality();//区
+                        String featureName = address.getFeatureName();//街道
+                            ...
                     }
 
                     @Override
                     public void onGetLocation(double lat, double lng) {
-                      double mLng = lng;//经度
-                      double mLat = lat;//纬度
+                        double mLng = lng;//经度
+                        double mLat = lat;//纬度
                     }
-                });
+
+                    @Override
+                    public void statue(String provider, boolean isEnable) {
+                        //位置监听器回调
+                        //回调位置提供器的状态
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        //错误信息回调
+                        //无权限
+                        //重试失败
+                        //获取详细地址信息错误
+                    }
+                })
+                .build();
+        //立即获取位置信息
+        locationUtils.getLocationNow();
+        //立即获取位置信息且设置位置变化监听
+        locationUtils.getLocation();
+        //获取地址
+        locationUtils.getAddress(Location location);
+        //根据经纬度获取地址
+        locationUtils.getAddressFromLatitudeAndLongitude(double latitude, double longitude);
+        //移除位置信息监听器
+        locationUtils.clearLocationCallback();
 ```
 
 ### 7、ApplicationUtils
@@ -726,16 +752,46 @@ c、混淆规则
 ### 10、WindowUtils
 
 ```
-     //隐藏状态栏
+     //设置状态栏隐藏风格
+     WindowUtils.setStatueBarHideStyle(Activity activity)
+     //设置隐藏状态栏
      WindowUtils.hideStatusBar(Activity activity)
-     //设置状态栏透明
-     WindowUtils.setHalfTransparent(Activity activity)
-     //获取屏幕宽
-     WindowUtils.getWidth(Activity context)
-     //获取屏幕高
-     WindowUtils.getHeight(Activity context)
-     //隐藏软键盘
-     WindowUtils.hideSoftInput(Context context, View view)
+     //设置显示状态栏
+     WindowUtils.showStatusBar(Activity activity)
+     //设置隐藏虚拟键盘
+     WindowUtils.hideSoftInput(Activity activity)
+     //设置显示虚拟键盘
+     WindowUtils.showSoftInput(Activity activity)
+     //设置隐藏导航栏
+     WindowUtils.hideNavigationBar(Activity activity)
+     //设置显示导航栏
+     WindowUtils.showNavigationBar(Activity activity)
+     //设置隐藏全屏
+     WindowUtils.hideSystemBar(Activity activity)
+     //设置显示全屏
+     WindowUtils.showSystemBar(Activity activity)
+     //设置隐藏标题栏
+     WindowUtils.hideCaptionBar(Activity activity)
+     //设置显示标题栏
+     WindowUtils.showCaptionBar(Activity activity)
+     //设置状态栏颜色
+     WindowUtils.setStatueBarColor(Window window, int color)
+     //设置导航栏颜色
+     WindowUtils.setNavigationBarColor(Window window, int color)
+     //设置导航栏是否有阴影
+     WindowUtils.setNavigationBarHasShadow(Window window, boolean hasShadow)
+     //设置导航栏是否为白色/黑字：黑色/白字
+     WindowUtils.setNavigationBarIsLight(Activity activity, boolean isLight)
+     //设置状态栏是否为白色/黑字：黑色/白字
+     WindowUtils.setStatueBarIsLight(Activity activity, boolean isLight)
+     //设置内容是否被导航栏和状态栏遮挡：自适应高度
+     WindowUtils.setContentFront(Window window, boolean isFront)
+     //设置内容与状态栏/导航栏高度自适应(适配刘海屏)
+     WindowUtils.setContentBelowAndTop(Activity activity, String type)
+     //获取屏幕宽度
+     WindowUtils.getWidth()
+     //获取屏幕高度
+     WindowUtils.getHeight()
 ```
 
 ### 11、BasePopView

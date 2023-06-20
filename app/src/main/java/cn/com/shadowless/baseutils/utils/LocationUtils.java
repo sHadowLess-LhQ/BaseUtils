@@ -2,18 +2,14 @@ package cn.com.shadowless.baseutils.utils;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import java.io.IOException;
@@ -30,27 +26,44 @@ public class LocationUtils {
     /**
      * 位置管理器
      */
-    private LocationManager locationManager;
+    private final LocationManager locationManager;
     /**
      * 上下文
      */
-    private Context mContext;
+    private final Context mContext;
     /**
      * 最短时间
      */
-    private int minTime;
+    private final int minTime;
     /**
      * 最短距离
      */
-    private int minDistance;
+    private final int minDistance;
+
+    /**
+     * 重试次数
+     */
+    private final int retryCount;
+
+    /**
+     * 当前次数
+     */
+    private int currentCount = -1;
+
     /**
      * 位置回调
      */
     private LocationListener locationListener;
+
     /**
      * 位置信息回调
      */
-    private AddressCallback addressCallback = null;
+    private final AddressCallback addressCallback;
+
+    /**
+     * 位置信息提供器
+     */
+    private String locationProvider = LocationManager.GPS_PROVIDER;
 
     /**
      * 构造
@@ -58,13 +71,17 @@ public class LocationUtils {
      * @param mContext         the m context
      * @param minTime          the min time
      * @param minDistance      the min distance
+     * @param retryCount       the retry count
      * @param locationListener the location listener
+     * @param addressCallback  the address callback
      */
-    public LocationUtils(Context mContext, int minTime, int minDistance, LocationListener locationListener) {
+    public LocationUtils(Context mContext, int minTime, int minDistance, int retryCount, LocationListener locationListener, AddressCallback addressCallback) {
         this.mContext = mContext;
         this.minTime = minTime;
         this.minDistance = minDistance;
+        this.retryCount = retryCount;
         this.locationListener = locationListener;
+        this.addressCallback = addressCallback;
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
     }
 
@@ -73,8 +90,8 @@ public class LocationUtils {
      *
      * @return the net utils . net utils builder
      */
-    public static LocationUtils.LocationUtilsBuilder builder() {
-        return new LocationUtils.LocationUtilsBuilder();
+    public static LocationUtilsBuilder builder() {
+        return new LocationUtilsBuilder();
     }
 
     /**
@@ -85,18 +102,31 @@ public class LocationUtils {
          * 上下文
          */
         private Context mContext;
+
+        /**
+         * 重试次数
+         */
+        private int retryCount = 5;
+
         /**
          * 最短时间
          */
-        private int minTime = 30000;
+        private int minTime = 3000;
+
         /**
          * 最短距离
          */
         private int minDistance = 10;
+
         /**
          * 位置回调
          */
         private LocationListener locationListener;
+
+        /**
+         * 结果回调
+         */
+        private AddressCallback addressCallback;
 
         /**
          * Base url net utils . net utils builder.
@@ -104,7 +134,7 @@ public class LocationUtils {
          * @param mContext the m context
          * @return the net utils . net utils builder
          */
-        public LocationUtils.LocationUtilsBuilder mContext(Context mContext) {
+        public LocationUtilsBuilder context(Context mContext) {
             this.mContext = mContext;
             return this;
         }
@@ -115,8 +145,19 @@ public class LocationUtils {
          * @param minTime the min time
          * @return the net utils . net utils builder
          */
-        public LocationUtils.LocationUtilsBuilder minTime(int minTime) {
-            this.minTime = minTime;
+        public LocationUtilsBuilder minTime(int minTime) {
+            this.minTime = minTime * 1000;
+            return this;
+        }
+
+        /**
+         * Retry count location utils builder.
+         *
+         * @param retryCount the retry count
+         * @return the location utils builder
+         */
+        public LocationUtilsBuilder retryCount(int retryCount) {
+            this.retryCount = retryCount;
             return this;
         }
 
@@ -126,7 +167,7 @@ public class LocationUtils {
          * @param minDistance the min distance
          * @return the net utils . net utils builder
          */
-        public LocationUtils.LocationUtilsBuilder minDistance(int minDistance) {
+        public LocationUtilsBuilder minDistance(int minDistance) {
             this.minDistance = minDistance;
             return this;
         }
@@ -137,8 +178,19 @@ public class LocationUtils {
          * @param locationListener the location listener
          * @return the location utils . location utils builder
          */
-        public LocationUtils.LocationUtilsBuilder locationListener(LocationListener locationListener) {
+        public LocationUtilsBuilder locationListener(LocationListener locationListener) {
             this.locationListener = locationListener;
+            return this;
+        }
+
+        /**
+         * Address callback location utils builder.
+         *
+         * @param addressCallback the address callback
+         * @return the location utils builder
+         */
+        public LocationUtilsBuilder addressCallback(AddressCallback addressCallback) {
+            this.addressCallback = addressCallback;
             return this;
         }
 
@@ -148,14 +200,14 @@ public class LocationUtils {
          * @return the net utils
          */
         public LocationUtils build() {
-            return new LocationUtils(this.mContext, this.minTime, this.minDistance, this.locationListener);
+            return new LocationUtils(this.mContext, this.minTime, this.minDistance, this.retryCount, this.locationListener, this.addressCallback);
         }
     }
 
     /**
      * 清空回调事件
      */
-    public void clearAddressCallback() {
+    public void clearLocationCallback() {
         if (locationManager != null && locationListener != null) {
             locationManager.removeUpdates(locationListener);
         }
@@ -163,52 +215,85 @@ public class LocationUtils {
 
     /**
      * 获取位置
-     *
-     * @param addressCallback the address callback
      */
-    public void getLocation(AddressCallback addressCallback) {
-        this.addressCallback = addressCallback;
+    public void getLocationNow() {
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(mContext, "请申请定位权限", Toast.LENGTH_SHORT).show();
-            ApplicationUtils.startApplicationInfo(mContext);
+            error("请申请定位权限");
             return;
         }
-        //2.获取位置提供器，GPS或是NetWork
-        // 获取所有可用的位置提供器
+        currentCount++;
+        if (currentCount == retryCount) {
+            currentCount = 0;
+            error("最大重试次数结束，获取位置信息失败");
+            return;
+        }
         List<String> providerList = locationManager.getProviders(true);
-        String locationProvider;
         if (providerList.contains(LocationManager.GPS_PROVIDER)) {
-            //GPS 定位的精准度比较高，但是非常耗电。
-            Log.e("getLocation", "=====GPS_PROVIDER=====");
             locationProvider = LocationManager.GPS_PROVIDER;
         } else if (providerList.contains(LocationManager.NETWORK_PROVIDER)) {
-            //网络定位的精准度稍差，但耗电量比较少。
-            Log.e("getLocation", "=====NETWORK_PROVIDER=====");
             locationProvider = LocationManager.NETWORK_PROVIDER;
         } else {
-            Log.e("getLocation", "=====NO_PROVIDER=====");
-            // 当没有可用的位置提供器时，弹出Toast提示用户
-            isOpen(mContext);
+            getLocationNow();
             return;
         }
-        //3.获取上次的位置，一般第一次运行，此值为null
         Location location = locationManager.getLastKnownLocation(locationProvider);
         if (location != null) {
-            // 显示当前设备的位置信息
-            Log.e("getLocation", "=====显示当前设备的位置信息=====");
             showLocation(location);
-        } else {//当GPS信号弱没获取到位置的时候可从网络获取
-            Log.e("getLocation", "=====搜索不到卫星，使用网络=====");
+        } else {
             getLngAndLatWithNetwork();
         }
-        // 监视地理位置变化，第二个和第三个参数分别为更新的最短时间minTime和最短距离minDistace
-        // LocationManager 每隔 5 秒钟会检测一下位置的变化情况，当移动距离超过 10 米的时候，
-        // 就会调用 LocationListener 的 onLocationChanged() 方法，并把新的位置信息作为参数传入。
-        if (locationListener == null) {
-            locationListener = getLocationListener();
+    }
+
+    /**
+     * Gets location.
+     */
+    public void getLocation() {
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            error("请申请定位权限");
+            return;
         }
-        locationManager.requestLocationUpdates(locationProvider, minTime, minDistance, locationListener);
+        if (locationListener == null) {
+            getLocationNow();
+            locationListener = getLocationListener();
+            locationManager.requestLocationUpdates(locationProvider, minTime, minDistance, locationListener);
+        }
+    }
+
+    /**
+     * Calculate address.
+     *
+     * @param location the location
+     */
+    public void getAddress(Location location) {
+        //纬度
+        double latitude = location.getLatitude();
+        //经度
+        double longitude = location.getLongitude();
+        location(latitude, longitude);
+        getAddressFromLatitudeAndLongitude(latitude, longitude);
+    }
+
+    /**
+     * Gets address.
+     *
+     * @param latitude  the latitude
+     * @param longitude the longitude
+     */
+    public void getAddressFromLatitudeAndLongitude(double latitude, double longitude) {
+        //Geocoder通过经纬度获取具体信息
+        Geocoder gc = new Geocoder(mContext, Locale.getDefault());
+        try {
+            List<Address> locationList = gc.getFromLocation(latitude, longitude, 1);
+            if (locationList != null) {
+                Address address = locationList.get(0);
+                address(address);
+            }
+        } catch (IOException e) {
+            error("获取详细地址详细错误");
+            e.printStackTrace();
+        }
     }
 
 
@@ -219,38 +304,10 @@ public class LocationUtils {
      */
     private void showLocation(Location location) {
         if (location == null) {
-            getLocation(addressCallback);
+            getLocationNow();
         } else {
-            //纬度
-            double latitude = location.getLatitude();
-            //经度
-            double longitude = location.getLongitude();
-            if (addressCallback != null) {
-                this.addressCallback.onGetLocation(latitude, longitude);
-            }
-            getAddress(latitude, longitude);
-        }
-    }
-
-    /**
-     * Gets address.
-     *
-     * @param latitude  the latitude
-     * @param longitude the longitude
-     */
-    private void getAddress(double latitude, double longitude) {
-        //Geocoder通过经纬度获取具体信息
-        Geocoder gc = new Geocoder(mContext, Locale.getDefault());
-        try {
-            List<Address> locationList = gc.getFromLocation(latitude, longitude, 1);
-            if (locationList != null) {
-                Address address = locationList.get(0);
-                if (addressCallback != null) {
-                    this.addressCallback.onGetAddress(address);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            currentCount = 0;
+            getAddress(location);
         }
     }
 
@@ -260,30 +317,26 @@ public class LocationUtils {
      * @return the location listener
      */
     private LocationListener getLocationListener() {
-        return new LocationListener() {
-            // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle arg2) {
-                Log.e("TAG", "onStatusChanged: " + provider + status + arg2.toString());
-            }
+        if (locationListener == null) {
+            locationListener = new LocationListener() {
 
-            // Provider被enable时触发此函数，比如GPS被打开
-            @Override
-            public void onProviderEnabled(String provider) {
-                Log.e("TAG", "onProviderEnabled: " + provider);
-            }
+                @Override
+                public void onProviderEnabled(@NonNull String provider) {
+                    statue(provider, true);
+                }
 
-            // Provider被disable时触发此函数，比如GPS被关闭
-            @Override
-            public void onProviderDisabled(String provider) {
-                Log.e("TAG", "onProviderDisabled: " + provider);
-            }
+                @Override
+                public void onProviderDisabled(@NonNull String provider) {
+                    statue(provider, false);
+                }
 
-            @Override
-            public void onLocationChanged(Location loc) {
-
-            }
-        };
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                    getAddress(location);
+                }
+            };
+        }
+        return locationListener;
     }
 
 
@@ -293,45 +346,59 @@ public class LocationUtils {
     private void getLngAndLatWithNetwork() {
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(mContext, "请申请定位权限", Toast.LENGTH_SHORT).show();
-            ApplicationUtils.startApplicationInfo(mContext);
+            error("请申请定位权限");
             return;
         }
-        if (locationListener == null) {
-            locationListener = getLocationListener();
-        }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, locationListener);
-        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        locationProvider = LocationManager.NETWORK_PROVIDER;
+        Location location = locationManager.getLastKnownLocation(locationProvider);
         showLocation(location);
     }
 
     /**
-     * 定位是否打开
+     * Error.
      *
-     * @param context the 上下文
+     * @param error the error
      */
-    private void isOpen(Context context) {
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        // 通过GPS卫星定位，定位级别可以精确到街（通过24颗卫星定位，在室外和空旷的地方定位准确、速度快）
-        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        // 通过WLAN或移动网络(3G/2G)确定的位置（也称作AGPS，辅助GPS定位。主要用于在室内或遮盖物（建筑群或茂密的深林等）密集的地方定位）
-        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        if (!gps || !network) {
-            openGps(context);
+    private void error(String error) {
+        if (addressCallback != null) {
+            addressCallback.onError(error);
         }
     }
 
     /**
-     * 跳转定位设置
+     * Address.
      *
-     * @param context the 上下文
+     * @param address the address
      */
-    private void openGps(Context context) {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+    private void address(Address address) {
+        if (addressCallback != null) {
+            addressCallback.onGetAddress(address);
+        }
     }
+
+    /**
+     * Location.
+     *
+     * @param lat the lat
+     * @param lng the lng
+     */
+    private void location(double lat, double lng) {
+        if (addressCallback != null) {
+            addressCallback.onGetLocation(lat, lng);
+        }
+    }
+
+    /**
+     * Statue.
+     *
+     * @param msg the msg
+     */
+    private void statue(String msg, boolean isEnable) {
+        if (addressCallback != null) {
+            addressCallback.statue(msg, isEnable);
+        }
+    }
+
 
     /**
      * 位置回调
@@ -351,6 +418,21 @@ public class LocationUtils {
          * @param lng the 纬度
          */
         void onGetLocation(double lat, double lng);
+
+        /**
+         * Statue.
+         *
+         * @param provider the provider
+         * @param isEnable the is enable
+         */
+        void statue(String provider, boolean isEnable);
+
+        /**
+         * On error.
+         *
+         * @param error the error
+         */
+        void onError(String error);
     }
 
 }

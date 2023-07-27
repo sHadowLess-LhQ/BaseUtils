@@ -2,11 +2,11 @@
 
 #### 软件架构
 
-个人自用项目快速搭建框架
+个人自用工具类
 
 #### 安装教程
 
-Step 1. 添加maven仓库地址和配置
+Step 1. 添加仓库地址和配置
 
 ```
      //旧AndroidStudio版本
@@ -81,12 +81,7 @@ Step 2. 添加依赖
 
 a、克隆引入
 
-```
-     //引入app模块
-     //删除model中build.gradle的
-     apply plugin: 'com.github.dcendents.android-maven'
-     group = 'com.gitee.shadowless_lhq'
-```
+直接下载源码引入model
 
 b、远程仓库引入
 
@@ -94,15 +89,11 @@ b、远程仓库引入
 
 ```
      dependencies {
-            //主模块
             implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
+            
+            //使用RxUtils
             implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
             implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-            implementation 'com.trello.rxlifecycle3:rxlifecycle-android:3.1.0'
-            
-            //BasePopView
-            //【注】：使用BaseXPop，请引入以下依赖
-            implementation 'com.github.li-xiaojun:XPopup:2.9.4'
           
             //使用RetrofitUtils
             //【注】：使用RetrofitUtils，请引入以下依赖
@@ -121,13 +112,20 @@ b、远程仓库引入
             //【注】：使用RouterUtils进行携参跳转，请声明以下注解处理器
             implementation "cn.therouter:router:1.1.1"
             annotationProcessor "cn.therouter:apt:1.1.1"
+            
+            //WeChatUtils
+            //【注】：使用WeChatUtils，请引入以下依赖
+            implementation 'com.tencent.mm.opensdk:wechat-sdk-android:+'
+            
+            //TencentUtils
+            //【注】：使用TencentUtils，请引入以下依赖
+            implementation 'com.tencent.tauth:qqopensdk:3.52.0'
     }
 ```
 
 c、混淆规则
 
 ```
-//主模块混淆
 -keepattributes Signature
 -keep class cn.com.shadowless.baseutils.log.**{*;}
 -dontwarn sun.misc.**
@@ -142,8 +140,6 @@ c、混淆规则
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
 -keepclassmembers class rx.android.**{*;}
-
-//RetrofitUtils混淆
 -keep class okhttp3.** { *; }
 -keep interface okhttp3.** { *; }
 -dontwarn okhttp3.**
@@ -162,15 +158,6 @@ c、混淆规则
 }
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 -keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
-
-//BaseXPop混淆
--dontwarn com.lxj.xpopup.widget.**
--keep class com.lxj.xpopup.widget.**{*;}
--dontwarn com.tencent.bugly.**
--keep public class com.tencent.bugly.**{*;}
--keep class android.support.**{*;}
-
-//TheRouter混淆
 -keep class androidx.annotation.Keep
 -keep @androidx.annotation.Keep class * {*;}
 -keepclassmembers class * {
@@ -192,156 +179,7 @@ c、混淆规则
 
 #### 使用说明
 
-### 1、BaseActivity
-
-```
-      //创建xml后，点击编译，填入需要绑定的视图和传递数据类型
-      //click监听已做快速点击处理
-      //填入传递数据类型
-      //更换ARouter为TheRouter
-      //设置Activity主题，请重写initTheme()方法
-      //设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
-      //更多用法请参考TheRouter
-      @Router(path = "xxx")
-      public class MainActivity extends BaseActivity<ActivityMainBinding,String> {
-      
-          //ARouter跳转参数获取，一定要public，name最好声明，不声明默认使用变量名为key
-          //用法请参考TheRouter的使用
-          @Autowired(name = "key1")
-          public String s;
-      
-          @Nullable
-          @Override
-          protected String[] permissionName() {
-             //设置需要获取的权限，无需申请可传null或空数组
-             return null;
-          }
-      
-          @NonNull
-          @Override
-          protected ActivityMainBinding setBindView() {
-             //回传ViewBinding绑定的视图
-             return ActivityMainBinding.inflate(getLayoutInflater());
-          }
-      
-          @Override
-          protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
-             //携参路由，需要页面参数注入
-             TheRouter.inject(this);
-             //默认在IO线程，需要更改，请重写initDataThreadMod()方法，传递新的RxUtils线程值
-             //初始化数据
-             【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
-             //若有数据给视图绑定，使用initViewWithData
-             //若无数据给视图绑定，使用initViewWithOutData
-             initDataCallBack.initViewWithData("1");
-             initDataCallBack.initViewWithOutData();
-          }
-          
-          @Override
-          protected void initListener() {
-             //初始化监听
-             getBindView().test.setOnClickListener(this);
-          }
-      
-          @Override
-          protected void initView(@Nullable String data) {
-             //默认在主线程
-             //初始化界面控件
-             getBindView().test.setText(data);
-             //正常路由
-             RouterUtils.jump("xxx").navigation();
-          }
-          
-          @Override
-          protected void click(View v) {
-              
-          }
-      }
-```
-
-可根据实际使用二次封装
-
-```
-      public abstract class PrinterBaseActivity<VB extends ViewBinding, T> extends BaseActivity<VB, T> {
-          ...
-      }
-```
-
-### 2、BaseFragment
-
-```
-      //创建xml后，点击编译，填入需要绑定的视图
-      //click监听已做快速点击处理
-      //填入传递数据类型Pop
-      //设置initData()方法所在线程，请重写initDataThreadMod()，回传RxUtils的其他线程模式
-      //更换ARouter为TheRouter
-      //更多用法请参考TheRouter
-      @Router(path = "xxx")
-      public class MainFragment extends BaseFragment<FragmentMainBinding,String> {
-          
-          //ARouter跳转参数获取，一定要public，name最好声明，不声明默认使用变量名为key
-          //用法请参考TheRouter的使用
-          @Autowired(name = "key1")
-          public String s;
-          
-          @Nullable
-          @Override
-          protected String[] permissionName() {
-             //设置需要获取的权限，无需申请可传null或空数组
-             return null;
-          }
-      
-          @NonNull
-          @Override
-          protected FragmentMainBinding setBindView() {
-              //回传ViewBinding绑定的视图
-              return FragmentMainBinding.inflate(getLayoutInflater());
-          }
-      
-          @Override
-          protected void initData(@NonNull InitDataCallBack<String> initDataCallBack) {
-             //携参路由，需要页面参数注入
-             TheRouter.inject(this);
-             //默认在IO线程，需要更改，请重写initPermissions()方法，向父类super传递新的RxUtils线程值
-             //初始化数据
-             【注】：若在initData()中需要同时从多个接口获取数据，可以使用RxJava的zip操作符，将数据进行集中处理后，再通过InitDataCallBack回调自己的装箱数据
-             Toast.makeText(getBindActivity(), "可用Activity对象", Toast.LENGTH_SHORT).show();
-             //若有数据给视图绑定，使用initViewWithData
-             //若无数据给视图绑定，使用initViewWithOutData
-             initDataCallBack.initViewWithData("1");
-             initDataCallBack.initViewWithOutData();
-          }
-          
-          @Override
-          protected void initListener() {
-             //初始化监听
-             getBindView().test.setOnClickListener(this);
-          }
-      
-          @Override
-          protected void initView(@Nullable String map) {
-             //默认在主线程
-             //初始化界面控件
-             getBindView().test.setText(map);
-             RouterUtils.jump("xxx").navigation();
-          }
-          
-          @Override
-          protected void click(View v) {
-              
-          }
-      }
-```
-
-可根据实际使用二次封装
-
-```
-      public abstract class PrinterBaseFragment<VB extends ViewBinding,K,V> extends BaseFragment<VB,K,V> {
-           ...
-      }
-```
-
-### 3、PreferencesUtils
+### PreferencesUtils
 
 ```
      //初始化
@@ -402,7 +240,7 @@ c、混淆规则
      PreferencesUtils.remove(String key)
 ```
 
-### 4、RxUtils
+### RxUtils
 
 ```
      //具体参数
@@ -491,16 +329,6 @@ c、混淆规则
          */
         SINGLE_TO_SINGLE
     
-     //绑定生命周期订阅
-     RxUtils.bindLifecycle(@NonNull Observable<Lifecycle.Event> lifecycle)
-     //绑定的生命周期
-     RxUtils.bindTransformer(Object obj)
-     //绑定指定的生命周期
-     RxUtils.bindTransformer(Object obj, Lifecycle.Event event)
-     //绑定Activity指定的生命周期
-     RxUtils.bindActivityTransformer(Object obj, ActivityEvent event)
-     //绑定Fragment指定的生命周期
-     RxUtils.bindFragmentTransformer(Object obj, FragmentEvent event)
      //返回ObservableTransformer流对象
      RxUtils.dealObservableThread(int threadSign)
      //返回dealCompletableThread流对象
@@ -513,7 +341,7 @@ c、混淆规则
      RxUtils.dealFlowableThread(int threadSign)
 ```
 
-### 5、RetrofitUtils
+### RetrofitUtils
 
 ```
       RetrofitUtils
@@ -537,7 +365,7 @@ c、混淆规则
                    ...
 ```
 
-### 6、LocationUtils
+### LocationUtils
 
 ```
       LocationUtils locationUtils = LocationUtils.builder()
@@ -545,6 +373,7 @@ c、混淆规则
                 .minTime(int time)            //设置最短更新时间（单位秒），默认3秒
                 .minDistance(int distance)    //设置最短更新距离，默认10
                 .retryCount(int retryCount)   //设置立即获取位置信息重试次数，默认5次
+                .delayTime(int delayTime)     //设置延迟获取时间（单位秒）
                 .locationListener(new LocationListener() {
                     @Override
                     public void onLocationChanged(@NonNull Location location) {
@@ -583,19 +412,22 @@ c、混淆规则
                     }
                 })
                 .build();
+        //以下方法均需要设置回调后才能正常回调数据
         //立即获取位置信息
         locationUtils.getLocationNow();
         //立即获取位置信息且设置位置变化监听
         locationUtils.getLocation();
-        //获取地址
-        locationUtils.getAddress(Location location);
-        //根据经纬度获取地址
+        //获取经纬度
+        locationUtils.getLatitudeAndLongitude(Location location);
+        //根据经纬度获取详细地址
         locationUtils.getAddressFromLatitudeAndLongitude(double latitude, double longitude);
+        //获取经纬度和详细地址
+        locationUtils.getLatitudeAndLongitudeAndAddress(Location location);
         //移除位置信息监听器
         locationUtils.clearLocationCallback();
 ```
 
-### 7、ApplicationUtils
+### ApplicationUtils
 
 ```
      //通过包名打开应用
@@ -624,7 +456,7 @@ c、混淆规则
      ApplicationUtils.isInstall(Context context, String packageName)
 ```
 
-### 8、DeviceUtils
+### DeviceUtils
 
 【注】：使用前，请在MF清单文件中，给BasicDeviceAdminReceiver注册广播，并在res/xml资源中新建声明文件，也可以使用库中默认的配置文件，如下示例
 
@@ -690,7 +522,7 @@ c、混淆规则
      DeviceUtils.lockScreen(Context context, int flag) //仅API 26以上有效
 ```
 
-### 9、FileUtils
+### FileUtils
 
 ```
      //获取内部存储data文件夹
@@ -749,7 +581,7 @@ c、混淆规则
      FileUtils.writeFileToSdCard(String dirPath, String fileName, byte[] data, int len, boolean isContinue)
 ```
 
-### 10、WindowUtils
+### WindowUtils
 
 ```
      //设置状态栏隐藏风格
@@ -794,78 +626,14 @@ c、混淆规则
      WindowUtils.getHeight()
 ```
 
-### 11、BasePopView
-
-```
-     //创建xml后，点击编译，填入需要绑定的视图
-     //支持ViewBinding
-     //支持LifecycleProvider
-     //支持监听Activity的声明周期
-     //click监听已做快速点击处理
-     //共有9种基类封装弹窗
-     //BaseBottomPopView - 底部弹出弹窗
-     //BaseBubbleHorizontalAttachPopupView - 水平弹出可依附气泡弹窗
-     //BaseCenterPopView - 居中弹窗
-     //BaseDrawerPopupView - 实现Drawer的弹窗
-     //BaseFullScreenPopupView - 全屏弹窗
-     //BaseHorizontalAttachPopView - 水平弹出可依附视图弹窗
-     //BasePositionPopupView - 自定义方向弹窗
-     //BaseVerticalAttachPopView - 垂直弹出可依附视图弹窗
-     //BaseVerticalBubbleAttachPopupView - 垂直弹出可依附气泡弹窗
-     //【注】：内部使用Fragment，需要设置isViewMode为true
-     //继承示例
-     public class TestPopView extends BaseCenterPopView<PopAddCardViewBinding>{
-
-         public TestPopView(@NonNull Context context) {
-            super(context);
-         }
-         
-      
-         public TestPopView(@NonNull Context context, Lifecycle lifecycle) {
-              super(context, lifecycle);
-         }
-         
-         @NonNull
-         @Override
-         protected PopAddCardViewBinding setBindView(View v) {
-            return PopAddCardViewBinding.bind(v);
-         }
-         
-         @Override
-         protected void setLayoutId() {
-             return R.layout.pop_addCard_view;
-         }
-         
-         @Override
-         protected boolean isDefaultBackground() {
-            return false;
-         }
-        
-         @Override
-         protected void initView() {
-       
-         }
-
-         @Override
-         protected void initListener() {
-       
-         }
-         
-         @Override
-         protected void click(View v) {
-              
-         }
-      }
-```
-
-### 12、WordUtils
+### WordUtils
 
 ```
      //比较字符串
      WordUtils.contain(String input, String regex)
 ```
 
-### 13、BaseAccessibilityService
+### BaseAccessibilityService
 
 ```
 public class MyService extends BaseAccessibilityService {
@@ -1291,7 +1059,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      HelpService.isAccessibilitySettingsOn(Context mContext, Class<?> cls)
 ```
 
-### 14、ToastUtils
+### ToastUtils
 
 ```
      //在Application中初始化土司
@@ -1348,7 +1116,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      ToastUtils.INSTANCE.onInfoShowToast(int messageID, int iconID);
 ```
 
-### 15、LogUtils
+### LogUtils
 
 ```
      //配置日志库
@@ -1410,101 +1178,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       LogUtils.wtf("12345");
 ```
 
-### 16、BaseObserver/BaseLifeObserver
-
-【注】：BaseLifeObserver请配合lifecycle使用
-
-```
-     //无加载框
-     new BaseObserver()
-     //自定义LoadingPopView/是否智能关闭
-     new BaseObserver(LoadingPopupView loadingPopupView, boolean isSmartDismiss)
-     //配置LoadingPopView
-     new BaseObserver(Activity activity, LoadingConfig config)
-```
-
-### 17、BaseCompletableObserver/BaseLifeCompletableObserver
-
-【注】：BaseCompletableObserver请配合lifecycle使用
-
-```
-     //无加载框
-     new BaseCompletableObserver()
-     //自定义LoadingPopView/是否智能关闭
-     new BaseCompletableObserver(LoadingPopupView loadingPopupView, boolean isSmartDismiss)
-     //配置LoadingPopView
-     new BaseCompletableObserver(Activity activity, LoadingConfig config)
-```
-
-### 18、BaseMaybeObserver/BaseLifeMaybeObserver
-
-【注】：BaseLifeMaybeObserve请配合lifecycle使用
-
-```
-     //无加载框
-     new BaseMaybeObserver()
-     //自定义LoadingPopView/是否智能关闭
-     new BaseMaybeObserver(LoadingPopupView loadingPopupView, boolean isSmartDismiss)
-     //配置LoadingPopView
-     new BaseMaybeObserver(Activity activity, LoadingConfig config)
-```
-
-### 19、BaseSingleObserver/BaseLifeSingleObserver
-
-【注】：BaseLifeSingleObserver请配合lifecycle使用
-
-```
-     //无加载框
-     new BaseSingleObserver()
-     //自定义LoadingPopView/是否智能关闭
-     new BaseSingleObserver(LoadingPopupView loadingPopupView, boolean isSmartDismiss)
-     //配置LoadingPopView
-     new BaseSingleObserver(Activity activity, LoadingConfig config)
-```
-
-### 20、BaseSubscriber/BaseLifeSubscriber
-
-【注】：BaseLifeSubscriber请配合lifecycle使用
-
-```
-     //无加载框
-     new BaseSubscriber()
-     //自定义LoadingPopView/是否智能关闭
-     new BaseSubscriber(LoadingPopupView loadingPopupView, boolean isSmartDismiss)
-     //配置LoadingPopView
-     new BaseSubscriber(Activity activity, LoadingConfig config)
-```
-
-### 21、CrashConfig
-
-```
-      CrashConfig.Builder
-                .create()
-                //当应用程序处于后台时崩溃，也会启动错误页面
-                .backgroundMode(CrashConfig.BACKGROUND_MODE_SHOW_CUSTOM)
-                //当应用程序处于后台崩溃时显示默认系统错误
-                .backgroundMode(CrashConfig.BACKGROUND_MODE_CRASH)
-                //当应用程序处于后台时崩溃，默默地关闭程序
-                .backgroundMode(CrashConfig.BACKGROUND_MODE_SILENT)
-                //false表示对崩溃的拦截阻止。用它来禁用customactivityoncrash
-                .enabled(true)
-                //这将隐藏错误活动中的“错误详细信息”按钮，从而隐藏堆栈跟踪,针对框架自带程序崩溃后显示的页面有用
-                .showErrorDetails(true)
-                //是否可以重启页面,针对框架自带程序崩溃后显示的页面有用
-                .showRestartButton(true)
-                //崩溃页面显示的图标
-                .errorDrawable(R.mipmap.ic_launcher)
-                .logErrorOnRestart(true)
-                //错误页面中显示错误详细信息
-                .trackActivities(true)
-                //定义应用程序崩溃之间的最短时间，以确定我们不在崩溃循环中
-                .minTimeBetweenCrashesMs(2000)
-                //重新启动后的页面
-                .restartActivity(LoginActivity.class)
-                .apply();
-```
-
-### 22、MmKvUtils
+### MmKvUtils
 
 ```
       //初始化MMKV
@@ -1577,7 +1251,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
       MmKvUtils.removeValues(String[] key)
 ```
 
-### 23、RouterUtils
+### RouterUtils
 
 ```
      //获取指定路由的Navigator
@@ -1616,7 +1290,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 
 ***
 
-### 24、FragmentUtils
+### FragmentUtils
 
 ```
      //碎片工具类，可配合ARouter使用
@@ -1630,7 +1304,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      FragmentUtils.replaceFragment(FragmentManager manager, Fragment fragment, int layout, int... animation)
 ```
 
-### 25、ViewAnimatorUtils
+### ViewAnimatorUtils
 
 ```
      ViewAnimatorUtils
@@ -1755,7 +1429,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
         .start();
 ```
 
-### 26、ScreenRecordUtils
+### ScreenRecordUtils
 
 ```
      RecordConfig recordConfig = RecordConfig
@@ -1822,139 +1496,60 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      screenRecordUtils.onActivityResult(int requestCode, int resultCode, @NotNull Intent data);
 ```
 
-### 27、BaseApplication
+### AssetUtils
 
 ```
-      //支持应用前后台判断
-      //已接入MyActivityManager，可直接使用
-      //已接入MyApplicationManager，可直接使用
-      public class MyApplication extends BaseApplication {
-      
-          @Override
-          protected void init() {
-             //初始化
-          }
-          
-      }
-      
-      //判断应用在前/后台
-      //true为前台
-      //false为后台
-      MyApplication.isAppForeground()
+     //初始化
+     AssetUtils.INSTANCE.getInstance(Context context);
+     //复制asset文件夹内所有文件到指定目录
+     AssetUtils.INSTANCE.copyAssetsToSd(String srcPath, String sdPath, FileOperateCallback callback);
 ```
 
-### 28、ActivityManager
+### IpUtils
 
 ```
-      //使用BaseApplicatio可直接使用
-      //单独使用，需要在ActivityLifecycleCallbacks回调中的onActivityResumed设置
-      //支持弱引用，获取到的Activity已做弱引用处理
-      //设置当前正在显示的Activity
-      MyActivityManager.INSTANCE.setCurrentActivity(Activity activity);
-      //获取当前正在显示的Activity
-      MyActivityManager.INSTANCE.getCurrentActivity();
+     //获取mac地址
+     IpUtils.getMacAddress();
+     //获取ip地址
+     IpUtils.getIpAddress(Context context);
 ```
 
-### 29、ContextManager
+### WeChatUtils
 
 ```
-      //使用BaseApplicatio可直接使用
-      //单独使用，需要在Application的onCreate设置
-      //支持弱引用，获取到的Context已做弱引用处理
-      //设置当前Context
-      MyApplicationManager.INSTANCE.setCurrentContext(Context context);
-      //获取当前Cotext
-      MyApplicationManager.INSTANCE.getCurrentContext();
+     //初始化
+     WeChatUtils.INSTANCE.getInstance(Context context, String appId);
+     //微信是否可以使用
+     WeChatUtils.INSTANCE.canUseWeChat();
+     //获取微信接口
+     WeChatUtils.INSTANCE.getApi();
+     //调起微信支付
+     WeChatUtils.INSTANCE.openWeChatPay(String appId, String partnerId, String prepayId, String nonceStr, String timeStamp, String sign);
+     //分享文本到微信
+     WeChatUtils.INSTANCE.openWeChatShareString(String text, int scene);
+     //分享图片位图到微信
+     WeChatUtils.INSTANCE.openWeChatShareImg(Bitmap bitmap, int scene);
+     //分享图片二进制到微信
+     WeChatUtils.INSTANCE.openWeChatShareImg(byte[] bitmap, int scene);
+     //分享视频到微信
+     WeChatUtils.INSTANCE.openWeChatShareVideo(String url, boolean isLow, String title, String description, Bitmap bitmap, int scene);
+     //分享网页到微信
+     WeChatUtils.INSTANCE.openWeChatShareWeb(String url, String title, String description, Bitmap bitmap, int scene);
+     //分享小程序到微信
+     WeChatUtils.INSTANCE.openWeChatShareMiniProgram(String url, int type, String programId, String path, String title, String description, Bitmap bitmap);
 ```
 
-### 30、BaseDialog
+### TencentUtils
 
 ```
-      //创建xml后，点击编译，填入需要绑定的视图
-      //支持ViewBinding
-      //支持LifecycleProvider
-      //支持监听Activity的声明周期
-      //click监听已做快速点击处理
-      //继承示例
-      public class TestDialog extends BaseDialog<PopTestBinding> {
-      
-            public TestDialog(@NonNull Context context) {
-                super(context);
-            }
-        
-            public TestDialog(@NonNull Context context, Lifecycle lifecycle) {
-                super(context, lifecycle);
-            }
-        
-            public v(@NonNull Context context, int themeResId) {
-                super(context, themeResId);
-            }
-        
-            public TestDialog(@NonNull Context context, int themeResId, Lifecycle lifecycle) {
-                super(context, themeResId, lifecycle);
-            }
-        
-            @NonNull
-            @Override
-            protected PopTestBinding setBindView() {
-                return PopTestBinding.inflate(getLayoutInflater());
-            }
-        
-            @Override
-            protected int[] dialogParams() {
-                //按照顺序传入指定的X/Y/宽/高数值
-                return new int[0];
-            }
-        
-            @Override
-            protected int dialogPosition() {
-                //传入Gravity的位置
-                return 0;
-            }
-        
-            @Override
-            protected boolean clearPadding() {
-                //是否清除边框
-                return false;
-            }
-        
-            @Override
-            protected boolean cancelOutside() {
-                //是否允许外部取消
-                return false;
-            }
-        
-            @Override
-            protected boolean isDrag() {
-                //是否允许拖动
-                return false;
-            }
-        
-            @Override
-            protected boolean hasShadow() {
-                //是否拥有阴影
-                return false;
-            }
-        
-            @Override
-            protected int setFlag() {
-                //设置Dialog的窗体标识
-                return 0;
-            }
-        
-            @Override
-            protected void initView() {
-               
-            }
-        
-            @Override
-            protected void initListener() {
-        
-            }
-        
-            @Override
-            protected void click(@NonNull View v) {
-        
-            }
-      }
+     //初始化
+     TencentUtils.INSTANCE.getInstance(Context context, String appId);
+     //QQ是否可以使用
+     TencentUtils.INSTANCE.canUseQq();
+     //分享图文到QQ
+     TencentUtils.INSTANCE.openQqShareImgString(Activity activity, String title, String description, String imgPath, IUiListener listener);
+     //分享图片到QQ
+     TencentUtils.INSTANCE.openQqShareImg(Activity activity, String imgPath, IUiListener listener);
+     //分享小程序到QQ
+     TencentUtils.INSTANCE.openQqShareMiniProgram(Activity activity, String title, String description, String url, String imgPath, String appId, String path, IUiListener listener);
 ```

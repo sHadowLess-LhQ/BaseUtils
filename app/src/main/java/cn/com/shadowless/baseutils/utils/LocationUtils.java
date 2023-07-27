@@ -8,6 +8,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -46,6 +49,11 @@ public class LocationUtils {
     private final int retryCount;
 
     /**
+     * 获取间隔时间（防止一直立即获取无法获取）
+     */
+    private final int delayTime;
+
+    /**
      * 当前次数
      */
     private int currentCount = -1;
@@ -66,18 +74,64 @@ public class LocationUtils {
     private String locationProvider = LocationManager.GPS_PROVIDER;
 
     /**
+     * 主线程事务处理
+     */
+    private final Handler handler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    double[] temp = (double[]) msg.obj;
+                    location(temp[0], temp[1]);
+                    break;
+                case 1:
+                    Address address = (Address) msg.obj;
+                    address(address);
+                    break;
+                case 2:
+                    Object[] status = (Object[]) msg.obj;
+                    String provider = (String) status[0];
+                    boolean isEnabled = (boolean) status[1];
+                    statue(provider, isEnabled);
+                    break;
+                case 3:
+                    String error = (String) msg.obj;
+                    error(error);
+                    break;
+                case 4:
+                    if (locationListener == null) {
+                        locationListener = getLocationListener();
+                        locationManager.requestLocationUpdates(locationProvider, minTime, minDistance, locationListener);
+                    }
+                    break;
+                default:
+                    Location location = locationManager.getLastKnownLocation(locationProvider);
+                    if (location != null) {
+                        showLocation(location);
+                    } else {
+                        getLngAndLatWithNetwork();
+                    }
+                    break;
+            }
+        }
+    };
+
+    /**
      * 构造
      *
      * @param mContext         the m context
      * @param minTime          the min time
      * @param minDistance      the min distance
      * @param retryCount       the retry count
+     * @param delayTime        the delay time
      * @param locationListener the location listener
      * @param addressCallback  the address callback
      */
-    public LocationUtils(Context mContext, int minTime, int minDistance, int retryCount, LocationListener locationListener, AddressCallback addressCallback) {
+    public LocationUtils(Context mContext, int minTime, int minDistance, int retryCount, int delayTime, LocationListener locationListener, AddressCallback addressCallback) {
         this.mContext = mContext;
         this.minTime = minTime;
+        this.delayTime = delayTime;
         this.minDistance = minDistance;
         this.retryCount = retryCount;
         this.locationListener = locationListener;
@@ -107,6 +161,11 @@ public class LocationUtils {
          * 重试次数
          */
         private int retryCount = 5;
+
+        /**
+         * 延迟时间
+         */
+        private int delayTime = 2;
 
         /**
          * 最短时间
@@ -162,6 +221,17 @@ public class LocationUtils {
         }
 
         /**
+         * Delay time location utils builder.
+         *
+         * @param delayTime the delay time
+         * @return the location utils builder
+         */
+        public LocationUtilsBuilder delayTime(int delayTime) {
+            this.delayTime = delayTime;
+            return this;
+        }
+
+        /**
          * Time out unit net utils . net utils builder.
          *
          * @param minDistance the min distance
@@ -200,7 +270,7 @@ public class LocationUtils {
          * @return the net utils
          */
         public LocationUtils build() {
-            return new LocationUtils(this.mContext, this.minTime, this.minDistance, this.retryCount, this.locationListener, this.addressCallback);
+            return new LocationUtils(this.mContext, this.minTime, this.minDistance, this.retryCount, this.delayTime, this.locationListener, this.addressCallback);
         }
     }
 
@@ -214,18 +284,18 @@ public class LocationUtils {
     }
 
     /**
-     * 获取位置
+     * 立即获取位置
      */
-    public void getLocationNow() {
+    public void getLocation() {
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            error("请申请定位权限");
+            sendErrorToMainThread("请申请定位权限");
             return;
         }
         currentCount++;
         if (currentCount == retryCount) {
             currentCount = 0;
-            error("最大重试次数结束，获取位置信息失败");
+            sendErrorToMainThread("获取位置信息失败");
             return;
         }
         List<String> providerList = locationManager.getProviders(true);
@@ -234,49 +304,44 @@ public class LocationUtils {
         } else if (providerList.contains(LocationManager.NETWORK_PROVIDER)) {
             locationProvider = LocationManager.NETWORK_PROVIDER;
         } else {
-            getLocationNow();
+            getLocation();
             return;
         }
-        Location location = locationManager.getLastKnownLocation(locationProvider);
-        if (location != null) {
-            showLocation(location);
-        } else {
-            getLngAndLatWithNetwork();
-        }
+        handler.sendEmptyMessage(4);
+        handler.sendEmptyMessageDelayed(99, delayTime * 1000L);
     }
 
     /**
-     * Gets location.
-     */
-    public void getLocation() {
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            error("请申请定位权限");
-            return;
-        }
-        if (locationListener == null) {
-            getLocationNow();
-            locationListener = getLocationListener();
-            locationManager.requestLocationUpdates(locationProvider, minTime, minDistance, locationListener);
-        }
-    }
-
-    /**
-     * Calculate address.
+     * 获取经纬度
      *
      * @param location the location
      */
-    public void getAddress(Location location) {
+    public void getLatitudeAndLongitude(Location location) {
         //纬度
         double latitude = location.getLatitude();
         //经度
         double longitude = location.getLongitude();
-        location(latitude, longitude);
+        sendLngAndLatToMainThread(latitude, longitude);
+    }
+
+
+    /**
+     * 获取经纬度和详细地址
+     *
+     * @param location the location
+     */
+    public void getLatitudeAndLongitudeAndAddress(Location location) {
+        //纬度
+        double latitude = location.getLatitude();
+        //经度
+        double longitude = location.getLongitude();
+        sendLngAndLatToMainThread(latitude, longitude);
         getAddressFromLatitudeAndLongitude(latitude, longitude);
     }
 
+
     /**
-     * Gets address.
+     * 获取详细地址
      *
      * @param latitude  the latitude
      * @param longitude the longitude
@@ -288,10 +353,10 @@ public class LocationUtils {
             List<Address> locationList = gc.getFromLocation(latitude, longitude, 1);
             if (locationList != null) {
                 Address address = locationList.get(0);
-                address(address);
+                sendAddressToMainThread(address);
             }
         } catch (IOException e) {
-            error("获取详细地址详细错误");
+            sendErrorToMainThread("获取详细地址详细错误");
             e.printStackTrace();
         }
     }
@@ -304,10 +369,10 @@ public class LocationUtils {
      */
     private void showLocation(Location location) {
         if (location == null) {
-            getLocationNow();
+            getLocation();
         } else {
             currentCount = 0;
-            getAddress(location);
+            getLatitudeAndLongitudeAndAddress(location);
         }
     }
 
@@ -322,17 +387,17 @@ public class LocationUtils {
 
                 @Override
                 public void onProviderEnabled(@NonNull String provider) {
-                    statue(provider, true);
+                    sendStatueToMainThread(provider, true);
                 }
 
                 @Override
                 public void onProviderDisabled(@NonNull String provider) {
-                    statue(provider, false);
+                    sendStatueToMainThread(provider, false);
                 }
 
                 @Override
                 public void onLocationChanged(@NonNull Location location) {
-                    getAddress(location);
+                    getLatitudeAndLongitudeAndAddress(location);
                 }
             };
         }
@@ -346,12 +411,62 @@ public class LocationUtils {
     private void getLngAndLatWithNetwork() {
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            error("请申请定位权限");
+            sendErrorToMainThread("请申请定位权限");
             return;
         }
         locationProvider = LocationManager.NETWORK_PROVIDER;
         Location location = locationManager.getLastKnownLocation(locationProvider);
         showLocation(location);
+    }
+
+    /**
+     * Send lng and lat to main thread.
+     *
+     * @param latitude  the latitude
+     * @param longitude the longitude
+     */
+    private void sendLngAndLatToMainThread(double latitude, double longitude) {
+        Message msg = handler.obtainMessage();
+        msg.what = 0;
+        msg.obj = new double[]{latitude, longitude};
+        handler.sendMessage(msg);
+    }
+
+    /**
+     * Send address to main thread.
+     *
+     * @param address the address
+     */
+    private void sendAddressToMainThread(Address address) {
+        Message msg = handler.obtainMessage();
+        msg.what = 1;
+        msg.obj = address;
+        handler.sendMessage(msg);
+    }
+
+    /**
+     * Send statue to main thread.
+     *
+     * @param provider the provider
+     * @param isEnable the is enable
+     */
+    private void sendStatueToMainThread(String provider, boolean isEnable) {
+        Message msg = handler.obtainMessage();
+        msg.what = 2;
+        msg.obj = new Object[]{provider, isEnable};
+        handler.sendMessage(msg);
+    }
+
+    /**
+     * Send error to main thread.
+     *
+     * @param error the error
+     */
+    private void sendErrorToMainThread(String error) {
+        Message msg = handler.obtainMessage();
+        msg.what = 3;
+        msg.obj = error;
+        handler.sendMessage(msg);
     }
 
     /**
@@ -391,7 +506,8 @@ public class LocationUtils {
     /**
      * Statue.
      *
-     * @param msg the msg
+     * @param msg      the msg
+     * @param isEnable the is enable
      */
     private void statue(String msg, boolean isEnable) {
         if (addressCallback != null) {

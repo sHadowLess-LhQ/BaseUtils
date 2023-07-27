@@ -1,6 +1,5 @@
 package cn.com.shadowless.baseutils.utils;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,18 +10,20 @@ import androidx.annotation.NonNull;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.concurrent.Executors;
 
 /**
  * The type Asset utils.
  *
  * @author sHadowLess
  */
-public class AssetUtils {
+public enum AssetUtils {
+
     /**
-     * The constant instance.
+     * Instance asset utils.
      */
-    @SuppressLint("StaticFieldLeak")
-    private static AssetUtils instance;
+    INSTANCE;
+
     /**
      * The constant SUCCESS.
      */
@@ -34,7 +35,7 @@ public class AssetUtils {
     /**
      * The Context.
      */
-    private final Context context;
+    private Context context;
     /**
      * The Callback.
      */
@@ -52,21 +53,8 @@ public class AssetUtils {
      * Gets instance.
      *
      * @param context the context
-     * @return the instance
      */
-    public static AssetUtils getInstance(Context context) {
-        if (instance == null) {
-            instance = new AssetUtils(context);
-        }
-        return instance;
-    }
-
-    /**
-     * Instantiates a new Asset utils.
-     *
-     * @param context the context
-     */
-    private AssetUtils(Context context) {
+    public void getInstance(Context context) {
         this.context = context;
     }
 
@@ -95,25 +83,16 @@ public class AssetUtils {
      * @param sdPath  the sd path
      * @return the asset utils
      */
-    public AssetUtils copyAssetsToSd(final String srcPath, final String sdPath) {
-        new Thread(() -> {
+    public void copyAssetsToSd(String srcPath, String sdPath, FileOperateCallback callback) {
+        this.callback = callback;
+        Executors.newSingleThreadExecutor().execute(() -> {
             copyAssetsToDst(context, srcPath, sdPath);
             if (isSuccess) {
                 handler.obtainMessage(SUCCESS).sendToTarget();
             } else {
                 handler.obtainMessage(FAILED, errorStr).sendToTarget();
             }
-        }).start();
-        return this;
-    }
-
-    /**
-     * Sets file operate callback.
-     *
-     * @param callback the callback
-     */
-    public void setFileOperateCallback(FileOperateCallback callback) {
-        this.callback = callback;
+        });
     }
 
     /**

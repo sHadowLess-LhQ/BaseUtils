@@ -1,6 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.gitee.shadowless_lhq'
 
 android {
     compileSdkVersion 32
@@ -13,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 32
-        versionCode 89
-        versionName "1.8.9"
+        versionCode 1
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -57,13 +55,9 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
 
-    //BaseXPop
-    api 'com.github.li-xiaojun:XPopup:2.9.4'
-
     //RxUtils
     api 'io.reactivex.rxjava2:rxjava:2.2.21'
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    api 'com.trello.rxlifecycle3:rxlifecycle-android:3.1.0'
 
     //NetUtils
     api 'com.squareup.okhttp3:okhttp:4.7.2'
@@ -77,4 +71,9 @@ dependencies {
 
     //TheRouter
     api "cn.therouter:router:1.1.1"
+
+    //微信
+    api 'com.tencent.mm.opensdk:wechat-sdk-android:+'
+    //腾讯
+    api 'com.tencent.tauth:qqopensdk:3.52.0'
 }

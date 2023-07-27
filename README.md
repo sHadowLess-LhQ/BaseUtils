@@ -38,25 +38,11 @@ Step 1. 添加仓库地址和配置
         id 'therouter'
      }
      
-     android {
-      ...
-       buildFeatures {
-         viewBinding true
-          }
-     }
-     
      //主项目的build.gradle中加入
      //旧AndroidStudio版本
       ...
      //若使用RouterUtils，请添加
      apply plugin 'therouter'
-     
-     android {
-      ...
-       viewBinding {
-         enable = true
-          }
-     }
 ```
 
 ```

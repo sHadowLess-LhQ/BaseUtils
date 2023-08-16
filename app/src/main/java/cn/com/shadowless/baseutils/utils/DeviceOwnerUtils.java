@@ -164,6 +164,7 @@ public class DeviceOwnerUtils {
      *
      * @param context the 上下文
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void clearDeviceOwner(Context context) {
         if (isDeviceOwnerDeviceApp(context)) {
             ComponentName componentName = BasicDeviceAdminReceiver.getComponentName(context);

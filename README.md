@@ -1539,3 +1539,32 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
      //分享小程序到QQ
      TencentUtils.INSTANCE.openQqShareMiniProgram(Activity activity, String title, String description, String url, String imgPath, String appId, String path, IUiListener listener);
 ```
+
+### SpecialPermissionUtils
+
+```
+     //获取分区存储权限
+     PermissionUtils.hasExternalStoragePermission(Context context)
+     //获取分区存储权限(带返回)
+     PermissionUtils.hasExternalStoragePermission(Activity context, int code)
+     //获取悬浮窗权限
+     PermissionUtils.hasFloatWindowPermission(Context context)
+     //获取悬浮窗权限(带返回)
+     PermissionUtils.hasFloatWindowPermission(Activity context, int code)
+     //获取分区存储媒体管理权限
+     PermissionUtils.hasMediaManagePermission(Context context)
+     //获取分区存储媒体管理权限(带返回)
+     PermissionUtils.hasMediaManagePermission(Activity context, int code)
+     //获取写入设置权限
+     PermissionUtils.hasWriteSettingPermission(Context context)
+     //获取写入设置权限(带返回)
+     PermissionUtils.hasWriteSettingPermission(Activity context, int code)
+     //获取安装未知应用权限
+     PermissionUtils.hasInstallAppPermission(Context context)
+     //获取安装未知应用权限(带返回)
+     PermissionUtils.hasInstallAppPermission(Activity context, int code)
+     //获取是否有VPN连接
+     PermissionUtils.hasVpnCreatePermission(Context context)
+     //获取是否有VPN连接(带返回)
+     PermissionUtils.hasVpnCreatePermission(Activity context, int code)
+```

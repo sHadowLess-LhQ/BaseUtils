@@ -31,14 +31,15 @@ public class SpecialPermissionUtils {
      *
      * @param context the context
      */
-    @RequiresApi(api = Build.VERSION_CODES.R)
     public static void hasExternalStoragePermission(Context context) {
-        if (!Environment.isExternalStorageManager()) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-            Uri uri = Uri.fromParts("package", context.getPackageName(), null);
-            intent.setData(uri);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+                intent.setData(uri);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
         }
     }
 
@@ -48,13 +49,14 @@ public class SpecialPermissionUtils {
      * @param context the context
      * @param code    the code
      */
-    @RequiresApi(api = Build.VERSION_CODES.R)
     public static void hasExternalStoragePermission(Activity context, int code) {
-        if (!Environment.isExternalStorageManager()) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-            Uri uri = Uri.fromParts("package", context.getPackageName(), null);
-            intent.setData(uri);
-            context.startActivityForResult(intent, code);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+                intent.setData(uri);
+                context.startActivityForResult(intent, code);
+            }
         }
     }
 
@@ -63,14 +65,15 @@ public class SpecialPermissionUtils {
      *
      * @param context the context
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public static void hasFloatWindowPermission(Context context) {
-        if (!Settings.canDrawOverlays(context)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-            Uri uri = Uri.fromParts("package", context.getPackageName(), null);
-            intent.setData(uri);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(context)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+                intent.setData(uri);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
         }
     }
 
@@ -80,13 +83,14 @@ public class SpecialPermissionUtils {
      * @param context the context
      * @param code    the code
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public static void hasFloatWindowPermission(Activity context, int code) {
-        if (!Settings.canDrawOverlays(context)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-            Uri uri = Uri.fromParts("package", context.getPackageName(), null);
-            intent.setData(uri);
-            context.startActivityForResult(intent, code);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(context)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+                intent.setData(uri);
+                context.startActivityForResult(intent, code);
+            }
         }
     }
 
@@ -95,9 +99,11 @@ public class SpecialPermissionUtils {
      *
      * @param context the context
      */
-    @RequiresApi(api = Build.VERSION_CODES.S)
     public static void hasMediaManagePermission(Context context) {
-        Intent intent = new Intent(Settings.ACTION_REQUEST_MANAGE_MEDIA);
+        Intent intent = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            intent = new Intent(Settings.ACTION_REQUEST_MANAGE_MEDIA);
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -108,9 +114,11 @@ public class SpecialPermissionUtils {
      * @param context the context
      * @param code    the code
      */
-    @RequiresApi(api = Build.VERSION_CODES.S)
     public static void hasMediaManagePermission(Activity context, int code) {
-        Intent intent = new Intent(Settings.ACTION_REQUEST_MANAGE_MEDIA);
+        Intent intent = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            intent = new Intent(Settings.ACTION_REQUEST_MANAGE_MEDIA);
+        }
         context.startActivityForResult(intent, code);
     }
 
@@ -119,14 +127,15 @@ public class SpecialPermissionUtils {
      *
      * @param context the context
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public static void hasWriteSettingPermission(Context context) {
-        if (!Settings.System.canWrite(context)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-            Uri uri = Uri.fromParts("package", context.getPackageName(), null);
-            intent.setData(uri);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.System.canWrite(context)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+                intent.setData(uri);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
         }
     }
 
@@ -136,13 +145,14 @@ public class SpecialPermissionUtils {
      * @param context the context
      * @param code    the code
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public static void hasWriteSettingPermission(Activity context, int code) {
-        if (!Settings.System.canWrite(context)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-            Uri uri = Uri.fromParts("package", context.getPackageName(), null);
-            intent.setData(uri);
-            context.startActivityForResult(intent, code);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.System.canWrite(context)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+                intent.setData(uri);
+                context.startActivityForResult(intent, code);
+            }
         }
     }
 
@@ -151,15 +161,16 @@ public class SpecialPermissionUtils {
      *
      * @param context the context
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void hasInstallAppPermission(Context context) {
         PackageManager manager = context.getPackageManager();
-        if (!manager.canRequestPackageInstalls()) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
-            Uri uri = Uri.fromParts("package", context.getPackageName(), null);
-            intent.setData(uri);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!manager.canRequestPackageInstalls()) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+                intent.setData(uri);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
         }
     }
 
@@ -169,14 +180,15 @@ public class SpecialPermissionUtils {
      * @param context the context
      * @param code    the code
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void hasInstallAppPermission(Activity context, int code) {
         PackageManager manager = context.getPackageManager();
-        if (!manager.canRequestPackageInstalls()) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
-            Uri uri = Uri.fromParts("package", context.getPackageName(), null);
-            intent.setData(uri);
-            context.startActivityForResult(intent, code);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!manager.canRequestPackageInstalls()) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+                intent.setData(uri);
+                context.startActivityForResult(intent, code);
+            }
         }
     }
 

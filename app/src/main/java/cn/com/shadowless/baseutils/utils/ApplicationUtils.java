@@ -1,6 +1,7 @@
 package cn.com.shadowless.baseutils.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -8,10 +9,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Process;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
@@ -45,6 +49,18 @@ public class ApplicationUtils {
         } else {
             Toast.makeText(context, "终端没有安装", Toast.LENGTH_LONG).show();
         }
+    }
+
+    /**
+     * 完全退出应用
+     *
+     * @param activity the 上下文
+     */
+    public static void completeExitApp(Activity activity){
+        activity.moveTaskToBack(true);
+        int pid = Process.myPid();
+        Process.killProcess(pid);
+        System.exit(0);
     }
 
     /**
@@ -105,6 +121,7 @@ public class ApplicationUtils {
      *
      * @param context the 上下文
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static void startHomeSetting(Context context) {
         context.startActivity(new Intent(Settings.ACTION_HOME_SETTINGS));
     }
@@ -143,12 +160,12 @@ public class ApplicationUtils {
      *
      * @return the uuid
      */
-    public static String getUUID() {
-        String mSzDevIDShort = "55" + Build.BOARD.length() % 10 + Build.BRAND.length() % 10 + Build.CPU_ABI.length() % 10 + Build.DEVICE.length() % 10 + Build.DISPLAY.length() % 10 + Build.HOST.length() % 10 + Build.ID.length() % 10 + Build.MANUFACTURER.length() % 10 + Build.MODEL.length() % 10 + Build.PRODUCT.length() % 10 + Build.TAGS.length() % 10 + Build.TYPE.length() % 10 + Build.USER.length() % 10;
+    public static String getUuid() {
+        String devId = "55" + Build.BOARD.length() % 10 + Build.BRAND.length() % 10 + Build.CPU_ABI.length() % 10 + Build.DEVICE.length() % 10 + Build.DISPLAY.length() % 10 + Build.HOST.length() % 10 + Build.ID.length() % 10 + Build.MANUFACTURER.length() % 10 + Build.MODEL.length() % 10 + Build.PRODUCT.length() % 10 + Build.TAGS.length() % 10 + Build.TYPE.length() % 10 + Build.USER.length() % 10;
         try {
-            return new UUID(mSzDevIDShort.hashCode(), mSzDevIDShort.hashCode()).toString().replace("-", "");
-        } catch (Exception exception) {
-            exception.printStackTrace();
+            return new UUID(devId.hashCode(), devId.hashCode()).toString().replace("-", "");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return "";
     }
@@ -194,18 +211,36 @@ public class ApplicationUtils {
     }
 
     /**
+     * 获取apk信息
+     *
+     * @param context  the 上下文
+     * @param packName the 包名
+     * @return the package info
+     */
+    public static PackageInfo getPackageInfo(Context context, String packName) {
+        PackageManager packageManager = context.getPackageManager();
+        try {
+            return packageManager.getPackageInfo(packName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 检查手机上是否安装了指定的软件
      *
      * @param context     the 上下文
      * @param packageName the 应用包名
      * @return boolean boolean
      */
+    @SuppressLint("QueryPermissionsNeeded")
     public static boolean isInstall(Context context, String packageName) {
         PackageManager packageManager = context.getPackageManager();
-        @SuppressLint("QueryPermissionsNeeded") List<PackageInfo> packageInfos = packageManager.getInstalledPackages(0);
-        List<String> packageNames = new ArrayList<String>();
-        for (int i = 0; i < packageInfos.size(); i++) {
-            String packName = packageInfos.get(i).packageName;
+        List<PackageInfo> packageInfoList = packageManager.getInstalledPackages(0);
+        List<String> packageNames = new ArrayList<>();
+        for (int i = 0; i < packageInfoList.size(); i++) {
+            String packName = packageInfoList.get(i).packageName;
             packageNames.add(packName);
         }
         return packageNames.contains(packageName);

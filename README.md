@@ -440,6 +440,10 @@ c、混淆规则
      ApplicationUtils.getVersionName(Context context, String packName)
      //获取指定应用是否安装
      ApplicationUtils.isInstall(Context context, String packageName)
+     //完全退出应用
+     ApplicationUtils.completeExitApp(Activity activity)
+     //获取应用信息
+     ApplicationUtils.getPackageInfo(Context context, String packName)
 ```
 
 ### DeviceUtils

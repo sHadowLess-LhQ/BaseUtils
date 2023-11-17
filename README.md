@@ -1051,59 +1051,76 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 
 ### ToastUtils
 
+copy轮子哥的https://github.com/getActivity/Toaster
+
+补了下常用四个固定样式
+
 ```
      //在Application中初始化土司
-     //参数2是多次点击依然显示
-     ToastUtils.INSTANCE.initToast(Context mContext);
-     ToastUtils.INSTANCE.initToast(Context mContext,boolean isMoreShow);
-     //成功土司
-     ToastUtils.INSTANCE.onSuccessShowToast(String message);
-     //成功显示xml文字
-     ToastUtils.INSTANCE.onSuccessShowToast(int messageID);
-     //成功显示自定义icon
-     ToastUtils.INSTANCE.onSuccessShowToast(String message, int iconID);
-     //成功显示xml自定义icon
-     ToastUtils.INSTANCE.onSuccessShowToast(int messageID, int iconID);
-     //错误土司
-     ToastUtils.INSTANCE.onErrorShowToast(String message);
-     //错误显示xml文字
-     ToastUtils.INSTANCE.onErrorShowToast(int messageID);
-     //错误显示自定义icon
-     ToastUtils.INSTANCE.onErrorShowToast(String message, int iconID);
-     //错误显示xml自定义icon
-     ToastUtils.INSTANCE.onErrorShowToast(int messageID, int iconID);
-     //默认土司
-     ToastUtils.INSTANCE.onDefaultShowToast(String message);
-     //默认显示xml文字
-     ToastUtilsv.onDefaultShowToast(int messageID);
-     //默认显示自定义icon
-     ToastUtils.INSTANCE.onDefaultShowToast(String message, int iconID);
-     //默认显示xml自定义icon
-     ToastUtils.INSTANCE.onDefaultShowToast(int messageID, int iconID);
-     //默认带图标土司
-     ToastUtilsv.onDefaultWithoutIconShowToast(String message);
-     //默认带图标显示xml文字
-     ToastUtils.INSTANCE.onDefaultWithoutIconShowToast(int messageID);
-     //默认带图标显示自定义icon
-     ToastUtils.INSTANCE.onDefaultWithoutIconShowToast(String message, int iconID);
-     //默认带图标显示xml自定义icon
-     ToastUtils.INSTANCE.onDefaultWithoutIconShowToast(int messageID, int iconID);
-     //警告土司
-     ToastUtils.INSTANCE.onWarnShowToast(String message);
-     //警告显示xml文字
-     ToastUtils.INSTANCE.onWarnShowToast(int messageID);
-     //警告显示自定义icon
-     ToastUtils.INSTANCE.onWarnShowToast(String message, int iconID);
-     //警告显示xml自定义icon
-     ToastUtils.INSTANCE.onWarnShowToast(int messageID, int iconID);
-     //信息土司
-     ToastUtils.INSTANCE.onInfoShowToast(String message);
-     //信息显示xml文字
-     ToastUtils.INSTANCE.onInfoShowToast(int messageID);
-     //信息显示自定义icon
-     ToastUtils.INSTANCE.onInfoShowToast(String message, int iconID);
-     //信息显示xml自定义icon
-     ToastUtils.INSTANCE.onInfoShowToast(int messageID, int iconID);
+     ToastUtils.init(this); 
+     // 显示 Toast
+     ToastUtils.show(CharSequence text);
+     ToastUtils.show(int id);
+     ToastUtils.show(Object object);
+     // debug 模式下显示 Toast
+     ToastUtils.debugShow(CharSequence text);
+     ToastUtils.debugShow(int id);
+     ToastUtils.debugShow(Object object);
+     // 延迟显示 Toast
+     ToastUtils.delayedShow(CharSequence text, long delayMillis);
+     ToastUtils.delayedShow(int id, long delayMillis);
+     ToastUtils.delayedShow(Object object, long delayMillis);
+     // 显示短 Toast
+     ToastUtils.showShort(CharSequence text);
+     ToastUtils.showShort(int id);
+     ToastUtils.showShort(Object object);
+     // 显示长 Toast
+     ToastUtils.showLong(CharSequence text);
+     ToastUtils.showLong(int id);
+     ToastUtils.showLong(Object object);
+     // 显示成功
+     ToastUtils.showSuccess(CharSequence text)
+     ToastUtils.delayShowSuccess(CharSequence text, long delayMillis);
+     ToastUtils.shortShowSuccess(CharSequence text);
+     ToastUtils.longShowSuccess(CharSequence text);
+     // 显示信息
+     ToastUtils.showInfo(CharSequence text)
+     ToastUtils.delayShowInfo(CharSequence text, long delayMillis);
+     ToastUtils.shortShowInfo(CharSequence text);
+     ToastUtils.longShowInfo(CharSequence text);
+     // 显示警告
+     ToastUtils.showWaring(CharSequence text)
+     ToastUtils.delayShowWaring(CharSequence text, long delayMillis);
+     ToastUtils.shortShowWaring(CharSequence text);
+     ToastUtils.longShowWaring(CharSequence text);
+     // 显示失败
+     ToastUtils.showError(CharSequence text)
+     ToastUtils.delayShowError(CharSequence text, long delayMillis);
+     ToastUtils.shortShowError(CharSequence text);
+     ToastUtils.longShowError(CharSequence text);
+     // 自定义显示 Toast
+     ToastUtils.show(ToastParams params);
+     // 取消 Toast
+     ToastUtils.cancel();
+     // 设置 Toast 布局（全局生效）
+     ToastUtils.setView(int id);
+     // 设置 Toast 样式（全局生效）
+     ToastUtils.setStyle(IToastStyle<?> style);
+     // 获取 Toast 样式
+     ToastUtils.getStyle()
+     // 判断当前框架是否已经初始化
+     ToastUtils.isInit();
+     // 设置 Toast 策略（全局生效）
+     ToastUtils.setStrategy(IToastStrategy strategy);
+     // 获取 Toast 策略     
+     ToastUtils.getStrategy();
+     // 设置 Toast 重心和偏移
+     ToastUtils.setGravity(int gravity);
+     ToastUtils.setGravity(int gravity, int xOffset, int yOffset);
+     // 设置 Toast 拦截器（全局生效）
+     ToastUtils.setInterceptor(IToastInterceptor interceptor);
+     // 获取 Toast 拦截器
+     ToastUtils.getInterceptor();
 ```
 
 ### LogUtils

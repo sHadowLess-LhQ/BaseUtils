@@ -616,13 +616,6 @@ c、混淆规则
      WindowUtils.getHeight()
 ```
 
-### WordUtils
-
-```
-     //比较字符串
-     WordUtils.contain(String input, String regex)
-```
-
 ### BaseAccessibilityService
 
 ```

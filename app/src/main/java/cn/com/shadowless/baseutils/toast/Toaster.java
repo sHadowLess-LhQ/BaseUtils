@@ -325,7 +325,7 @@ public class Toaster {
         }
     }
 
-    static boolean isDebugMode() {
+    public static boolean isDebugMode() {
         if (sDebugMode == null) {
             checkInitStatus();
             sDebugMode = (sApplication.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
@@ -333,7 +333,7 @@ public class Toaster {
         return sDebugMode;
     }
 
-    private static CharSequence stringIdToCharSequence(int id) {
+    public static CharSequence stringIdToCharSequence(int id) {
         checkInitStatus();
         try {
             // 如果这是一个资源 id

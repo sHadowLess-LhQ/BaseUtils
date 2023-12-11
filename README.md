@@ -1046,7 +1046,7 @@ MF文件中，注册服务，可使用库中默认的配置文件，如下示例
 
 copy轮子哥的https://github.com/getActivity/Toaster
 
-补了下常用四个固定样式
+继承后补了下常用四个固定样式
 
 ```
      //在Application中初始化土司

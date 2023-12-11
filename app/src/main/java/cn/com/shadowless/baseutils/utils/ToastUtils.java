@@ -1,6 +1,7 @@
 package cn.com.shadowless.baseutils.utils;
 
 import android.app.Application;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import cn.com.shadowless.baseutils.R;
@@ -71,7 +72,7 @@ public final class ToastUtils {
     public static void showSuccess(CharSequence text) {
         ToastParams params = new ToastParams();
         params.text = text;
-        params.style = new CustomToastStyle(R.layout.toast_success);
+        params.style = new CustomToastStyle(R.layout.toast_success, Gravity.BOTTOM);
         show(params);
     }
 
@@ -82,7 +83,7 @@ public final class ToastUtils {
      * @param delayMillis the delay millis
      */
     public static void delayShowSuccess(CharSequence text, long delayMillis) {
-        delayedShow(text, delayMillis, new CustomToastStyle(R.layout.toast_success));
+        delayedShow(text, delayMillis, new CustomToastStyle(R.layout.toast_success, Gravity.BOTTOM));
     }
 
     /**
@@ -91,7 +92,7 @@ public final class ToastUtils {
      * @param text the text
      */
     public static void shortShowSuccess(CharSequence text) {
-        showShort(text, new CustomToastStyle(R.layout.toast_success));
+        showShort(text, new CustomToastStyle(R.layout.toast_success, Gravity.BOTTOM));
     }
 
     /**
@@ -100,7 +101,7 @@ public final class ToastUtils {
      * @param text the text
      */
     public static void longShowSuccess(CharSequence text) {
-        showLong(text, new CustomToastStyle(R.layout.toast_success));
+        showLong(text, new CustomToastStyle(R.layout.toast_success, Gravity.BOTTOM));
     }
 
     /**
@@ -111,7 +112,7 @@ public final class ToastUtils {
     public static void showInfo(CharSequence text) {
         ToastParams params = new ToastParams();
         params.text = text;
-        params.style = new CustomToastStyle(R.layout.toast_info);
+        params.style = new CustomToastStyle(R.layout.toast_info, Gravity.BOTTOM);
         show(params);
     }
 
@@ -122,7 +123,7 @@ public final class ToastUtils {
      * @param delayMillis the delay millis
      */
     public static void delayShowInfo(CharSequence text, long delayMillis) {
-        delayedShow(text, delayMillis, new CustomToastStyle(R.layout.toast_info));
+        delayedShow(text, delayMillis, new CustomToastStyle(R.layout.toast_info, Gravity.BOTTOM));
     }
 
     /**
@@ -131,7 +132,7 @@ public final class ToastUtils {
      * @param text the text
      */
     public static void shortShowInfo(CharSequence text) {
-        showShort(text, new CustomToastStyle(R.layout.toast_info));
+        showShort(text, new CustomToastStyle(R.layout.toast_info, Gravity.BOTTOM));
     }
 
     /**
@@ -140,7 +141,7 @@ public final class ToastUtils {
      * @param text the text
      */
     public static void longShowInfo(CharSequence text) {
-        showLong(text, new CustomToastStyle(R.layout.toast_info));
+        showLong(text, new CustomToastStyle(R.layout.toast_info, Gravity.BOTTOM));
     }
 
     /**
@@ -151,7 +152,7 @@ public final class ToastUtils {
     public static void showWaring(CharSequence text) {
         ToastParams params = new ToastParams();
         params.text = text;
-        params.style = new CustomToastStyle(R.layout.toast_warn);
+        params.style = new CustomToastStyle(R.layout.toast_warn, Gravity.BOTTOM);
         show(params);
     }
 
@@ -162,7 +163,7 @@ public final class ToastUtils {
      * @param delayMillis the delay millis
      */
     public static void delayShowWaring(CharSequence text, long delayMillis) {
-        delayedShow(text, delayMillis, new CustomToastStyle(R.layout.toast_warn));
+        delayedShow(text, delayMillis, new CustomToastStyle(R.layout.toast_warn, Gravity.BOTTOM));
     }
 
     /**
@@ -171,7 +172,7 @@ public final class ToastUtils {
      * @param text the text
      */
     public static void shortShowWaring(CharSequence text) {
-        showShort(text, new CustomToastStyle(R.layout.toast_warn));
+        showShort(text, new CustomToastStyle(R.layout.toast_warn, Gravity.BOTTOM));
     }
 
     /**
@@ -180,7 +181,7 @@ public final class ToastUtils {
      * @param text the text
      */
     public static void longShowWaring(CharSequence text) {
-        showLong(text, new CustomToastStyle(R.layout.toast_warn));
+        showLong(text, new CustomToastStyle(R.layout.toast_warn, Gravity.BOTTOM));
     }
 
     /**
@@ -191,7 +192,7 @@ public final class ToastUtils {
     public static void showError(CharSequence text) {
         ToastParams params = new ToastParams();
         params.text = text;
-        params.style = new CustomToastStyle(R.layout.toast_error);
+        params.style = new CustomToastStyle(R.layout.toast_error, Gravity.BOTTOM);
         show(params);
     }
 
@@ -202,7 +203,7 @@ public final class ToastUtils {
      * @param delayMillis the delay millis
      */
     public static void delayShowError(CharSequence text, long delayMillis) {
-        delayedShow(text, delayMillis, new CustomToastStyle(R.layout.toast_error));
+        delayedShow(text, delayMillis, new CustomToastStyle(R.layout.toast_error, Gravity.BOTTOM));
     }
 
     /**
@@ -211,7 +212,7 @@ public final class ToastUtils {
      * @param text the text
      */
     public static void shortShowError(CharSequence text) {
-        showShort(text, new CustomToastStyle(R.layout.toast_error));
+        showShort(text, new CustomToastStyle(R.layout.toast_error, Gravity.BOTTOM));
     }
 
     /**
@@ -220,7 +221,7 @@ public final class ToastUtils {
      * @param text the text
      */
     public static void longShowError(CharSequence text) {
-        showLong(text, new CustomToastStyle(R.layout.toast_error));
+        showLong(text, new CustomToastStyle(R.layout.toast_error, Gravity.BOTTOM));
     }
 
     /**

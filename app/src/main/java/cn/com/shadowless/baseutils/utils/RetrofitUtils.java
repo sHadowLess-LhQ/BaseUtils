@@ -68,6 +68,11 @@ public class RetrofitUtils {
     private CallAdapter.Factory callAdapterFactory;
 
     /**
+     * The constant apiMap.
+     */
+    private static Map<String, Object> apiMap = null;
+
+    /**
      * 错误枚举
      */
     private enum ERROR {
@@ -127,18 +132,6 @@ public class RetrofitUtils {
     }
 
     /**
-     * The interface Init apis call back.
-     */
-    public interface InitApisCallBack {
-        /**
-         * 完成
-         *
-         * @param apiMap the api map
-         */
-        void finish(@NonNull Map<String, Object> apiMap);
-    }
-
-    /**
      * 初始化retrofit
      *
      * @return the net utils
@@ -166,33 +159,42 @@ public class RetrofitUtils {
     }
 
     /**
+     * Gets api map.
+     *
+     * @return the api map
+     */
+    public static Map<String, Object> getApiMap() {
+        if (apiMap == null) {
+            apiMap = new HashMap<>();
+        }
+        return apiMap;
+    }
+
+    /**
      * 初始化接口
      *
-     * @param <T>          the type 接口类型
-     * @param cls          the 接口类
-     * @param initCallBack the 回调
+     * @param <T> the type 接口类型
+     * @param cls the 接口类
      * @return the net utils
      */
-    public <T> RetrofitUtils initApi(@NonNull Class<T> cls, @NonNull InitApiCallBack<T> initCallBack) {
+    public <T> RetrofitUtils initApi(@NonNull Class<T> cls) {
         T api = retrofit.create(cls);
-        initCallBack.finish(api);
+        apiMap.put(cls.getSimpleName(), api);
         return this;
     }
 
     /**
      * 初始化接口
      *
-     * @param initCallBack the 回调
-     * @param cls          the 接口类
+     * @param cls the 接口类
      * @return the net utils
      */
-    public RetrofitUtils initApi(@NonNull InitApisCallBack initCallBack, @NonNull Class<?>... cls) {
-        Map<String, Object> map = new HashMap<>(cls.length);
+    public RetrofitUtils initApi(@NonNull Class<?>... cls) {
+        apiMap = new HashMap<>(cls.length);
         for (Class<?> currentCls : cls) {
             Object obj = retrofit.create(currentCls);
-            map.put(currentCls.getSimpleName(), obj);
+            apiMap.put(currentCls.getSimpleName(), obj);
         }
-        initCallBack.finish(map);
         return this;
     }
 

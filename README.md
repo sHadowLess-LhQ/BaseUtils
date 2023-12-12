@@ -342,13 +342,13 @@ c、混淆规则
                 .build()
                 .initRetrofit()  //初始化Retrofit
                 .initRetrofit(new Gson()) //传入需要创建的接口类，默认有Gson，可自定义
-                .initApi(DeviceApi.class, api -> {
-                     //实例化单个接口对象，可用于单个Presenter，可多次实例不同的接口
-                })
-                .initApi(apiMap -> {
-                     //实例化多个接口对象，可用于单Presenter，可多次实例不同的接口
-                }, DeviceApi.class, DeviceApi.class);
-                   ...
+                .initApi(DeviceApi.class)
+                .initApi(DeviceApi.class, DeviceApi.class);
+      //获取错误信息          
+      RetrofitUtils.getExceptionMessage(Throwable throwable)
+      //获取创建的接口表
+      //key为传入initApi类的simpleName
+      RetrofitUtils.getApiMap()
 ```
 
 ### LocationUtils

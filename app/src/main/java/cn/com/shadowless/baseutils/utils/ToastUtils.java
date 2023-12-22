@@ -16,6 +16,8 @@ import cn.com.shadowless.baseutils.toast.style.WhiteToastStyle;
 
 /**
  * The type Toast utils.
+ *
+ * @author sHadowLess
  */
 @SuppressWarnings("unused")
 public final class ToastUtils {

@@ -14,50 +14,27 @@ import java.util.Set;
  *
  * @author sHadowLess
  */
-public class PreferencesUtils {
+public enum PreferencesUtils {
+
+    /**
+     * Instance preferences utils.
+     */
+    INSTANCE;
 
     /**
      * SP文件名
      */
-    public static String PREFERENCE_NAME = "APP_INFO";
-
-    /**
-     * 单例
-     */
-    private static PreferencesUtils preferencesUtils;
-
-    /**
-     * 上下文
-     */
-    private static Context context;
+    private static final String PREFERENCE_NAME = "APP_INFO";
 
     /**
      * The constant editor.
      */
-    private static Editor editor = null;
+    private Editor editor = null;
 
     /**
      * The constant settings.
      */
-    private static SharedPreferences settings = null;
-
-    /**
-     * Instantiates a new Preferences utils.
-     */
-    private PreferencesUtils() {
-    }
-
-    /**
-     * Gets instance.
-     *
-     * @return the instance
-     */
-    public static PreferencesUtils getInstance() {
-        if (preferencesUtils == null) {
-            preferencesUtils = new PreferencesUtils();
-        }
-        return preferencesUtils;
-    }
+    private SharedPreferences settings = null;
 
     /**
      * Init preferences.
@@ -65,8 +42,30 @@ public class PreferencesUtils {
      * @param context the context
      */
     public void initPreferences(Context context) {
-        PreferencesUtils.context = context;
         settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        editor = settings.edit();
+    }
+
+    /**
+     * Init preferences.
+     *
+     * @param context the context
+     * @param name    the name
+     */
+    public void initPreferences(Context context, String name) {
+        settings = context.getSharedPreferences(name, Context.MODE_PRIVATE);
+        editor = settings.edit();
+    }
+
+    /**
+     * Init preferences.
+     *
+     * @param context the context
+     * @param name    the name
+     * @param mode    the mode
+     */
+    public void initPreferences(Context context, String name, int mode) {
+        settings = context.getSharedPreferences(name, mode);
         editor = settings.edit();
     }
 
@@ -77,7 +76,7 @@ public class PreferencesUtils {
      * @param value The 存入值
      * @return True if the new values were successfully written to persistent storage.
      */
-    public static boolean putStringNow(String key, String value) {
+    public boolean putStringNow(String key, String value) {
         editor.putString(key, value);
         return editor.commit();
     }
@@ -88,7 +87,7 @@ public class PreferencesUtils {
      * @param key   The 索引
      * @param value The 存入值
      */
-    public static void putString(String key, String value) {
+    public void putString(String key, String value) {
         editor.putString(key, value);
         editor.apply();
     }
@@ -100,7 +99,7 @@ public class PreferencesUtils {
      * @param value the 存入值
      * @return the boolean
      */
-    private static boolean putStringSetNow(String key, Set<String> value) {
+    private boolean putStringSetNow(String key, Set<String> value) {
         editor.putStringSet(key, value);
         return editor.commit();
     }
@@ -111,7 +110,7 @@ public class PreferencesUtils {
      * @param key   the 索引
      * @param value the 存入值
      */
-    private static void putStringSet(String key, Set<String> value) {
+    private void putStringSet(String key, Set<String> value) {
         editor.putStringSet(key, value);
         editor.apply();
     }
@@ -123,7 +122,7 @@ public class PreferencesUtils {
      * @param value the 存入值
      * @return the boolean
      */
-    public static boolean addStringSetNow(String key, String value) {
+    public boolean addStringSetNow(String key, String value) {
         Set<String> strings = getStringSet(key);
         if (null != strings) {
             strings = new HashSet<>(strings);
@@ -140,7 +139,7 @@ public class PreferencesUtils {
      * @param key   the 索引
      * @param value the 存入值
      */
-    public static void addStringSet(String key, String value) {
+    public void addStringSet(String key, String value) {
         Set<String> strings = getStringSet(key);
         if (null != strings) {
             strings = new HashSet<>(strings);
@@ -158,7 +157,7 @@ public class PreferencesUtils {
      * @param value the 删除值
      * @return the boolean
      */
-    public static boolean removeStringSetNow(String key, String value) {
+    public boolean removeStringSetNow(String key, String value) {
         Set<String> strings = getStringSet(key);
         if (null != strings && 0 != strings.size()) {
             strings = new HashSet<>(strings);
@@ -179,7 +178,7 @@ public class PreferencesUtils {
      * @param key   the 索引
      * @param value the 删除值
      */
-    public static void removeStringSet(String key, String value) {
+    public void removeStringSet(String key, String value) {
         Set<String> strings = getStringSet(key);
         if (null != strings && 0 != strings.size()) {
             strings = new HashSet<>(strings);
@@ -200,9 +199,8 @@ public class PreferencesUtils {
      *
      * @param key The 索引
      * @return The preference value if it exists, or null. Throws ClassCastException if there is a preference with this name that is not a string
-     * @see #getString(Context, String, String) #getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)#getString(Context, String, String)
      */
-    public static String getString(String key) {
+    public String getString(String key) {
         return getString(key, null);
     }
 
@@ -213,7 +211,7 @@ public class PreferencesUtils {
      * @param defaultValue the 默认值
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a string
      */
-    public static String getString(String key, String defaultValue) {
+    public String getString(String key, String defaultValue) {
         return settings.getString(key, defaultValue);
     }
 
@@ -223,7 +221,7 @@ public class PreferencesUtils {
      * @param key the 索引
      * @return the string set
      */
-    public static Set<String> getStringSet(String key) {
+    public Set<String> getStringSet(String key) {
         return getStringSet(key, null);
     }
 
@@ -234,7 +232,7 @@ public class PreferencesUtils {
      * @param defaultValue the 默认值
      * @return the string set
      */
-    public static Set<String> getStringSet(String key, Set<String> defaultValue) {
+    public Set<String> getStringSet(String key, Set<String> defaultValue) {
         return settings.getStringSet(key, defaultValue);
     }
 
@@ -245,7 +243,7 @@ public class PreferencesUtils {
      * @param value The 存入值
      * @return True if the new values were successfully written to persistent storage.
      */
-    public static boolean putIntNow(String key, int value) {
+    public boolean putIntNow(String key, int value) {
         editor.putInt(key, value);
         return editor.commit();
     }
@@ -256,7 +254,7 @@ public class PreferencesUtils {
      * @param key   The 索引
      * @param value The 存入值
      */
-    public static void putInt(String key, int value) {
+    public void putInt(String key, int value) {
         editor.putInt(key, value);
         editor.apply();
     }
@@ -266,9 +264,8 @@ public class PreferencesUtils {
      *
      * @param key The 索引
      * @return The preference value if it exists, or -1. Throws ClassCastException if there is a preference with this name that is not a int
-     * @see #getInt(Context, String, int) #getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)#getInt(Context, String, int)
      */
-    public static int getInt(String key) {
+    public int getInt(String key) {
         return getInt(key, -1);
     }
 
@@ -277,9 +274,8 @@ public class PreferencesUtils {
      *
      * @param key          The 索引
      * @param defaultValue The 默认值
-     * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a int
      */
-    public static int getInt(String key, int defaultValue) {
+    public int getInt(String key, int defaultValue) {
         return settings.getInt(key, defaultValue);
     }
 
@@ -290,7 +286,7 @@ public class PreferencesUtils {
      * @param value The 存入值
      * @return True if the new values were successfully written to persistent storage.
      */
-    public static boolean putLongNow(String key, long value) {
+    public boolean putLongNow(String key, long value) {
         editor.putLong(key, value);
         return editor.commit();
     }
@@ -301,7 +297,7 @@ public class PreferencesUtils {
      * @param key   The 索引
      * @param value The 存入值
      */
-    public static void putLong(String key, long value) {
+    public void putLong(String key, long value) {
         editor.putLong(key, value);
         editor.apply();
     }
@@ -311,9 +307,8 @@ public class PreferencesUtils {
      *
      * @param key The 索引
      * @return The preference value if it exists, or -1. Throws ClassCastException if there is a preference with this name that is not a long
-     * @see #getLong(Context, String, long) #getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)#getLong(Context, String, long)
      */
-    public static long getLong(String key) {
+    public long getLong(String key) {
         return getLong(key, -1);
     }
 
@@ -324,7 +319,7 @@ public class PreferencesUtils {
      * @param defaultValue The 默认值
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a long
      */
-    public static long getLong(String key, long defaultValue) {
+    public long getLong(String key, long defaultValue) {
         return settings.getLong(key, defaultValue);
     }
 
@@ -335,7 +330,7 @@ public class PreferencesUtils {
      * @param value The 存入值
      * @return True if the new values were successfully written to persistent storage.
      */
-    public static boolean putFloatNow(String key, float value) {
+    public boolean putFloatNow(String key, float value) {
         editor.putFloat(key, value);
         return editor.commit();
     }
@@ -346,7 +341,7 @@ public class PreferencesUtils {
      * @param key   The 索引
      * @param value The 存入值
      */
-    public static void putFloat(String key, float value) {
+    public void putFloat(String key, float value) {
         editor.putFloat(key, value);
         editor.apply();
     }
@@ -356,9 +351,8 @@ public class PreferencesUtils {
      *
      * @param key The 索引
      * @return The preference value if it exists, or -1. Throws ClassCastException if there is a preference with this name that is not a float
-     * @see #getFloat(Context, String, float) #getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)#getFloat(Context, String, float)
      */
-    public static float getFloat(String key) {
+    public float getFloat(String key) {
         return getFloat(key, -1);
     }
 
@@ -369,7 +363,7 @@ public class PreferencesUtils {
      * @param defaultValue The 默认值
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a float
      */
-    public static float getFloat(String key, float defaultValue) {
+    public float getFloat(String key, float defaultValue) {
         return settings.getFloat(key, defaultValue);
     }
 
@@ -380,7 +374,7 @@ public class PreferencesUtils {
      * @param value The 存入值
      * @return True if the new values were successfully written to persistent storage.
      */
-    public static boolean putBooleanNow(String key, boolean value) {
+    public boolean putBooleanNow(String key, boolean value) {
         editor.putBoolean(key, value);
         return editor.commit();
     }
@@ -391,7 +385,7 @@ public class PreferencesUtils {
      * @param key   The 索引
      * @param value The 存入值
      */
-    public static void putBoolean(String key, boolean value) {
+    public void putBoolean(String key, boolean value) {
         editor.putBoolean(key, value);
         editor.apply();
     }
@@ -401,9 +395,8 @@ public class PreferencesUtils {
      *
      * @param key The 索引
      * @return The preference value if it exists, or false. Throws ClassCastException if there is a preference with this name that is not a boolean
-     * @see #getBoolean(Context, String, boolean) #getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)#getBoolean(Context, String, boolean)
      */
-    public static boolean getBoolean(String key) {
+    public boolean getBoolean(String key) {
         return getBoolean(key, false);
     }
 
@@ -414,7 +407,7 @@ public class PreferencesUtils {
      * @param defaultValue The 默认值
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with this name that is not a boolean
      */
-    public static boolean getBoolean(String key, boolean defaultValue) {
+    public boolean getBoolean(String key, boolean defaultValue) {
         return settings.getBoolean(key, defaultValue);
     }
 
@@ -423,7 +416,7 @@ public class PreferencesUtils {
      *
      * @return the boolean
      */
-    public static boolean clearNow() {
+    public boolean clearNow() {
         editor.clear();
         return editor.commit();
     }
@@ -431,7 +424,7 @@ public class PreferencesUtils {
     /**
      * 清空SP
      */
-    public static void clear() {
+    public void clear() {
         editor.clear();
         editor.apply();
     }
@@ -442,7 +435,7 @@ public class PreferencesUtils {
      * @param key the 索引
      * @return the 是否删除
      */
-    public static boolean removeNow(String key) {
+    public boolean removeNow(String key) {
         editor.remove(key);
         return editor.commit();
     }
@@ -452,7 +445,7 @@ public class PreferencesUtils {
      *
      * @param key the 索引
      */
-    public static void remove(String key) {
+    public void remove(String key) {
         editor.remove(key);
         editor.apply();
     }

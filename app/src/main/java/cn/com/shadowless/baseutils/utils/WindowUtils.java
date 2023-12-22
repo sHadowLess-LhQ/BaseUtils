@@ -258,7 +258,7 @@ public class WindowUtils {
      *
      * @return the width
      */
-    public static int getWidth() {
+    public static int getDisplayWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
@@ -267,7 +267,7 @@ public class WindowUtils {
      *
      * @return the height
      */
-    public static int getHeight() {
+    public static int getDisplayHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 }

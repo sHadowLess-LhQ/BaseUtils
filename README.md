@@ -169,61 +169,65 @@ c、混淆规则
 
 ```
      //初始化
-     PreferencesUtils.getInstance().initPreferences(Context context)
+     PreferencesUtils.INSTANCE.initPreferences(Context context)
+     //初始化自定义名称SP
+     PreferencesUtils.INSTANCE.initPreferences(Context context,String name)
+     //初始化自定义名称、模式SP
+     PreferencesUtils.INSTANCE.initPreferences(Context context,String name,int mode)
      //同步存入字符串数据
-     PreferencesUtils.putStringNow(String key, String value)
+     PreferencesUtils.INSTANCE.putStringNow(String key, String value)
      //异步存入字符串数据
-     PreferencesUtils.putString(String key, String value)
+     PreferencesUtils.INSTANCE.putString(String key, String value)
      //同步追加字符串集合数据
-     PreferencesUtils.addStringSetNow(String key, String value)
+     PreferencesUtils.INSTANCE.addStringSetNow(String key, String value)
      //异步追加字符串集合数据
-     PreferencesUtils.addStringSet(String key, String value)
+     PreferencesUtils.INSTANCE.addStringSet(String key, String value)
      //同步删除指定字符串集合数据
-     PreferencesUtils.removeStringSetNow(String key, String value)
+     PreferencesUtils.INSTANCE.removeStringSetNow(String key, String value)
      //异步删除指定字符串集合数据
-     PreferencesUtils.removeStringSet(String key, String value)
+     PreferencesUtils.INSTANCE.removeStringSet(String key, String value)
      //同步存入整型数据
-     PreferencesUtils.putIntNow(String key, int value)
+     PreferencesUtils.INSTANCE.putIntNow(String key, int value)
      //异步存入整型数据
-     PreferencesUtils.putInt(String key, int value)
+     PreferencesUtils.INSTANCE.putInt(String key, int value)
      //同步存入长整型数据
-     PreferencesUtils.putLongNow(String key, long value)
+     PreferencesUtils.INSTANCE.putLongNow(String key, long value)
      //异步存入长整型数据
-     PreferencesUtils.putLong(String key, long value)
+     PreferencesUtils.INSTANCE.putLong(String key, long value)
      //同步存入单精度浮点数据
-     PreferencesUtils.putFloatNow(String key, float value)
+     PreferencesUtils.INSTANCE.putFloatNow(String key, float value)
      //异步存入单精度浮点数据
-     PreferencesUtils.putFloat(String key, float value)
+     PreferencesUtils.INSTANCE.putFloat(String key, float value)
      //同步存入布尔类型数据
-     PreferencesUtils.putBooleanNow(String key, boolean value)
+     PreferencesUtils.INSTANCE.putBooleanNow(String key, boolean value)
      //异步存入布尔类型数据
-     PreferencesUtils.putBoolean(String key, boolean value)
+     PreferencesUtils.INSTANCE.putBoolean(String key, boolean value)
      //获取字符串数据
-     PreferencesUtils.getString(String key)
-     PreferencesUtils.getString(String key, String defaultValue)
+     PreferencesUtils.INSTANCE.getString(String key)
+     PreferencesUtils.INSTANCE.getString(String key, String defaultValue)
      //获取字符串集合
-     PreferencesUtils.getStringSet(String key)
-     PreferencesUtils.getStringSet(String key, Set<String> defaultValue)
+     PreferencesUtils.INSTANCE.getStringSet(String key)
+     PreferencesUtils.INSTANCE.getStringSet(String key, Set<String> defaultValue)
      //获取整型数据
-     PreferencesUtils.getInt(String key)
-     PreferencesUtils.getInt(String key, int defaultValue)
+     PreferencesUtils.INSTANCE.getInt(String key)
+     PreferencesUtils.INSTANCE.getInt(String key, int defaultValue)
      //获取长整型数据
-     PreferencesUtils.getLong(String key)
-     PreferencesUtils.getLong(String key, long defaultValue)
+     PreferencesUtils.INSTANCE.getLong(String key)
+     PreferencesUtils.INSTANCE.getLong(String key, long defaultValue)
      //获取单精度浮点数据
-     PreferencesUtils.getFloat(String key)
-     PreferencesUtils.getFloat(String key, float defaultValue)
+     PreferencesUtils.INSTANCE.getFloat(String key)
+     PreferencesUtils.INSTANCE.getFloat(String key, float defaultValue)
      //获取布尔类型数据
-     PreferencesUtils.getBoolean(CString key)
-     PreferencesUtils.getBoolean(String key, boolean defaultValue)
+     PreferencesUtils.INSTANCE.getBoolean(CString key)
+     PreferencesUtils.INSTANCE.getBoolean(String key, boolean defaultValue)
      //同步清空SP
-     PreferencesUtils.clearNow()
+     PreferencesUtils.INSTANCE.clearNow()
      //异步清空SP
-     PreferencesUtils.clear()
+     PreferencesUtils.INSTANCE.clear()
      //同步删除指定数据
-     PreferencesUtils.removeNow(String key)
+     PreferencesUtils.INSTANCE.removeNow(String key)
      //异步删除指定数据
-     PreferencesUtils.remove(String key)
+     PreferencesUtils.INSTANCE.remove(String key)
 ```
 
 ### RxUtils
@@ -611,9 +615,9 @@ c、混淆规则
      //设置内容与状态栏/导航栏高度自适应(适配刘海屏)
      WindowUtils.setContentBelowAndTop(Activity activity, String type)
      //获取屏幕宽度
-     WindowUtils.getWidth()
+     WindowUtils.getDisplayWidth()
      //获取屏幕高度
-     WindowUtils.getHeight()
+     WindowUtils.getDisplayHeight()
 ```
 
 ### BaseAccessibilityService
@@ -1461,7 +1465,7 @@ copy轮子哥的https://github.com/getActivity/Toaster
                     //编码比特率，有默认设置
                     .videoEncodingBitRate()
                     .build();
-            screenRecordUtils = new ScreenRecordUtils(recordConfig, new ScreenRecordUtils.OnVideoRecordListener() {
+     ScreenRecordUtils screenRecordUtils = new ScreenRecordUtils(recordConfig, new ScreenRecordUtils.OnVideoRecordListener() {
                 @Override
                 public void onBeforeRecord() {
                    //准备录制前

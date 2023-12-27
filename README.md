@@ -364,6 +364,8 @@ c、混淆规则
                 .minDistance(int distance)    //设置最短更新距离，默认10
                 .retryCount(int retryCount)   //设置立即获取位置信息重试次数，默认5次
                 .delayTime(int delayTime)     //设置延迟获取时间（单位秒）
+                .observeLife(LifecycleOwner owner)  //设置需要监听的生命周期组件（可为空，但需要手动移除监听）
+                .stopEvent(Lifecycle.Event event)   //设置生命周期中止标识（默认ON_DESTROY）
                 .locationListener(new LocationListener() {
                     @Override
                     public void onLocationChanged(@NonNull Location location) {

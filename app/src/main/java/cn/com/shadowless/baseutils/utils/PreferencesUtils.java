@@ -42,8 +42,7 @@ public enum PreferencesUtils {
      * @param context the context
      */
     public void initPreferences(Context context) {
-        settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        editor = settings.edit();
+        initPreferences(context, PREFERENCE_NAME);
     }
 
     /**
@@ -53,8 +52,7 @@ public enum PreferencesUtils {
      * @param name    the name
      */
     public void initPreferences(Context context, String name) {
-        settings = context.getSharedPreferences(name, Context.MODE_PRIVATE);
-        editor = settings.edit();
+        initPreferences(context, name, Context.MODE_PRIVATE);
     }
 
     /**

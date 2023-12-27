@@ -14,6 +14,9 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,7 +27,7 @@ import java.util.Locale;
  *
  * @author sHadowLess
  */
-public class LocationUtils {
+public class LocationUtils implements LifecycleEventObserver {
 
     /**
      * 位置管理器
@@ -67,6 +70,16 @@ public class LocationUtils {
      * 位置信息回调
      */
     private final AddressCallback addressCallback;
+
+    /**
+     * The Owner.
+     */
+    private final LifecycleOwner owner;
+
+    /**
+     * The Event.
+     */
+    private final Lifecycle.Event event;
 
     /**
      * 位置信息提供器
@@ -125,18 +138,33 @@ public class LocationUtils {
      * @param minDistance      the min distance
      * @param retryCount       the retry count
      * @param delayTime        the delay time
+     * @param owner            the owner
+     * @param event            the event
      * @param locationListener the location listener
      * @param addressCallback  the address callback
      */
-    public LocationUtils(Context mContext, int minTime, int minDistance, int retryCount, int delayTime, LocationListener locationListener, AddressCallback addressCallback) {
+    public LocationUtils(Context mContext, int minTime, int minDistance, int retryCount, int delayTime, LifecycleOwner owner, Lifecycle.Event event, LocationListener locationListener, AddressCallback addressCallback) {
         this.mContext = mContext;
         this.minTime = minTime;
         this.delayTime = delayTime;
         this.minDistance = minDistance;
         this.retryCount = retryCount;
+        this.owner = owner;
+        if (this.owner != null) {
+            this.owner.getLifecycle().addObserver(this);
+        }
+        this.event = event;
         this.locationListener = locationListener;
         this.addressCallback = addressCallback;
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+    }
+
+    @Override
+    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+        if (this.event == event) {
+            clearLocationCallback();
+            owner.getLifecycle().removeObserver(this);
+        }
     }
 
     /**
@@ -147,6 +175,7 @@ public class LocationUtils {
     public static LocationUtilsBuilder builder() {
         return new LocationUtilsBuilder();
     }
+
 
     /**
      * 构造者实体
@@ -176,6 +205,16 @@ public class LocationUtils {
          * 最短距离
          */
         private int minDistance = 10;
+
+        /**
+         * The Owner.
+         */
+        private LifecycleOwner owner;
+
+        /**
+         * The Event.
+         */
+        private Lifecycle.Event event = Lifecycle.Event.ON_DESTROY;
 
         /**
          * 位置回调
@@ -243,6 +282,29 @@ public class LocationUtils {
         }
 
         /**
+         * Observe life location utils builder.
+         *
+         * @param owner the owner
+         * @return the location utils builder
+         */
+        public LocationUtilsBuilder observeLife(LifecycleOwner owner) {
+            this.owner = owner;
+            return this;
+        }
+
+        /**
+         * Stop event location utils builder.
+         *
+         * @param event the event
+         * @return the location utils builder
+         */
+        public LocationUtilsBuilder stopEvent(Lifecycle.Event event) {
+            this.event = event;
+            return this;
+        }
+
+
+        /**
          * Location listener location utils . location utils builder.
          *
          * @param locationListener the location listener
@@ -270,7 +332,7 @@ public class LocationUtils {
          * @return the net utils
          */
         public LocationUtils build() {
-            return new LocationUtils(this.mContext, this.minTime, this.minDistance, this.retryCount, this.delayTime, this.locationListener, this.addressCallback);
+            return new LocationUtils(this.mContext, this.minTime, this.minDistance, this.retryCount, this.delayTime, this.owner, this.event, this.locationListener, this.addressCallback);
         }
     }
 
@@ -287,8 +349,7 @@ public class LocationUtils {
      * 立即获取位置
      */
     public void getLocation() {
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             sendErrorToMainThread("请申请定位权限");
             return;
         }
@@ -409,8 +470,7 @@ public class LocationUtils {
      * 通过网络获取位置信息
      */
     private void getLngAndLatWithNetwork() {
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             sendErrorToMainThread("请申请定位权限");
             return;
         }

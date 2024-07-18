@@ -56,7 +56,7 @@ public class ApplicationUtils {
      *
      * @param activity the 上下文
      */
-    public static void completeExitApp(Activity activity){
+    public static void completeExitApp(Activity activity) {
         activity.moveTaskToBack(true);
         int pid = Process.myPid();
         Process.killProcess(pid);
@@ -84,17 +84,13 @@ public class ApplicationUtils {
      * @param apkPath the apk文件路径
      */
     public static void startInstallApk(Context context, String apkPath) {
-        try {
-            File file = new File(apkPath);
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileProvider", file);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.setDataAndType(uri, "application/vnd.android.package-archive");
-            context.startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        File file = new File(apkPath);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileProvider", file);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+        context.startActivity(intent);
     }
 
     /**
@@ -162,12 +158,7 @@ public class ApplicationUtils {
      */
     public static String getUuid() {
         String devId = "55" + Build.BOARD.length() % 10 + Build.BRAND.length() % 10 + Build.CPU_ABI.length() % 10 + Build.DEVICE.length() % 10 + Build.DISPLAY.length() % 10 + Build.HOST.length() % 10 + Build.ID.length() % 10 + Build.MANUFACTURER.length() % 10 + Build.MODEL.length() % 10 + Build.PRODUCT.length() % 10 + Build.TAGS.length() % 10 + Build.TYPE.length() % 10 + Build.USER.length() % 10;
-        try {
-            return new UUID(devId.hashCode(), devId.hashCode()).toString().replace("-", "");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
+        return new UUID(devId.hashCode(), devId.hashCode()).toString().replace("-", "");
     }
 
     /**
@@ -177,19 +168,14 @@ public class ApplicationUtils {
      * @param packName the 包名
      * @return the 版本码
      */
-    public static long getVersionCode(Context context, String packName) {
+    public static long getVersionCode(Context context, String packName) throws PackageManager.NameNotFoundException {
         PackageManager packageManager = context.getPackageManager();
-        try {
-            PackageInfo packageInfo = packageManager.getPackageInfo(packName, 0);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                return packageInfo.getLongVersionCode();
-            } else {
-                return packageInfo.versionCode;
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+        PackageInfo packageInfo = packageManager.getPackageInfo(packName, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            return packageInfo.getLongVersionCode();
+        } else {
+            return packageInfo.versionCode;
         }
-        return -1;
     }
 
     /**
@@ -199,15 +185,10 @@ public class ApplicationUtils {
      * @param packName the 包名
      * @return the 版本码名称
      */
-    public static String getVersionName(Context context, String packName) {
+    public static String getVersionName(Context context, String packName) throws PackageManager.NameNotFoundException {
         PackageManager packageManager = context.getPackageManager();
-        try {
-            PackageInfo packageInfo = packageManager.getPackageInfo(packName, 0);
-            return packageInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return "";
+        PackageInfo packageInfo = packageManager.getPackageInfo(packName, 0);
+        return packageInfo.versionName;
     }
 
     /**
@@ -217,14 +198,9 @@ public class ApplicationUtils {
      * @param packName the 包名
      * @return the package info
      */
-    public static PackageInfo getPackageInfo(Context context, String packName) {
+    public static PackageInfo getPackageInfo(Context context, String packName) throws PackageManager.NameNotFoundException {
         PackageManager packageManager = context.getPackageManager();
-        try {
-            return packageManager.getPackageInfo(packName, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return packageManager.getPackageInfo(packName, 0);
     }
 
     /**

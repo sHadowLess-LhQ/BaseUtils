@@ -230,111 +230,75 @@ c、混淆规则
      PreferencesUtils.INSTANCE.remove(String key)
 ```
 
-### RxUtils
+### RxTransformerUtils
 
 ```
-     //具体参数
-     /**
-         * 默认
-         */
-        DEFAULT,
-        /**
-         * 非密集计算线程到主线程
-         */
-        IO_TO_MAIN,
-        /**
-         * 非密集计算线程到非密集计算线程
-         */
-        IO_TO_IO,
-        /**
-         * 非密集计算线程到新线程
-         */
-        IO_TO_NEW_THREAD,
-        /**
-         * 非密集计算线程到密集计算线程
-         */
-        IO_TO_COMPUTATION,
-        /**
-         * 非密集计算线程到有序单线程
-         */
-        IO_TO_SINGLE,
-        /**
-         * 新线程到主线程
-         */
-        NEW_THREAD_TO_MAIN,
-        /**
-         * 新线程到非密集计算线程
-         */
-        NEW_THREAD_TO_IO,
-        /**
-         * 新线程到新线程
-         */
-        NEW_THREAD_TO_NEW_THREAD,
-        /**
-         * 新线程到密集计算线程
-         */
-        NEW_THREAD_TO_COMPUTATION,
-        /**
-         * 新线程到有序单线程
-         */
-        NEW_THREAD_TO_SINGLE,
-        /**
-         * 密集计算线程到主线程
-         */
-        COMPUTATION_TO_MAIN,
-        /**
-         * 密集计算线程到非密集计算线程到
-         */
-        COMPUTATION_TO_IO,
-        /**
-         * 密集计算线程到新线程
-         */
-        COMPUTATION_TO_NEW_THREAD,
-        /**
-         * 密集计算线程到密集计算线程到
-         */
-        COMPUTATION_TO_COMPUTATION,
-        /**
-         * 密集计算线程到有序单线程
-         */
-        COMPUTATION_TO_SINGLE,
-        /**
-         * 有序单线程到主线程
-         */
-        SINGLE_TO_MAIN,
-        /**
-         * 有序单线程到非密集计算线程
-         */
-        SINGLE_TO_IO,
-        /**
-         * 有序单线程到新线程
-         */
-        SINGLE_TO_NEW_THREAD,
-        /**
-         * 有序单线程到密集计算线程
-         */
-        SINGLE_TO_COMPUTATION,
-        /**
-         * 有序单线程到有序单线程到
-         */
-        SINGLE_TO_SINGLE
-    
-     //返回ObservableTransformer流对象
-     RxUtils.dealObservableThread(int threadSign)
-     //返回dealCompletableThread流对象
-     RxUtils.dealCompletableThread(int threadSign)
-     //返回dealMaybeThread流对象
-     RxUtils.dealMaybeThread(int threadSign)
-     //返回dealSingleThread流对象
-     RxUtils.dealSingleThread(int threadSign)
-     //返回dealFlowableThread流对象
-     RxUtils.dealFlowableThread(int threadSign)
+     //指定Flowable上下游线程（不指定解除订阅线程）
+     RxTransformerUtils.setFlowableStream(Scheduler subscribeOn, Scheduler observeOn)
+     //指定Flowable上下游线程和解除订阅线程
+     RxTransformerUtils.setFlowableStream(Scheduler subscribeOn, Scheduler unsubscribeOn, Scheduler observeOn
+     //指定Flowable上游线程（不指定下游）
+     RxTransformerUtils.setFlowableStreamWithoutObserveOn(Scheduler subscribeOn)
+     //指定Flowable上游线程和解除订阅线程（不指定下游）
+     RxTransformerUtils.setFlowableStreamWithoutObserveOn(Scheduler subscribeOn, Scheduler unsubscribeOn)
+     //指定Flowable解除订阅线程和下游线程（不指定上游）
+     RxTransformerUtils.setFlowableStreamWithoutSubscribeOn(Scheduler unsubscribeOn, Scheduler observeOn)
+     //指定Flowable解除订阅线程（不指定上下游）
+     RxTransformerUtils.setFlowableStreamUnsubscribeOn(Scheduler unsubscribeOn)
+     //指定Single上下游线程（不指定解除订阅线程）
+     RxTransformerUtils.setSingleStream(Scheduler subscribeOn, Scheduler observeOn)
+     //指定Single上下游线程和解除订阅线程
+     RxTransformerUtils.setSingleStream(Scheduler subscribeOn, Scheduler unsubscribeOn, Scheduler observeOn)
+     //指定Single上游线程（不指定下游）
+     RxTransformerUtils.setSingleStreamWithoutObserveOn(Scheduler subscribeOn)
+     //指定Single上游线程和解除订阅线程（不指定下游）
+     RxTransformerUtils.setSingleStreamWithoutObserveOn(Scheduler subscribeOn, Scheduler unsubscribeOn)
+     //指定Single解除订阅线程和下游线程（不指定上游）
+     RxTransformerUtils.setSingleStreamWithoutSubscribeOn(Scheduler unsubscribeOn, Scheduler observeOn)
+     //指定Single解除订阅线程（不指定上下游）
+     RxTransformerUtils.setSingleStreamUnsubscribeOn(Scheduler unsubscribeOn)
+     //指定Maybe上下游线程（不指定解除订阅线程）
+     RxTransformerUtils.setMaybeStream(Scheduler subscribeOn, Scheduler observeOn)
+     //指定Maybe上下游线程和解除订阅线程
+     RxTransformerUtils.setMaybeStream(Scheduler subscribeOn, Scheduler unsubscribeOn, Scheduler observeOn)
+     //指定Maybe上游线程（不指定下游）
+     RxTransformerUtils.setMaybeStreamWithoutObserveOn(Scheduler subscribeOn)
+     //指定Maybe上游线程和解除订阅线程（不指定下游）
+     RxTransformerUtils.setMaybeStreamWithoutObserveOn(Scheduler subscribeOn, Scheduler unsubscribeOn)
+     //指定Maybe解除订阅线程和下游线程（不指定上游）
+     RxTransformerUtils.setMaybeStreamWithoutSubscribeOn(Scheduler unsubscribeOn, Scheduler observeOn)
+     //指定Maybe解除订阅线程（不指定上下游）
+     RxTransformerUtils.setMaybeStreamUnsubscribeOn(Scheduler unsubscribeOn)
+     //指定Completable上下游线程（不指定解除订阅线程）
+     RxTransformerUtils.setCompletableStream(Scheduler subscribeOn, Scheduler observeOn)
+     //指定Completable上下游线程和解除订阅线
+     RxTransformerUtils.setCompletableStream(Scheduler subscribeOn, Scheduler unsubscribeOn, Scheduler observeOn)
+     //指定Completable上游线程（不指定下游）
+     RxTransformerUtils.setCompletableStreamWithoutObserveOn(Scheduler subscribeOn)
+     /指定Completable上游线程和解除订阅线程（不指定下游）
+     RxTransformerUtils.setCompletableStreamWithoutObserveOn(Scheduler subscribeOn, Scheduler unsubscribeOn)
+     //指定Completable解除订阅线程和下游线程（不指定上游）
+     RxTransformerUtils.setCompletableStreamWithoutSubscribeOn(Scheduler unsubscribeOn, Scheduler observeOn)
+     //指定Completable解除订阅线程（不指定上下游）
+     RxTransformerUtils.setCompletableStreamUnsubscribeOn(Scheduler unsubscribeOn) 
+     //指定Observable上下游线程（不指定解除订阅线程）
+     RxTransformerUtils.setObservableStream(Scheduler subscribeOn, Scheduler observeOn)
+     //指定Observable上下游线程和解除订阅线
+     RxTransformerUtils.setObservableStream(Scheduler subscribeOn, Scheduler unsubscribeOn, Scheduler observeOn)
+     //指定Observable上游线程（不指定下游）
+     RxTransformerUtils.setObservableStreamWithoutObserveOn(Scheduler subscribeOn)
+     /指定Observable上游线程和解除订阅线程（不指定下游）
+     RxTransformerUtils.setObservableStreamWithoutObserveOn(Scheduler subscribeOn, Scheduler unsubscribeOn)
+     //指定Observable解除订阅线程和下游线程（不指定上游）
+     RxTransformerUtils.setObservableStreamWithoutSubscribeOn(Scheduler unsubscribeOn, Scheduler observeOn)
+     //指定Observable解除订阅线程（不指定上下游）
+     RxTransformerUtils.setObservableStreamUnsubscribeOn(Scheduler unsubscribeOn)
 ```
 
 ### RetrofitUtils
 
 ```
-      RetrofitUtils
+      RetrofitUtils retrofit = RetrofitUtils
                 .builder()
                 .baseUrl()       //设置根地址
                 .okHttpClient()  //设置自定义okhttp，不设置有默认
@@ -343,16 +307,13 @@ c、混淆规则
                 .gson(new Gson())//设置自定义Gson，不设置有默认
                 .callAdapterFactory()//设置RxJava工厂类，不设置有默认
                 .converterFactory()//设置解析工厂类，不设置有默认
-                .build()
-                .initRetrofit()  //初始化Retrofit
-                .initRetrofit(new Gson()) //传入需要创建的接口类，默认有Gson，可自定义
-                .initApi(DeviceApi.class)
-                .initApi(DeviceApi.class, DeviceApi.class);
+                .build();
+      retrofit.initRetrofit()  //初始化Retrofit
+      retrofit.initApi(DeviceApi.class, DeviceApi.class); //初始化Api
+      //获取创建的接口对象
+      retrofit.getApiByApiName(String apiName) //key为传入initApi类的simpleName
       //获取错误信息          
       RetrofitUtils.getExceptionMessage(Throwable throwable)
-      //获取创建的接口表
-      //key为传入initApi类的simpleName
-      RetrofitUtils.getApiMap()
 ```
 
 ### LocationUtils
@@ -1587,4 +1548,45 @@ copy轮子哥的https://github.com/getActivity/Toaster
      PermissionUtils.hasVpnCreatePermission(Context context)
      //获取是否有VPN连接(带返回)
      PermissionUtils.hasVpnCreatePermission(Activity context, int code)
+```
+
+### ParseUtils
+
+```
+     ParseUtils.parseStringToInt(String string)
+     ParseUtils.parseStringToInt(String string, int defValue)
+     ParseUtils.parseStringToInteger(String string)
+     ParseUtils.parseStringToInteger(String string, Integer defValue)
+     ParseUtils.parseStringToBasicDouble(String value)
+     ParseUtils.parseStringToBasicDouble(String value, double defValue)
+     ParseUtils.parseStringToObjectDouble(String value)
+     ParseUtils.parseStringToObjectDouble(String value, double defValue)
+     ParseUtils.parseStringToBasicLong(String value)
+     ParseUtils.parseStringToBasicLong(String value, long defValue)
+     ParseUtils.parseStringToObjectLong(String value)
+     ParseUtils.parseStringToObjectLong(String value, Long defValue)
+     ParseUtils.parseStringToBasicFloat(String value)
+     ParseUtils.parseStringToBasicFloat(String value, float defValue)
+     ParseUtils.parseStringToObjectFloat(String value)
+     ParseUtils.parseStringToObjectFloat(String value, Float defValue)
+     ParseUtils.parseStringToBasicBoolean(String value)
+     ParseUtils.parseStringToBasicBoolean(String value, boolean defValue)
+     ParseUtils.parseStringToObjectBoolean(String value)
+     ParseUtils.parseStringToObjectBoolean(String value, Boolean defValue)
+     ParseUtils.parseObjectToT(Object o)
+     ParseUtils.deepCopyList(List<T> originalList)
+     ParseUtils.getSexFromIdCard(String idCard)
+     ParseUtils.getSexNameFromIdCard(String idCard)
+     ParseUtils.getBirthDayFromIdCard(String idCard, String separator)
+     ParseUtils.convertIdCard15To18(String idCard)
+     ParseUtils.matchKeyWords(String keyword, String needMatchWord)
+     ParseUtils.isValidName(String value)
+     ParseUtils.isValidIdCardNum(String idCard)
+     ParseUtils.isValidIdCardNumWithSex(String idCard)
+     ParseUtils.desensitizedIdNumber(String idNumber)
+     ParseUtils.desensitizedPhoneNumber(String phoneNumber)
+     ParseUtils.calculateAgeFromIdCard(String idCard)
+     ParseUtils.calculateAgeFromIdCard(String idCard, String formatValue)
+     ParseUtils.calculateAgeFromBornDate(String bornDate)
+     ParseUtils.calculateAgeFromBornDate(String bornDate, String formatValue)
 ```

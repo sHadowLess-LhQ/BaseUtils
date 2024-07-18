@@ -17,7 +17,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -70,7 +70,7 @@ public class RetrofitUtils {
     /**
      * The constant apiMap.
      */
-    private static Map<String, Object> apiMap = null;
+    private Map<String, BaseApi> apiMap;
 
     /**
      * 错误枚举
@@ -103,6 +103,13 @@ public class RetrofitUtils {
     }
 
     /**
+     * The interface Base api.
+     */
+    public interface BaseApi {
+
+    }
+
+    /**
      * 获取ohkHttp实例
      *
      * @return the ok http client
@@ -116,27 +123,9 @@ public class RetrofitUtils {
     }
 
     /**
-     * 初始化完成回调
-     *
-     * @param <T> the type parameter
-     */
-    public interface InitApiCallBack<T> {
-        /**
-         * 完成
-         *
-         * @param api the 接口
-         */
-        void finish(@NonNull T api);
-
-
-    }
-
-    /**
      * 初始化retrofit
-     *
-     * @return the net utils
      */
-    public RetrofitUtils initRetrofit() {
+    public void initRetrofit() {
         if (null == okHttpClient) {
             okHttpClient = getOkHttpClient();
         }
@@ -144,7 +133,7 @@ public class RetrofitUtils {
             gson = new Gson();
         }
         if (null == callAdapterFactory) {
-            callAdapterFactory = RxJava2CallAdapterFactory.create();
+            callAdapterFactory = RxJava3CallAdapterFactory.create();
         }
         if (null == converterFactory) {
             converterFactory = GsonConverterFactory.create(gson);
@@ -155,47 +144,31 @@ public class RetrofitUtils {
                 .addCallAdapterFactory(callAdapterFactory)
                 .client(okHttpClient)
                 .build();
-        return this;
+        apiMap = new HashMap<>();
     }
 
     /**
      * Gets api map.
      *
+     * @param <T>     the type parameter
+     * @param apiName the api name
      * @return the api map
      */
-    public static Map<String, Object> getApiMap() {
-        if (apiMap == null) {
-            apiMap = new HashMap<>();
-        }
-        return apiMap;
+    public <T extends BaseApi> T getApiByApiName(String apiName) {
+        return (T) apiMap.get(apiName);
     }
 
     /**
      * 初始化接口
      *
-     * @param <T> the type 接口类型
+     * @param <T> the type parameter
      * @param cls the 接口类
-     * @return the net utils
      */
-    public <T> RetrofitUtils initApi(@NonNull Class<T> cls) {
-        T api = retrofit.create(cls);
-        apiMap.put(cls.getSimpleName(), api);
-        return this;
-    }
-
-    /**
-     * 初始化接口
-     *
-     * @param cls the 接口类
-     * @return the net utils
-     */
-    public RetrofitUtils initApi(@NonNull Class<?>... cls) {
-        apiMap = new HashMap<>(cls.length);
-        for (Class<?> currentCls : cls) {
-            Object obj = retrofit.create(currentCls);
+    public <T extends BaseApi> void initApi(@NonNull Class<T>... cls) {
+        for (Class<T> currentCls : cls) {
+            T obj = retrofit.create(currentCls);
             apiMap.put(currentCls.getSimpleName(), obj);
         }
-        return this;
     }
 
     /**

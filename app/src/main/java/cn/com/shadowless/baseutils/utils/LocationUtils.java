@@ -143,7 +143,7 @@ public class LocationUtils implements LifecycleEventObserver {
      * @param locationListener the location listener
      * @param addressCallback  the address callback
      */
-    public LocationUtils(Context mContext, int minTime, int minDistance, int retryCount, int delayTime, LifecycleOwner owner, Lifecycle.Event event, LocationListener locationListener, AddressCallback addressCallback) {
+    private LocationUtils(Context mContext, int minTime, int minDistance, int retryCount, int delayTime, LifecycleOwner owner, Lifecycle.Event event, LocationListener locationListener, AddressCallback addressCallback) {
         this.mContext = mContext;
         this.minTime = minTime;
         this.delayTime = delayTime;

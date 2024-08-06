@@ -1521,72 +1521,127 @@ copy轮子哥的https://github.com/getActivity/Toaster
      TencentUtils.INSTANCE.openQqShareMiniProgram(Activity activity, String title, String description, String url, String imgPath, String appId, String path, IUiListener listener);
 ```
 
-### SpecialPermissionUtils
+### ViewAnimBorderUtils
 
 ```
-     //获取分区存储权限
-     PermissionUtils.hasExternalStoragePermission(Context context)
-     //获取分区存储权限(带返回)
-     PermissionUtils.hasExternalStoragePermission(Activity context, int code)
-     //获取悬浮窗权限
-     PermissionUtils.hasFloatWindowPermission(Context context)
-     //获取悬浮窗权限(带返回)
-     PermissionUtils.hasFloatWindowPermission(Activity context, int code)
-     //获取分区存储媒体管理权限
-     PermissionUtils.hasMediaManagePermission(Context context)
-     //获取分区存储媒体管理权限(带返回)
-     PermissionUtils.hasMediaManagePermission(Activity context, int code)
-     //获取写入设置权限
-     PermissionUtils.hasWriteSettingPermission(Context context)
-     //获取写入设置权限(带返回)
-     PermissionUtils.hasWriteSettingPermission(Activity context, int code)
-     //获取安装未知应用权限
-     PermissionUtils.hasInstallAppPermission(Context context)
-     //获取安装未知应用权限(带返回)
-     PermissionUtils.hasInstallAppPermission(Activity context, int code)
-     //获取是否有VPN连接
-     PermissionUtils.hasVpnCreatePermission(Context context)
-     //获取是否有VPN连接(带返回)
-     PermissionUtils.hasVpnCreatePermission(Activity context, int code)
+     //快速实现任意视图边框路径动画
+     //以EditText为例
+     public class AnimatedEditText extends AppCompatEditText {
+
+          private final ViewAnimBorderUtils animator;
+
+          private boolean isBorder = true;
+
+          public AnimatedEditText(Context context) {
+              this(context, null);
+          }
+      
+          public AnimatedEditText(Context context, AttributeSet attrs) {
+              super(context, attrs);
+              //构造工具类
+              //传递必要参数
+              animator = ViewAnimBorderUtils
+                      .builder()
+                      //需要边框的视图
+                      .effectView(this)
+                      //边框颜色
+                      .borderColor("#818181")
+                      //动画持续时间
+                      .duration(2000)
+                      //边框宽度
+                      .borderWidth(3f)
+                      //圆角弧度
+                      .cornerRadius(8f)
+                      .build();
+              //初始化（一定要调用）
+              animator.init();
+          }
+      
+          @Override
+          protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+              super.onSizeChanged(w, h, oldw, oldh);
+              //重写onSizeChanged，并把宽高传递给工具类
+              animator.onSizeChanged(w, h);
+          }
+      
+          @Override
+          protected void onDraw(Canvas canvas) {
+              super.onDraw(canvas);
+              //重写onDraw，把是否绘制边框和画布传递给工具类
+              animator.onDraw(isBorder, canvas);
+          }
+                
+          public void showBorder() {
+              //显示边框
+              animator.showBorder();
+          }
+      
+          public void hideBorder() {
+              隐藏边框
+              animator.hideBorder();
+          }
+    }
 ```
 
 ### ParseUtils
 
 ```
+     //字符串转短整型
      ParseUtils.parseStringToInt(String string)
      ParseUtils.parseStringToInt(String string, int defValue)
+     //字符串转短整型对象
      ParseUtils.parseStringToInteger(String string)
      ParseUtils.parseStringToInteger(String string, Integer defValue)
+     //字符串转双精度
      ParseUtils.parseStringToBasicDouble(String value)
      ParseUtils.parseStringToBasicDouble(String value, double defValue)
+     //字符串转双精度对象
      ParseUtils.parseStringToObjectDouble(String value)
      ParseUtils.parseStringToObjectDouble(String value, double defValue)
+     //字符串传长整型
      ParseUtils.parseStringToBasicLong(String value)
      ParseUtils.parseStringToBasicLong(String value, long defValue)
+     //字符串转长整型对象
      ParseUtils.parseStringToObjectLong(String value)
      ParseUtils.parseStringToObjectLong(String value, Long defValue)
+     //字符串转单精度
      ParseUtils.parseStringToBasicFloat(String value)
      ParseUtils.parseStringToBasicFloat(String value, float defValue)
+     //字符串转单精度对象
      ParseUtils.parseStringToObjectFloat(String value)
      ParseUtils.parseStringToObjectFloat(String value, Float defValue)
+     //字符串判空转布尔型
      ParseUtils.parseStringToBasicBoolean(String value)
      ParseUtils.parseStringToBasicBoolean(String value, boolean defValue)
+     //字符串判空转布尔型对象
      ParseUtils.parseStringToObjectBoolean(String value)
      ParseUtils.parseStringToObjectBoolean(String value, Boolean defValue)
+     //对象转泛型（强转）
      ParseUtils.parseObjectToT(Object o)
+     //深拷贝数组
      ParseUtils.deepCopyList(List<T> originalList)
+     //身份证获取性别（支持15和18位）
      ParseUtils.getSexFromIdCard(String idCard)
      ParseUtils.getSexNameFromIdCard(String idCard)
+     //身份证获取出生日期（支持15和18位）（分隔符）
      ParseUtils.getBirthDayFromIdCard(String idCard, String separator)
+     //身份证15位转18位
      ParseUtils.convertIdCard15To18(String idCard)
+     //正则字符串匹配（前后匹配）
      ParseUtils.matchKeyWords(String keyword, String needMatchWord)
+     //是否有效名称
      ParseUtils.isValidName(String value)
+     //是否有效身份证
      ParseUtils.isValidIdCardNum(String idCard)
      ParseUtils.isValidIdCardNumWithSex(String idCard)
+     //身份证脱敏
      ParseUtils.desensitizedIdNumber(String idNumber)
+     //电话脱敏
      ParseUtils.desensitizedPhoneNumber(String phoneNumber)
+     //身份证计算年龄
      ParseUtils.calculateAgeFromIdCard(String idCard)
      ParseUtils.calculateAgeFromIdCard(String idCard, String formatValue)
+     //出生日期计算年龄
      ParseUtils.calculateAgeFromBornDate(String bornDate)
      ParseUtils.calculateAgeFromBornDate(String bornDate, String formatValue)
 ```

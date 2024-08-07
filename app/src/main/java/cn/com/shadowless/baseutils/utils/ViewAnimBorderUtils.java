@@ -1,6 +1,7 @@
 package cn.com.shadowless.baseutils.utils;
 
 import android.animation.ValueAnimator;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +9,7 @@ import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.RectF;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
@@ -197,7 +199,7 @@ public class ViewAnimBorderUtils {
         borderPaint = new Paint();
         borderPaint.setColor(TextUtils.isEmpty(borderColor) ? Color.parseColor("#818181") : Color.parseColor(borderColor));
         borderPaint.setStyle(Paint.Style.STROKE);
-        borderPaint.setStrokeWidth(borderWidth == 0 ? 3f : borderWidth);
+        borderPaint.setStrokeWidth(borderWidth == 0 ? dp2px(3f) : borderWidth);
         borderPaint.setAntiAlias(true);
         borderPaint.setStrokeJoin(Paint.Join.ROUND);
         borderPath = new Path();
@@ -277,14 +279,16 @@ public class ViewAnimBorderUtils {
      */
     public void onSizeChanged(int w, int h) {
         RectF rect = new RectF(borderWidth / 2, borderWidth / 2, w - borderWidth / 2, h - borderWidth / 2);
-        borderPath.addRoundRect(rect, cornerRadius, cornerRadius, Path.Direction.CW);
+        float realCorner = dp2px(cornerRadius);
+        borderPath.addRoundRect(rect, realCorner, realCorner, Path.Direction.CW);
         pathMeasure = new PathMeasure(borderPath, false);
     }
 
     /**
      * On draw.
      *
-     * @param canvas the canvas
+     * @param hasBorder the has border
+     * @param canvas    the canvas
      */
     public void onDraw(boolean hasBorder, Canvas canvas) {
         if (!hasBorder) {
@@ -297,5 +301,15 @@ public class ViewAnimBorderUtils {
             pathMeasure.getSegment(0, stop, dst, true);
             canvas.drawPath(dst, borderPaint);
         }
+    }
+
+    /**
+     * Dp 2 px float.
+     *
+     * @param dpVal the dp val
+     * @return the float
+     */
+    private float dp2px(float dpVal) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, Resources.getSystem().getDisplayMetrics());
     }
 }

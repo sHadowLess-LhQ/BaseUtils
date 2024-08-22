@@ -6,15 +6,14 @@ import android.os.Environment;
 
 import androidx.annotation.RequiresApi;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.text.DecimalFormat;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * 设备文件工具类
@@ -241,7 +240,6 @@ public class FileUtils {
      *
      * @param filePath the 文件路径
      * @return the 是否创建成功
-     * @throws IOException the io exception
      */
     public static boolean createFolder(String filePath) {
         File file = new File(filePath);
@@ -309,46 +307,93 @@ public class FileUtils {
      * @param context  the 上下文
      * @param fileName the 文件名
      * @param mode     the 写入模式
-     * @param data     the 数据
-     * @return the 是否成功
+     * @param is       the is
+     * @throws IOException the io exception
      */
-    public static boolean writeFileToData(Context context, String fileName, int mode, byte[] data) {
-        try (FileOutputStream out = getAppFileOutPut(context, fileName, mode)) {
-            FileDescriptor fd = out.getFD();
-            out.write(data);
-            out.flush();
-            fd.sync();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public static void writeFileToData(Context context, String fileName, int mode, InputStream is) throws IOException {
+        FileOutputStream fos = getAppFileOutPut(context, fileName, mode);
+        FileDescriptor fd = fos.getFD();
+        writeFileToSdCard(0, 0, is, fos);
+        fd.sync();
+    }
+
+    /**
+     * Write file to data.
+     *
+     * @param context       the context
+     * @param fileName      the file name
+     * @param mode          the mode
+     * @param totalSize     the total size
+     * @param readCacheSize the read cache size
+     * @param is            the is
+     * @throws IOException the io exception
+     */
+    public static void writeFileToData(Context context, String fileName, int mode, long totalSize, long readCacheSize, InputStream is) throws IOException {
+        FileOutputStream fos = getAppFileOutPut(context, fileName, mode);
+        FileDescriptor fd = fos.getFD();
+        writeFileToSdCard(totalSize, readCacheSize, is, fos);
+        fd.sync();
     }
 
     /**
      * 写入文件到SD卡
      *
-     * @param dirPath    the 目标文件夹
-     * @param fileName   the 文件名
-     * @param data       the 数据
-     * @param len        the 长度
+     * @param file       the file
+     * @param is         the is
      * @param isContinue the 是否续写
-     * @return the 是否成功
      * @throws IOException the io exception
      */
-    public static boolean writeFileToSdCard(String dirPath, String fileName, byte[] data, int len, boolean isContinue) {
-        File dirs = new File(dirPath);
-        if (!dirs.exists()) {
-            dirs.mkdirs();
+    public static void writeFileToSdCard(File file, InputStream is, boolean isContinue) throws IOException {
+        FileOutputStream fos = new FileOutputStream(file, isContinue);
+        writeFileToSdCard(0, 0, is, fos);
+    }
+
+    /**
+     * Write file to sd card.
+     *
+     * @param file          the file
+     * @param totalSize     the total size
+     * @param readCacheSize the read cache size
+     * @param is            the is
+     * @param isContinue    the is continue
+     * @throws IOException the io exception
+     */
+    public static void writeFileToSdCard(File file, long totalSize, long readCacheSize, InputStream is, boolean isContinue) throws IOException {
+        FileOutputStream fos = new FileOutputStream(file, isContinue);
+        writeFileToSdCard(totalSize, readCacheSize, is, fos);
+    }
+
+    /**
+     * Write file to sd card.
+     *
+     * @param totalSize     the total size
+     * @param readCacheSize the read cache size
+     * @param is            the is
+     * @param os            the os
+     * @throws IOException the io exception
+     */
+    public static void writeFileToSdCard(long totalSize, long readCacheSize, InputStream is, OutputStream os) throws IOException {
+        boolean isComputePkg = totalSize != 0 && readCacheSize != 0;
+        long writeTimes = 0;
+        long remainderSize = 0;
+        if (isComputePkg) {
+            writeTimes = totalSize / readCacheSize;
+            remainderSize = totalSize % readCacheSize;
         }
-        try (FileOutputStream fos = new FileOutputStream(new File(dirPath, fileName), isContinue)) {
-            fos.write(data, 0, len);
-            fos.flush();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
+        byte[] buffer = new byte[(int) readCacheSize];
+        int bytesRead;
+        int currentWriteTimes = 0;
+        while ((bytesRead = is.read(buffer)) != -1) {
+            os.write(buffer, 0, bytesRead);
+            if (isComputePkg) {
+                currentWriteTimes++;
+                if (currentWriteTimes == writeTimes) {
+                    buffer = new byte[(int) remainderSize];
+                }
+            }
         }
-        return false;
+        os.close();
+        is.close();
     }
 
 }

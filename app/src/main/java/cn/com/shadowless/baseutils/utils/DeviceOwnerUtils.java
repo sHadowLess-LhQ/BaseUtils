@@ -602,6 +602,8 @@ public class DeviceOwnerUtils {
     /**
      * 设置用户限制
      *
+     * 具体可用限制key详情见{@link android.os.UserManager#UserRestrictionKey}
+     *
      * @param context the 上下文
      * @param key     the 限制名
      */

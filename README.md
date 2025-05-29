@@ -75,11 +75,11 @@ b、远程仓库引入
 
 ```
      dependencies {
-            implementation 'com.gitee.shadowless_lhq:base-utils:Tag'
+            implementation 'com.github.sHadowLess-LhQ:BaseUtils:Tag'
             
-            //使用RxUtils
-            implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
-            implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+            //使用RxTransformerUtils
+            implementation 'io.reactivex.rxjava3:rxjava:3.1.8'
+            implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
           
             //使用RetrofitUtils
             //【注】：使用RetrofitUtils，请引入以下依赖

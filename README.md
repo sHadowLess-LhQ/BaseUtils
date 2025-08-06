@@ -1,4 +1,4 @@
-#  BaseUtils
+# BaseUtils
 
 #### 软件架构
 
@@ -6,162 +6,13 @@
 
 #### 安装教程
 
-Step 1. 添加仓库地址和配置
+### 【注】：不提供远程库了，需要用什么直接单独复制就行，使用示例和实际有无，以代码为准（= =!懒了）
 
-```
-     //旧AndroidStudio版本
-     //build.gradle
-     allprojects {
-         repositories {
-            ...
-              maven { url 'https://jitpack.io' }
-         }
-     }
-     
-     //新AndroidStudio版本
-     //settings.gradle
-     dependencyResolutionManagement {
-          repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-          repositories {
-            ...
-             maven { url 'https://jitpack.io' }
-          }
-      }
-```
-
-```
-     //主项目的build.gradle中加入
-     //新AndroidStudio版本
-     plugins{
-       ...
-        //若使用RouterUtils，请在主model添加
-        id 'therouter'
-     }
-     
-     //主项目的build.gradle中加入
-     //旧AndroidStudio版本
-      ...
-     //若使用RouterUtils，请添加
-     apply plugin 'therouter'
-```
-
-```
-     buildscript {
-        repositories {
-        google()
-        mavenCentral()
-      }
-        dependencies {
-          classpath "com.android.tools.build:gradle:7.0.2"
-          //若使用RouterUtils，请添加
-          classpath 'cn.therouter:plugin:1.1.1'
-        }
-      }
-
-      task clean(type: Delete) {
-          delete rootProject.buildDir
-      }
-```
-
-Step 2. 添加依赖
+Step 1. 添加依赖
 
 a、克隆引入
 
 直接下载源码引入model
-
-b、远程仓库引入
-
-[![](https://jitpack.io/v/com.gitee.shadowless_lhq/base-utils.svg)](https://jitpack.io/#com.gitee.shadowless_lhq/base-utils)
-
-```
-     dependencies {
-            implementation 'com.github.sHadowLess-LhQ:BaseUtils:Tag'
-            
-            //使用RxTransformerUtils
-            implementation 'io.reactivex.rxjava3:rxjava:3.1.8'
-            implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
-          
-            //使用RetrofitUtils
-            //【注】：使用RetrofitUtils，请引入以下依赖
-            implementation 'com.squareup.okhttp3:okhttp:4.7.2'
-            implementation 'com.google.code.gson:gson:2.8.9'
-            implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-            implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-            implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
-        
-            //MMKVUtils
-            //【注】：使用MmKvUtils，请引入以下依赖
-            implementation 'com.tencent:mmkv:1.2.13'
-        
-            //TheRouter
-            //【注】：使用RouterUtils，请引入以下依赖：
-            //【注】：使用RouterUtils进行携参跳转，请声明以下注解处理器
-            implementation "cn.therouter:router:1.1.1"
-            annotationProcessor "cn.therouter:apt:1.1.1"
-            
-            //WeChatUtils
-            //【注】：使用WeChatUtils，请引入以下依赖
-            implementation 'com.tencent.mm.opensdk:wechat-sdk-android:+'
-            
-            //TencentUtils
-            //【注】：使用TencentUtils，请引入以下依赖
-            implementation 'com.tencent.tauth:qqopensdk:3.52.0'
-    }
-```
-
-c、混淆规则
-
-```
--keepattributes Signature
--keep class cn.com.shadowless.baseutils.log.**{*;}
--dontwarn sun.misc.**
--keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-    long producerIndex;
-    long consumerIndex;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
--keepclassmembers class rx.android.**{*;}
--keep class okhttp3.** { *; }
--keep interface okhttp3.** { *; }
--dontwarn okhttp3.**
--dontwarn com.squareup.**
--dontwarn okio.**
--keep public class org.codehaus.* { *; }
--keep public class java.nio.* { *; }
--dontwarn sun.misc.**
--keep class com.google.gson.examples.android.model.** { <fields>; }
--keep class * extends com.google.gson.TypeAdapter
--keep class * implements com.google.gson.TypeAdapterFactory
--keep class * implements com.google.gson.JsonSerializer
--keep class * implements com.google.gson.JsonDeserializer
--keepclassmembers,allowobfuscation class * {
-  @com.google.gson.annotations.SerializedName <fields>;
-}
--keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
--keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
--keep class androidx.annotation.Keep
--keep @androidx.annotation.Keep class * {*;}
--keepclassmembers class * {
-    @androidx.annotation.Keep *;
-}
--keepclasseswithmembers class * {
-    @androidx.annotation.Keep <methods>;
-}
--keepclasseswithmembers class * {
-    @androidx.annotation.Keep <fields>;
-}
--keepclasseswithmembers class * {
-    @androidx.annotation.Keep <init>(...);
-}
--keepclasseswithmembers class * {
-    @com.therouter.router.Autowired <fields>;
-}
-```
 
 #### 使用说明
 
@@ -1644,4 +1495,26 @@ copy轮子哥的https://github.com/getActivity/Toaster
      //出生日期计算年龄
      ParseUtils.calculateAgeFromBornDate(String bornDate)
      ParseUtils.calculateAgeFromBornDate(String bornDate, String formatValue)
+```
+
+### SwipeDetectorUtils
+
+```
+     //任意视图的滑动方向监听(支持八向、多指)
+     SwipeDetectorUtils object = new SwipeDetectorUtils();
+     //设置监听回调
+     //滑动开始(默认方法，需手动重写)：onSwipeStart(View v, MotionEvent event, FingerInfo fingerInfo)
+     //滑动中：onSwiping(View v, MotionEvent event, FingerInfo fingerInfo)
+     //滑动范围超出：onOverSwipeDetect(View v, MotionEvent event, FingerInfo fingerInfo)
+     //滑动结束：onSwipeEnd(View v, MotionEvent event, FingerInfo fingerInfo)
+     object.setOnSwipeDirectionListener(OnSwipeDirectionListener listener);
+     //设置最大检测距离X轴
+     object.setMaxDetectDistanceX(float maxDistance)
+     //设置最大检测距离Y轴
+     object.setMaxDetectDistanceY(float maxDistance)
+     //传入需要检测的触摸事件
+     object.onTouch(View v, MotionEvent event)
+     //设置双轴滑动阈值
+     object.setThresholdLimit(int min)
+     
 ```

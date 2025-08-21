@@ -1523,6 +1523,7 @@ swipeViewUtils.setThresholdLimit(int min)
 swipeViewUtils.isSwiping()
 //是否重置指定视图滑动（多用于点击后恢复）
 swipeViewUtils.resetViewStateByPosition(int position)
+swipeViewUtils.resetViewStateByView(View v)
 //绑定RecycleView和需要滑动显示的视图id（内容视图不会跟随滑动）
 swipeViewUtils.attachToRecyclerView(RecyclerView recyclerView, int swipeViewId)
 //绑定RecycleView和需要滑动内容和显示的视图id（内容视图会跟随滑动）

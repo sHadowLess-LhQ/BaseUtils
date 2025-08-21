@@ -90,7 +90,15 @@ public class SwipeViewUtils implements
         return isSwiping.get();
     }
 
-    public void resetViewStateByPosition(View v) {
+    public void resetViewStateByPosition(int position) {
+        RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
+        if (holder == null) {
+            return;
+        }
+        resetViewStateByView(holder.itemView);
+    }
+
+    public void resetViewStateByView(View v) {
         SwipeViewHolder holder = (SwipeViewHolder) v.getTag();
         if (holder == null) {
             holder = new SwipeViewHolder();

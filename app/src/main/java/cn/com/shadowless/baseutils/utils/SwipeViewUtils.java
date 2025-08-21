@@ -24,9 +24,15 @@ public class SwipeViewUtils implements
     private SwipeDetectorUtils.SwipeDirection cancelSwipeDirection;
     private RecyclerView.ViewHolder viewHolder = null;
 
+    private CustomAnimEvent event = null;
+
     private static class SwipeViewHolder {
         View contentView;
         View swipeView;
+    }
+
+    public interface CustomAnimEvent {
+        void startAnimate(View view, int swipeLength, AtomicBoolean isSwipeMark);
     }
 
     @Override
@@ -40,6 +46,10 @@ public class SwipeViewUtils implements
         setCancelSwipeDirection(swipeDirection);
         this.detector = new SwipeDetectorUtils();
         this.detector.setOnSwipeDirectionListener(this);
+    }
+
+    public void setCustomAnimEvent(CustomAnimEvent event) {
+        this.event = event;
     }
 
     public void setThresholdLimit(int limit) {
@@ -190,6 +200,10 @@ public class SwipeViewUtils implements
     }
 
     private void translationXAnimateEvent(View view, int swipeLength) {
+        if (event != null) {
+            event.startAnimate(view, swipeLength, isSwiping);
+            return;
+        }
         view
                 .animate()
                 .translationX(swipeLength)

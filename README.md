@@ -1521,6 +1521,8 @@ swipeViewUtils.setMaxDetectDistanceX(float maxDistance)
 swipeViewUtils.setThresholdLimit(int min)
 //是否正在滑动（用于item点击事件拦截判断）
 swipeViewUtils.isSwiping()
+//设置自定义滑动动画
+swipeViewUtils.setCustomAnimEvent(CustomAnimEvent event)
 //是否重置指定视图滑动（多用于点击后恢复）
 swipeViewUtils.resetViewStateByPosition(int position)
 swipeViewUtils.resetViewStateByView(View v)

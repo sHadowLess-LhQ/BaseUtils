@@ -120,6 +120,12 @@ public class SwipeDetectorUtils implements View.OnTouchListener {
     // 滑动方向监听器
     private OnSwipeDirectionListener swipeListener;
 
+    private boolean isLongDetect = false;
+
+    public void setIsLongDetect(boolean longDetect) {
+        isLongDetect = longDetect;
+    }
+
     /**
      * 设置滑动方向监听器
      *
@@ -203,23 +209,31 @@ public class SwipeDetectorUtils implements View.OnTouchListener {
     }
 
     private void isOverSwipeDetect(View v, MotionEvent event, boolean isOver, FingerInfo info) {
+        if (isLongDetect) {
+            calculate(v, event, isOver, info);
+            return;
+        }
         if (!info.isSwiping) {
-            // 计算移动距离
-            float deltaX = info.getDistanceX();
-            float deltaY = info.getDistanceY();
-            // 判断是否达到滑动阈值
-            if (deltaX > SWIPE_THRESHOLD || deltaY > SWIPE_THRESHOLD) {
-                info.isSwiping = true;
-                // 判断滑动方向
-                info.direction = calculateSwipeDirection(deltaX, deltaY);
+            calculate(v, event, isOver, info);
+        }
+    }
 
-                // 回调监听器
-                if (swipeListener != null) {
-                    if (isOver) {
-                        swipeListener.onOverSwipeDetect(v, event, info);
-                    } else {
-                        swipeListener.onSwiping(v, event, info);
-                    }
+    private void calculate(View v, MotionEvent event, boolean isOver, FingerInfo info) {
+        // 计算移动距离
+        float deltaX = info.getDistanceX();
+        float deltaY = info.getDistanceY();
+        // 判断是否达到滑动阈值
+        if (deltaX > SWIPE_THRESHOLD || deltaY > SWIPE_THRESHOLD) {
+            info.isSwiping = true;
+            // 判断滑动方向
+            info.direction = calculateSwipeDirection(deltaX, deltaY);
+
+            // 回调监听器
+            if (swipeListener != null) {
+                if (isOver) {
+                    swipeListener.onOverSwipeDetect(v, event, info);
+                } else {
+                    swipeListener.onSwiping(v, event, info);
                 }
             }
         }

@@ -1502,6 +1502,8 @@ object.setMaxDetectDistanceY(float maxDistance)
 object.onTouch(View v, MotionEvent event)
 //设置双轴滑动阈值
 object.setThresholdLimit(int min)
+//设置是否持续监测滑动行为
+object.setIsLongDetect(boolean longDetect)
 ```
 
 ### SwipeViewUtils
@@ -1525,4 +1527,6 @@ swipeViewUtils.resetViewStateByPosition(int position)
 swipeViewUtils.attachToRecyclerView(RecyclerView recyclerView, int swipeViewId)
 //绑定RecycleView和需要滑动内容和显示的视图id（内容视图会跟随滑动）
 swipeViewUtils.attachToRecyclerView(RecyclerView recyclerView, int contentId, int swipeViewId)
+//解除监听绑定
+swipeViewUtils.detachFromRecyclerView()
 ```

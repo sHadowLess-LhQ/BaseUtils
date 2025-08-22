@@ -23,8 +23,8 @@ public class SwipeViewUtils implements
     private final SwipeDetectorUtils.SwipeDirection swipeDirection;
     private SwipeDetectorUtils.SwipeDirection cancelSwipeDirection;
     private RecyclerView.ViewHolder viewHolder = null;
-
     private CustomAnimEvent event = null;
+    private final int holderKey = 0x10000001;
 
     private static class SwipeViewHolder {
         View contentView;
@@ -35,17 +35,64 @@ public class SwipeViewUtils implements
         void startAnimate(View view, int swipeLength, AtomicBoolean isSwipeMark);
     }
 
-    @Override
-    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-        View itemView = holder.itemView;
-        itemView.setTag(null);
-    }
-
     public SwipeViewUtils(SwipeDetectorUtils.SwipeDirection swipeDirection) {
         this.swipeDirection = swipeDirection;
         setCancelSwipeDirection(swipeDirection);
         this.detector = new SwipeDetectorUtils();
         this.detector.setOnSwipeDirectionListener(this);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                View downChildView = rv.findChildViewUnder(e.getX(), e.getY());
+                if (downChildView != null) {
+                    viewHolder = rv.getChildViewHolder(downChildView);
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            default:
+                viewHolder = null;
+                break;
+        }
+        if (viewHolder != null) {
+            detector.onTouch(viewHolder.itemView, e);
+        }
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+    }
+
+    @Override
+    public void onSwiping(View v, MotionEvent event, SwipeDetectorUtils.FingerInfo fingerInfo) {
+        SwipeViewHolder holder = getCacheHolder(v);
+        int swipeLength = holder.swipeView.getMeasuredWidth();
+        if (fingerInfo.direction == swipeDirection) {
+            setValue(fingerInfo.direction, holder.contentView, holder.swipeView, swipeLength);
+        } else if (fingerInfo.direction == cancelSwipeDirection) {
+            setValue(fingerInfo.direction, holder.contentView, holder.swipeView, 0);
+        }
+    }
+
+    @Override
+    public void onOverSwipeDetect(View v, MotionEvent event, SwipeDetectorUtils.FingerInfo fingerInfo) {
+
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
+        View itemView = holder.itemView;
+        itemView.setTag(null);
     }
 
     public void setCustomAnimEvent(CustomAnimEvent event) {
@@ -58,19 +105,6 @@ public class SwipeViewUtils implements
 
     public void setMaxDetectDistanceX(int x) {
         this.detector.setMaxDetectDistanceX(x);
-    }
-
-    private void setCancelSwipeDirection(SwipeDetectorUtils.SwipeDirection swipeDirection) {
-        switch (swipeDirection) {
-            case LEFT:
-                cancelSwipeDirection = SwipeDetectorUtils.SwipeDirection.RIGHT;
-                break;
-            case RIGHT:
-                cancelSwipeDirection = SwipeDetectorUtils.SwipeDirection.LEFT;
-                break;
-            default:
-                throw new IllegalArgumentException("swipeDirection cannot be " + swipeDirection);
-        }
     }
 
     public void attachToRecyclerView(RecyclerView recyclerView, int swipeViewId) {
@@ -109,75 +143,43 @@ public class SwipeViewUtils implements
     }
 
     public void resetViewStateByView(View v) {
-        SwipeViewHolder holder = (SwipeViewHolder) v.getTag();
-        if (holder == null) {
-            holder = new SwipeViewHolder();
-            holder.swipeView = v.findViewById(swipeViewId);
-            if (contentId != 0 || swipeViewId != -1) {
-                holder.contentView = v.findViewById(contentId);
-            }
-            v.setTag(holder);
-        }
+        SwipeViewHolder holder = getCacheHolder(v);
         if (holder.contentView != null) {
             translationXAnimateEvent(holder.contentView, 0);
         }
         translationXAnimateEvent(holder.swipeView, 0);
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                View downChildView = rv.findChildViewUnder(e.getX(), e.getY());
-                if (downChildView != null) {
-                    viewHolder = rv.getChildViewHolder(downChildView);
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                break;
-            default:
-                viewHolder = null;
-                break;
+    private SwipeViewHolder getCacheHolder(View v) {
+        Object o = v.getTag(holderKey);
+        if (o != null && !(o instanceof SwipeViewHolder)) {
+            throw new IllegalArgumentException("tag key :"
+                    + holderKey
+                    + " was used, please change SwipeViewUtils 'holderKey' value or change your tag key");
         }
-        if (viewHolder != null) {
-            detector.onTouch(viewHolder.itemView, e);
-        }
-        return false;
-    }
-
-    @Override
-    public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-
-    }
-
-    @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-    }
-
-    @Override
-    public void onSwiping(View v, MotionEvent event, SwipeDetectorUtils.FingerInfo fingerInfo) {
-        SwipeViewHolder holder = (SwipeViewHolder) v.getTag();
+        SwipeViewHolder holder = (SwipeViewHolder) o;
         if (holder == null) {
             holder = new SwipeViewHolder();
             holder.swipeView = v.findViewById(swipeViewId);
             if (contentId != 0 || swipeViewId != -1) {
                 holder.contentView = v.findViewById(contentId);
             }
-            v.setTag(holder);
+            v.setTag(holderKey, holder);
         }
-
-        int swipeLength = holder.swipeView.getMeasuredWidth();
-        if (fingerInfo.direction == swipeDirection) {
-            setValue(fingerInfo.direction, holder.contentView, holder.swipeView, swipeLength);
-        } else if (fingerInfo.direction == cancelSwipeDirection) {
-            setValue(fingerInfo.direction, holder.contentView, holder.swipeView, 0);
-        }
+        return holder;
     }
 
-    @Override
-    public void onOverSwipeDetect(View v, MotionEvent event, SwipeDetectorUtils.FingerInfo fingerInfo) {
-
+    private void setCancelSwipeDirection(SwipeDetectorUtils.SwipeDirection swipeDirection) {
+        switch (swipeDirection) {
+            case LEFT:
+                cancelSwipeDirection = SwipeDetectorUtils.SwipeDirection.RIGHT;
+                break;
+            case RIGHT:
+                cancelSwipeDirection = SwipeDetectorUtils.SwipeDirection.LEFT;
+                break;
+            default:
+                throw new IllegalArgumentException("swipeDirection cannot be " + swipeDirection);
+        }
     }
 
     private void setValue(SwipeDetectorUtils.SwipeDirection direction, View contentView, View swipeView, int swipeLength) {

@@ -1533,3 +1533,19 @@ swipeViewUtils.attachToRecyclerView(RecyclerView recyclerView, int contentId, in
 //解除监听绑定
 swipeViewUtils.detachFromRecyclerView()
 ```
+
+### DragViewUtils
+
+```java
+//RecycleView 拖拽封装
+//通过ItemTouchHelper实现
+//不要改造支持滑动后和SwipeViewUtils混用，两个的实现方式不一样
+//传入拖拽方向
+DragViewUtils dragUtils = new DragViewUtils(int dragDirs)
+//绑定RecycleView
+dragUtils.attachToRecyclerView(RecyclerView recyclerView)
+//设置数据变更监听
+dragUtils.setDataCallback(DragDataCallback dataCallback)
+//设置拖拽监听
+dragUtils.setDragCallback(OnItemDragListener dragCallback)
+```

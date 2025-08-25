@@ -223,7 +223,7 @@ public class SwipeViewUtils implements
                         isSwiping.set(false);
                     }
                 })
-                .setDuration(200)
+                .setDuration(150)
                 .start();
     }
 }

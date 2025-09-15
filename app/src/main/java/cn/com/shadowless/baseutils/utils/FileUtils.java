@@ -23,7 +23,7 @@ import java.io.OutputStream;
 public class FileUtils {
 
     /**
-     * Instantiates a new File utils.
+     * 私有构造函数，不允许外部实例化
      */
     private FileUtils() {
     }
@@ -31,7 +31,7 @@ public class FileUtils {
     /**
      * 内部存储data文件夹
      *
-     * @return the /data
+     * @return /data目录
      */
     public static File getAppData() {
         return Environment.getDataDirectory();

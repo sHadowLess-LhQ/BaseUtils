@@ -20,85 +20,85 @@ import cn.com.shadowless.baseutils.anim.AnimationListener;
 
 
 /**
- * The type View animator.
+ * 视图动画工具类
  *
  * @author sHadowLess
  */
 public class ViewAnimatorUtils {
     /**
-     * The constant RESTART.
+     * 重新开始常量
      */
     public static final int RESTART = ValueAnimator.RESTART;
     /**
-     * The constant REVERSE.
+     * 反向常量
      */
     public static final int REVERSE = ValueAnimator.REVERSE;
     /**
-     * The constant INFINITE.
+     * 无限循环常量
      */
     public static final int INFINITE = ValueAnimator.INFINITE;
     /**
-     * The constant DEFAULT_DURATION.
+     * 默认时长
      */
     private static final long DEFAULT_DURATION = 3000;
 
     /**
-     * The Animation list.
+     * 动画列表
      */
     private final List<AnimationBuilder> animationList = new ArrayList<>();
     /**
-     * The Duration.
+     * 动画时长
      */
     private long duration = DEFAULT_DURATION;
     /**
-     * The Start delay.
+     * 开始延迟
      */
     private long startDelay = 0;
     /**
-     * The Interpolator.
+     * 插值器
      */
     private Interpolator interpolator = null;
 
     /**
-     * The Repeat count.
+     * 重复次数
      */
     private int repeatCount = 0;
     /**
-     * The Repeat mode.
+     * 重复模式
      */
     private int repeatMode = RESTART;
 
     /**
-     * The Animator set.
+     * 动画集合
      */
     private AnimatorSet animatorSet;
     /**
-     * The Wait for this view height.
+     * 等待视图高度
      */
     private View waitForThisViewHeight = null;
 
     /**
-     * The Start listener.
+     * 开始监听器
      */
     private AnimationListener.Start startListener;
     /**
-     * The Stop listener.
+     * 结束监听器
      */
     private AnimationListener.Stop stopListener;
 
     /**
-     * The Prev.
+     * 前一个动画
      */
     private ViewAnimatorUtils prev = null;
     /**
-     * The Next.
+     * 后一个动画
      */
     private ViewAnimatorUtils next = null;
 
     /**
-     * Create animator set animator set.
+     * 创建动画集合
      *
-     * @return the animator set
+     * @return 动画集合
      */
     protected AnimatorSet createAnimatorSet() {
         List<Animator> animators = new ArrayList<>();
@@ -170,10 +170,10 @@ public class ViewAnimatorUtils {
     }
 
     /**
-     * Animate animation builder.
+     * 创建动画构建器
      *
-     * @param view the view
-     * @return the animation builder
+     * @param view 视图
+     * @return 动画构建器
      */
     public static AnimationBuilder animate(View... view) {
         ViewAnimatorUtils viewAnimatorUtils = new ViewAnimatorUtils();
@@ -181,10 +181,10 @@ public class ViewAnimatorUtils {
     }
 
     /**
-     * Then animate animation builder.
+     * 创建下一个动画构建器
      *
-     * @param views the views
-     * @return the animation builder
+     * @param views 视图
+     * @return 动画构建器
      */
     public AnimationBuilder thenAnimate(View... views) {
         ViewAnimatorUtils nextViewAnimatorUtils = new ViewAnimatorUtils();
@@ -194,10 +194,10 @@ public class ViewAnimatorUtils {
     }
 
     /**
-     * Add animation builder animation builder.
+     * 添加动画构建器
      *
-     * @param views the views
-     * @return the animation builder
+     * @param views 视图
+     * @return 动画构建器
      */
     public AnimationBuilder addAnimationBuilder(View... views) {
         AnimationBuilder animationBuilder = new AnimationBuilder(this, views);
@@ -217,7 +217,7 @@ public class ViewAnimatorUtils {
     }
 
     /**
-     * Start.
+     * 开始动画
      */
     public void start() {
         if (prev != null) {
@@ -241,7 +241,7 @@ public class ViewAnimatorUtils {
     }
 
     /**
-     * Cancel.
+     * 取消动画
      */
     public void cancel() {
         if (animatorSet != null) {
@@ -254,7 +254,7 @@ public class ViewAnimatorUtils {
     }
 
     /**
-     * Duration view animator.
+     * 设置动画时长
      *
      * @param duration the duration
      * @return the view animator
@@ -265,7 +265,7 @@ public class ViewAnimatorUtils {
     }
 
     /**
-     * Start delay view animator.
+     * 设置开始延迟
      *
      * @param startDelay the start delay
      * @return the view animator
@@ -285,7 +285,7 @@ public class ViewAnimatorUtils {
     }
 
     /**
-     * Repeat mode view animator.
+     * 设置重复模式
      *
      * @param repeatMode the repeat mode
      * @return the view animator
@@ -296,7 +296,7 @@ public class ViewAnimatorUtils {
     }
 
     /**
-     * On start view animator.
+     * 设置开始监听器
      *
      * @param startListener the start listener
      * @return the view animator
@@ -307,7 +307,7 @@ public class ViewAnimatorUtils {
     }
 
     /**
-     * On stop view animator.
+     * 设置结束监听器
      *
      * @param stopListener the stop listener
      * @return the view animator

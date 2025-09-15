@@ -13,39 +13,39 @@ import java.io.InputStream;
 import java.util.concurrent.Executors;
 
 /**
- * The type Asset utils.
+ * 资源文件工具类
  *
  * @author sHadowLess
  */
 public enum AssetUtils {
 
     /**
-     * Instance asset utils.
+     * 实例对象
      */
     INSTANCE;
 
     /**
-     * The constant SUCCESS.
+     * 成功标识
      */
     private static final int SUCCESS = 1;
     /**
-     * The constant FAILED.
+     * 失败标识
      */
     private static final int FAILED = 0;
     /**
-     * The Context.
+     * 上下文对象
      */
     private Context context;
     /**
-     * The Callback.
+     * 文件操作回调
      */
     private FileOperateCallback callback;
     /**
-     * The Is success.
+     * 是否成功
      */
     private volatile boolean isSuccess;
     /**
-     * The Error str.
+     * 错误信息
      */
     private String errorStr;
 

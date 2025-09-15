@@ -5,6 +5,9 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * 拖拽视图工具类
+ */
 public class DragViewUtils extends ItemTouchHelper.SimpleCallback {
 
     private DragDataCallback dataCallback;
@@ -12,18 +15,55 @@ public class DragViewUtils extends ItemTouchHelper.SimpleCallback {
     private boolean isDrag = false;
     private final ItemTouchHelper helper;
 
+    /**
+     * 拖拽数据回调接口
+     */
     public interface DragDataCallback {
+        /**
+         * 数据移动
+         *
+         * @param fromPosition 起始位置
+         * @param toPosition   目标位置
+         */
         void dataMove(int fromPosition, int toPosition);
     }
 
+    /**
+     * 项目拖拽监听器接口
+     */
     public interface OnItemDragListener {
+        /**
+         * 项目拖拽开始
+         *
+         * @param viewHolder 视图持有者
+         * @param pos        位置
+         */
         void onItemDragStart(@Nullable RecyclerView.ViewHolder viewHolder, int pos);
 
+        /**
+         * 项目拖拽移动中
+         *
+         * @param source 源视图持有者
+         * @param from   起始位置
+         * @param target 目标视图持有者
+         * @param to     目标位置
+         */
         void onItemDragMoving(@NonNull RecyclerView.ViewHolder source, int from, @NonNull RecyclerView.ViewHolder target, int to);
 
+        /**
+         * 项目拖拽结束
+         *
+         * @param viewHolder 视图持有者
+         * @param pos        位置
+         */
         void onItemDragEnd(@NonNull RecyclerView.ViewHolder viewHolder, int pos);
     }
 
+    /**
+     * 构造函数
+     *
+     * @param dragDirs 拖拽方向
+     */
     public DragViewUtils(int dragDirs) {
         super(dragDirs, 0);
         this.helper = new ItemTouchHelper(this);

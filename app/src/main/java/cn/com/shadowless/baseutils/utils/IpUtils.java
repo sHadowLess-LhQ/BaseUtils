@@ -19,28 +19,28 @@ import java.util.Objects;
 import cn.com.shadowless.baseutils.log.LogUtils;
 
 /**
- * The type Ip utils.
+ * IP地址工具类
  *
  * @author sHadowLess
  */
 public class IpUtils {
 
     /**
-     * The constant TAG.
+     * 日志标签
      */
     private final static String TAG = IpUtils.class.getSimpleName();
 
     /**
-     * Instantiates a new Ip utils.
+     * 私有构造函数，不允许外部实例化
      */
     private IpUtils() {
     }
 
     /**
-     * Gets ip address.
+     * 获取IP地址
      *
-     * @param context the context
-     * @return the ip address
+     * @param context 上下文对象
+     * @return IP地址字符串
      */
     public static String getIpAddress(Context context) {
         try {

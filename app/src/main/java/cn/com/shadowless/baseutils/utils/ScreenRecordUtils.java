@@ -25,14 +25,14 @@ import java.io.IOException;
 import cn.com.shadowless.baseutils.record.RecordConfig;
 
 /**
- * 录屏录制工具类
+ * 屏幕录制工具类
  *
  * @author sHadowLess
  */
 public class ScreenRecordUtils {
 
     /**
-     * 媒体项目管理
+     * 媒体投影管理器
      */
     private MediaProjectionManager mediaProjectionManager;
     /**
@@ -337,26 +337,3 @@ public class ScreenRecordUtils {
     /**
      * 录制监听
      */
-    public interface OnVideoRecordListener {
-        /**
-         * 开始录制前
-         */
-        void onBeforeRecord();
-
-        /**
-         * 开始录制
-         */
-        void onStartRecord();
-
-        /**
-         * 取消录制
-         */
-        void onCancelRecord();
-
-        /**
-         * 结束录制
-         */
-        void onEndRecord();
-    }
-
-}

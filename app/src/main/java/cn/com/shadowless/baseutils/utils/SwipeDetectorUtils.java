@@ -34,6 +34,13 @@ public class SwipeDetectorUtils implements View.OnTouchListener {
         public boolean isSwiping;       // 是否正在滑动
         public SwipeDirection direction; // 滑动方向
 
+        /**
+         * 构造函数
+         *
+         * @param pointerId 手指ID
+         * @param x         X坐标
+         * @param y         Y坐标
+         */
         public FingerInfo(int pointerId, float x, float y) {
             this.pointerId = pointerId;
             this.startX = x;

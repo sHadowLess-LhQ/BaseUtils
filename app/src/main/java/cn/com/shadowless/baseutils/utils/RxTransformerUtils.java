@@ -15,7 +15,7 @@ import io.reactivex.rxjava3.core.SingleTransformer;
 public class RxTransformerUtils {
 
     /**
-     * Instantiates a new Rx utils.
+     * 私有构造函数，不允许外部实例化
      */
     private RxTransformerUtils() {
     }
@@ -24,69 +24,69 @@ public class RxTransformerUtils {
     /**
      * 设置转换流
      *
-     * @param <T>         the type parameter
-     * @param subscribeOn the subscribe on
-     * @param observeOn   the observe on
-     * @return the completable stream
+     * @param <T>         泛型参数
+     * @param subscribeOn 订阅调度器
+     * @param observeOn   观察调度器
+     * @return Completable流
      */
     public static <T> FlowableTransformer<T, T> setFlowableStream(Scheduler subscribeOn, Scheduler observeOn) {
         return setFlowableStream(subscribeOn, subscribeOn, observeOn);
     }
 
     /**
-     * Sets completable stream.
+     * 设置Completable流
      *
-     * @param <T>           the type parameter
-     * @param subscribeOn   the subscribe on
-     * @param unsubscribeOn the unsubscribe on
-     * @param observeOn     the observe on
-     * @return the completable stream
+     * @param <T>           泛型参数
+     * @param subscribeOn   订阅调度器
+     * @param unsubscribeOn 取消订阅调度器
+     * @param observeOn     观察调度器
+     * @return Completable流
      */
     public static <T> FlowableTransformer<T, T> setFlowableStream(Scheduler subscribeOn, Scheduler unsubscribeOn, Scheduler observeOn) {
         return upstream -> upstream.subscribeOn(subscribeOn).unsubscribeOn(unsubscribeOn).observeOn(observeOn);
     }
 
     /**
-     * Sets observable stream without observe on.
+     * 设置Observable流（无观察调度器）
      *
-     * @param <T>         the type parameter
-     * @param subscribeOn the subscribe on
-     * @return the observable stream without observe on
+     * @param <T>         泛型参数
+     * @param subscribeOn 订阅调度器
+     * @return Observable流（无观察调度器）
      */
     public static <T> FlowableTransformer<T, T> setFlowableStreamWithoutObserveOn(Scheduler subscribeOn) {
         return setFlowableStreamWithoutObserveOn(subscribeOn, subscribeOn);
     }
 
     /**
-     * Sets observable stream without observe on.
+     * 设置Observable流（无观察调度器）
      *
-     * @param <T>           the type parameter
-     * @param subscribeOn   the subscribe on
-     * @param unsubscribeOn the unsubscribe on
-     * @return the observable stream without observe on
+     * @param <T>           泛型参数
+     * @param subscribeOn   订阅调度器
+     * @param unsubscribeOn 取消订阅调度器
+     * @return Observable流（无观察调度器）
      */
     public static <T> FlowableTransformer<T, T> setFlowableStreamWithoutObserveOn(Scheduler subscribeOn, Scheduler unsubscribeOn) {
         return upstream -> upstream.subscribeOn(subscribeOn).unsubscribeOn(unsubscribeOn);
     }
 
     /**
-     * Sets completable stream without subscribe on.
+     * 设置Completable流（无订阅调度器）
      *
-     * @param <T>           the type parameter
-     * @param unsubscribeOn the unsubscribe on
-     * @param observeOn     the observe on
-     * @return the completable stream without subscribe on
+     * @param <T>           泛型参数
+     * @param unsubscribeOn 取消订阅调度器
+     * @param observeOn     观察调度器
+     * @return Completable流（无订阅调度器）
      */
     public static <T> FlowableTransformer<T, T> setFlowableStreamWithoutSubscribeOn(Scheduler unsubscribeOn, Scheduler observeOn) {
         return upstream -> upstream.unsubscribeOn(unsubscribeOn).observeOn(observeOn);
     }
 
     /**
-     * Sets flowable stream unsubscribe on.
+     * 设置Flowable流（取消订阅调度器）
      *
-     * @param <T>           the type parameter
-     * @param unsubscribeOn the unsubscribe on
-     * @return the flowable stream unsubscribe on
+     * @param <T>           泛型参数
+     * @param unsubscribeOn 取消订阅调度器
+     * @return Flowable流（取消订阅调度器）
      */
     public static <T> FlowableTransformer<T, T> setFlowableStreamUnsubscribeOn(Scheduler unsubscribeOn) {
         return upstream -> upstream.unsubscribeOn(unsubscribeOn);
@@ -95,10 +95,10 @@ public class RxTransformerUtils {
     /**
      * 设置转换流
      *
-     * @param <T>         the type parameter
-     * @param subscribeOn the subscribe on
-     * @param observeOn   the observe on
-     * @return the completable stream
+     * @param <T>         泛型参数
+     * @param subscribeOn 订阅调度器
+     * @param observeOn   观察调度器
+     * @return Completable流
      */
     public static <T> SingleTransformer<T, T> setSingleStream(Scheduler subscribeOn, Scheduler observeOn) {
         return setSingleStream(subscribeOn, subscribeOn, observeOn);

@@ -17,7 +17,7 @@ import java.util.Set;
 public enum PreferencesUtils {
 
     /**
-     * Instance preferences utils.
+     * 实例对象
      */
     INSTANCE;
 
@@ -27,40 +27,40 @@ public enum PreferencesUtils {
     private static final String PREFERENCE_NAME = "APP_INFO";
 
     /**
-     * The constant editor.
+     * 编辑器对象
      */
     private Editor editor = null;
 
     /**
-     * The constant settings.
+     * SharedPreferences对象
      */
     private SharedPreferences settings = null;
 
     /**
-     * Init preferences.
+     * 初始化Preferences
      *
-     * @param context the context
+     * @param context 上下文对象
      */
     public void initPreferences(Context context) {
         initPreferences(context, PREFERENCE_NAME);
     }
 
     /**
-     * Init preferences.
+     * 初始化Preferences
      *
-     * @param context the context
-     * @param name    the name
+     * @param context 上下文对象
+     * @param name    文件名
      */
     public void initPreferences(Context context, String name) {
         initPreferences(context, name, Context.MODE_PRIVATE);
     }
 
     /**
-     * Init preferences.
+     * 初始化Preferences
      *
-     * @param context the context
-     * @param name    the name
-     * @param mode    the mode
+     * @param context 上下文对象
+     * @param name    文件名
+     * @param mode    模式
      */
     public void initPreferences(Context context, String name, int mode) {
         settings = context.getSharedPreferences(name, mode);

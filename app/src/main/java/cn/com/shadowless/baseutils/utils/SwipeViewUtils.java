@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * 滑动视图工具类
+ */
 public class SwipeViewUtils implements
         RecyclerView.OnItemTouchListener, SwipeDetectorUtils.OnSwipeDirectionListener,
         RecyclerView.RecyclerListener {
@@ -26,15 +29,33 @@ public class SwipeViewUtils implements
     private CustomAnimEvent event = null;
     private final int holderKey = 0x10000001;
 
+    /**
+     * 滑动视图持有者
+     */
     private static class SwipeViewHolder {
         View contentView;
         View swipeView;
     }
 
+    /**
+     * 自定义动画事件接口
+     */
     public interface CustomAnimEvent {
+        /**
+         * 开始动画
+         *
+         * @param view         视图对象
+         * @param swipeLength  滑动长度
+         * @param isSwipeMark  是否标记为滑动
+         */
         void startAnimate(View view, int swipeLength, AtomicBoolean isSwipeMark);
     }
 
+    /**
+     * 构造函数
+     *
+     * @param swipeDirection 滑动方向
+     */
     public SwipeViewUtils(SwipeDetectorUtils.SwipeDirection swipeDirection) {
         this.swipeDirection = swipeDirection;
         setCancelSwipeDirection(swipeDirection);

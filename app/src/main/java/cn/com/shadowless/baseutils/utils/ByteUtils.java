@@ -5,14 +5,14 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
- * The type Byte utils.
+ * 字节工具类
  *
  * @author sHadowLess
  */
 public class ByteUtils {
 
     /**
-     * Instantiates a new Byte utils.
+     * 私有构造函数，不允许外部实例化
      */
     private ByteUtils() {
     }
@@ -20,8 +20,8 @@ public class ByteUtils {
     /**
      * 字节数组转十六进制字符串（如 [0x1A, 0x2B] → "1A2B"）
      *
-     * @param bytes the bytes
-     * @return the string
+     * @param bytes 字节数组
+     * @return 十六进制字符串
      */
     public static String bytesToHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
@@ -34,8 +34,8 @@ public class ByteUtils {
     /**
      * 十六进制字符串转字节数组（如 "1A2B" → [0x1A, 0x2B]）
      *
-     * @param hex the hex
-     * @return the byte [ ]
+     * @param hex 十六进制字符串
+     * @return 字节数组
      */
     public static byte[] hexToBytes(String hex) {
         int len = hex.length();
@@ -50,8 +50,8 @@ public class ByteUtils {
     /**
      * 字节数组转 int（大端模式）
      *
-     * @param bytes the bytes
-     * @return the int
+     * @param bytes 字节数组
+     * @return int
      */
     public static int bytesToInt(byte[] bytes) {
         return (bytes[0] & 0xFF) << 24 |
@@ -64,8 +64,8 @@ public class ByteUtils {
      * 小端模式：低位字节在前，高位字节在后
      * 示例：字节数组 [0x78, 0x56, 0x34, 0x12] → int 0x12345678
      *
-     * @param bytes the bytes
-     * @return the int
+     * @param bytes 字节数组
+     * @return int
      */
     public static int bytesToIntLittleEndian(byte[] bytes) {
         return (bytes[3] & 0xFF) << 24 |
@@ -77,8 +77,8 @@ public class ByteUtils {
     /**
      * int 转字节数组（大端模式）
      *
-     * @param value the value
-     * @return the byte [ ]
+     * @param value int
+     * @return 字节数组
      */
     public static byte[] intToBytes(int value) {
         return new byte[]{
@@ -93,8 +93,8 @@ public class ByteUtils {
      * 小端模式：低位字节在前，高位字节在后
      * 示例：int 0x12345678 → 字节数组 [0x78, 0x56, 0x34, 0x12]
      *
-     * @param value the value
-     * @return the byte [ ]
+     * @param value int
+     * @return 字节数组
      */
     public static byte[] intToBytesLittleEndian(int value) {
         return new byte[]{
@@ -108,8 +108,8 @@ public class ByteUtils {
     /**
      * 字节数组转 float（需结合 int 转换，大端模式）
      *
-     * @param bytes the bytes
-     * @return the float
+     * @param bytes 字节数组
+     * @return float
      */
     public static float bytesToFloat(byte[] bytes) {
         return Float.intBitsToFloat(bytesToInt(bytes));
@@ -118,8 +118,8 @@ public class ByteUtils {
     /**
      * 字节数组转 float（需结合 int 转换，小端模式）
      *
-     * @param bytes the bytes
-     * @return the float
+     * @param bytes 字节数组
+     * @return float
      */
     public static float bytesToFloatLittleEndian(byte[] bytes) {
         return Float.intBitsToFloat(bytesToIntLittleEndian(bytes));
@@ -128,8 +128,8 @@ public class ByteUtils {
     /**
      * 计算 CRC16-MODBUS 校验码
      *
-     * @param data the data
-     * @return the byte [ ]
+     * @param data 数据
+     * @return 校验码
      */
     public static byte[] crc16Modbus(byte[] data) {
         int crc = 0xFFFF;
@@ -180,9 +180,9 @@ public class ByteUtils {
     /**
      * 字节数组转 UTF-8 字符串（处理文本协议）
      *
-     * @param bytes   the bytes
-     * @param charset the charset
-     * @return the string
+     * @param bytes   字节数组
+     * @param charset 字符集
+     * @return 字符串
      */
     public static String bytesToUtf8(byte[] bytes, Charset charset) {
         return new String(bytes, charset);
@@ -191,9 +191,9 @@ public class ByteUtils {
     /**
      * GBK 字符串转字节数组（兼容中文设备）
      *
-     * @param text        the text
-     * @param charsetName the charset name
-     * @return the byte [ ]
+     * @param text        字符串
+     * @param charsetName 字符集名称
+     * @return 字节数组
      */
     public static byte[] charsetToBytes(String text, String charsetName) {
         try {

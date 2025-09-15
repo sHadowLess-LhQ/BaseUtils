@@ -20,7 +20,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 public class WindowUtils {
 
     /**
-     * 构造
+     * 构造函数
      */
     private WindowUtils() {
     }
@@ -48,7 +48,7 @@ public class WindowUtils {
     /**
      * 获取根布局
      *
-     * @param activity the activity
+     * @param activity Activity对象
      * @return the base view
      */
     private static View getBaseView(Activity activity) {

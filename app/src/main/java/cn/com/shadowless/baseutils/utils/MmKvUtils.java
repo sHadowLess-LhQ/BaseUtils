@@ -8,7 +8,7 @@ import com.tencent.mmkv.MMKV;
 import java.util.Set;
 
 /**
- * The enum MmKv utils.
+ * MMKV工具类
  *
  * @author sHadowLess
  */
@@ -38,7 +38,7 @@ public class MmKvUtils {
     /**
      * 获取工具类实例
      *
-     * @return the instance
+     * @return 工具类实例
      */
     public static MmKvUtils getInstance() {
         if (mmkvUtils == null) {

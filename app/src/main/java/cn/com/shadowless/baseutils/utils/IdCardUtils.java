@@ -12,24 +12,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * The type Id card utils.
+ * 身份证工具类
  *
  * @author sHadowLess
  */
 public class IdCardUtils {
 
     /**
-     * Instantiates a new Id card utils.
+     * 私有构造函数，不允许外部实例化
      */
     private IdCardUtils() {
 
     }
 
     /**
-     * Gets sex from id card.
+     * 从身份证获取性别
      *
-     * @param idCard the id card
-     * @return the sex from id card
+     * @param idCard 身份证号码
+     * @return 性别代码（奇数为男，偶数为女）
      */
     public static int getSexFromIdCard(String idCard) {
         char genderChar = 0;

@@ -39,16 +39,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * The type Cache utils.
+ * 缓存工具类
  */
 public class CacheUtils {
 
     /**
-     * The constant DEFAULT_MAX_SIZE.
+     * 默认最大缓存大小
      */
     private static final long DEFAULT_MAX_SIZE = Long.MAX_VALUE;
     /**
-     * The constant DEFAULT_MAX_COUNT.
+     * 默认最大缓存数量
      */
     private static final int DEFAULT_MAX_COUNT = Integer.MAX_VALUE;
 

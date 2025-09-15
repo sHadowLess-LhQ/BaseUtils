@@ -17,7 +17,7 @@ public class FragmentUtils {
     private static Fragment currentFragment = null;
 
     /**
-     * Instantiates a new Fragment utils.
+     * 私有构造函数，不允许外部实例化
      */
     private FragmentUtils() {
     }
@@ -25,9 +25,9 @@ public class FragmentUtils {
     /**
      * 显示碎片
      *
-     * @param manager  the manager
-     * @param fragment the 碎片
-     * @param layout   the 布局
+     * @param manager  Fragment管理器
+     * @param fragment 碎片对象
+     * @param layout   布局ID
      */
     public static void showFragment(FragmentManager manager, Fragment fragment, int layout) {
         show(manager, fragment, layout, null);
@@ -36,10 +36,10 @@ public class FragmentUtils {
     /**
      * 显示碎片
      *
-     * @param manager   the manager
-     * @param fragment  the 碎片
-     * @param layout    the 布局
-     * @param animation the 动画
+     * @param manager   Fragment管理器
+     * @param fragment  碎片对象
+     * @param layout    布局ID
+     * @param animation 动画资源ID数组
      */
     public static void showFragment(FragmentManager manager, Fragment fragment, int layout, int... animation) {
         show(manager, fragment, layout, animation);

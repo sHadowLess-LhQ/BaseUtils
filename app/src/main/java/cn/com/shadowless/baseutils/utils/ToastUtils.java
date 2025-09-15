@@ -15,7 +15,7 @@ import cn.com.shadowless.baseutils.toast.style.CustomToastStyle;
 import cn.com.shadowless.baseutils.toast.style.WhiteToastStyle;
 
 /**
- * The type Toast utils.
+ * Toast工具类
  *
  * @author sHadowLess
  */
@@ -38,20 +38,20 @@ public final class ToastUtils {
     }
 
     /**
-     * Init.
+     * 初始化
      *
-     * @param application the application
-     * @param strategy    the strategy
+     * @param application 应用对象
+     * @param strategy    Toast策略
      */
     public static void init(Application application, IToastStrategy strategy) {
         Toaster.init(application, strategy, null);
     }
 
     /**
-     * Init.
+     * 初始化
      *
-     * @param application the application
-     * @param style       the style
+     * @param application 应用对象
+     * @param style       Toast样式
      */
     public static void init(Application application, IToastStyle<?> style) {
         Toaster.init(application, null, style);

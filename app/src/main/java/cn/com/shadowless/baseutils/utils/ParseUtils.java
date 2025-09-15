@@ -4,34 +4,34 @@ import android.text.TextUtils;
 
 
 /**
- * The type Parse utils.
+ * 解析工具类
  *
  * @author sHadowLess
  */
 public class ParseUtils {
 
     /**
-     * Instantiates a new Parse utils.
+     * 私有构造函数，不允许外部实例化
      */
     private ParseUtils() {
     }
 
     /**
-     * Parse string value to int int.
+     * 将字符串解析为整数
      *
-     * @param string the string
-     * @return the int
+     * @param string 字符串
+     * @return 整数值
      */
     public static int parseStringToInt(String string) {
         return parseStringToInt(string, 0);
     }
 
     /**
-     * Parse string value to int int.
+     * 将字符串解析为整数
      *
-     * @param string   the string
-     * @param defValue the def value
-     * @return the int
+     * @param string   字符串
+     * @param defValue 默认值
+     * @return 整数值
      */
     public static int parseStringToInt(String string, int defValue) {
         if (TextUtils.isEmpty(string)) {

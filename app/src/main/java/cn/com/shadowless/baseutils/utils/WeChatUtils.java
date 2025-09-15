@@ -19,28 +19,28 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import java.io.ByteArrayOutputStream;
 
 /**
- * The type We chat service.
+ * 微信工具类
  *
  * @author sHadowLess
  */
 public enum WeChatUtils {
 
     /**
-     * Instance we chat service.
+     * 实例对象
      */
     INSTANCE;
 
     /**
-     * The Iwxapi.
+     * 微信API接口
      */
     private IWXAPI iwxapi;
 
     /**
-     * Gets instance.
+     * 获取实例
      *
-     * @param context the context
-     * @param appId   the app id
-     * @return the instance
+     * @param context 上下文对象
+     * @param appId   应用ID
+     * @return 实例对象
      */
     public WeChatUtils getInstance(Context context, String appId) {
         if (iwxapi == null) {

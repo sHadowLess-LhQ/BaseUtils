@@ -1568,3 +1568,22 @@ dragUtils.setDataCallback(DragDataCallback dataCallback)
 //设置拖拽监听
 dragUtils.setDragCallback(OnItemDragListener dragCallback)
 ```
+
+### CompositeFontUtils
+
+```java
+//生僻字处理
+//适用于需要的生僻字存在于多个不同的字库中
+//内部会自动判断生僻字码点需要使用哪个字库
+//传入需要使用的生僻字字库
+CompositeFontUtils font = new CompositeFontUtils(@NonNull List<Typeface> typefaceList)
+//传入默认字库和需要使用的生僻字字库
+CompositeFontUtils font = new CompositeFontUtils(@Nullable Typeface defaultTypeface, @NonNull List<Typeface> typefaceList)
+//传入需要处理的文本（包含正常字和生僻字、只含生僻字都行）
+SpannableStringBuilder builder = font.createCompositeText(String text)
+textView.setText(builder)
+//传入需要处理的文本（包含正常字和生僻字、只含生僻字都行）
+//可实现接口完善码表与字库判断的逻辑
+SpannableStringBuilder builder = font.createCompositeText(String text, FontCompareRule rule)
+textView.setText(builder)
+```

@@ -14,24 +14,24 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 /**
- * The type Anim view border.
+ * 视图动画边框工具类
  *
  * @author sHadowLess
  */
 public class ViewAnimBorderUtils {
 
     /**
-     * The Effect view.
+     * 效果视图
      */
     private View effectView;
 
     /**
-     * The Border color.
+     * 边框颜色
      */
     private String borderColor;
 
     /**
-     * The Duration.
+     * 动画时长
      */
     private int duration;
 
@@ -46,27 +46,27 @@ public class ViewAnimBorderUtils {
     private float borderWidth;
 
     /**
-     * The Border paint.
+     * 边框画笔
      */
     private Paint borderPaint;
 
     /**
-     * The Border path.
+     * 边框路径
      */
     private Path borderPath;
 
     /**
-     * The Path measure.
+     * 路径测量
      */
     private PathMeasure pathMeasure;
 
     /**
-     * The Animated value.
+     * 动画值
      */
     private float animatedValue = 0;
 
     /**
-     * The Animator.
+     * 动画器
      */
     private ValueAnimator animator;
 

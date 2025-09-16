@@ -1579,6 +1579,9 @@ dragUtils.setDragCallback(OnItemDragListener dragCallback)
 CompositeFontUtils font = new CompositeFontUtils(@NonNull List<Typeface> typefaceList)
 //传入默认字库和需要使用的生僻字字库
 CompositeFontUtils font = new CompositeFontUtils(@Nullable Typeface defaultTypeface, @NonNull List<Typeface> typefaceList)
+//传入默认字库、需要使用的生僻字字库和缓存大小
+//默认缓存大小为500
+CompositeFontUtils font = new CompositeFontUtils(@Nullable Typeface defaultTypeface, @NonNull List<Typeface> typefaceList, int cacheSize)
 //传入需要处理的文本（包含正常字和生僻字、只含生僻字都行）
 SpannableStringBuilder builder = font.createCompositeText(String text)
 textView.setText(builder)

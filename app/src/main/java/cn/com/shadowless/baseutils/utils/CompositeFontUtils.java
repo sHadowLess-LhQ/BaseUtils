@@ -162,16 +162,20 @@ public class CompositeFontUtils {
 
         String charString = new String(new int[]{codePoint}, 0, 1);
         for (Typeface typeface : typefaceList) {
-            if (isCharacterVisibleInFont(typeface, charString)) {
+            if (rule != null && rule.compare(typeface, codePoint)) {
                 fontCache.put(codePoint, typeface);
                 return typeface;
             }
-            if (rule != null && rule.compare(typeface, codePoint)) {
+            if (isCharacterVisibleInFont(typeface, charString)) {
                 fontCache.put(codePoint, typeface);
                 return typeface;
             }
         }
 
+        if (rule != null && rule.compareDefault(defaultTypeface, codePoint)) {
+            fontCache.put(codePoint, defaultTypeface);
+            return defaultTypeface;
+        }
         if (isCharacterVisibleInFont(defaultTypeface, charString)) {
             fontCache.put(codePoint, defaultTypeface);
             return defaultTypeface;
@@ -235,6 +239,15 @@ public class CompositeFontUtils {
          * @return 如果字体适合显示该字符则返回true，否则返回false
          */
         boolean compare(Typeface typeface, int codePoint);
+
+        /**
+         * 比较默认字体和字符码点
+         *
+         * @param typeface  字体
+         * @param codePoint 字符码点
+         * @return 如果字体适合显示该字符则返回true，否则返回false
+         */
+        boolean compareDefault(Typeface typeface, int codePoint);
     }
 
 

@@ -7,14 +7,13 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.style.TypefaceSpan;
+import android.util.LruCache;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 复合字体工具类
@@ -36,8 +35,9 @@ public class CompositeFontUtils {
 
     /**
      * 字符到字体的缓存映射，用于提高查找性能
+     * 使用LruCache限制缓存大小，避免内存无限增长
      */
-    private final Map<Integer, Typeface> fontCache = new ConcurrentHashMap<>();
+    private final LruCache<Integer, Typeface> fontCache;
 
     /**
      * 用于测量字符的Paint对象，复用以减少对象创建开销
@@ -75,12 +75,25 @@ public class CompositeFontUtils {
      * @param typefaceList    字体列表，用于按顺序查找适合显示特定字符的字体
      */
     public CompositeFontUtils(@Nullable Typeface defaultTypeface, @NonNull List<Typeface> typefaceList) {
+        this(defaultTypeface, typefaceList, 500);
+    }
+
+
+    /**
+     * 构造函数
+     *
+     * @param defaultTypeface 默认字体，当字体列表中没有适合的字体时使用
+     * @param typefaceList    字体列表，用于按顺序查找适合显示特定字符的字体
+     * @param cacheSize       缓存大小
+     */
+    public CompositeFontUtils(@Nullable Typeface defaultTypeface, @NonNull List<Typeface> typefaceList, int cacheSize) {
         if (defaultTypeface == null) {
             defaultTypeface = Typeface.DEFAULT;
         }
         this.defaultTypeface = defaultTypeface;
         this.typefaceList = new ArrayList<>();
         this.typefaceList.addAll(typefaceList);
+        this.fontCache = new LruCache<>(cacheSize);
     }
 
     /**
@@ -129,16 +142,6 @@ public class CompositeFontUtils {
             i += charCount;
         }
         return builder;
-    }
-
-    /**
-     * 通过测量查找适合的字体
-     *
-     * @param codePoint 字符的Unicode码点
-     * @return 适合显示该字符的字体，如果找不到则返回null
-     */
-    private Typeface findSuitableTypefaceByMeasurement(int codePoint) {
-        return findSuitableTypefaceByMeasurement(codePoint, null);
     }
 
     /**

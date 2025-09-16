@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 复合字体工具类
@@ -31,6 +33,31 @@ public class CompositeFontUtils {
      * 默认字体，当字体列表中没有适合的字体时使用
      */
     private final Typeface defaultTypeface;
+
+    /**
+     * 字符到字体的缓存映射，用于提高查找性能
+     */
+    private final Map<Integer, Typeface> fontCache = new ConcurrentHashMap<>();
+
+    /**
+     * 用于测量字符的Paint对象，复用以减少对象创建开销
+     */
+    private final ThreadLocal<Paint> paintThreadLocal = new ThreadLocal<Paint>() {
+        @Override
+        protected Paint initialValue() {
+            return new Paint();
+        }
+    };
+
+    /**
+     * 用于测量字符边界的Rect对象，复用以减少对象创建开销
+     */
+    private final ThreadLocal<Rect> rectThreadLocal = new ThreadLocal<Rect>() {
+        @Override
+        protected Rect initialValue() {
+            return new Rect();
+        }
+    };
 
     /**
      * 构造函数
@@ -125,17 +152,25 @@ public class CompositeFontUtils {
      * @return 适合显示该字符的字体，如果找不到则返回null
      */
     private Typeface findSuitableTypefaceByMeasurement(int codePoint, FontCompareRule rule) {
+        Typeface cachedTypeface = fontCache.get(codePoint);
+        if (cachedTypeface != null) {
+            return cachedTypeface;
+        }
+
         String charString = new String(new int[]{codePoint}, 0, 1);
         for (Typeface typeface : typefaceList) {
             if (isCharacterVisibleInFont(typeface, charString)) {
+                fontCache.put(codePoint, typeface);
                 return typeface;
             }
             if (rule != null && rule.compare(typeface, codePoint)) {
+                fontCache.put(codePoint, typeface);
                 return typeface;
             }
         }
 
         if (isCharacterVisibleInFont(defaultTypeface, charString)) {
+            fontCache.put(codePoint, defaultTypeface);
             return defaultTypeface;
         }
 
@@ -153,22 +188,33 @@ public class CompositeFontUtils {
      * @return 如果字符在字体中可见则返回true，否则返回false
      */
     private boolean isCharacterVisibleInFont(Typeface typeface, String charString) {
-        Paint paint = new Paint();
-        paint.setTypeface(typeface);
+        Paint paint = paintThreadLocal.get();
+        if (paint != null) {
+            paint.setTypeface(typeface);
 
-        float width = paint.measureText(charString);
-        if (width <= 0) {
-            return false;
+            float width = paint.measureText(charString);
+            if (width <= 0) {
+                return false;
+            }
+
+            Rect bounds = rectThreadLocal.get();
+            if (bounds != null) {
+                bounds.setEmpty();
+                paint.getTextBounds(charString, 0, charString.length(), bounds);
+                if (bounds.width() <= 0 || bounds.height() <= 0) {
+                    return false;
+                }
+            }
+
+            int codePoint = charString.codePointAt(0);
+            if (codePoint == 0xFFFD) {
+                return false;
+            }
+
+            float normalCharWidth = paint.measureText("中");
+            return !(width < normalCharWidth * 0.1f);
         }
-
-        Rect bounds = new Rect();
-        paint.getTextBounds(charString, 0, charString.length(), bounds);
-        if (bounds.width() <= 0 || bounds.height() <= 0) {
-            return false;
-        }
-
-        float normalCharWidth = paint.measureText("中");
-        return !(width < normalCharWidth * 0.1f);
+        return false;
     }
 
     /**

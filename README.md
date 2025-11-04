@@ -1512,6 +1512,7 @@ SwipeDetectorUtils object = new SwipeDetectorUtils();
 //滑动中：onSwiping(View v, MotionEvent event, FingerInfo fingerInfo)
 //滑动范围超出：onOverSwipeDetect(View v, MotionEvent event, FingerInfo fingerInfo)
 //滑动结束：onSwipeEnd(View v, MotionEvent event, FingerInfo fingerInfo)
+//方向与滑动手指数量：onDirectionFingerCountUpdated(int touchType, SwipeDirection direction, int count)
 object.setOnSwipeDirectionListener(OnSwipeDirectionListener listener);
 //设置最大检测距离X轴
 object.setMaxDetectDistanceX(float maxDistance)
